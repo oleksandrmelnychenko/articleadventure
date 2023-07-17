@@ -7,12 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AntDesign" Version="0.15.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.20" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\common.ArticleAdventure\common.ArticleAdventure.csproj" />
     <ProjectReference Include="..\service.ArticleAdventure\service.ArticleAdventure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PageCode\" />
   </ItemGroup>
 
 </Project>

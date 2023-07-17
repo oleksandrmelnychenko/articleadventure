@@ -17,17 +17,19 @@ namespace data.ArticleAdventure.Controllers
             _blogService = blogService;
         }
 
-        public IActionResult Index()
+
+        public IActionResult Blog()
         {
             return View();
         }
+
         [HttpGet]
         [AssignActionRoute(BlogSegments.GET)]
         public async Task<IActionResult> CreateUserProfileAsync()
         {
             try
             {
-                return Ok(SuccessResponseBody(await _blogService.GetTestBlog(), "New blog successfully created"));
+                return View(SuccessResponseBody(await _blogService.GetTestBlog(), "New blog successfully created"));
             }
             catch (Exception exc)
             {

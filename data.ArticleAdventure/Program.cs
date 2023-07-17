@@ -27,6 +27,7 @@ builder.Services
 builder.Services.AddResponseCompression();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAntDesign();
 
 builder.Services.AddScoped<IResponseFactory, ResponseFactory>();
 
@@ -55,6 +56,27 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller}/{action}/{id?}",
+    new { controller = "Home", action = "Index"});
+
+app.MapControllerRoute(
+    name: "all",
+    pattern: "{controller}/{action}/{id?}",
+    new { controller = "All", action = "All" });
+
+app.MapControllerRoute(
+    name: "images",
+    pattern: "{controller}/{action}/{id?}",
+    new { controller = "Images", action = "Images" });
+
+app.MapControllerRoute(
+    name: "new",
+    pattern: "{controller}/{action}/{id?}",
+    new { controller = "New", action = "New" });
+
+app.MapControllerRoute(
+    name: "tags",
+    pattern: "{controller}/{action}/{id?}",
+    new { controller = "Tags", action = "Tags" });
 
 app.Run();
