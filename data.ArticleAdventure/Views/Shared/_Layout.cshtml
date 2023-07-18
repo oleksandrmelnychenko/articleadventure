@@ -50,7 +50,10 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="_content/AntDesign/js/ant-design-blazor.js" asp-append-version="true"></script>
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.20/tinymce.min.js"></script>
+    <script type="text/javascript">
+        tinymce.init({ selector: 'textarea', height: 300 , weight:300 });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

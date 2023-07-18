@@ -1,0 +1,17 @@
+﻿.new__CONTROLS {
+    height: 96px;
+    width: 100%;
+    margin-top: 0;
+    background-color: #1e1e1e;
+    border-top: 1px solid #2d2d2d;
+    padding: 9px 9px 0;
+    box-shadow: 0 ,0 ,2px, #222;
+}
+.input__CONTROL {
+    position: relative;
+    min-height: 32px;
+    margin-right: 2px;
+    float: left;
+    width: calc((100% - 14px)/2);
+    background-color: #1e1e1e;
+}

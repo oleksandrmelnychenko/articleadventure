@@ -1,48 +1,21 @@
 ﻿@page
 @model data.ArticleAdventure.Views.New.NewModel
-@{
-    ViewBag.Title = "New";
-}
-
-<div class="text-center">
-    <h1 class="display-4">New</h1>
-</div>
-
-<div className="new__CONTROLS">
-    <div className="input__CONTROL">
-        <input type="text"
+<div class="new__CONTROLS">
+    <div >
+        <input class="input__CONTROL" type="text"
                placeholder="Title"
         />
     </div>
-    <div className="input__CONTROL">
-        <input type="text"
+    <div >
+        <input class="input__CONTROL" type="text"
                placeholder="Description"
         />
     </div>
 
-    <div className="saveBUTTON">Save</div>
-
-    <details className="dop__COMPONENTS">
-        <div className="content__CONTROLS">
-            <div className="input__CONTROL file">
-                <input multiple
-                       type="file"
-                />
-            </div>
-            <div className="input__CONTROL">
-                <input  type="text" />
-            </div>
-            <div className="input__CONTROL">
-                <textarea placeholder="[meta] key  (key 1,key 2,key 3)"/>
-            </div>
-
-            <div className="input__CONTROL">
-                <textarea placeholder="[meta] description"/>
-            </div>
-            <ul className="tags_LIST__DEFAULT">
-            </ul>
-        </div>
-    </details>
+    <div class="saveBUTTON">Save</div>
+    <form  method="post">
+        <textarea style="background-image:linear-gradient( #fdfdfd,#1e1e1e );" cols="20" rows="3" name="PersonalDetails"></textarea>
+                </form>
 </div>
-<div className="acticle__new__PAGE">
+<div class="acticle__new__PAGE">
 </div>
