@@ -9,7 +9,7 @@ namespace domain.ArticleAdventure.Repositories.Blog.Contracts
 {
     public interface IBlogRepository
     {
-        Blogs GetTestBlog(int id);
+        long GetTestBlog(Blogs id);
         ///Some Methods
     }
 }

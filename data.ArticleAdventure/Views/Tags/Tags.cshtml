@@ -8,4 +8,80 @@
     <h1 class="display-4">Tags</h1>
 </div>
 
+<>
+<div className="acticle__new__PAGE tags__PAGE">
+    <div className="tags__MODAL">
+        <input type="text"
+        className="tagName"
+        placeholder="Tag group name"
+        />
+        <input type="color"
+        className="tagColorName"
+        placeholder="Color"
+        style={{ padding: '0 4px' }}
+        />
+        <Popconfirm placement="top" title={'Edit ?'}>
+            <div className="saveBUTTON">Edit</div>
+        </Popconfirm>
+        <Popconfirm placement="top" title={'Create ?'} >
+            <div className="saveBUTTON create">Create</div>
+        </Popconfirm>
+
+        <ul className="tags_LIST__DEFAULT">
+            <li className={tagGroup.isSelected ? 'isSelected' : '' }>
+                <span></span>
+                <Popconfirm placement="topLeft" title={"Remove ?"}>
+                    <span className="remove_TAG">remove</span>
+                </Popconfirm>
+                <span className="remove_TAG edit">edit</span>
+            </li>
+        </ul>
+    </div>
+
+    <div className="tags__MODAL">
+        <input type="text"
+        className="tagName"
+        placeholder="Tag name"
+        />
+
+        <input type="color"
+        className="tagColorName"
+        placeholder="Color"
+        style={{ padding: '0 4px' }}
+        />
+
+        <div className="saveBUTTON">Edit</div>
+        <div className="saveBUTTON create">Create</div>
+
+        <Popconfirm placement="top" title={'Edit ?'} >
+            <div className="saveBUTTON">Edit</div>
+        </Popconfirm>
+        <Popconfirm placement="top" title={'Create ?'}>
+            <div className="saveBUTTON create">Create</div>
+        </Popconfirm>
+
+        <ul className="tagsGroup_LIST__DEFAULT">
+            <li key={indexCat}>
+                <span className="tt">
+                    {tagGroupListItem.name ? tagGroupListItem.name : ''}
+                </span>
+
+                <ul className="tags_LIST__DEFAULT">
+                    {tagGroupListItem.tags ? tagGroupListItem.tags.map((tag: any, index: number) =>
+                    <li 
+                        <span></span>
+
+                        <Popconfirm placement="topLeft" title={"Remove ?"}>
+                            <span className="remove_TAG">remove</span>
+                        </Popconfirm>
+
+                        <span className="remove_TAG edit" onClick={() => this.editTag(tag)}>edit</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+            </>
+
 

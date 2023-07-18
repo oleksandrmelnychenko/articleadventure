@@ -7,6 +7,8 @@ using service.ArticleAdventure.Services.Blog;
 using domain.ArticleAdventure.DbConnectionFactory.Contracts;
 using domain.ArticleAdventure.DbConnectionFactory;
 using Newtonsoft.Json.Serialization;
+using database.ArticleAdventure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath);
@@ -15,6 +17,10 @@ builder.Configuration.AddEnvironmentVariables();
 
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppSettingsProperties(builder.Configuration);
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppEnvironmentRootPath(builder.Environment.ContentRootPath);
+
+builder.Services.AddDbContext<ArticleAdventureDataContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString(common.ArticleAdventure.Helpers.ConnectionStringNames.DbConnectionString)));
+
 builder.Services
     .AddControllers()
     .AddNewtonsoftJson(options =>

@@ -1,0 +1,126 @@
+@import '~antd/dist/antd.css';
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+a {
+    color: #0077cc;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+.masterCONTENT {
+    background-color: #1e1e1e;
+
+    overflow: {
+        x: hidden;
+        y: auto;
+    }
+
+    .new__CONTROLS {
+        height: 96px;
+        width: 100%;
+        margin-top: 0;
+        background-color: #1e1e1e;
+        border-top: 1px solid #2d2d2d;
+        padding: 9px 9px 0;
+        box-shadow: 0 0 12px - 10px #222;
+
+        .input__CONTROL {
+            position: relative;
+            min-height: 32px;
+            margin-right: 2px;
+            float: left;
+            width: calc((100% - 124px)/2);
+
+            &.file {
+                // width: calc((100% - 122px));
+            }
+        }
+
+        input,
+        textarea {
+            height: 32px;
+            width: 100%;
+            background-color: #2d2d2d;
+            border: 1px solid #333333;
+            outline: none;
+            padding: 0 10px;
+            color: #fff;
+
+            &:focus {
+                border-color: #0a66b7;
+                box-shadow: inset 0 0 14px -12px #fff;
+            }
+
+            &:hover {
+                border-color: rgba(#0a66b7,.4);
+            }
+        }
+
+        textarea {
+            padding: 10px;
+            resize: none;
+            height: 120px;
+        }
+    }
+
+    .saveBUTTON {
+        height: 32px;
+        float: left;
+        line-height: 30px;
+        color: #0a66b7;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        background-color: #2d2d2d;
+        display: block;
+        padding: 0 20px;
+        border: 1px solid #2d2d2d;
+        text-align: center;
+        width: 120px;
+
+        &:hover {
+            cursor: pointer;
+            border: 1px solid #0a66b7;
+        }
+    }
+}
