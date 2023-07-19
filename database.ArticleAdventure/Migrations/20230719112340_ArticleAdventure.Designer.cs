@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using database.ArticleAdventure;
 
@@ -11,9 +12,10 @@ using database.ArticleAdventure;
 namespace database.ArticleAdventure.Migrations
 {
     [DbContext(typeof(ArticleAdventureDataContext))]
-    partial class ArticleAdventureDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230719112340_ArticleAdventure")]
+    partial class ArticleAdventure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,8 +28,7 @@ namespace database.ArticleAdventure.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("ID");
+                        .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
@@ -37,14 +38,10 @@ namespace database.ArticleAdventure.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<DateTime>("Created")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getutcdate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Deleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("0");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -52,30 +49,32 @@ namespace database.ArticleAdventure.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("EditorValue")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Image")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("MetaDescription")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("MetaKeywords")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<Guid>("NetUid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("NetUID")
-                        .HasDefaultValueSql("newid()");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -86,10 +85,12 @@ namespace database.ArticleAdventure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Url")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("WebImageUrl")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -102,8 +103,7 @@ namespace database.ArticleAdventure.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("ID");
+                        .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
@@ -116,14 +116,10 @@ namespace database.ArticleAdventure.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<DateTime>("Created")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getutcdate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Deleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("0");
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsSelected")
                         .ValueGeneratedOnAdd()
@@ -136,10 +132,7 @@ namespace database.ArticleAdventure.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<Guid>("NetUid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("NetUID")
-                        .HasDefaultValueSql("newid()");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
@@ -148,7 +141,7 @@ namespace database.ArticleAdventure.Migrations
 
                     b.HasIndex("BlogsId");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tag");
                 });
 
             modelBuilder.Entity("domain.ArticleAdventure.Entities.Tag", b =>

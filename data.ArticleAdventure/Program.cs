@@ -57,7 +57,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseCookiePolicy();
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -84,5 +84,4 @@ app.MapControllerRoute(
     name: "tags",
     pattern: "{controller}/{action}/{id?}",
     new { controller = "Tags", action = "Tags" });
-
 app.Run();

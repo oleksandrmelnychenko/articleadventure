@@ -9,7 +9,6 @@ namespace domain.ArticleAdventure.Repositories.Blog.Contracts
 {
     public interface IBlogRepository
     {
-        long GetTestBlog(Blogs id);
-        ///Some Methods
+        long AddBlog(Blogs blog);
     }
 }

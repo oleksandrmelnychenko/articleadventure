@@ -9,6 +9,6 @@ namespace service.ArticleAdventure.Services.Blog.Contracts
 {
     public interface IBlogService
     {
-        Task<long> GetTestBlog();
+        Task<long> AddBlog(Blogs blog);
     }
 }

@@ -1,22 +1,32 @@
-﻿@page
+﻿@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
 @model data.ArticleAdventure.Views.New.NewModel
+<form method="post">
 <div class="new__CONTROLS">
     <div >
         <input class="input__CONTROL" type="text"
-               placeholder="Title"
-        />
+               placeholder="Title" name="Title" />
     </div>
     <div >
         <input class="input__CONTROL" type="text"
-               placeholder="Description"
-        />
+               placeholder="Description" name="Description" />
     </div>
-
-    <div class="saveBUTTON">Save</div>
-    <div></div>
+        <input 
+     style="height: 32px;
+    float: left;
+    line-height: 30px;
+    color: #0a66b7;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background-color: #2d2d2d;
+    display: block;
+    padding: 0 20px;
+    border: 1px solid #2d2d2d;
+    text-align: center;
+    width: 120px;"
+     type="submit" value="Save" asp-page-handler="Submit" />
 </div>
- <form method="post">
-            <textarea style="background-image:linear-gradient( #fdfdfd,#1e1e1e );" cols="20" rows="3" name="PersonalDetails"></textarea>
-        </form>
+    <textarea cols="20" rows="3" name="Body"></textarea>
+</form>
 <div class="acticle__new__PAGE">
 </div>

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace service.ArticleAdventure.Services.Blog
@@ -21,44 +22,26 @@ namespace service.ArticleAdventure.Services.Blog
             _connectionFactory = connectionFactory;
             _blogRepositoryFactory = blogRepositoryFactory;
         }
-        public Task<long> GetTestBlog()
+
+        public Task<long> AddBlog()
         {
-            return Task.Run(() => {
-                List<Tag> tags = new List<Tag>();
-                Tag tag2 = new Tag
-                {
-                    Id = 2,
-                    Name = "Tag 2",
-                    IsSelected = false,
-                    Color = "#00FF00"
-                };
-                tags.Add(tag2);
-                // Создаем экземпляр класса Blog
-                Blogs blog = new Blogs
-                {
-                    Id = 1,
-                    Created = DateTime.Now,
-                    Updated = DateTime.Now,
-                    NetUid = Guid.NewGuid(),
-                    Title = "My Blog Post",
-                    Description = "This is a blog post",
-                    Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    Image = "4",
-                    ImageUrl = "1",
-                    WebImageUrl = "2",
-                    //BlogTags = tags,
-                    EditorValue = "3",
-                    MetaKeywords = "keyword1, keyword2",
-                    MetaDescription = "This is the meta description",
-                    Url = "https://example.com/blog/my-blog-post"
-                };
-                //return blog;
+            throw new NotImplementedException();
+        }
+
+        public Task<long> AddBlog(Blogs blog)
+        {
+            return Task.Run(() =>
+            {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    var foo = _blogRepositoryFactory.New(connection).GetTestBlog(blog);
+                    blog.Body = Regex.Replace(blog.Body, "<p>(.*?)</p>", "$1");
+                    long foo = _blogRepositoryFactory.New(connection).AddBlog(blog);
                     return foo;
                 }
             });
+                
         }
+
+       
     }
 }
