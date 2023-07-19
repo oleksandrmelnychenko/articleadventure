@@ -34,7 +34,6 @@ namespace service.ArticleAdventure.Services.Blog
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    blog.Body = Regex.Replace(blog.Body, "<p>(.*?)</p>", "$1");
                     long foo = _blogRepositoryFactory.New(connection).AddBlog(blog);
                     return foo;
                 }

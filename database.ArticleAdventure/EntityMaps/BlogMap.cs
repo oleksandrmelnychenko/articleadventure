@@ -20,9 +20,8 @@ namespace database.ArticleAdventure.EntityMaps
             entity.Property(p => p.Description)
                 .IsRequired()
                 .HasMaxLength(250);
-            entity.Property(p=>p.Body)
-                .IsRequired()
-                .HasMaxLength(250);
+            entity.Property(p => p.Body)
+                .IsRequired();
             entity.Property(p => p.Image)
                 .IsRequired(false)
                 .HasMaxLength(250);
