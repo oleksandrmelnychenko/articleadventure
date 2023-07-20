@@ -10,5 +10,8 @@ namespace domain.ArticleAdventure.Repositories.Blog.Contracts
     public interface IBlogRepository
     {
         long AddBlog(Blogs blog);
+
+        List<Blogs> GetAllBlogs();
+
     }
 }

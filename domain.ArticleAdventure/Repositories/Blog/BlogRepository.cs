@@ -13,16 +13,18 @@ namespace domain.ArticleAdventure.Repositories.Blog
             _connection = connection;
         }
 
-        public long AddBlog(Blogs blog)
-        {
-            return _connection.Query<long>("INSERT INTO [Blogs] " +
+        public long AddBlog(Blogs blog) 
+            => _connection.Query<long>("INSERT INTO [Blogs] " +
             "([Title], [Description], [Body] ,[Image] ,[ImageUrl] ,[WebImageUrl] ,[EditorValue] ,[MetaKeywords] " +
             ",[MetaDescription] ,[Url] ,[Updated] ) " +
-            "VALUES " + 
+            "VALUES " +
             "(@Title, @Description, @Body, @Image, @ImageUrl, @WebImageUrl" +
             ", @EditorValue, @MetaKeywords, @MetaDescription, @Url, GETUTCDATE());" +
             "SELECT SCOPE_IDENTITY()", blog
             ).Single();
-        }
+
+        public List<Blogs> GetAllBlogs() 
+            => _connection.Query<Blogs>("SELECT * FROM [Blogs] AS Blog " +
+                "WHERE Blog.Deleted = 0 ").ToList();
     }
 }

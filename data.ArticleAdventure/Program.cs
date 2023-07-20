@@ -34,7 +34,7 @@ builder.Services.AddResponseCompression();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddAntDesign();
-
+builder.Services.AddRazorPages();
 builder.Services.AddScoped<IResponseFactory, ResponseFactory>();
 
 builder.Services.AddTransient<IBlogRepositoryFactory, BlogRepositoryFactory>();
@@ -59,7 +59,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseCookiePolicy();
 app.UseAuthorization();
-
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action}/{id?}",

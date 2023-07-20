@@ -14,7 +14,6 @@
     float: left;
     width: calc((100% - 124px)/2);
     background-color: #1e1e1e;
-    color: white;
 }
 .saveBUTTON {
     height: 32px;

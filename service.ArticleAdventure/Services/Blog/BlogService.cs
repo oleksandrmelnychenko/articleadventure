@@ -23,24 +23,28 @@ namespace service.ArticleAdventure.Services.Blog
             _blogRepositoryFactory = blogRepositoryFactory;
         }
 
-        public Task<long> AddBlog()
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<long> AddBlog(Blogs blog)
         {
             return Task.Run(() =>
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    long foo = _blogRepositoryFactory.New(connection).AddBlog(blog);
-                    return foo;
+                    return _blogRepositoryFactory.New(connection).AddBlog(blog);
                 }
             });
                 
         }
 
-       
+        public Task<List<Blogs>> GetAllBlogs()
+        {
+            return Task.Run(() => 
+            {
+                using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                {
+                    var foo = _blogRepositoryFactory.New(connection).GetAllBlogs();
+                    return foo;
+                }
+            });
+        }
     }
 }

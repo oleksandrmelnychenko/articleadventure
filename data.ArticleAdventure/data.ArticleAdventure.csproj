@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -21,10 +21,6 @@
     <ProjectReference Include="..\common.ArticleAdventure\common.ArticleAdventure.csproj" />
     <ProjectReference Include="..\database.ArticleAdventure\database.ArticleAdventure.csproj" />
     <ProjectReference Include="..\service.ArticleAdventure\service.ArticleAdventure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="PageCode\" />
   </ItemGroup>
 
 </Project>

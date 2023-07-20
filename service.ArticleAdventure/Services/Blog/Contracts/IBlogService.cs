@@ -10,5 +10,6 @@ namespace service.ArticleAdventure.Services.Blog.Contracts
     public interface IBlogService
     {
         Task<long> AddBlog(Blogs blog);
+        Task<List<Blogs>> GetAllBlogs();
     }
 }
