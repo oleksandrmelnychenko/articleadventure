@@ -9,5 +9,6 @@ namespace common.ArticleAdventure.Helpers
     public static class ConnectionStringNames
     {
         public const string DbConnectionString = "DbConnectionString";
+        public static string ConnectionString { get; private set; } = "https://localhost:7261/";
     }
 }

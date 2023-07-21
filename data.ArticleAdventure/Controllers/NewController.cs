@@ -7,7 +7,7 @@ using System.Net;
 using data.ArticleAdventure.Models;
 using domain.ArticleAdventure.Entities;
 using data.ArticleAdventure.Views.New;
-using data.ArticleAdventure.Views.All;
+using common.ArticleAdventure.Helpers;
 
 namespace data.ArticleAdventure.Controllers
 {
@@ -29,18 +29,18 @@ namespace data.ArticleAdventure.Controllers
 
         [HttpPost]
         [AssignActionRoute(NewSegments.NEW)]
-        public async Task<IActionResult> New(Blogs newBlogModel)
+        public async Task<IActionResult> New(Blogs Blogs)
         {
             try
             {
-                await _blogService.AddBlog(newBlogModel);
-                return Redirect("https://localhost:7261/api/v1/all/remove/blog");
+                await _blogService.AddBlog(Blogs);
+                return Redirect($"{ConnectionStringNames.ConnectionString}api/v1/all/all");
             }
             catch (Exception exc)
             {
                 Logger.Log(NLog.LogLevel.Error, exc.Message);
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
-            } 
+            }
         }
 
         [HttpGet]
@@ -51,9 +51,9 @@ namespace data.ArticleAdventure.Controllers
             {
                 var blog = await _blogService.GetBLog(netUidBlog);
 
-                EditBlogModel newModel = new EditBlogModel 
-                {  
-                   Blogs = blog
+                EditBlogModel newModel = new EditBlogModel
+                {
+                    Blogs = blog
                 };
 
                 return View(newModel);
@@ -64,7 +64,21 @@ namespace data.ArticleAdventure.Controllers
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
             }
         }
-       
+        [HttpPost]
+        [AssignActionRoute(NewSegments.EDIT_BLOG)]
+        public async Task<IActionResult> EditBLog(EditModel editModel)
+        {
+            try
+            {
+                await _blogService.Update(editModel.Blogs);
+                return Redirect($"{ConnectionStringNames.ConnectionString}/api/v1/all/all");
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿@model data.ArticleAdventure.Views.New.EditBlogModel
 @{
 }
-@using (Html.BeginForm("All", "All",FormMethod.Post))
+@using (Html.BeginForm("New", "New",FormMethod.Post))
 {
     <input type="hidden" asp-for="Blogs.NetUid"/>
     @*@Html.HiddenFor(m => m.editModel.NetUid)*@
