@@ -1,13 +1,28 @@
 ﻿@model data.ArticleAdventure.Views.All.AllModel
 @using data.ArticleAdventure.PageCode;
 @{
-    AllCode allCode = new AllCode();
-    ViewBag.Title = "All";
+    //AllCode allCode = new AllCode();
+    //ViewBag.Title = "All";
 }
 @foreach (var description in Model.Blogs)
 {
     <div style="background-color:white;color:#1e1e1e">
         <div style="display:flex;">
+            <input formmethod="get"
+                   style="height: 32px;
+            float: left;
+            line-height: 30px;
+            color: #0a66b7;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background-color: #2d2d2d;
+            display: block;
+            padding: 0 20px;
+            border: 1px solid #2d2d2d;
+            text-align: center;
+            width: 120px;"
+                   type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("All", "All",new {netUidBlog =description.NetUid})'" />
             <h2 style="text-align:center;margin-left: auto;"> @description.Title</h2>
             <input formmethod="get"
             style="height: 32px;
@@ -24,11 +39,12 @@
             text-align: center;
             width: 120px;
             margin-left: auto;"
-                   type="submit" value="Save" asp-page-handler="Submit" onclick="@allCode.EditBlog(Model.Blogs.First())"/>
+                   type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("EditBlog", "New",new {netUidBlog =description.NetUid})'" />
         </div>
          
         <div> @Html.Raw(description.Body)</div>
 
     </div>
 }
+@*<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("EditBlog", "New",new {netUidBlog = Model.Blogs.FirstOrDefault().NetUid})'">Go Somewhere Else</button>*@
 

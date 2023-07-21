@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "domain.ArticleAdventure", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "service.ArticleAdventure", "service.ArticleAdventure\service.ArticleAdventure.csproj", "{D028AA67-8379-4F12-8D82-981AC58789A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "database.ArticleAdventure", "database.ArticleAdventure\database.ArticleAdventure.csproj", "{E57AA636-53B4-4871-A0B1-E903D37AF4F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "database.ArticleAdventure", "database.ArticleAdventure\database.ArticleAdventure.csproj", "{E57AA636-53B4-4871-A0B1-E903D37AF4F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

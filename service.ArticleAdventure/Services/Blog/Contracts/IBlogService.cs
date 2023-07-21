@@ -11,5 +11,9 @@ namespace service.ArticleAdventure.Services.Blog.Contracts
     {
         Task<long> AddBlog(Blogs blog);
         Task<List<Blogs>> GetAllBlogs();
+        Task Update(Blogs blogs);
+        Task Remove(Guid netUid);
+
+        Task<Blogs> GetBLog(Guid netUid);
     }
 }

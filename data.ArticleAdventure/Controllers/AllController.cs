@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using service.ArticleAdventure.Services.Blog.Contracts;
 using domain.ArticleAdventure.Entities;
 using data.ArticleAdventure.Views.All;
+using data.ArticleAdventure.Models;
+using System.Net;
 
 namespace data.ArticleAdventure.Controllers
 {
@@ -16,7 +18,8 @@ namespace data.ArticleAdventure.Controllers
         {
             _blogService = blogService;
         }
-
+        [HttpGet]
+        [AssignActionRoute(AllSegments.ALL)]
         public async Task<IActionResult> All()
         {
             List<Blogs> blogs = await _blogService.GetAllBlogs();
@@ -25,13 +28,40 @@ namespace data.ArticleAdventure.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> All(AllModel models)
+        [AssignActionRoute(AllSegments.EDIT)]
+        public async Task<IActionResult> All(Blogs Blogs)
         {
-            List<Blogs> blogs = await _blogService.GetAllBlogs();
+            try
+            {
+                await _blogService.Update(Blogs);
 
-            AllModel model = new AllModel { Blogs = blogs };
-            return View(model);
+                List<Blogs> blogs = await _blogService.GetAllBlogs();
+                AllModel model = new AllModel { Blogs = blogs };
+                return View(model);
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
         }
+        [HttpGet]
+        [AssignActionRoute(AllSegments.REMOVE_BLOG)]
+        public async Task<IActionResult> All(Guid netUidBlog)
+        {
+            try
+            {
+                await _blogService.Remove(netUidBlog);
 
+                List<Blogs> blogs = await _blogService.GetAllBlogs();
+                AllModel model = new AllModel { Blogs = blogs };
+                return View(model);
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
     }
 }

@@ -13,5 +13,10 @@ namespace domain.ArticleAdventure.Repositories.Blog.Contracts
 
         List<Blogs> GetAllBlogs();
 
+        void Remove(Guid netUid);
+
+        void Update(Blogs blog);
+
+        Blogs GetBlog(Guid netUid);
     }
 }

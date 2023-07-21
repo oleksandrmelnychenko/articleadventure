@@ -6,6 +6,8 @@ using service.ArticleAdventure.Services.Blog.Contracts;
 using System.Net;
 using data.ArticleAdventure.Models;
 using domain.ArticleAdventure.Entities;
+using data.ArticleAdventure.Views.New;
+using data.ArticleAdventure.Views.All;
 
 namespace data.ArticleAdventure.Controllers
 {
@@ -32,7 +34,7 @@ namespace data.ArticleAdventure.Controllers
             try
             {
                 await _blogService.AddBlog(newBlogModel);
-                return View();
+                return Redirect("https://localhost:7261/api/v1/all/remove/blog");
             }
             catch (Exception exc)
             {
@@ -40,6 +42,29 @@ namespace data.ArticleAdventure.Controllers
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
             } 
         }
+
+        [HttpGet]
+        [AssignActionRoute(NewSegments.GET_BLOG)]
+        public async Task<IActionResult> EditBLog(Guid netUidBlog)
+        {
+            try
+            {
+                var blog = await _blogService.GetBLog(netUidBlog);
+
+                EditBlogModel newModel = new EditBlogModel 
+                {  
+                   Blogs = blog
+                };
+
+                return View(newModel);
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+       
 
     }
 }

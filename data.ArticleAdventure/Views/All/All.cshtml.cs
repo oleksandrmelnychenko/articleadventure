@@ -6,9 +6,10 @@ namespace data.ArticleAdventure.Views.All
 {
     public class AllModel : PageModel
     {
-        public List<Blogs> Blogs { get; set; }
-        public void OnGet()
+        public AllModel()
         {
+            
         }
+        public List<Blogs> Blogs { get; set; }
     }
 }

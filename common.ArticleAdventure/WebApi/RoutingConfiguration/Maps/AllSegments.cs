@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
 {
-    public static class NewSegments
+    public static class AllSegments
     {
-        public const string NEW = "New";
-        public const string GET_BLOG = "edit/blog";
-        public const string EDIT_BLOG = "edit/blog";
+        public const string REMOVE_BLOG = "remove/blog";
+
+        public const string EDIT = "edit";
+        public const string ALL = "all";
 
     }
 }

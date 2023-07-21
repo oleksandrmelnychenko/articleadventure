@@ -35,16 +35,44 @@ namespace service.ArticleAdventure.Services.Blog
                 
         }
 
+        public Task<Blogs> GetBLog(Guid netUid)
+            => Task.Run(() =>
+            {
+                using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                {
+                    return _blogRepositoryFactory.New(connection).GetBlog(netUid);
+                }
+            });
+
+
         public Task<List<Blogs>> GetAllBlogs()
         {
             return Task.Run(() => 
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    var foo = _blogRepositoryFactory.New(connection).GetAllBlogs();
-                    return foo;
+                    return _blogRepositoryFactory.New(connection).GetAllBlogs();
                 }
             });
         }
+
+        public Task Remove(Guid netUid) 
+            => Task.Run(()=> {
+
+                using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                {
+                     _blogRepositoryFactory.New(connection).Remove(netUid);
+                }
+            });
+
+        public Task Update(Blogs blogs)
+          => Task.Run(() => {
+
+              using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+              {
+                   _blogRepositoryFactory.New(connection).Update(blogs);
+              }
+          });
+
     }
 }
