@@ -41,10 +41,9 @@
             margin-left: auto;"
                    type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("EditBlog", "New",new {netUidBlog =description.NetUid})'" />
         </div>
-         
         <div> @Html.Raw(description.Body)</div>
-
     </div>
+    <br></br>
 }
 @*<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("EditBlog", "New",new {netUidBlog = Model.Blogs.FirstOrDefault().NetUid})'">Go Somewhere Else</button>*@
 
