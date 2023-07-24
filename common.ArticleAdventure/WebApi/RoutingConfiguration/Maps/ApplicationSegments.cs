@@ -14,5 +14,6 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
         public const string Tags = "tags";
         public const string All = "all";
         public const string Images = "images";
+        public const string UserManagement = "usermanagement";
     }
 }
