@@ -13,7 +13,6 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light" style="background-color: #262626;">
             <div class="container-fluid" style="place-content:center">
-                @*<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">data.ArticleAdventure</a>*@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,12 +20,7 @@
                 <div class="masterCONTENT">
                     <ul class="navbar-nav flex-grow-1 ">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Homes</a>
-                        </li>
-                        <li class="nav-item">
-                            
                             <a class="nav-link text-white" asp-area="" asp-controller="All" asp-action="All">All</a>
-
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="New" asp-action="New">New</a>
@@ -37,9 +31,8 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Images" asp-action="Images">Images</a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="/Privacy">Images</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Authentication" asp-action="Login">Login</a>
                         </li>
                     </ul>
                 </div>

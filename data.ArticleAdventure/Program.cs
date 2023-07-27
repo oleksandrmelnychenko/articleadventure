@@ -21,6 +21,7 @@ using System.Data;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath);
@@ -79,7 +80,10 @@ builder.Services.AddResponseCompression();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddAntDesign();
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizePage("/");
+});
 builder.Services.AddScoped<IResponseFactory, ResponseFactory>();
 
 builder.Services.AddTransient<IBlogRepositoryFactory, BlogRepositoryFactory>();
@@ -93,7 +97,16 @@ builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings  
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
+    options.LoginPath = "/Authentication/Login";  //set the login page.  
+    //options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
@@ -145,6 +158,10 @@ app.MapControllerRoute(
     name: "tags",
     pattern: "{controller}/{action}/{id?}",
     new { controller = "Tags", action = "Tags" });
+app.MapControllerRoute(
+    name: "login",
+    pattern: "{controller}/{action}/{id?}",
+    new { controller = "Authentication", action = "Authentication" });
 app.Run();
 
 
@@ -176,7 +193,11 @@ void ConfigureJwtAuthService(IServiceCollection services)
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    }).AddJwtBearer(options => { options.TokenValidationParameters = tokenValidationParameters; });
+       
+    }).AddJwtBearer(options => { options.TokenValidationParameters = tokenValidationParameters; })
+    .AddCookie(options => { 
+        options.LoginPath = new PathString("/Authentication/Login");
+    });
 }
 
 void InitializeDefaultIdentityDataIfNotExists(
