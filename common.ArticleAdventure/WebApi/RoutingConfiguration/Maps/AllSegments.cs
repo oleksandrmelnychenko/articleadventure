@@ -8,10 +8,11 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
 {
     public static class AllSegments
     {
-        public const string REMOVE_BLOG = "remove/blog";
-
+        public const string REMOVE_BLOG = "remove";
         public const string EDIT = "edit";
-        public const string ALL = "all";
+        public const string ALL_BLOG = "all";
+        public const string UPDATE = "update";
+        public const string GET_ALL_BLOGS = "all";
 
     }
 }

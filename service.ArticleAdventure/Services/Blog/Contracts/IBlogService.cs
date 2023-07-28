@@ -7,13 +7,13 @@ using domain.ArticleAdventure.Entities;
 
 namespace service.ArticleAdventure.Services.Blog.Contracts
 {
-    public interface IBlogService
+    public interface IArticleService
     {
-        Task<long> AddBlog(Blogs blog);
-        Task<List<Blogs>> GetAllBlogs();
-        Task Update(Blogs blogs);
+        Task<long> AddArticle(AuthorArticle blog);
+        Task<List<AuthorArticle>> GetAllArticles();
+        Task Update(AuthorArticle blogs);
         Task Remove(Guid netUid);
 
-        Task<Blogs> GetBLog(Guid netUid);
+        Task<AuthorArticle> GetArticle(Guid netUid);
     }
 }

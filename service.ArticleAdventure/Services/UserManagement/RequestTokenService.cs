@@ -2,6 +2,7 @@
 using domain.ArticleAdventure.EntityHelpers.Identity;
 using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.IdentityEntities;
+using domain.ArticleAdventure.Models;
 using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using Newtonsoft.Json;
 using service.ArticleAdventure.Services.UserManagement.Contracts;
@@ -28,7 +29,7 @@ namespace service.ArticleAdventure.Services.UserManagement
             _identityRepositoriesFactory = identityRepositoriesFactory;
         }
 
-        public Task<CompleteAccessToken> RequestToken(string userName, string password, bool rememberUser) =>
+        public Task<UserResponseLogin> RequestToken(string userName, string password, bool rememberUser) =>
             Task.Run(async () =>
             {
                 if (string.IsNullOrEmpty(userName)) throw new Exception("Please enter your Email");
@@ -42,15 +43,17 @@ namespace service.ArticleAdventure.Services.UserManagement
                             userName,
                             password
                         );
-
+                
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    return TokenGenerator.GenerateToken(
+                    CompleteAccessToken s = TokenGenerator.GenerateToken(
                         _identityRepositoriesFactory.NewUserTokenRepository(connection),
                         claims.Claims,
                         user,
                         rememberUser
                     );
+                    UserResponseLogin userResponseLogin = new UserResponseLogin { AccessToken = s.AccessToken, RefreshToken = s.RefreshToken };
+                    return userResponseLogin;
                 }
             });
 
@@ -69,7 +72,7 @@ namespace service.ArticleAdventure.Services.UserManagement
 
                     if (deserializedRefreshToken.ExpireAt < DateTime.UtcNow) throw new Exception("Refresh token expired");
 
-                    UserToken userToken = userTokenRepository.GetByUserIdIfExists(deserializedRefreshToken.UserId);
+                    domain.ArticleAdventure.IdentityEntities.UserToken userToken = userTokenRepository.GetByUserIdIfExists(deserializedRefreshToken.UserId);
 
                     if (userToken == null || userToken.Token != refreshToken.Replace(" ", "+")) throw new Exception("Refresh token is invalid");
 

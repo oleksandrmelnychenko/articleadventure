@@ -1,63 +1,25 @@
-﻿@model data.ArticleAdventure.Views.Authentication.LoginModel
-@{
-}
+﻿@model YourNamespace.Views.Authentication.LoginModel
 
 <h3>Login Form</h3>
-@Model.LoginModels.Msg
 <form method="post">
     <table>
         <tr>
-            <td>Username</td>
+            <td>Email</td>
             <td>
-                <input style="height: 32px;
-            float: left;
-            line-height: 30px;
-            color: #0a66b7;
-            font-size: 11px;
-            letter-spacing: 1px;
-            background-color: #2d2d2d;
-            display: block;
-            padding: 0 20px;
-            border: 1px solid #2d2d2d;
-            width: 120px;" type="text" asp-for="@Model.LoginModels.Username" />
-            </td>
-        </tr>
-        <tr>
-            <td>Mail</td>
-            <td>
-                <input style="height: 32px;
-            float: left;
-            line-height: 30px;
-            color: #0a66b7;
-            font-size: 11px;
-            letter-spacing: 1px;
-            background-color: #2d2d2d;
-            display: block;
-            padding: 0 20px;
-            border: 1px solid #2d2d2d;
-            width: 120px;" type="text" asp-for="@Model.LoginModels.Email" />
+                <input type="email" asp-for="@Model.Email" />
             </td>
         </tr>
         <tr>
             <td>Password</td>
             <td>
-                <input style="height: 32px;
-            float: left;
-            line-height: 30px;
-            color: #0a66b7;
-            font-size: 11px;
-            letter-spacing: 1px;
-            background-color: #2d2d2d;
-            display: block;
-            padding: 0 20px;
-            border: 1px solid #2d2d2d;
-            width: 120px;" type="password" asp-for="@Model.LoginModels.Password" />
+                <input type="password" asp-for="@Model.Password" />
             </td>
         </tr>
-        
         <tr>
             <td>&nbsp;</td>
-            <td><input type="submit" value="Login" /></td>
+            <td>
+                <input type="submit" value="Login" />
+            </td>
         </tr>
     </table>
 </form>

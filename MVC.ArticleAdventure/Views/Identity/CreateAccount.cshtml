@@ -1,0 +1,24 @@
+﻿@model domain.ArticleAdventure.Models.RegisterModel
+    <table>
+    <form method="post">
+        <tr>
+            <td>Email</td>
+            <td>
+                <input type="email" asp-for="@Model.Email" />
+            </td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td>
+                <input type="email" asp-for="@Model.Password" />
+            </td>
+        </tr>
+</form>
+
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <input asp-page-handler="Submit" type="submit" value="Create Account" onclick="location.href='@Url.Action("Login", "Identity")'" />
+            </td>
+        </tr>
+    </table>

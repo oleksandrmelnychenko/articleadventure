@@ -34,7 +34,7 @@ namespace data.ArticleAdventure.Controllers
             try
             {
                 await _blogService.AddBlog(Blogs);
-                return Redirect($"{ConnectionStringNames.ConnectionString}api/v1/all/all");
+                return Redirect($"~/api/v1/all/all");
             }
             catch (Exception exc)
             {
@@ -71,7 +71,7 @@ namespace data.ArticleAdventure.Controllers
             try
             {
                 await _blogService.Update(editModel.Blogs);
-                return Redirect($"{ConnectionStringNames.ConnectionString}api/v1/all/all");
+                return Redirect($"~/api/v1/all/all");
             }
             catch (Exception exc)
             {

@@ -1,6 +1,6 @@
 ﻿namespace domain.ArticleAdventure.Entities
 {
-    public class Blogs: EntityBase
+    public class AuthorArticle: EntityBase
     {
         public string Title { get; set; }
         public string Description { get; set; }

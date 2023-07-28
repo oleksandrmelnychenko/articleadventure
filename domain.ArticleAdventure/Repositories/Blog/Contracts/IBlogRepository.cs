@@ -9,14 +9,14 @@ namespace domain.ArticleAdventure.Repositories.Blog.Contracts
 {
     public interface IBlogRepository
     {
-        long AddBlog(Blogs blog);
+        long AddArticle(AuthorArticle blog);
 
-        List<Blogs> GetAllBlogs();
+        List<AuthorArticle> GetAllArticles();
 
         void Remove(Guid netUid);
 
-        void Update(Blogs blog);
+        void Update(AuthorArticle blog);
 
-        Blogs GetBlog(Guid netUid);
+        AuthorArticle GetArticle(Guid netUid);
     }
 }

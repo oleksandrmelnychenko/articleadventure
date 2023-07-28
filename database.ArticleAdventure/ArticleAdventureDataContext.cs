@@ -10,7 +10,7 @@ namespace database.ArticleAdventure
         public ArticleAdventureDataContext(DbContextOptions<ArticleAdventureDataContext> options)
              : base(options) { }
 
-        DbSet<Blogs> Blogs { get; set; }
+        DbSet<AuthorArticle> Blogs { get; set; }
 
         DbSet<Tag> Tags { get; set; }
 

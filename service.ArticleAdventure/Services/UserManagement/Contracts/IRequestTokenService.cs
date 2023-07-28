@@ -1,4 +1,5 @@
 ﻿using domain.ArticleAdventure.EntityHelpers.Identity;
+using domain.ArticleAdventure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace service.ArticleAdventure.Services.UserManagement.Contracts
 {
     public interface IRequestTokenService
     {
-        Task<CompleteAccessToken> RequestToken(string userName, string password, bool rememberUser);
+        Task<UserResponseLogin> RequestToken(string userName, string password, bool rememberUser);
 
         Task<CompleteAccessToken> RefreshToken(string refreshToken);
 

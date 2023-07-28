@@ -1,0 +1,35 @@
+﻿@model domain.ArticleAdventure.Models.UserLogin
+
+<h3>natusvincer77@gmail.com</h3>
+    <table>
+<form method="post">
+
+        <tr>
+            <td>Email</td>
+            <td>
+                <input type="email" asp-for="@Model.Email" />
+            </td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td>
+                <input type="password" asp-for="@Model.Password" />
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <input type="submit" value="Login" />
+            </td>
+        </tr>
+    </form>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+            <input asp-page-handler="Submit" type="submit" value="Sign In" onclick="location.href='@Url.Action("SendMail", "Identity")'" />
+            </td>
+        </tr>
+    </table>
+
+
+

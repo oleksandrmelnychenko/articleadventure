@@ -12,46 +12,46 @@ using System.Threading.Tasks;
 
 namespace service.ArticleAdventure.Services.Blog
 {
-    public class BlogService : BaseService , IBlogService
+    public class ArticleService : BaseService , IArticleService
     {
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly IBlogRepositoryFactory _blogRepositoryFactory;
-        public BlogService(IDbConnectionFactory connectionFactory,
+        public ArticleService(IDbConnectionFactory connectionFactory,
             IBlogRepositoryFactory blogRepositoryFactory) : base(connectionFactory)
         {
             _connectionFactory = connectionFactory;
             _blogRepositoryFactory = blogRepositoryFactory;
         }
 
-        public Task<long> AddBlog(Blogs blog)
+        public Task<long> AddArticle(AuthorArticle blog)
         {
             return Task.Run(() =>
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    return _blogRepositoryFactory.New(connection).AddBlog(blog);
+                    return _blogRepositoryFactory.New(connection).AddArticle(blog);
                 }
             });
                 
         }
 
-        public Task<Blogs> GetBLog(Guid netUid)
+        public Task<AuthorArticle> GetArticle(Guid netUid)
             => Task.Run(() =>
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    return _blogRepositoryFactory.New(connection).GetBlog(netUid);
+                    return _blogRepositoryFactory.New(connection).GetArticle(netUid);
                 }
             });
 
 
-        public Task<List<Blogs>> GetAllBlogs()
+        public Task<List<AuthorArticle>> GetAllArticles()
         {
             return Task.Run(() => 
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    return _blogRepositoryFactory.New(connection).GetAllBlogs();
+                    return _blogRepositoryFactory.New(connection).GetAllArticles();
                 }
             });
         }
@@ -65,12 +65,12 @@ namespace service.ArticleAdventure.Services.Blog
                 }
             });
 
-        public Task Update(Blogs blogs)
+        public Task Update(AuthorArticle Article)
           => Task.Run(() => {
 
               using (IDbConnection connection = _connectionFactory.NewSqlConnection())
               {
-                   _blogRepositoryFactory.New(connection).Update(blogs);
+                   _blogRepositoryFactory.New(connection).Update(Article);
               }
           });
 

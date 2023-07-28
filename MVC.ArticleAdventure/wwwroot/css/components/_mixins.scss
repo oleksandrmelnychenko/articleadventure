@@ -1,0 +1,60 @@
+@import '_variables.scss';
+@import '_fonts.scss';
+
+@mixin position($position,$top,$right,$bottom,$left,$z_index) {
+    top: $top;
+    left: $left;
+    right: $right;
+    bottom: $bottom;
+    z-index: $z_index;
+    position: $position;
+}
+
+@mixin position_absolute($top,$right,$bottom,$left,$z_index: 1) {
+    @include position(absolute,$top,$right,$bottom,$left,$z_index)
+}
+
+@mixin position_fixed($top: 0,$right: 0,$bottom: 0,$left: 0,$z_index: 1) {
+    @include position(fixed,$top,$right,$bottom,$left,$z_index)
+}
+
+@mixin transform($translate_left,$translate_top) {
+    -moz-transform: translate($translate_left,$translate_top);
+    -ms-transform: translate($translate_left,$translate_top);
+    -o-transform: translate($translate_left,$translate_top);
+    -webkit-transform: translate($translate_left,$translate_top);
+    transform: translate($translate_left,$translate_top);
+}
+
+@mixin transform_translate($translate_left,$translate_top) {
+    @include transform($translate_left,$translate_top)
+}
+
+@mixin transform_translate_scale($translate_left,$translate_top,$scale) {
+    -moz-transform: translate($translate_left,$translate_top) scale($scale);
+    -ms-transform: translate($translate_left,$translate_top) scale($scale);
+    -o-transform: translate($translate_left,$translate_top) scale($scale);
+    -webkit-transform: translate($translate_left,$translate_top) scale($scale);
+    transform: translate($translate_left,$translate_top) scale($scale);
+}
+
+@mixin transform_translate_rotate($translate_left,$translate_top,$rotate) {
+    -moz-transform: translate($translate_left,$translate_top) rotate($rotate);
+    -ms-transform: translate($translate_left,$translate_top) rotate($rotate);
+    -o-transform: translate($translate_left,$translate_top) rotate($rotate);
+    -webkit-transform: translate($translate_left,$translate_top) rotate($rotate);
+    transform: translate($translate_left,$translate_top) rotate($rotate);
+}
+
+@mixin transition($s,$time_interval,$view_animation) {
+    -moz-transition: $s $time_interval $view_animation;
+    -o-transition: $s $time_interval $view_animation;
+    -webkit-transition: $s $time_interval $view_animation;
+    -ms-transition: $s $time_interval $view_animation;
+    transition: $s $time_interval $view_animation;
+}
+
+@mixin scroll($overflow_x,$overflow_y) {
+    overflow-x: $overflow_x;
+    overflow-y: $overflow_y;
+}

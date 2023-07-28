@@ -1,0 +1,99 @@
+@import "mixins";
+$validation_error_color: #FF9B9B;
+
+body,
+html {
+    outline: none;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    position: relative;
+    height: 100%;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: initial;
+    background-color: #fff;
+}
+
+*,
+:after,
+:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.hide {
+    display: none !important;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+a {
+    text-decoration: none !important;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+button:focus {
+    outline: none;
+}
+
+ol,
+ul,
+dl {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+ol ol,
+ul ul,
+ol ul,
+ul ol {
+    margin-bottom: 0;
+}
+
+svg {
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.ant-picker-dropdown,
+.ant-dropdown,
+.ant-popover,
+.ant-tooltip,
+.ant-select-dropdown,
+.ant-message,
+.ant-notification {
+    position: fixed !important;
+    z-index: 1000010 !important; // omg UI Fabric ms-Layer--fixed z-index: 1000000;
+}
+
+.ant-notification {
+    .ant-notification-notice.notification_item {
+        .ant-notification-notice-message {
+            margin-top: 4px;
+        }
+    }
+}
+
+.tox-tinymce-aux {
+    z-index: 1000000 !important; // omg UI Fabric ms-Layer--fixed z-index: 1000000;
+}
+
+.timeLine-side-main {
+    min-width: 260px;
+}

@@ -182,7 +182,7 @@ void ConfigureJwtAuthService(IServiceCollection services)
         // Validate the JWT Audience (aud) claim  
         ValidateAudience = true,
         ValidAudience = AuthOptions.AUDIENCE_LOCAL,
-
+         
         // Validate the token expiry  
         ValidateLifetime = true,
 
@@ -195,8 +195,13 @@ void ConfigureJwtAuthService(IServiceCollection services)
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
        
     }).AddJwtBearer(options => { options.TokenValidationParameters = tokenValidationParameters; })
-    .AddCookie(options => { 
+    .AddCookie(options => {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // If using HTTPS
         options.LoginPath = new PathString("/Authentication/Login");
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+        options.AccessDeniedPath = "/Home/AccessDenied";
+        options.Cookie.Name = "ApplicationCookie";
     });
 }
 

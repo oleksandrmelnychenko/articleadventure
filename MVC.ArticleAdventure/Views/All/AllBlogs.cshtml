@@ -1,0 +1,20 @@
+﻿@model domain.ArticleAdventure.Models.AllArticlesModel
+@{
+}
+@foreach (var description in Model.Articles)
+{
+    <div style="background-color:white;color:#1e1e1e">
+        <div style="display:flex;">
+                <input formmethod="get"
+                       class="input__CONTROL"
+                   type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =description.NetUid})'" />
+            <h2 style="text-align:center;margin-left: auto;"> @description.Title</h2>
+            <input formmethod="get"
+                   class="input__CONTROL"
+                   type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeBLog", "All",new {netUidArticle =description.NetUid})'" />
+        </div>
+        <div> @Html.Raw(description.Body)</div>
+    </div>
+    <br />
+}
+

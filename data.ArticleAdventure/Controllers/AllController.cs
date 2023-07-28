@@ -7,6 +7,7 @@ using domain.ArticleAdventure.Entities;
 using data.ArticleAdventure.Views.All;
 using data.ArticleAdventure.Models;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace data.ArticleAdventure.Controllers
 {
@@ -19,7 +20,8 @@ namespace data.ArticleAdventure.Controllers
             _blogService = blogService;
         }
         [HttpGet]
-        [AssignActionRoute(AllSegments.ALL)]
+        [Authorize]
+        [AssignActionRoute(AllSegments.ALL_BLOG)]
         public async Task<IActionResult> All()
         {
             List<Blogs> blogs = await _blogService.GetAllBlogs();
@@ -46,6 +48,7 @@ namespace data.ArticleAdventure.Controllers
             }
         }
         [HttpGet]
+        [Authorize]
         [AssignActionRoute(AllSegments.REMOVE_BLOG)]
         public async Task<IActionResult> All(Guid netUidBlog)
         {

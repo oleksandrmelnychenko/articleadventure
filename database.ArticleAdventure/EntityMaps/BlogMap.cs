@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace database.ArticleAdventure.EntityMaps
 {
-    public sealed class BlogMap : EntityBaseMap<Blogs>
+    public sealed class BlogMap : EntityBaseMap<AuthorArticle>
     {
-        public override void Map(EntityTypeBuilder<Blogs> entity)
+        public override void Map(EntityTypeBuilder<AuthorArticle> entity)
         {
             base.Map(entity);
 

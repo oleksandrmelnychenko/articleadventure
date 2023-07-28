@@ -27,9 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\common.ArticleAdventure\common.ArticleAdventure.csproj" />
-    <ProjectReference Include="..\database.ArticleAdventure\database.ArticleAdventure.csproj" />
-    <ProjectReference Include="..\service.ArticleAdventure\service.ArticleAdventure.csproj" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>
