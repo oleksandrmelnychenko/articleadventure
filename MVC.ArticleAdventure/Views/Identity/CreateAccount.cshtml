@@ -1,24 +1,48 @@
 ﻿@model domain.ArticleAdventure.Models.RegisterModel
-    <table>
-    <form method="post">
-        <tr>
-            <td>Email</td>
-            <td>
-                <input type="email" asp-for="@Model.Email" />
-            </td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td>
-                <input type="email" asp-for="@Model.Password" />
-            </td>
-        </tr>
+<form method="post">
+    @if (!Model.IsEmailConfirmed)
+    {
+        <table>
+            <tr>
+                <td>User Name</td>
+                <td>
+                    <input type="text" asp-for="@Model.UserName" />
+                    <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <input type="email" asp-for="@Model.Email" />
+                    <span asp-validation-for="@Model.Email" class="text-danger"></span>
+
+                </td>
+            </tr>
+            <tr>
+                <td> Password</td>
+                <td>
+                    <input type="password" asp-for="@Model.Password" />
+                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
+
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input asp-page-handler="Submit" type="submit" value="Create Account" />
+                </td>
+            </tr>
+        </table>
+    }
+    else
+    {
+        <div>
+            <div>Great! </div>
+            <div>Check your email and confirm your account</div>
+        </div>
+    }
 </form>
 
-        <tr>
-            <td>&nbsp;</td>
-            <td>
-                <input asp-page-handler="Submit" type="submit" value="Create Account" onclick="location.href='@Url.Action("Login", "Identity")'" />
-            </td>
-        </tr>
-    </table>
+
+@*onclick="location.href='@Url.Action("Login", "Identity")'"*@

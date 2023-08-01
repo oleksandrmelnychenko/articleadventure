@@ -22,18 +22,22 @@ namespace MVC.ArticleAdventure.Services
             var loginContent = GetContent(userLogin);
             //request token
             var response = await _httpClient.GetAsync($"/api/v1/usermanagement/token/request?email={userLogin.Email}&password={userLogin.Password}&rememberUser=True");
-            string responseBody = await response.Content.ReadAsStringAsync();
+
             if (!CustomContainErrorResponse(response))
             {
                 return new UserResponseLogin
                 {
-                    ResponseResult = await DeserializeObjectResponse<ResponseResult>(response)
+                    ResponseResult = await DeserializeObjectResponse<ErrorResponse>(response)
                 };
             }
-            var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-            UserResponseLogin userResponseLogin = Newtonsoft.Json.JsonConvert.DeserializeObject<UserResponseLogin>(successResponse.Body.ToString());
+            else
+            {
+                var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                UserResponseLogin userResponseLogin = Newtonsoft.Json.JsonConvert.DeserializeObject<UserResponseLogin>(successResponse.Body.ToString());
+                return userResponseLogin;
+            }
 
-            return userResponseLogin; 
+
         }
 
         public async Task<UserResponseLogin> Register(UserRegister userRegister)
@@ -46,7 +50,7 @@ namespace MVC.ArticleAdventure.Services
             {
                 return new UserResponseLogin
                 {
-                    ResponseResult = await DeserializeObjectResponse<ResponseResult>(response)
+                    ResponseResult = await DeserializeObjectResponse<ErrorResponse>(response)
                 };
             }
 

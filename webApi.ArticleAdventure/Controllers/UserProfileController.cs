@@ -55,5 +55,20 @@ namespace webApi.ArticleAdventure.Controllers
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
             }
         }
+        [HttpGet]
+        [AssignActionRoute(UserManagementSegments.EMAIL_CONFORMATION)]
+        public async Task<IActionResult> EmailConformation(string token, string userId)
+        {
+            try
+            {
+                
+                return Ok(SuccessResponseBody(await _userProfileService.ConforimEmail(token, userId), "New user successfully updated Email"));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
     }
 }

@@ -20,22 +20,36 @@
                 <div class="masterCONTENT">
                     <ul class="navbar-nav flex-grow-1 ">
 
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="All" asp-action="AllBlogs">All</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="New" asp-action="NewBlog">New</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Tags" asp-action="Tags">Tags</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Images" asp-action="Images">Images</a>
-                        </li>
+                        @{
+                            if (!User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Identity" asp-action="Login">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Identity" asp-action="CreateAccount">Create Account</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="All" asp-action="AllBlogs">All</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="New" asp-action="NewBlog">New</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Tags" asp-action="Tags">Tags</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Images" asp-action="Images">Images</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="New" asp-action="LogOutAccount">Log out</a>
+                                </li>
+                            }
+                        }
 
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Identity" asp-action="Login">Login</a>
-                        </li>
                     </ul>
                 </div>
             </div>

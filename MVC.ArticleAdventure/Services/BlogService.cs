@@ -30,20 +30,30 @@ namespace MVC.ArticleAdventure.Services
             HttpResponseMessage response = await _httpClient.GetAsync(PathArticle.GET_ALL_ARTICLE);
 
             var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-            List<AuthorArticle> userResponseLogin = Newtonsoft.Json.JsonConvert.DeserializeObject<List<AuthorArticle>>(successResponse.Body.ToString());
+            List<AuthorArticle> userResponseLogin = JsonConvert.DeserializeObject<List<AuthorArticle>>(successResponse.Body.ToString());
             return userResponseLogin;
         }
 
         public async Task<AuthorArticle> GetArticle(Guid netUidArticle)
         {
             var response = await _httpClient.GetAsync($"{PathArticle.GET_ARTICLE}?netUidArticle={netUidArticle}");
-            if (response.IsSuccessStatusCode)
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    return await DeserializeResponceObject<AuthorArticle>(response);
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+            if(!CustomContainErrorResponse(response))
             {
-                return await DeserializeResponceObject<AuthorArticle>(response);
+                return new AuthorArticle();
             }
             else
             {
-                return null;
+                var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                AuthorArticle authorArticleResponce = JsonConvert.DeserializeObject<AuthorArticle>(successResponse.Body.ToString());
+                return authorArticleResponce;
             }
         }
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using service.ArticleAdventure.Services.UserManagement.Contracts;
 using System.Net;
 using System.Security.Claims;
+using domain.ArticleAdventure.Models;
 
 namespace webApi.ArticleAdventure.Controllers
 {
@@ -30,7 +31,8 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _requestTokenService.RequestToken(email, password, rememberUser)));
+                UserResponseLogin requestToken = await _requestTokenService.RequestToken(email, password, rememberUser);
+                return Ok(SuccessResponseBody(requestToken));
             }
             catch (Exception exc)
             {

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using common.ArticleAdventure.ResponceBuilder.Contracts;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -39,7 +40,7 @@ namespace domain.ArticleAdventure.Models
         public string RefreshToken { get; set; }
         public double ExpiresIn { get; set; }
         public UserToken UserToken { get; set; }
-        public ResponseResult ResponseResult { get; set; }
+        public IWebResponse ResponseResult { get; set; }
     }
 
     

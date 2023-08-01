@@ -11,5 +11,6 @@ namespace common.ArticleAdventure.IdentityConfiguration
         public const string User = "User";
 
         public const string Administrator = "Administrator";
+
     }
 }

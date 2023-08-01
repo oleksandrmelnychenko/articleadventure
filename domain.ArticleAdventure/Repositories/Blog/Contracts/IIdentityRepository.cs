@@ -1,5 +1,6 @@
 ﻿using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.IdentityEntities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,10 @@ namespace domain.ArticleAdventure.Repositories.Blog.Contracts
         Task UpdatePassword(User user, string newPassword);
 
         Task<string> GetUserIdByUserNetId(Guid userNetId);
-
+        Task<User> FindByIdAsync(string userid);
         Task<User> GetUserByEmail(string email);
-
+        Task<string> GenerateEmailConfirmationToken(User user);
+        Task<IdentityResult> ConfirmEmailAsync(User user, string token);
         Task<User> GetUserByUserName(string username);
 
         Task<User> GetUserByUserNetId(Guid userNetId);

@@ -32,8 +32,12 @@ namespace domain.ArticleAdventure.Repositories.Blog
         public async Task<Tuple<ClaimsIdentity, User>> AuthAndGetClaimsIdentity(string email, string password)
         {
             User user = await _userManager.FindByEmailAsync(email);
-
             if (user == null) throw new Exception("There is no account for the email you entered");
+
+            var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+
+            if (!emailConfirmed) throw new Exception("Mail is not confirmed");
+
 
             if (!await _userManager.CheckPasswordAsync(user, password)) throw new Exception("The password you entered is incorrect");
 
@@ -154,11 +158,24 @@ namespace domain.ArticleAdventure.Repositories.Blog
             return await _userManager.FindByEmailAsync(email);
         }
 
+        public async Task<string> GenerateEmailConfirmationToken(User user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(User user,string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
+        }
+
         public async Task<User> GetUserByUserName(string username)
         {
             return await _userManager.FindByNameAsync(username);
         }
-
+        public async Task<User> FindByIdAsync(string userid)
+        {
+            return await _userManager.FindByIdAsync(userid);
+        }
         public async Task<User> GetUserByUserNetId(Guid userNetId)
         {
             IList<User> users = await _userManager.GetUsersForClaimAsync(new Claim("NetId", userNetId.ToString()));

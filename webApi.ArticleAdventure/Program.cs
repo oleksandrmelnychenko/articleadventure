@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
+using service.ArticleAdventure.MailSenderServices.Contracts;
+using service.ArticleAdventure.MailSenderServices;
 using service.ArticleAdventure.Services.Blog;
 using service.ArticleAdventure.Services.Blog.Contracts;
 using service.ArticleAdventure.Services.UserManagement;
@@ -82,6 +84,7 @@ builder.Services.AddResponseCompression();
 builder.Services.AddScoped<IResponseFactory, ResponseFactory>();
 
 builder.Services.AddTransient<IBlogRepositoryFactory, BlogRepositoryFactory>();
+builder.Services.AddScoped<IMailSenderFactory, MailSenderFactory>();
 
 builder.Services.AddTransient<IIdentityRepository, IdentityRepository>();
 builder.Services.AddTransient<IIdentityRepositoriesFactory, IdentityRepositoriesFactory>();
