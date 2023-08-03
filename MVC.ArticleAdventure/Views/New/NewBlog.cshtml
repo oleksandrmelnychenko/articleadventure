@@ -1,47 +1,19 @@
 ﻿@model domain.ArticleAdventure.Models.NewBlogModel
 
-<form method ="post">
-    <div style="height: 96px;
-    width: 100%;
-    margin-top: 0;
-    background-color: #1e1e1e;
-    border-top: 1px solid #2d2d2d;
-    padding: 9px 9px 0;
-    box-shadow: 0 ,0 ,2px, #222;">
-        <input style="
-    position: relative;
-    min-height: 32px;
-    margin-right: 2px;
-    float: left;
-    width: calc((100% - 124px)/2);
-    background-color: #1e1e1e;"
-               type="text"
-               placeholder="Title" asp-for="Title" />
-        <input style="
-    position: relative;
-    min-height: 32px;
-    margin-right: 2px;
-    float: left;
-    width: calc((100% - 124px)/2);
-    background-color: #1e1e1e;"
-               type="text"
-               placeholder="Description" asp-for="Description" />
-        <input style="height: 32px;
-    float: left;
-    line-height: 30px;
-    color: #0a66b7;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    background-color: #2d2d2d;
-    display: block;
-    padding: 0 20px;
-    border: 1px solid #2d2d2d;
-    text-align: center;
-    width: 120px;"
-               type="submit" value="Save" />
-    </div>
-    <textarea cols="20" rows="3" asp-for="Body"></textarea>
-</form>
-<div class="acticle__new__PAGE">
+<div class="article_change">
+    <form method="post">
+        <div class="meta_row">
+            <div class="inputs">
+                <div class="input">
+                    <input type="text" placeholder="Title" asp-for="Title" />
+                </div>
+                <div class="input">
+                    <input type="text" placeholder="Description" asp-for="Description" />
+                </div>
+            </div>
+            
+            <button type="submit" value="Save">Save</button>
+        </div>
+        <textarea cols="20" rows="3" asp-for="Body"></textarea>
+    </form>
 </div>
