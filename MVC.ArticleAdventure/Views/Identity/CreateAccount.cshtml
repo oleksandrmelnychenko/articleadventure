@@ -44,9 +44,14 @@
         }
         else
         {
-            <div>
-                <div>Great! </div>
-                <div>Check your email and confirm your account</div>
+            <div class="success_container">
+                <div>
+                    <h1>Great! </h1>
+                    <p>Check your email and confirm your account</p>
+                    <div class="auth">
+                        <a asp-controller="Identity" asp-action="Login">Sign In</a>
+                    </div>
+                </div>
             </div>
         }
         @*<tr>

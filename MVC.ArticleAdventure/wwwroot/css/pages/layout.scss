@@ -1,0 +1,95 @@
+@import '../components/_mixins.scss';
+
+$header_height: 60px;
+
+header {
+    @include position_fixed(0,0,auto,0,10);
+    height: $header_height;
+    box-shadow: 0 0 10px -6px #222;
+    background-color: #fff;
+
+    .header_container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &:before {
+        content: '';
+        @include position_absolute(auto,0,0,0);
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+            list-style-type: none;
+            display: inline-flex;
+            padding: 0 10px;
+            position: relative;
+
+            a,
+            a:visited {
+                height: $header_height;
+                line-height: $header_height;
+                text-decoration: none;
+                color: #000;
+                font-size: 16px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            &.isSelected,
+            &:hover {
+                &:before {
+                    content: '';
+                    @include position_absolute(auto,0,0,0);
+                    border-bottom: 2px solid $color_green;
+                }
+            }
+        }
+    }
+
+    .logOut {
+        width: $header_height;
+        height: $header_height;
+        position: fixed;
+        top: 0;
+        right: 0;
+        border-left: 1px solid rgba(#e0e0e0,0.4);
+
+        a {
+            display: block;
+            width: $header_height;
+            height: $header_height;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg {
+                width: 28px;
+                height: auto;
+                margin-top: -4px;
+            }
+
+            &:hover {
+                svg {
+                    fill: $color_green;
+                }
+            }
+        }
+    }
+}
+.body_container {
+    padding: $header_height 0 0 0;
+    background-color: #f2f3f5;
+
+    .container_content {
+        width: 960px;
+        margin: 0 auto;
+    }
+}

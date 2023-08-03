@@ -22,5 +22,13 @@
   {
     "outputFile": "wwwroot/css/components/_variables.css",
     "inputFile": "wwwroot/css/components/_variables.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/pages/layout.css",
+    "inputFile": "wwwroot/css/pages/layout.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/pages/article.css",
+    "inputFile": "wwwroot/css/pages/article.scss"
   }
 ]

@@ -16,6 +16,7 @@ body {
 .auth_page_component .form_container {
   width: 540px;
   min-height: 400px;
+  position: relative;
   /*background: rgb(255,255,255);
   background: linear-gradient(63deg, rgba(255,255,255,1) 0%, rgba(255,242,208,1) 100%);
   */
@@ -27,7 +28,7 @@ body {
   border-width: 1px;
 }
 .auth_page_component .form_container form {
-  width: 100% s;
+  width: 100%;
   margin: 0 auto;
 }
 .auth_page_component .form_container form h1 {
@@ -36,6 +37,27 @@ body {
   margin: 0;
   font-size: 30px;
   font-family: "Nunito", sans-serif;
+}
+.auth_page_component .form_container .success_container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.auth_page_component .form_container .success_container h1 {
+  text-align: center;
+  color: #87af44;
+}
+.auth_page_component .form_container .success_container p {
+  color: #000;
+  text-align: center;
+}
+.auth_page_component .form_container .success_container .auth {
+  margin-bottom: 0;
 }
 .auth_page_component .form_container .form_control {
   margin-bottom: 20px;

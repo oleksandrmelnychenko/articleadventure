@@ -1,5 +1,7 @@
-@import './components/_mixins.scss';
+/*@import './components/_mixins.scss';*/
 @import 'pages/auth.scss';
+@import 'pages/layout.scss';
+@import 'pages/article.scss';
 
 html {
     font-size: 14px;
