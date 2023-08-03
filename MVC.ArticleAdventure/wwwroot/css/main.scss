@@ -1,4 +1,5 @@
 @import './components/_mixins.scss';
+@import 'pages/auth.scss';
 
 html {
     font-size: 14px;
@@ -16,6 +17,6 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
-    background-color:red;
+    // margin-bottom: 60px;
+    //background-color:red;
 }

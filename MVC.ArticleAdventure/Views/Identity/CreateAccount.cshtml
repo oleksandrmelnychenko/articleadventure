@@ -1,48 +1,62 @@
 ﻿@model domain.ArticleAdventure.Models.RegisterModel
-<form method="post">
-    @if (!Model.IsEmailConfirmed)
-    {
-        <table>
-            <tr>
-                <td>User Name</td>
-                <td>
-                    <input type="text" asp-for="@Model.UserName" />
-                    <span asp-validation-for="@Model.UserName" class="text-danger"></span>
 
-                </td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>
-                    <input type="email" asp-for="@Model.Email" />
-                    <span asp-validation-for="@Model.Email" class="text-danger"></span>
+<div class="auth_page_component">
+    <div class="form_container">
+        @*<h3>natusvincer77@gmail.com</h3>*@
+        @if (!Model.IsEmailConfirmed)
+        {
+            <form method="post">
+                <h1>Create Account</h1>
 
-                </td>
-            </tr>
-            <tr>
-                <td> Password</td>
-                <td>
-                    <input type="password" asp-for="@Model.Password" />
-                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                <div class="form_control">
+                    <div class="control_title">Name:</div>
+                    <div class="control_data">
+                        <input type="text" asp-for="@Model.UserName" />
+                        <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+                    </div>
+                </div>
 
-                </td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td>
-                    <input asp-page-handler="Submit" type="submit" value="Create Account" />
-                </td>
-            </tr>
-        </table>
-    }
-    else
-    {
-        <div>
-            <div>Great! </div>
-            <div>Check your email and confirm your account</div>
-        </div>
-    }
-</form>
+                <div class="form_control">
+                    <div class="control_title">Email:</div>
+                    <div class="control_data">
+                        <input type="email" asp-for="@Model.Email" />
+                        <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form_control">
+                    <div class="control_title">Password:</div>
+                    <div class="control_data">
+                        <input type="password" asp-for="@Model.Password" />
+                        <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit_btn">
+                    Create
+                </button>
+
+                <div class="auth">
+                    <a asp-controller="Identity" asp-action="Login">Sign In</a>
+                </div>
+
+            </form>
+        }
+        else
+        {
+            <div>
+                <div>Great! </div>
+                <div>Check your email and confirm your account</div>
+            </div>
+        }
+        @*<tr>
+        <td>&nbsp;</td>
+        <td>
+        <input asp-page-handler="Submit" type="submit" value="Sign In" onclick="location.href='@Url.Action("SendMail", "Identity")'" />
+        </td>
+        </tr>*@
+    </div>
+</div>
 
 
 @*onclick="location.href='@Url.Action("Login", "Identity")'"*@

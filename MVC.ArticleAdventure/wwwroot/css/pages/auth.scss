@@ -1,0 +1,132 @@
+@import '../components/_mixins.scss';
+
+.auth_page_component {
+    background-color: white;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: rgb(255,255,255);
+    background: linear-gradient(120deg, rgba(255,255,255,1) 0%, rgba(252,239,255,1) 100%);
+
+    .form_container {
+        width: 540px;
+        min-height: 400px;
+        /*background: rgb(255,255,255);
+        background: linear-gradient(63deg, rgba(255,255,255,1) 0%, rgba(255,242,208,1) 100%);
+        */
+        background-color: #fff;
+        border: 1px solid rgba(#e0e0e0,.4);
+        padding: 60px 120px;
+        box-shadow: 0 0 10px -8px #222;
+
+        border: {
+            radius: 4px;
+            width: 1px;
+        }
+
+        form {
+            width: 100%s;
+            margin: 0 auto;
+
+            h1 {
+                text-align: center;
+                padding: 0 0 40px;
+                margin: 0;
+                //font-weight: bold;
+                font-size: 30px;
+                font-family: $font_app;
+            }
+        }
+
+        .form_control {
+            margin-bottom: 20px;
+
+            .control_title {
+                font-size: 12px;
+                font-weight: bold;
+                line-height: 1;
+                letter-spacing: 0.02em;
+                text-align: left;
+                color: #000000;
+                margin-bottom: 6px;
+                text-transform: uppercase;
+            }
+
+            .control_data {
+                width: 100%;
+                position: relative;
+
+                input {
+                    width: 100%;
+                    height: 40px;
+                    padding: 0 10px;
+                    outline: none;
+
+                    border: {
+                        width: 1px;
+                        style: solid;
+                        color: #999;
+                        radius: 2px;
+                    }
+
+                    background-color: transparent;
+
+                    &:focus {
+                        border-color: green;
+                    }
+                }
+
+                .field-validation-error {
+                    color: red !important;
+                    font-size: 14px;
+                    line-height: 1;
+                }
+            }
+        }
+
+        .forgot,
+        .auth {
+            color: #9d9d9d;
+            text-align: center;
+            margin-bottom: 20px;
+
+            a {
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .auth {
+            border-top: 1px dashed #e0e0e0;
+            //margin: 20px 0;
+            padding: 20px 0;
+
+            a {
+                color: #000;
+                text-decoration: underline;
+            }
+        }
+
+        .forgot {
+            margin: 20px 0;
+        }
+
+        .submit_btn {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            background-color: #262626;
+            background-color: #87af44;
+            border: none;
+            outline: none;
+            color: #fff;
+            border-radius: 2px;
+            margin-bottom: 20px;
+        }
+    }
+}
