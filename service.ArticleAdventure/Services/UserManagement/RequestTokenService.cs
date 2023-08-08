@@ -3,7 +3,7 @@ using domain.ArticleAdventure.EntityHelpers.Identity;
 using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.IdentityEntities;
 using domain.ArticleAdventure.Models;
-using domain.ArticleAdventure.Repositories.Blog.Contracts;
+using domain.ArticleAdventure.Repositories.Identity.Contracts;
 using Newtonsoft.Json;
 using service.ArticleAdventure.Services.UserManagement.Contracts;
 using System;

@@ -10,10 +10,10 @@ namespace MVC.ArticleAdventure.Controllers
 {
     public class NewController: Controller
     {
-        private readonly ILogger<AllController> _logger;
+        private readonly ILogger<NewController> _logger;
         private readonly IArticleService _authenticationService;
 
-        public NewController(ILogger<AllController> logger, IArticleService authenticationService)
+        public NewController(ILogger<NewController> logger, IArticleService authenticationService)
         {
             _logger = logger;
             _authenticationService = authenticationService;

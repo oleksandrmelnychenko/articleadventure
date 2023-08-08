@@ -1,5 +1,77 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model domain.ArticleAdventure.Models.TagsModel
+<div class="article_change">
+    <form asp-controller="Tags">
+
+        <div class="meta_row">
+            <input type="hidden" asp-for="AddMainTag.NetUid" />
+
+            <div class="inputs">
+                <div class="input" style="width: calc(95% - 8px);">
+                    <input type="text" placeholder="NameMainTag" asp-for="AddMainTag.Name" />
+                </div>
+                <div class="inputColor">
+                    <input type="color" asp-for="AddMainTag.Color" />
+                </div>
+            </div>
+            <button style="margin-right: 10px;" type="submit" formaction="AddMainTag" formmethod="post" value="Save">Save</button>
+            <button type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>
+        </div>
+    </form>
+
+    <div class="meta_row">
+        @foreach (var MainTag in Model.MainTags)
+        {
+
+            if (MainTag.IsSelected)
+            {
+                @*<button style="" onclick="location.href='@Url.Action("RemoveSupTag", "Tags",new {RemoveSupTagsNetUid = subTag.NetUid})'">Delete</button>*@
+                <button style="margin-right: 10px; background-color:#af4444" type="submit" value="Save" onclick="location.href='@Url.Action("RemoveMainTag", "Tags",new {RemoveMainTagsNetUid =MainTag.NetUid})'">Delete</button>
+
+            }
+            else
+            {
+                <button style="margin-right: 10px;" type="submit" value="Save" onclick="location.href='@Url.Action("GetMainTag", "Tags",new {ChangeMainTagsNetUid =MainTag.NetUid})'">@MainTag.Name</button>
+
+            }
+
+        }
+    </div>
+    <form asp-controller="Tags">
+        <div class="meta_row">
+            <input type="hidden" asp-for="AddSupTag.NetUid" />
+            <input type="hidden" asp-for="AddMainTag.Id" />
+            <div class="inputs">
+                <div class="input" style="width: calc(95% - 8px);">
+                    <input type="text" placeholder="NameSupTag" asp-for="AddSupTag.Name" />
+                </div>
+                <div class="inputColor">
+                    <input type="color" asp-for="AddSupTag.Color" />
+                </div>
+            </div>
+            <button style="margin-right: 10px;" type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
+            <button type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
+        </div>
+    </form>
+    <div>
+        <div class="meta_row" style="display:block;">
+            @foreach (var MainTag in Model.MainTags)
+            {
+                <h1>@MainTag.Name</h1>
+
+                @foreach (var subTag in MainTag.SubTags)
+                {
+                    if (subTag.IsSelected)
+                    {
+                        <button style="background-color:#af4444" onclick="location.href='@Url.Action("RemoveSupTag", "Tags",new {RemoveSupTagsNetUid = subTag.NetUid})'">Delete</button>
+                    }
+                    else
+                    {
+                        <button onclick="location.href='@Url.Action("GetSupTag", "Tags",new {ChangeSupTagsNetUid =subTag.NetUid})'">@subTag.Name</button>
+                    }
+                    
+
+                }
+            }
+        </div>
+    </div>
+</div>

@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 
 namespace database.ArticleAdventure.EntityMaps
 {
-    public sealed class TagMap : EntityBaseMap<SupTag>
+    public class TagMainMap : EntityBaseMap<MainTag>
     {
-        public override void Map(EntityTypeBuilder<SupTag> entity)
+        public override void Map(EntityTypeBuilder<MainTag> entity)
         {
             base.Map(entity);
-            entity.HasOne(p=>p.MainTag)
-                .WithMany(p=>p.SubTags)
-                .HasForeignKey(p=>p.IdMainTag);
+            entity.HasMany(e => e.SubTags)
+               .WithOne(e=>e.MainTag)
+               .HasForeignKey(e => e.IdMainTag)
+               .OnDelete(DeleteBehavior.Cascade);
             entity.Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(250);

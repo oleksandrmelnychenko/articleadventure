@@ -8,7 +8,7 @@
         public string Image { get; set; }
         public string ImageUrl { get; set; }
         public string WebImageUrl { get; set; }
-        public List<Tag> BlogTags { get; set; }
+        public List<SupTag> BlogTags { get; set; }
         public string EditorValue { get; set; }
         public string MetaKeywords { get; set; }
         public string MetaDescription { get; set; }

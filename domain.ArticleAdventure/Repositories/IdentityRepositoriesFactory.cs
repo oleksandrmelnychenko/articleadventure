@@ -1,5 +1,6 @@
-﻿using domain.ArticleAdventure.Repositories.Blog.Contracts;
-using domain.ArticleAdventure.Repositories.Blog;
+﻿using domain.ArticleAdventure.Repositories.Blog;
+using domain.ArticleAdventure.Repositories.Identity;
+using domain.ArticleAdventure.Repositories.Identity.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Data;

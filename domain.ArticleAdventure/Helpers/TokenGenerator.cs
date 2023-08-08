@@ -1,7 +1,7 @@
 ﻿using common.ArticleAdventure.IdentityConfiguration;
 using domain.ArticleAdventure.EntityHelpers.Identity;
 using domain.ArticleAdventure.IdentityEntities;
-using domain.ArticleAdventure.Repositories.Blog.Contracts;
+using domain.ArticleAdventure.Repositories.Identity.Contracts;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;

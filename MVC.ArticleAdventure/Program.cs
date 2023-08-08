@@ -15,6 +15,7 @@ builder.Services.Configure<AppSettings>(builder.Configuration);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddHttpClient<IArticleService, ArticleService>();
+builder.Services.AddHttpClient<ITagService, TagService>();
 builder.Services.AddHttpClient<IUserProfileService, UserProfileService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IUser, AspNetUser>();
@@ -70,20 +71,22 @@ app.MapControllerRoute(
     pattern: "{controller}/{action}/{id?}",
     new { controller = "Identity", action = "Login" });
 
-//app.MapControllerRoute(
-//    name: "images",
-//    pattern: "{controller}/{action}/{id?}",
-//    new { controller = "Images", action = "Images" });
+app.MapControllerRoute(
+    name: "images",
+    pattern: "{controller}/{action}/{id?}",
+    new { controller = "User", action = "User" });
+
+app.MapControllerRoute(
+    name: "tags",
+    pattern: "{controller}/{action}/{id?}",
+    new { controller = "Tags", action = "Tags" });
 
 //app.MapControllerRoute(
 //    name: "new",
 //    pattern: "{controller}/{action}/{id?}",
 //    new { controller = "New", action = "New" });
 
-//app.MapControllerRoute(
-//    name: "tags",
-//    pattern: "{controller}/{action}/{id?}",
-//    new { controller = "Tags", action = "Tags" });
+
 
 
 app.Run();

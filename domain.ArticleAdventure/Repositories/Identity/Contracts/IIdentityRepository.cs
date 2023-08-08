@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace domain.ArticleAdventure.Repositories.Blog.Contracts
+namespace domain.ArticleAdventure.Repositories.Identity.Contracts
 {
     public interface IIdentityRepository
     {

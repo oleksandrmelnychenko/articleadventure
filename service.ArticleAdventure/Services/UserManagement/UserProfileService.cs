@@ -2,7 +2,7 @@
 using domain.ArticleAdventure.DbConnectionFactory.Contracts;
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.IdentityEntities;
-using domain.ArticleAdventure.Repositories.Blog.Contracts;
+using domain.ArticleAdventure.Repositories.Identity.Contracts;
 using Microsoft.AspNetCore.Identity;
 using service.ArticleAdventure.MailSenderServices;
 using service.ArticleAdventure.MailSenderServices.Contracts;

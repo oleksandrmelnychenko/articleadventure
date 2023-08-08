@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using database.ArticleAdventure;
 
@@ -11,9 +12,10 @@ using database.ArticleAdventure;
 namespace database.ArticleAdventure.Migrations
 {
     [DbContext(typeof(ArticleAdventureDataContext))]
-    partial class ArticleAdventureDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230807115020_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,10 +144,10 @@ namespace database.ArticleAdventure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MainTags");
+                    b.ToTable("mainTags");
                 });
 
-            modelBuilder.Entity("domain.ArticleAdventure.Entities.SubTag", b =>
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.Tag", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -200,17 +202,17 @@ namespace database.ArticleAdventure.Migrations
 
                     b.HasIndex("IdMainTag");
 
-                    b.ToTable("SubTags");
+                    b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("domain.ArticleAdventure.Entities.SubTag", b =>
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.Tag", b =>
                 {
                     b.HasOne("domain.ArticleAdventure.Entities.AuthorArticle", null)
                         .WithMany("BlogTags")
                         .HasForeignKey("AuthorArticleId");
 
                     b.HasOne("domain.ArticleAdventure.Entities.MainTag", "MainTag")
-                        .WithMany("SubTags")
+                        .WithMany("Tags")
                         .HasForeignKey("IdMainTag")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -225,7 +227,7 @@ namespace database.ArticleAdventure.Migrations
 
             modelBuilder.Entity("domain.ArticleAdventure.Entities.MainTag", b =>
                 {
-                    b.Navigation("SubTags");
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

@@ -25,6 +25,12 @@ using service.ArticleAdventure.Services.UserManagement;
 using service.ArticleAdventure.Services.UserManagement.Contracts;
 using System.Data;
 using System.Security.Claims;
+using service.ArticleAdventure.Services.Tag.Contracts;
+using service.ArticleAdventure.Services.Tag;
+using domain.ArticleAdventure.Repositories.Identity.Contracts;
+using domain.ArticleAdventure.Repositories.Identity;
+using domain.ArticleAdventure.Repositories.Tag.Contracts;
+using domain.ArticleAdventure.Repositories.Tag;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath);
@@ -84,6 +90,7 @@ builder.Services.AddResponseCompression();
 builder.Services.AddScoped<IResponseFactory, ResponseFactory>();
 
 builder.Services.AddTransient<IBlogRepositoryFactory, BlogRepositoryFactory>();
+builder.Services.AddTransient<ITagRepositoryFactory, TagRepositoryFactory>();
 builder.Services.AddScoped<IMailSenderFactory, MailSenderFactory>();
 
 builder.Services.AddTransient<IIdentityRepository, IdentityRepository>();
@@ -93,6 +100,8 @@ builder.Services.AddTransient<IIdentityRepositoriesFactory, IdentityRepositories
 builder.Services.AddScoped<IRequestTokenService, RequestTokenService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<ITagService, TagService>();
+
 builder.Services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
 builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();

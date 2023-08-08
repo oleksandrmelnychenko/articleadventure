@@ -28,13 +28,13 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> ChangeBlog(Guid netUidArticle)
         {
             var article = await _authenticationService.GetArticle(netUidArticle);
-            ChangeBlogModel changeBlogModel = new ChangeBlogModel { Article = article };
+            ChangeArticleModel changeBlogModel = new ChangeArticleModel { Article = article };
             return View(changeBlogModel);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> ChangeBlog(ChangeBlogModel changeBlogModel)
+        public async Task<IActionResult> ChangeBlog(ChangeArticleModel changeBlogModel)
         {
             await _authenticationService.Update(changeBlogModel.Article);
             return Redirect("~/All/AllBlogs");

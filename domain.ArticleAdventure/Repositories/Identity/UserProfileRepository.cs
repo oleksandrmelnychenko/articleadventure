@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.Repositories.Blog.Contracts;
+using domain.ArticleAdventure.Repositories.Identity.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace domain.ArticleAdventure.Repositories.Blog
+namespace domain.ArticleAdventure.Repositories.Identity
 {
     public sealed class UserProfileRepository : IUserProfileRepository
     {

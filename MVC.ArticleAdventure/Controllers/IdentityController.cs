@@ -11,11 +11,11 @@ namespace MVC.ArticleAdventure.Controllers
 {
     public class IdentityController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<IdentityController> _logger;
         private readonly IAuthService _authenticationService;
         private readonly IUserProfileService _userProfileService;
 
-        public IdentityController(ILogger<HomeController> logger, IAuthService authenticationService, IUserProfileService userProfileService)
+        public IdentityController(ILogger<IdentityController> logger, IAuthService authenticationService, IUserProfileService userProfileService)
         {
             _logger = logger;
             _authenticationService = authenticationService;

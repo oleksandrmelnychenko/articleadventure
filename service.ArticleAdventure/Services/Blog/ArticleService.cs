@@ -22,7 +22,7 @@ namespace service.ArticleAdventure.Services.Blog
             _connectionFactory = connectionFactory;
             _blogRepositoryFactory = blogRepositoryFactory;
         }
-
+         
         public Task<long> AddArticle(AuthorArticle blog)
         {
             return Task.Run(() =>

@@ -3,7 +3,7 @@ using Dapper;
 using domain.ArticleAdventure.DbConnectionFactory.Contracts;
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.IdentityEntities;
-using domain.ArticleAdventure.Repositories.Blog.Contracts;
+using domain.ArticleAdventure.Repositories.Identity.Contracts;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace domain.ArticleAdventure.Repositories.Blog
+namespace domain.ArticleAdventure.Repositories.Identity
 {
     public sealed class IdentityRepository : IIdentityRepository
     {
@@ -163,7 +163,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);
         }
 
-        public async Task<IdentityResult> ConfirmEmailAsync(User user,string token)
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
         {
             return await _userManager.ConfirmEmailAsync(user, token);
         }

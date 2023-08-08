@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using database.ArticleAdventure;
 
@@ -11,9 +12,10 @@ using database.ArticleAdventure;
 namespace database.ArticleAdventure.Migrations
 {
     [DbContext(typeof(ArticleAdventureDataContext))]
-    partial class ArticleAdventureDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230807120835_changeName")]
+    partial class changeName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +144,7 @@ namespace database.ArticleAdventure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MainTags");
+                    b.ToTable("mainTags");
                 });
 
             modelBuilder.Entity("domain.ArticleAdventure.Entities.SubTag", b =>
@@ -200,7 +202,7 @@ namespace database.ArticleAdventure.Migrations
 
                     b.HasIndex("IdMainTag");
 
-                    b.ToTable("SubTags");
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("domain.ArticleAdventure.Entities.SubTag", b =>

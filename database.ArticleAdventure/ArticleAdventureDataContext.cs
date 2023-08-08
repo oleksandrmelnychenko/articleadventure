@@ -10,9 +10,11 @@ namespace database.ArticleAdventure
         public ArticleAdventureDataContext(DbContextOptions<ArticleAdventureDataContext> options)
              : base(options) { }
 
-        DbSet<AuthorArticle> Blogs { get; set; }
+        public DbSet<AuthorArticle> Blogs { get; set; }
 
-        DbSet<Tag> Tags { get; set; }
+        public DbSet<SupTag> SubTags { get; set; }
+
+        public DbSet<MainTag> MainTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -21,6 +23,8 @@ namespace database.ArticleAdventure
             builder.AddConfiguration(new BlogMap());
 
             builder.AddConfiguration(new TagMap());
+
+            builder.AddConfiguration(new TagMainMap());
         }
     }
 }
