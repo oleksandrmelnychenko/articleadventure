@@ -1,20 +1,29 @@
 ﻿@model domain.ArticleAdventure.Models.TagsModel
 <div class="article_change">
     <form asp-controller="Tags">
-
         <div class="meta_row">
             <input type="hidden" asp-for="AddMainTag.NetUid" />
 
             <div class="inputs">
                 <div class="input" style="width: calc(95% - 8px);">
                     <input type="text" placeholder="NameMainTag" asp-for="AddMainTag.Name" />
+                    <span asp-validation-for="@Model.AddMainTag.Name" class="text-danger"></span>
                 </div>
                 <div class="inputColor">
                     <input type="color" asp-for="AddMainTag.Color" />
                 </div>
             </div>
+            @if (Model.AddMainTag?.NetUid != null)
+            {
+                <button style="margin-right: 10px;" type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>
+
+            }
+            else
+            {
+                <button style="margin-right: 10px; background-color:#ccd5bc" disabled="true" type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>
+            }
             <button style="margin-right: 10px;" type="submit" formaction="AddMainTag" formmethod="post" value="Save">Save</button>
-            <button type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>
+           
         </div>
     </form>
 
@@ -43,13 +52,24 @@
             <div class="inputs">
                 <div class="input" style="width: calc(95% - 8px);">
                     <input type="text" placeholder="NameSupTag" asp-for="AddSupTag.Name" />
+                    <span asp-validation-for="@Model.AddSupTag.Name" class="text-danger"></span>
                 </div>
                 <div class="inputColor">
                     <input type="color" asp-for="AddSupTag.Color" />
                 </div>
             </div>
-            <button style="margin-right: 10px;" type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
-            <button type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
+            @if (Model.AddSupTag?.NetUid != null)
+            {
+                <button style="margin-right: 10px;" type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
+                <button style="margin-right: 10px; background-color:#ccd5bc" disabled="true" type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
+            }
+            else
+            {
+                <button style="margin-right: 10px; background-color:#ccd5bc" disabled="true" type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
+                <button style="margin-right: 10px;" type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
+
+
+            }
         </div>
     </form>
     <div>
@@ -68,7 +88,7 @@
                     {
                         <button onclick="location.href='@Url.Action("GetSupTag", "Tags",new {ChangeSupTagsNetUid =subTag.NetUid})'">@subTag.Name</button>
                     }
-                    
+
 
                 }
             }

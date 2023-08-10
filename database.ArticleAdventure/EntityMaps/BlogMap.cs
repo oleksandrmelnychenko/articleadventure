@@ -1,4 +1,5 @@
 ﻿using domain.ArticleAdventure.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,13 @@ namespace database.ArticleAdventure.EntityMaps
         {
             base.Map(entity);
 
+            entity.HasMany(e => e.SupTags)
+               .WithOne(e => e.AuthorArticle)
+               .IsRequired(false)
+               .HasForeignKey(e => e.AuthorArticleId)
+               .IsRequired(false)
+               .OnDelete(DeleteBehavior.Cascade)
+               .IsRequired(false);
             entity.Property(p => p.Title)
                 .IsRequired()
                 .HasMaxLength(250);

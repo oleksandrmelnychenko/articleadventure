@@ -17,7 +17,8 @@ namespace database.ArticleAdventure.EntityMaps
             entity.HasMany(e => e.SubTags)
                .WithOne(e=>e.MainTag)
                .HasForeignKey(e => e.IdMainTag)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Cascade)
+               .IsRequired(false);
             entity.Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(250);

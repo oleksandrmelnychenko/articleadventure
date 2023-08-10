@@ -145,7 +145,7 @@ namespace database.ArticleAdventure.Migrations
                     b.ToTable("MainTags");
                 });
 
-            modelBuilder.Entity("domain.ArticleAdventure.Entities.SubTag", b =>
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.SupTag", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -154,7 +154,7 @@ namespace database.ArticleAdventure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long?>("AuthorArticleId")
+                    b.Property<long>("AuthorArticleId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Color")
@@ -203,24 +203,26 @@ namespace database.ArticleAdventure.Migrations
                     b.ToTable("SubTags");
                 });
 
-            modelBuilder.Entity("domain.ArticleAdventure.Entities.SubTag", b =>
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.SupTag", b =>
                 {
-                    b.HasOne("domain.ArticleAdventure.Entities.AuthorArticle", null)
-                        .WithMany("BlogTags")
-                        .HasForeignKey("AuthorArticleId");
+                    b.HasOne("domain.ArticleAdventure.Entities.AuthorArticle", "AuthorArticle")
+                        .WithMany("SupTagsArticle")
+                        .HasForeignKey("AuthorArticleId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("domain.ArticleAdventure.Entities.MainTag", "MainTag")
                         .WithMany("SubTags")
                         .HasForeignKey("IdMainTag")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("AuthorArticle");
 
                     b.Navigation("MainTag");
                 });
 
             modelBuilder.Entity("domain.ArticleAdventure.Entities.AuthorArticle", b =>
                 {
-                    b.Navigation("BlogTags");
+                    b.Navigation("SupTagsArticle");
                 });
 
             modelBuilder.Entity("domain.ArticleAdventure.Entities.MainTag", b =>

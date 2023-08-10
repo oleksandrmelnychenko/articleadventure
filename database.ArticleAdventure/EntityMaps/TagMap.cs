@@ -16,7 +16,8 @@ namespace database.ArticleAdventure.EntityMaps
             base.Map(entity);
             entity.HasOne(p=>p.MainTag)
                 .WithMany(p=>p.SubTags)
-                .HasForeignKey(p=>p.IdMainTag);
+                .HasForeignKey(p=>p.IdMainTag)
+               .IsRequired(false);
             entity.Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(250);

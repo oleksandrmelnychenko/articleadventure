@@ -25,7 +25,7 @@ namespace domain.ArticleAdventure.Repositories.Tag
                 "(@Name, @Color, GETUTCDATE()); " +
                 "SELECT SCOPE_IDENTITY()", tag).Single();
 
-        public long AddTag(SupTag tag) 
+        public long AddTag(SupTag tag)
             => _connection.Query<long>("INSERT INTO [SubTags] " +
                 "([IdMainTag], [Name], [Color], [Updated] ) " +
                 "VALUES " +
@@ -65,7 +65,7 @@ namespace domain.ArticleAdventure.Repositories.Tag
 
             return mainTags;
         }
-            
+
         //"SELECT * FROM [MainTags] AS Blog " +
         //        "WHERE Blog.Deleted = 0 "
 
@@ -80,14 +80,14 @@ namespace domain.ArticleAdventure.Repositories.Tag
             "WHERE [MainTags].NetUID = @NetUid", tag);
 
         public void ChangeTag(SupTag tag)
-        {
-            throw new NotImplementedException();
-        }
+            => _connection.Execute("UPDATE [SubTags] " +
+            "SET [Name] = @Name, [Color] = @Color, [Updated] = getutcdate() " +
+            "WHERE [SubTags].NetUID = @NetUid", tag);
 
         public MainTag GetMainTag(Guid NetUidTag)
             => _connection.Query<MainTag>("SELECT * FROM [MainTags] AS Tags " +
                 "WHERE Tags.Deleted = 0 " +
-                "AND Tags.NetUID = @NetUid", new {NetUid = NetUidTag }).Single();
+                "AND Tags.NetUID = @NetUid", new { NetUid = NetUidTag }).Single();
 
         public SupTag GetSupTag(Guid NetUidTag)
         => _connection.Query<SupTag>("SELECT * FROM [SubTags] AS Tags " +
@@ -100,7 +100,7 @@ namespace domain.ArticleAdventure.Repositories.Tag
                 "WHERE [MainTags].NetUID = @NetUID",
                 new { NetUID = NetUidTag });
 
-        public void RemoveSupTag(Guid NetUidTag) => 
+        public void RemoveSupTag(Guid NetUidTag) =>
             _connection.Execute("UPDATE [SubTags] " +
                 "SET [Deleted] = 1 " +
                 "WHERE [SubTags].NetUID = @NetUID",

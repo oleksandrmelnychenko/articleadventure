@@ -27,12 +27,22 @@ namespace MVC.ArticleAdventure.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMainTag(TagsModel tagsModel)
         {
+            if (tagsModel.AddMainTag.Name == null)
+            {
+                tagsModel = await GetAllMainTags();
+                return View("Tags", tagsModel);
+            }
             await _tagService.AddMainTag(tagsModel.AddMainTag);
             return Redirect("~/Tags/Tags");
         }
         [HttpPost]
         public async Task<IActionResult> ChangeMainTag(TagsModel tagsModel)
         {
+            if (tagsModel.AddMainTag.Name == null)
+            {
+                tagsModel = await GetAllMainTags();
+                return View("Tags", tagsModel);
+            }
             await _tagService.ChangeMainTag(tagsModel.AddMainTag);
             tagsModel = await GetAllMainTags();
 
@@ -42,6 +52,11 @@ namespace MVC.ArticleAdventure.Controllers
         [HttpPost]
         public async Task<IActionResult> AddSupTag(TagsModel tagsModel)
         {
+            if (tagsModel.AddSupTag.Name == null)
+            {
+                tagsModel = await GetAllMainTags();
+                return View("Tags",tagsModel);
+            }
             tagsModel.AddSupTag.IdMainTag = tagsModel.AddMainTag.Id;
             await _tagService.AddSupTag(tagsModel.AddSupTag);
             return Redirect("~/Tags/Tags");
@@ -50,6 +65,11 @@ namespace MVC.ArticleAdventure.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeSupTag(TagsModel tagsModel)
         {
+            if (tagsModel.AddSupTag.Name == null)
+            {
+                tagsModel = await GetAllMainTags();
+                return View("Tags", tagsModel);
+            }
             tagsModel.AddSupTag.IdMainTag = tagsModel.AddMainTag.Id;
             await _tagService.ChangeSupTag(tagsModel.AddSupTag);
             tagsModel = await GetAllMainTags();

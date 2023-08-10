@@ -12,8 +12,8 @@ using database.ArticleAdventure;
 namespace database.ArticleAdventure.Migrations
 {
     [DbContext(typeof(ArticleAdventureDataContext))]
-    [Migration("20230807120835_changeName")]
-    partial class changeName
+    [Migration("20230809131825_addTagsFromArticles")]
+    partial class addTagsFromArticles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -144,10 +144,10 @@ namespace database.ArticleAdventure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("mainTags");
+                    b.ToTable("MainTags");
                 });
 
-            modelBuilder.Entity("domain.ArticleAdventure.Entities.SubTag", b =>
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.SupTag", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -156,7 +156,7 @@ namespace database.ArticleAdventure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long?>("AuthorArticleId")
+                    b.Property<long>("AuthorArticleId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Color")
@@ -202,27 +202,29 @@ namespace database.ArticleAdventure.Migrations
 
                     b.HasIndex("IdMainTag");
 
-                    b.ToTable("Tags");
+                    b.ToTable("SubTags");
                 });
 
-            modelBuilder.Entity("domain.ArticleAdventure.Entities.SubTag", b =>
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.SupTag", b =>
                 {
-                    b.HasOne("domain.ArticleAdventure.Entities.AuthorArticle", null)
-                        .WithMany("BlogTags")
-                        .HasForeignKey("AuthorArticleId");
+                    b.HasOne("domain.ArticleAdventure.Entities.AuthorArticle", "AuthorArticle")
+                        .WithMany("SupTags")
+                        .HasForeignKey("AuthorArticleId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("domain.ArticleAdventure.Entities.MainTag", "MainTag")
                         .WithMany("SubTags")
                         .HasForeignKey("IdMainTag")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("AuthorArticle");
 
                     b.Navigation("MainTag");
                 });
 
             modelBuilder.Entity("domain.ArticleAdventure.Entities.AuthorArticle", b =>
                 {
-                    b.Navigation("BlogTags");
+                    b.Navigation("SupTags");
                 });
 
             modelBuilder.Entity("domain.ArticleAdventure.Entities.MainTag", b =>

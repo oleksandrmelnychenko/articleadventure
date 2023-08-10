@@ -4,7 +4,7 @@
 
 namespace database.ArticleAdventure.Migrations
 {
-    public partial class changeName : Migration
+    public partial class UpdateSubTags : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
