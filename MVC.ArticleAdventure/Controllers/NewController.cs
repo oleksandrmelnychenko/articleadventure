@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using MVC.ArticleAdventure.Services.Contract;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace MVC.ArticleAdventure.Controllers
 {
@@ -39,7 +40,6 @@ namespace MVC.ArticleAdventure.Controllers
             await _authenticationService.AddArticle(sendBlog);
             return Redirect("~/All/AllBlogs");
         }
-
 
         [HttpPost]
         [Route("IsSelect")]

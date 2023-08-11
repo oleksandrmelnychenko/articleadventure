@@ -15,6 +15,8 @@ namespace database.ArticleAdventure
         public DbSet<SupTag> SubTags { get; set; }
 
         public DbSet<MainTag> MainTags { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<Payment> Payment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -25,6 +27,8 @@ namespace database.ArticleAdventure
             builder.AddConfiguration(new TagMap());
 
             builder.AddConfiguration(new TagMainMap());
+            builder.AddConfiguration(new OrderMap());
+            builder.AddConfiguration(new PaymentMap());
         }
     }
 }

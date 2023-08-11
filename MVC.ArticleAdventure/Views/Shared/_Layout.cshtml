@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using domain.ArticleAdventure.Entities;
+@using domain.ArticleAdventure.Helpers;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,6 +14,10 @@
 
 </head>
 <body>
+    @{
+        var listAuthorArticle = SessionExtensionsMVC.Get<List<AuthorArticle>>(Context.Session, "article");
+
+    }
     @{
         if (User.Identity.IsAuthenticated)
         {
@@ -45,6 +51,13 @@
                                 </li>
                                 <li>
                                     <a asp-area="" asp-controller="User" asp-action="MyAllArticles">My Articles</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="Stripe" asp-action="Basket">Basket</a>
+                                    @if (listAuthorArticle!= null)
+                                    {
+                                        <div class="desired_articles">@listAuthorArticle.Count()</div>
+                                    }
                                 </li>
                                 
                             }

@@ -510,8 +510,16 @@ body {
         border-radius: 2px;
     }
 
+.header_container .desired_articles {
+    background-color: #87af44;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    margin-top: 3px;
+    border-radius: 10px;
+}
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {

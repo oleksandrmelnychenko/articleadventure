@@ -11,6 +11,13 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<AppSettings>(builder.Configuration);
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".MyApp.Session";
+    options.IdleTimeout = TimeSpan.FromSeconds(3600);
+    options.Cookie.IsEssential = true;
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
@@ -51,6 +58,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 
 app.UseRouting();
 app.UseAuthentication();
@@ -81,10 +89,10 @@ app.MapControllerRoute(
     pattern: "{controller}/{action}/{id?}",
     new { controller = "Tags", action = "Tags" });
 
-//app.MapControllerRoute(
-//    name: "new",
-//    pattern: "{controller}/{action}/{id?}",
-//    new { controller = "New", action = "New" });
+app.MapControllerRoute(
+    name: "new",
+    pattern: "{controller}/{action}/{id?}",
+    new { controller = "Stripe", action = "Stripe" });
 
 
 
