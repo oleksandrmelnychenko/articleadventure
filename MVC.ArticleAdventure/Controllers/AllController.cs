@@ -1,5 +1,6 @@
 ﻿using common.ArticleAdventure.IdentityConfiguration;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.IdentityEntities;
 using domain.ArticleAdventure.Models;
 using domain.ArticleAdventure.Repositories;
@@ -48,7 +49,11 @@ namespace MVC.ArticleAdventure.Controllers
             //    return Redirect("~/Login");
             //}
             var Articles = await _authenticationService.GetAllArticles();
-            AllArticlesModel model = new AllArticlesModel { Articles = Articles };
+            MainArticle AuthorArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, "mainArticle");
+            var mainArticle = new List<MainArticle>();
+            mainArticle.Add(AuthorArticle);
+            AllArticlesModel model = new AllArticlesModel { Articles = Articles, mainArticles = mainArticle };
+
             return View(model);
         }
 
@@ -57,6 +62,15 @@ namespace MVC.ArticleAdventure.Controllers
         {
             await _authenticationService.Remove(netUidArticle);
             return Redirect("~/All/AllBlogs");
+        }
+
+        [HttpGet]
+        [Route("InfoArticle")]
+        public async Task<IActionResult> InfoArticle(Guid NetUidArticle)
+        {
+            MainArticle AuthorArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, "mainArticle");
+
+            return View();
         }
     }
 }

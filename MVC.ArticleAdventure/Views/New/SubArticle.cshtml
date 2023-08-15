@@ -1,21 +1,22 @@
 ﻿@model domain.ArticleAdventure.Models.NewArticleModel
 
+
 <div class="article_change">
     <form asp-controller="New">
         <div class="meta_row">
-            <div class="inputs" style="width:100%">
-                <div class="input" style="width:100%">
+            <div class="inputs">
+                <div class="input" style="width:99%">
                     <input type="text" placeholder="Title" asp-for="Title" />
                 </div>
                 @*<div class="input">
-                    <input type="text" placeholder="Description" asp-for="Description" />
+                <input type="text" placeholder="Description" asp-for="Description" />
                 </div>*@
             </div>
-           
+            <button formaction="NewBlog" formmethod="post" type="submit" value="Save">Save Articles</button>
 
         </div>
         <div class="meta_row">
-            <div class="inputs" >
+            <div class="inputs">
                 <div class="input" style="width: calc(50% - 80px);">
                     <input type="text" placeholder="Subject header" asp-for="authorArticle.Title" />
                 </div>

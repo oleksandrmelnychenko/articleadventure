@@ -1,48 +1,81 @@
 ﻿@model domain.ArticleAdventure.Models.AllArticlesModel
 <div class="container_content">
     <div class="articles_list_container">
-        @foreach (var Article in Model.Articles)
+        @foreach (var Article in Model.mainArticles)
         {
-            <article class="article_item">
-                <div class="item_container">
-                    <div onclick="location.href='@Url.Action("SetFavoriteArticle", "Stripe",new {netUidArticle =Article.NetUid})'">favorite</div>
-                    <div class="item_title">
-                        @Article.Title
-                        <div class="item_created">@Article.Created</div>
-                    </div>
-                    <div class="item_body">@Html.Raw(Article.Body)</div>
-                    <div class="item_tags">
-                        <ol>
-                            <li>
-                                <span>CRM Software</span>
-                            </li>
-                            <li>
-                                <span>CRM System</span>
-                            </li>
-                            <li>
-                                <span>Customer Relationship Management</span>
-                            </li>
-                            <li>
-                                <span>Customer Support</span>
-                            </li>
-                            <li>
-                                <span>Mobile App</span>
-                            </li>
-                        </ol>
+            <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
+                <article class="article_item">
+                    <div class="item_container">
+                        @* <input type="hidden" asp-for="@article.Title" />
+                    <input type="hidden" asp-for="@article.Description" />*@
 
-                    </div>
-                    <div class="item_controls">
-                        <div class="controls_wrapper">
-                            <input formmethod="get"
-                                   class="delete"
-                                   type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
-                            <input formmethod="get"
-                                   class="change"
-                                   type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeBLog", "All",new {netUidArticle =Article.NetUid})'" />
+                        <div style="width: calc(100% - 320px); height: 150px;background-color: #fff;margin: 10px 0px 10px 0px;">
+                            <div style=" display:flex;height: 75%;">
+                                <div style="width:100%;">
+                                    <div style="font-size:23px">@Article.Title</div>
+                                    <div style="font-size:18px">@Article.Description</div>
+                                </div>
+                                <div class="meta_row" style="align-self: center; width:20%">
+                                    <div class="inputs" style="width: 90%;">
+                                        <div class="input" style="width:100%">
+                                            <div style="font-size:18px">@Article.Price $</div>
+                                            @*<input type="text" placeholder="Price" asp-for="@article.Price" />*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @foreach(var tag in Article.supTags)
+                            {
+                                <div style="background-color:@tag.Color">@tag.Name </div>
+                            }
                         </div>
+                        
                     </div>
-                </div>
-            </article>
+                </article>
+            </a>
         }
+        @*@foreach (var Article in Model.Articles)
+        {
+        <article class="article_item">
+        <div class="item_container">
+        <div onclick="location.href='@Url.Action("SetFavoriteArticle", "Stripe",new {netUidArticle =Article.NetUid})'">favorite</div>
+        <div class="item_title">
+        @Article.Title
+        <div class="item_created">@Article.Created</div>
+        </div>
+        <div class="item_body">@Html.Raw(Article.Body)</div>
+        <div class="item_tags">
+        <ol>
+        <li>
+        <span>CRM Software</span>
+        </li>
+        <li>
+        <span>CRM System</span>
+        </li>
+        <li>
+        <span>Customer Relationship Management</span>
+        </li>
+        <li>
+        <span>Customer Support</span>
+        </li>
+        <li>
+        <span>Mobile App</span>
+        </li>
+        </ol>
+
+        </div>
+        <div class="item_controls">
+        <div class="controls_wrapper">
+        <input formmethod="get"
+        class="delete"
+        type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
+        <input formmethod="get"
+        class="change"
+        type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeBLog", "All",new {netUidArticle =Article.NetUid})'" />
+        </div>
+        </div>
+        </div>
+        </article>
+        }*@
     </div>
 </div>

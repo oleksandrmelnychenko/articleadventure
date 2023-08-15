@@ -198,9 +198,35 @@ header ul li.isSelected:before, header ul li:hover:before {
   position: absolute;
   border-bottom: 2px solid #87af44;
 }
+.AccountInformation {
+    height: 260px;
+    width: 150px;
+    margin-top: 4.4em;
+    transform: translateX(-50%); /* Центрирование по горизонтали */
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: none; /* Начальное состояние - скрытое */
+    opacity: 0; /* Начальное состояние - непрозрачность 0 */
+    transition: opacity 0.3s ease;
+}
+
+.logOut:hover .AccountInformation {
+    display: block; /* Показываем всплывающее окно при наведении на иконку */
+    opacity: 1; /* Делаем окно полностью непрозрачным */
+}
+header .AllArticles {
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    /*top: 0;
+    right: 0;
+    border-left: 1px solid rgba(224, 224, 224, 0.4);*/
+}
 header .logOut {
-  width: 60px;
-  height: 60px;
+  width: 65px;
+  height: 65px;
   position: fixed;
   top: 0;
   right: 0;

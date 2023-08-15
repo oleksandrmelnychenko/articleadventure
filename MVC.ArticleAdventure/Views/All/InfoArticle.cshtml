@@ -1,0 +1,44 @@
+﻿@model domain.ArticleAdventure.Models.InfoArticleModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container_content">
+    <div class="articles_list_container">
+        <div>
+            <div>
+                <div>@Model.MainArticle.Title</div>
+                <div>@Model.MainArticle.Description</div>
+                <div>Created: @Model.MainArticle.Created</div>
+
+            </div>
+            <div>
+                <div>Information</div>
+                <div>@Model.MainArticle.InfromationArticle</div>
+            </div>
+            <div>
+                <div>Материалы Статьи</div>
+                @foreach (var article in Model.MainArticle.Articles)
+                {
+                    <div>
+                        <div>@article.Title</div>
+                        <div>@article.Description</div>
+                    </div>
+                    <div>@article.Price</div>
+                }
+            </div>
+        </div>
+        <div>
+            <div>@Model.MainArticle.Price</div>
+            <div>
+                <div>Go to the Cart</div>
+                <div>❤️</div>
+                <div>Buy now</div>
+            </div>
+            <div></div>
+
+        </div>
+    </div>
+</div>
