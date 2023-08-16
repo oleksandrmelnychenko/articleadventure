@@ -5,21 +5,21 @@ using System.Data;
 
 namespace domain.ArticleAdventure.Repositories.Blog
 {
-    public class BlogRepository: IBlogRepository
+    public class ArticleRepository: IBlogRepository
     {
         private readonly IDbConnection _connection;
-        public BlogRepository(IDbConnection connection)
+        public ArticleRepository(IDbConnection connection)
         {
             _connection = connection;
         }
 
         public long AddArticle(AuthorArticle blog) 
-            => _connection.Query<long>("INSERT INTO [Blogs] " +
-            "([Title], [Description], [Body] ,[Image] ,[ImageUrl] ,[WebImageUrl] ,[EditorValue] ,[MetaKeywords] " +
-            ",[MetaDescription] ,[Url] ,[Updated] ) " +
+            => _connection.Query<long>("INSERT INTO [AuthorArticle] " +
+            "([MainArticleId], [Title], [Description], [Body] ,[Image] ,[ImageUrl] ,[WebImageUrl] ,[EditorValue] ,[MetaKeywords] " +
+            ",[MetaDescription] ,[Price] ,[Url] ,[Updated] ) " +
             "VALUES " +
-            "(@Title, @Description, @Body, @Image, @ImageUrl, @WebImageUrl" +
-            ", @EditorValue, @MetaKeywords, @MetaDescription, @Url, GETUTCDATE());" +
+            "(@MainArticleId, @Title, @Description, @Body, @Image, @ImageUrl, @WebImageUrl" +
+            ", @EditorValue, @MetaKeywords, @MetaDescription, @Price, @Url, GETUTCDATE());" +
             "SELECT SCOPE_IDENTITY()", blog
             ).Single();
 

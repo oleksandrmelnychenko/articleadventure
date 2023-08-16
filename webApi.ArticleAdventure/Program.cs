@@ -89,8 +89,11 @@ builder.Services.AddResponseCompression();
 
 builder.Services.AddScoped<IResponseFactory, ResponseFactory>();
 
-builder.Services.AddTransient<IBlogRepositoryFactory, BlogRepositoryFactory>();
+builder.Services.AddTransient<IArticleRepositoryFactory, ArticleRepositoryFactory>();
+builder.Services.AddTransient<IMainArticleRepositoryFactory, MainArticleRepositoryFactory>();
 builder.Services.AddTransient<ITagRepositoryFactory, TagRepositoryFactory>();
+builder.Services.AddTransient<IMainArticleTagsFactory, MainArticleTagsFactory>();
+
 builder.Services.AddScoped<IMailSenderFactory, MailSenderFactory>();
 
 builder.Services.AddTransient<IIdentityRepository, IdentityRepository>();
@@ -100,6 +103,7 @@ builder.Services.AddTransient<IIdentityRepositoriesFactory, IdentityRepositories
 builder.Services.AddScoped<IRequestTokenService, RequestTokenService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IMainArticleService, MainArticleService>();
 builder.Services.AddScoped<ITagService, TagService>();
 
 builder.Services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();

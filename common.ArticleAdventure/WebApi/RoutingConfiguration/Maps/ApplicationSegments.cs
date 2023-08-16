@@ -8,6 +8,7 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
 {
     public static class ApplicationSegments
     {
+        public const string Article = "article";
         public const string Blog = "blog";
         public const string New = "new";
         public const string Home = "home";

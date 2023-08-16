@@ -2,20 +2,24 @@
 @{
 }
 
-Tags
-
-MainTitle
-
-DescriptionMainTitle
-
-Set Price Main Title
-
-foreach subTitles Set Price
-
-InformationArticle
-
-
 <div class="article_change">
+    <div class="meta_row_all_buttons">
+        @foreach (var mainTag in Model.MainTags)
+        {
+            @foreach (var subTag in mainTag.SubTags)
+            {
+                if (subTag.IsSelected)
+                {
+                    <button style="background-color:#af4444" onclick="location.href='@Url.Action("RemoveLocalSupTag", "New",new {RemoveSupTagsNetUid = subTag.NetUid})'">Сancel</button>
+                }
+                else
+                {
+                    <button onclick="location.href='@Url.Action("IsSelectLocalSupTag", "New",new {IsSelectSupTagsNetUid = subTag.NetUid})'">@subTag.Name</button>
+                }
+
+            }
+        }
+    </div>
     <form asp-controller="New">
         <div class="meta_row">
             <div class="inputs" style="width:100%">
@@ -33,16 +37,7 @@ InformationArticle
                 </div>
             </div>
         </div>
-        <div class="meta_row_all_buttons">
-            @foreach (var mainTag in Model.MainTags)
-            {
-                @foreach (var subTag in mainTag.SubTags)
-                {
-                    <button formaction="IsSelect" formmethod="post">@subTag.Name</button>
-
-                }
-            }
-        </div>
+       
         <div>
             @foreach (var article in Model.MainArticle.Articles)
             {

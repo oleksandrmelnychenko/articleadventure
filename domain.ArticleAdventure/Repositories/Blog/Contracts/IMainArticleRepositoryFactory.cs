@@ -1,5 +1,4 @@
-﻿using domain.ArticleAdventure.DbConnectionFactory.Contracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace domain.ArticleAdventure.Repositories.Blog.Contracts
 {
-    public interface IBlogRepositoryFactory
+    public interface IMainArticleRepositoryFactory
     {
-        IBlogRepository New(IDbConnection connection);
+        IMainArticleRepository New(IDbConnection connection);
     }
 }

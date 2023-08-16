@@ -15,7 +15,7 @@ namespace domain.ArticleAdventure.Entities
         public string WebImageUrl { get; set; }
         public List<AuthorArticle> Articles { get; set; }
         public string InfromationArticle { get; set; }
-        public  List<SupTag> supTags { get; set; }
-        public string Price { get; set; }
+        public  List<MainArticleTags> ArticleTags { get; set; }
+        public int Price { get; set; }
     }
 }

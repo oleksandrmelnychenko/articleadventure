@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace domain.ArticleAdventure.Repositories.Blog
 {
-    public class BlogRepositoryFactory : IBlogRepositoryFactory
+    public class ArticleRepositoryFactory : IArticleRepositoryFactory
     {
         public IBlogRepository New(IDbConnection connection )
-            => new BlogRepository(connection);
+            => new ArticleRepository(connection);
     }
 }

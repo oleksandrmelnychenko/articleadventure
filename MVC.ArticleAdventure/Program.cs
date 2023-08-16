@@ -22,6 +22,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddHttpClient<IArticleService, ArticleService>();
+builder.Services.AddHttpClient<IMainArticleService, MainArticleService>();
 builder.Services.AddHttpClient<ITagService, TagService>();
 builder.Services.AddHttpClient<IUserProfileService, UserProfileService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

@@ -9,14 +9,12 @@ namespace domain.ArticleAdventure.Entities
 {
     public class SupTag:EntityBase
     {
-        public long IdMainTag { get; set; }
-        public long AuthorArticleId { get; set; }
-        public MainTag MainTag { get; set; }
-        public AuthorArticle AuthorArticle { get; set; }
-
         [Required(ErrorMessage = "Field {0} is required")]
         public string Name { get; set; }
         public bool IsSelected { get; set; }
         public string Color { get; set; }
+        public long IdMainTag { get; set; }
+        public MainTag MainTag { get; set; }
+        public ICollection<MainArticleTags> MainArticleTags { get; set; }
     }
 }

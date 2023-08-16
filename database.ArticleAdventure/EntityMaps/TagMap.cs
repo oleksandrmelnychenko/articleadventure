@@ -14,10 +14,6 @@ namespace database.ArticleAdventure.EntityMaps
         public override void Map(EntityTypeBuilder<SupTag> entity)
         {
             base.Map(entity);
-            entity.HasOne(p=>p.MainTag)
-                .WithMany(p=>p.SubTags)
-                .HasForeignKey(p=>p.IdMainTag)
-               .IsRequired(false);
             entity.Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(250);

@@ -9,19 +9,13 @@ using System.Threading.Tasks;
 
 namespace database.ArticleAdventure.EntityMaps
 {
-    public sealed class BlogMap : EntityBaseMap<AuthorArticle>
+    public sealed class AuthorArticleMap : EntityBaseMap<AuthorArticle>
     {
         public override void Map(EntityTypeBuilder<AuthorArticle> entity)
         {
             base.Map(entity);
 
-            entity.HasMany(e => e.SupTags)
-               .WithOne(e => e.AuthorArticle)
-               .IsRequired(false)
-               .HasForeignKey(e => e.AuthorArticleId)
-               .IsRequired(false)
-               .OnDelete(DeleteBehavior.Cascade)
-               .IsRequired(false);
+          
             entity.Property(p => p.Title)
                 .IsRequired()
                 .HasMaxLength(250);

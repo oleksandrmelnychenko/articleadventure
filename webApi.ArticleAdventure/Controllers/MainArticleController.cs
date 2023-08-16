@@ -2,47 +2,44 @@
 using common.ArticleAdventure.WebApi;
 using common.ArticleAdventure.WebApi.RoutingConfiguration.Maps;
 using domain.ArticleAdventure.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using service.ArticleAdventure.Services.Blog;
 using service.ArticleAdventure.Services.Blog.Contracts;
 using System.Net;
 
 namespace webApi.ArticleAdventure.Controllers
 {
-    [AssignControllerRoute(WebApiEnvironment.Current, WebApiVersion.ApiVersion1, ApplicationSegments.Blog)]
-    public class BlogController : WebApiControllerBase
+    [AssignControllerRoute(WebApiEnvironment.Current, WebApiVersion.ApiVersion1, ApplicationSegments.Article)]
+    public class MainArticleController : WebApiControllerBase
     {
-        private readonly IArticleService _articleService;
-        public BlogController(IResponseFactory responseFactory
-            , IArticleService articleService) : base(responseFactory)
+        private readonly IMainArticleService _mainArticleService;
+        public MainArticleController(IResponseFactory responseFactory
+            , IMainArticleService mainArticleService) : base(responseFactory)
         {
-            _articleService = articleService;
+            _mainArticleService = mainArticleService;
         }
-
         [HttpPost]
         [AssignActionRoute(ArticleSegments.UPDATE)]
-        public async Task<IActionResult> Update([FromBody] AuthorArticle article)
+        public async Task<IActionResult> Update([FromBody] MainArticle article)
         {
-                try
-                {
-                     await _articleService.Update(article);
-                    return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
-                }
-                catch (Exception exc)
-                {
-                    Logger.Log(NLog.LogLevel.Error, exc.Message);
-                    return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
-                }
+            try
+            {
+                await _mainArticleService.Update(article);
+                return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
         }
 
         [HttpPost]
         [AssignActionRoute(ArticleSegments.ADD)]
-        public async Task<IActionResult> AddBLog([FromBody] AuthorArticle Blogs)
+        public async Task<IActionResult> AddArticle([FromBody] MainArticle article)
         {
             try
             {
-                await _articleService.AddArticle(Blogs);
+                await _mainArticleService.AddArticle(article);
                 return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
             }
             catch (Exception exc)
@@ -58,8 +55,8 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                List<AuthorArticle> blogs = await _articleService.GetAllArticles();
-                return Ok(SuccessResponseBody(blogs, "Успешно вытянуты данные."));
+                List<MainArticle> articles = await _mainArticleService.GetAllArticles();
+                return Ok(SuccessResponseBody(articles, "Успешно вытянуты данные."));
             }
             catch (Exception exc)
             {
@@ -69,11 +66,11 @@ namespace webApi.ArticleAdventure.Controllers
         }
         [HttpGet]
         [AssignActionRoute(ArticleSegments.REMOVE_ARTICLE)]
-        public async Task<IActionResult> EditBlog(Guid netUidArticle)
+        public async Task<IActionResult> EditArticle (Guid netUidArticle)
         {
             try
             {
-                await _articleService.Remove(netUidArticle);
+                await _mainArticleService.Remove(netUidArticle);
                 return Ok(SuccessResponseBody(null, "Успешно удаленые данные."));
             }
             catch (Exception exc)
@@ -84,12 +81,12 @@ namespace webApi.ArticleAdventure.Controllers
         }
         [HttpGet]
         [AssignActionRoute(ArticleSegments.GET_ARTICLE)]
-        public async Task<IActionResult> GetBLog(Guid netUidArticle)
+        public async Task<IActionResult> GetArticle(Guid netUidArticle)
         {
             try
             {
-                var blog = await _articleService.GetArticle(netUidArticle);
-                return Ok(SuccessResponseBody(blog, "Успешно вытянуты данные."));
+                var article = await _mainArticleService.GetArticle(netUidArticle);
+                return Ok(SuccessResponseBody(article, "Успешно вытянуты данные."));
             }
             catch (Exception exc)
             {

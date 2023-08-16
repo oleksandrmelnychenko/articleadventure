@@ -46,7 +46,7 @@ namespace MVC.ArticleAdventure.Controllers
             else
             {
                 await SignIn(response);
-                return Redirect("/All/AllBlogs");
+                return Redirect("/");
             }
             
         }

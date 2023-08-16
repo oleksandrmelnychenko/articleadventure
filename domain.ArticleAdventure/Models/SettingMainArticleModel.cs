@@ -11,6 +11,7 @@ namespace domain.ArticleAdventure.Models
     {
         public MainArticle MainArticle { get; set; }
         public List<MainTag> MainTags { get; set; }
+        public List<SupTag> SelectSupTags { get; set; }
 
     }
 }

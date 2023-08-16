@@ -15,12 +15,12 @@ namespace service.ArticleAdventure.Services.Blog
     public class ArticleService : BaseService , IArticleService
     {
         private readonly IDbConnectionFactory _connectionFactory;
-        private readonly IBlogRepositoryFactory _blogRepositoryFactory;
+        private readonly IArticleRepositoryFactory _ArticleRepositoryFactory;
         public ArticleService(IDbConnectionFactory connectionFactory,
-            IBlogRepositoryFactory blogRepositoryFactory) : base(connectionFactory)
+            IArticleRepositoryFactory blogRepositoryFactory) : base(connectionFactory)
         {
             _connectionFactory = connectionFactory;
-            _blogRepositoryFactory = blogRepositoryFactory;
+            _ArticleRepositoryFactory = blogRepositoryFactory;
         }
          
         public Task<long> AddArticle(AuthorArticle blog)
@@ -29,7 +29,7 @@ namespace service.ArticleAdventure.Services.Blog
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    return _blogRepositoryFactory.New(connection).AddArticle(blog);
+                    return _ArticleRepositoryFactory.New(connection).AddArticle(blog);
                 }
             });
                 
@@ -40,7 +40,7 @@ namespace service.ArticleAdventure.Services.Blog
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    return _blogRepositoryFactory.New(connection).GetArticle(netUid);
+                    return _ArticleRepositoryFactory.New(connection).GetArticle(netUid);
                 }
             });
 
@@ -51,7 +51,7 @@ namespace service.ArticleAdventure.Services.Blog
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    return _blogRepositoryFactory.New(connection).GetAllArticles();
+                    return _ArticleRepositoryFactory.New(connection).GetAllArticles();
                 }
             });
         }
@@ -61,7 +61,7 @@ namespace service.ArticleAdventure.Services.Blog
 
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                     _blogRepositoryFactory.New(connection).Remove(netUid);
+                     _ArticleRepositoryFactory.New(connection).Remove(netUid);
                 }
             });
 
@@ -70,7 +70,7 @@ namespace service.ArticleAdventure.Services.Blog
 
               using (IDbConnection connection = _connectionFactory.NewSqlConnection())
               {
-                   _blogRepositoryFactory.New(connection).Update(Article);
+                   _ArticleRepositoryFactory.New(connection).Update(Article);
               }
           });
 

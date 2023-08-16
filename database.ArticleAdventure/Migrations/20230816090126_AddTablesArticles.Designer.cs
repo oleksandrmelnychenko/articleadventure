@@ -12,8 +12,8 @@ using database.ArticleAdventure;
 namespace database.ArticleAdventure.Migrations
 {
     [DbContext(typeof(ArticleAdventureDataContext))]
-    [Migration("20230811101809_addPaymentAndOrder")]
-    partial class addPaymentAndOrder
+    [Migration("20230816090126_AddTablesArticles")]
+    partial class AddTablesArticles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,6 +64,9 @@ namespace database.ArticleAdventure.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<long>("MainArticleId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("MetaDescription")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
@@ -77,6 +80,10 @@ namespace database.ArticleAdventure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("NetUID")
                         .HasDefaultValueSql("newid()");
+
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -96,7 +103,104 @@ namespace database.ArticleAdventure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Blogs");
+                    b.HasIndex("MainArticleId");
+
+                    b.ToTable("AuthorArticle");
+                });
+
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.MainArticle", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InfromationArticle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("NetUid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("WebImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MainArticleMaps");
+                });
+
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.MainArticleTags", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getutcdate()");
+
+                    b.Property<bool>("Deleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("0");
+
+                    b.Property<long>("MainArticleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("NetUid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("NetUID")
+                        .HasDefaultValueSql("newid()");
+
+                    b.Property<long>("SupTagId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MainArticleId");
+
+                    b.HasIndex("SupTagId");
+
+                    b.ToTable("ArticleTags");
                 });
 
             modelBuilder.Entity("domain.ArticleAdventure.Entities.MainTag", b =>
@@ -244,9 +348,6 @@ namespace database.ArticleAdventure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long>("AuthorArticleId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -286,38 +387,65 @@ namespace database.ArticleAdventure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorArticleId");
-
                     b.HasIndex("IdMainTag");
 
                     b.ToTable("SubTags");
                 });
 
-            modelBuilder.Entity("domain.ArticleAdventure.Entities.SupTag", b =>
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.AuthorArticle", b =>
                 {
-                    b.HasOne("domain.ArticleAdventure.Entities.AuthorArticle", "AuthorArticle")
-                        .WithMany("SupTags")
-                        .HasForeignKey("AuthorArticleId")
+                    b.HasOne("domain.ArticleAdventure.Entities.MainArticle", "MainArticle")
+                        .WithMany("Articles")
+                        .HasForeignKey("MainArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MainArticle");
+                });
+
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.MainArticleTags", b =>
+                {
+                    b.HasOne("domain.ArticleAdventure.Entities.MainArticle", "MainArticle")
+                        .WithMany("ArticleTags")
+                        .HasForeignKey("MainArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("domain.ArticleAdventure.Entities.SupTag", "SupTag")
+                        .WithMany("MainArticleTags")
+                        .HasForeignKey("SupTagId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.Navigation("MainArticle");
+
+                    b.Navigation("SupTag");
+                });
+
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.SupTag", b =>
+                {
                     b.HasOne("domain.ArticleAdventure.Entities.MainTag", "MainTag")
                         .WithMany("SubTags")
                         .HasForeignKey("IdMainTag")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Navigation("AuthorArticle");
-
                     b.Navigation("MainTag");
                 });
 
-            modelBuilder.Entity("domain.ArticleAdventure.Entities.AuthorArticle", b =>
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.MainArticle", b =>
                 {
-                    b.Navigation("SupTags");
+                    b.Navigation("ArticleTags");
+
+                    b.Navigation("Articles");
                 });
 
             modelBuilder.Entity("domain.ArticleAdventure.Entities.MainTag", b =>
                 {
                     b.Navigation("SubTags");
+                });
+
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.SupTag", b =>
+                {
+                    b.Navigation("MainArticleTags");
                 });
 #pragma warning restore 612, 618
         }

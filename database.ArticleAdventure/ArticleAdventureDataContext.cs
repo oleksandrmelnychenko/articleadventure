@@ -10,11 +10,13 @@ namespace database.ArticleAdventure
         public ArticleAdventureDataContext(DbContextOptions<ArticleAdventureDataContext> options)
              : base(options) { }
 
-        public DbSet<AuthorArticle> Blogs { get; set; }
+        public DbSet<AuthorArticle> AuthorArticle { get; set; }
 
         public DbSet<SupTag> SubTags { get; set; }
 
         public DbSet<MainTag> MainTags { get; set; }
+        public DbSet<MainArticleTags> ArticleTags { get; set; }
+        public DbSet<MainArticle> MainArticle { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<Payment> Payment { get; set; }
 
@@ -22,13 +24,20 @@ namespace database.ArticleAdventure
         {
             base.OnModelCreating(builder);
 
-            builder.AddConfiguration(new BlogMap());
+            builder.AddConfiguration(new AuthorArticleMap());
 
             builder.AddConfiguration(new TagMap());
 
             builder.AddConfiguration(new TagMainMap());
+
             builder.AddConfiguration(new OrderMap());
+
             builder.AddConfiguration(new PaymentMap());
+
+            builder.AddConfiguration(new MainArticleTagsMap());
+
+            builder.AddConfiguration(new MainArticleMap());
+            builder.AddConfiguration(new AuthorArticleMap());
         }
     }
 }
