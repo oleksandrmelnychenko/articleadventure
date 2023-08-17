@@ -1,10 +1,9 @@
 ﻿@model domain.ArticleAdventure.Models.ChangeArticleModel
 
-<div class="article_change">
+@*<div class="article_change">
     @using (Html.BeginForm("ChangeBlog", "All", FormMethod.Post))
     {
         <input type="hidden" asp-for="Article.NetUid" />
-        @*@Html.HiddenFor(m => m.editModel.NetUid)*@
 
         <div class="meta_row">
             <div class="inputs">
@@ -20,4 +19,24 @@
 
         @Html.TextAreaFor(m => m.Article.Body)
     }
+</div>*@
+<div class="article_change">
+    <form asp-controller="New">
+        <div class="meta_row">
+            <div class="inputs">
+                <div class="input" style="width: calc(50% - 80px);">
+                    <input type="text" placeholder="Subject header" asp-for="Article.Title" />
+                </div>
+                <div class="input" style="width: calc(50% - 80px);">
+            <input type="text" placeholder="Subject Description" asp-for="Article.Description" />
+                </div>
+                <div class="input" style="width: calc(50% - 400px);">
+            <input type="text" placeholder="Price" asp-for="Article.Price" />
+                </div>
+            </div>
+            <button formaction="SubArticle" formmethod="post" type="submit" value="Save">Add Subarticle</button>
+        </div>
+<textarea cols="20" rows="3" asp-for="Article.Body"></textarea>
+    </form>
+
 </div>

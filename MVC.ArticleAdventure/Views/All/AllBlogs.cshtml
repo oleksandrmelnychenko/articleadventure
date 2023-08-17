@@ -3,8 +3,9 @@
     <div class="articles_list_container">
         @foreach (var Article in Model.mainArticles)
         {
-            <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
-                <article class="article_item">
+
+            <article class="article_item">
+                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
                     <div class="item_container">
                         @* <input type="hidden" asp-for="@article.Title" />
                     <input type="hidden" asp-for="@article.Description" />*@
@@ -24,15 +25,26 @@
                                     </div>
                                 </div>
                             </div>
-                            @foreach(var tag in Article.ArticleTags)
+                            @foreach (var tag in Article.ArticleTags)
                             {
                                 @*<div style="background-color:@tag.Color">@tag.Name </div>*@
                             }
                         </div>
-                        
+
                     </div>
-                </article>
-            </a>
+                </a>
+
+                <div class="item_controls">
+                    <div class="controls_wrapper">
+                        <input formmethod="get"
+                               class="delete"
+                               type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
+                        <input formmethod="get"
+                               class="change"
+                               type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeMainArticle", "All",new {netUidArticle =Article.NetUid})'" />
+                    </div>
+                </div>
+            </article>
         }
         @*@foreach (var Article in Model.Articles)
         {
@@ -75,7 +87,7 @@
         </div>
         </div>
         </div>
-        </article>
-        }*@
+        </article>*@
+        }
     </div>
 </div>

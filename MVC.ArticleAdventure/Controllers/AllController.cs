@@ -9,6 +9,7 @@ using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
 using System.Data;
 using System.Security.Claims;
@@ -19,26 +20,160 @@ namespace MVC.ArticleAdventure.Controllers
     {
         private readonly ILogger<AllController> _logger;
         private readonly IArticleService _authenticationService;
-        public AllController(ILogger<AllController> logger, IArticleService authenticationService)
+        private readonly IMainArticleService _mainArticleService;
+        private readonly ITagService _tagService;
+        public AllController(ILogger<AllController> logger, IArticleService authenticationService, IMainArticleService mainArticleService, ITagService tagService)
         {
             _logger = logger;
             _authenticationService = authenticationService;
+            _mainArticleService = mainArticleService;
+            _tagService = tagService;
         }
+
         [HttpGet]
+        [Route("ChangeMainArticle")]
         [Authorize]
-        public async Task<IActionResult> ChangeBlog(Guid netUidArticle)
+        public async Task<IActionResult> ChangeMainArticle(Guid netUidArticle)
         {
-            var article = await _authenticationService.GetArticle(netUidArticle);
-            ChangeArticleModel changeBlogModel = new ChangeArticleModel { Article = article };
-            return View(changeBlogModel);
+            var mainArticle = await _mainArticleService.GetArticle(netUidArticle);
+            var mainTags = await _tagService.GetAllTags();
+            ChangeMainArticleModel changeArticleModel = new ChangeMainArticleModel { MainArticle = mainArticle, MainTags = mainTags };
+
+            var sessionStorageMainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
+            var sessionStorageMainTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS);
+
+            if (sessionStorageMainTags != null && sessionStorageMainTags.Count() != 0)
+            {
+                
+                foreach (var supTag in sessionStorageMainTags)
+                {
+                    mainTags
+                    .SelectMany(mainTag => mainTag.SubTags)
+                    .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
+                }
+            }
+            if (sessionStorageMainTags == null)
+            {
+                var selectSupTags = new List<SupTag>();
+                foreach (var item in mainTags)
+                {
+                    selectSupTags = mainArticle.ArticleTags.Select(x => x.SupTag).ToList();
+
+                }
+                foreach (var supTag in selectSupTags)
+                {
+                    mainTags
+                    .SelectMany(mainTag => mainTag.SubTags)
+                    .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
+                }
+                changeArticleModel.MainTags = mainTags;
+                SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS, selectSupTags);
+            }
+
+
+            if (sessionStorageMainArticle == null)
+            {
+                SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE, mainArticle);
+                return View(changeArticleModel);
+            }
+            else
+            {
+                if (mainArticle.NetUid != sessionStorageMainArticle.NetUid)
+                {
+                    SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE, mainArticle);
+                }
+                else
+                {
+                    changeArticleModel.MainArticle = sessionStorageMainArticle;
+                }
+                return View(changeArticleModel);
+            }
+        }
+
+        [HttpGet]
+        [Route("IsSelectChangeLocalSupTag")]
+        public async Task<IActionResult> IsSelectChangeLocalSupTag(Guid IsSelectSupTagsNetUid)
+        {
+            var mainTags = await _tagService.GetAllTags();
+            var findSupTag = mainTags
+            .SelectMany(mainTag => mainTag.SubTags)
+            .FirstOrDefault(subTag => subTag.NetUid == IsSelectSupTagsNetUid);
+
+            var selectSupTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS);
+            var sessionStorageMainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
+
+            if (selectSupTags == null || selectSupTags.Count() == 0)
+            {
+                selectSupTags = new List<SupTag>();
+            }
+            selectSupTags.Add(findSupTag);
+            SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS, selectSupTags);
+            return Redirect($"~/ChangeMainArticle?netUidArticle={sessionStorageMainArticle.NetUid}");
+        }
+
+        [HttpGet]
+        [Route("CancelChangeLocalSupTag")]
+        public async Task<IActionResult> CancelChangeLocalSupTag(Guid RemoveSupTagsNetUid)
+        {
+            var selectSupTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS);
+            var sessionStorageMainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
+
+
+            var findSupTag = selectSupTags
+            .Select(mainTag => mainTag)
+            .FirstOrDefault(subTag => subTag.NetUid == RemoveSupTagsNetUid);
+            selectSupTags.Remove(findSupTag);
+            SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS, selectSupTags);
+
+            return Redirect($"~/ChangeMainArticle?netUidArticle={sessionStorageMainArticle.NetUid}");
         }
 
         [HttpPost]
+        [Route("ChangeMainArticle")]
         [Authorize]
-        public async Task<IActionResult> ChangeBlog(ChangeArticleModel changeBlogModel)
+        public async Task<IActionResult> ChangeMainArticle(ChangeMainArticleModel changeArticleModel)
         {
-            await _authenticationService.Update(changeBlogModel.Article);
-            return Redirect("~/All/AllBlogs");
+            var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
+
+            ModelState.Clear();
+            return View();
+        }
+
+
+        [HttpGet]
+        [Route("ChangeSupArticle")]
+        [Authorize]
+        public async Task<IActionResult> ChangeSupArticle(Guid ChangeNetUidArticle)
+        {
+
+            var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
+
+            var supArticle = mainArticle.Articles.First(x => x.NetUid == ChangeNetUidArticle);
+
+            var article = await _mainArticleService.GetArticle(ChangeNetUidArticle);
+            ChangeArticleModel changeArticleModel = new ChangeArticleModel { Article = supArticle };
+            return View(changeArticleModel);
+        }
+
+        [HttpPost]
+        [Route("ChangeSupArticle")]
+        [Authorize]
+        public async Task<IActionResult> ChangeSupArticle(ChangeArticleModel changeBlogModel)
+        {
+            //await _authenticationService.Update(changeBlogModel.Article);
+
+            var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
+
+
+            var article = mainArticle.Articles.FirstOrDefault(article => article.NetUid == changeBlogModel.Article.NetUid);
+            article.Title = changeBlogModel.Article.Title;
+            article.Description = changeBlogModel.Article.Description;
+            article.Body = changeBlogModel.Article.Body;
+            article.Price = changeBlogModel.Article.Price;
+
+            SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE, mainArticle);
+
+            return Redirect($"~/ChangeMainArticle?netUidArticle={mainArticle.NetUid}");
         }
 
         [Authorize]
@@ -48,13 +183,14 @@ namespace MVC.ArticleAdventure.Controllers
             //{
             //    return Redirect("~/Login");
             //}
-            var Articles = await _authenticationService.GetAllArticles();
-            MainArticle AuthorArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, "mainArticle");
-            var mainArticle = new List<MainArticle>();
-            mainArticle.Add(AuthorArticle);
-            AllArticlesModel model = new AllArticlesModel { Articles = Articles, mainArticles = mainArticle };
-
+            //var Articles = await _authenticationService.GetAllArticles();
+            var mainArtilces = await _mainArticleService.GetAllArticles();
+            //MainArticle AuthorArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, "mainArticle");
+            //var mainArticle = new List<MainArticle>();
+            //mainArticle.Add(AuthorArticle);
+            AllArticlesModel model = new AllArticlesModel { mainArticles = mainArtilces };
             return View(model);
+            //return View(model);
         }
 
         [Authorize]

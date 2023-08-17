@@ -56,13 +56,13 @@ namespace service.ArticleAdventure.Services.Blog
 
         public Task<MainArticle> GetArticle(Guid netUid)
         {
-            //return Task.Run(() =>
-            // {
-            //     using (IDbConnection connection = _connectionFactory.NewSqlConnection())
-            //     {
-            //         return _blogRepositoryFactory.New(connection).GetArticle(netUid);
-            //     }
-            // });
+            return Task.Run(() =>
+             {
+                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                 {
+                     return _mainRepositoryFactory.New(connection).GetArticle(netUid);
+                 }
+             });
             return null;
         }
 

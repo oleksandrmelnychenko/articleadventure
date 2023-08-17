@@ -48,10 +48,6 @@ namespace MVC.ArticleAdventure.Controllers
             {
                 return Redirect("~/SettingMainArticle");
             }
-
-            //AuthorArticle sendBlog = new AuthorArticle { Body = newBlogModel.Body, Title = newBlogModel.Title, Description = newBlogModel.Description };
-            //await _authenticationService.AddArticle(sendBlog);
-            //return Redirect("~/All/AllBlogs");
         }
 
         [HttpPost]
@@ -84,9 +80,6 @@ namespace MVC.ArticleAdventure.Controllers
             }
             selectSupTags.Add(findSupTag);
             SessionExtensionsMVC.Set(HttpContext.Session, "supTags", selectSupTags);
-            //newBlogModel.SelectSupTags.Add(findSupTag);
-            //newBlogModel.MainTags = mainTags;
-            ////NewBlogModel newBlogModel = new NewBlogModel { IsTags = true };
             return Redirect("~/SettingMainArticle");
         }
 
@@ -133,8 +126,6 @@ namespace MVC.ArticleAdventure.Controllers
             };
 
             NewArticleModel newArticleModel = new NewArticleModel { Title = newBlogModel.Title };
-
-            //AuthorArticle createSubArticle = new AuthorArticle { Body = newBlogModel.Body, Title = newBlogModel.Title, Description = newBlogModel.Description };
 
             var AuthorArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, "mainArticle");
             if (AuthorArticle == null)

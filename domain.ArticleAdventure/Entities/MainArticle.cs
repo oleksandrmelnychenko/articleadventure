@@ -17,5 +17,11 @@ namespace domain.ArticleAdventure.Entities
         public string InfromationArticle { get; set; }
         public  List<MainArticleTags> ArticleTags { get; set; }
         public int Price { get; set; }
+
+        public MainArticle()
+        {
+            Articles = new List<AuthorArticle>();
+            ArticleTags = new List<MainArticleTags>();
+        }
     }
 }
