@@ -43,7 +43,10 @@ namespace domain.ArticleAdventure.Repositories.Blog
             "LEFT JOIN [ArticleAdventure].[dbo].[ArticleTags] AS articleTags " +
             "ON mainArticle.ID = articleTags.MainArticleId " +
             "LEFT JOIN [ArticleAdventure].[dbo].[SubTags] AS supTags " +
-            "ON supTags.ID = articleTags.SupTagId ",
+            "ON supTags.ID = articleTags.SupTagId " +
+            "WHERE mainArticle.Deleted = 0 " +
+            "AND authorArticle.Deleted = 0 " +
+            "AND articleTags.Deleted = 0 " ,
                 (mainArticle, article, articleMainTag, supTag) =>
                 {
                     if (mainArticles.Any(c => c.Id.Equals(mainArticle.Id)))
@@ -54,7 +57,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
                     {
                         mainArticles.Add(mainArticle);
                     }
-                  
+
                     if (mainArticles.Any(x => x.Articles.Any(x => x.Id.Equals(article.Id))))
                     {
                         article = mainArticles.SelectMany(artics => artics.Articles)
@@ -62,13 +65,13 @@ namespace domain.ArticleAdventure.Repositories.Blog
                     }
                     else
                     {
-                       
+
                         mainArticles.Where(art => article.MainArticleId == art.Id)
                         .ToList()
                         .ForEach(art => art.Articles.Add(article));
                     }
 
-                    if (mainArticles.Any(x=>x.ArticleTags.Any(x=>x.Id.Equals(articleMainTag.Id))))
+                    if (mainArticles.Any(x => x.ArticleTags.Any(x => x.Id.Equals(articleMainTag.Id))))
                     {
                         articleMainTag = mainArticles.SelectMany(x => x.ArticleTags)
                         .First(c => c.Id.Equals(articleMainTag.Id));
@@ -107,7 +110,10 @@ namespace domain.ArticleAdventure.Repositories.Blog
            "ON mainArticle.ID = articleTags.MainArticleId " +
            "LEFT JOIN [ArticleAdventure].[dbo].[SubTags] AS supTags " +
            "ON supTags.ID = articleTags.SupTagId " +
-           $"WHERE mainArticle.NetUID = @NetUid",
+           "WHERE mainArticle.Deleted = 0 " +
+           "AND authorArticle.Deleted = 0 " +
+           "AND articleTags.Deleted = 0 " +
+           "AND mainArticle.NetUID = @NetUid",
                (mainArticle, article, articleMainTag, supTag) =>
                {
                    if (articleMain.Id.Equals(mainArticle.Id))
@@ -119,7 +125,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
                        articleMain = mainArticle;
                    }
 
-                   if (articleMain.Articles.Any(x=>x.Id.Equals(article.Id)))
+                   if (articleMain.Articles.Any(x => x.Id.Equals(article.Id)))
                    {
                        article = articleMain.Articles.First(c => c.Id.Equals(article.Id));
                    }
@@ -128,7 +134,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
                        mainArticle.Articles.Add(article);
                    }
 
-                   if (articleMain.ArticleTags.Any(x=>x.Id.Equals(articleMainTag.Id)))
+                   if (articleMain.ArticleTags.Any(x => x.Id.Equals(articleMainTag.Id)))
                    {
                        articleMainTag = articleMain.ArticleTags.First(c => c.Id.Equals(articleMainTag.Id));
                    }
@@ -182,20 +188,23 @@ namespace domain.ArticleAdventure.Repositories.Blog
                    //}
                    return mainArticle;
                },
-               new { NetUid = netUid}).ToList();
+               new { NetUid = netUid }).ToList();
 
             return articleMain;
-           
+
         }
 
-        public void Remove(Guid netUid)
-        {
-            throw new NotImplementedException();
-        }
+        public void RemoveMainArticle(Guid netUid)
+            => _connection.Execute("DELETE FROM [ArticleAdventure].[dbo].[MainArticle] " +
+                "WHERE MainArticle.NetUID = @NetUID",
+                new { NetUID = netUid });
 
-        public void Update(MainArticle blog)
-        {
-            throw new NotImplementedException();
-        }
+        public void UpdateMainArticle(MainArticle blog) 
+            => _connection.Execute("Update [MainArticle] " +
+                "SET [Title] = @Title, [Description] = @Description,[Image] = @Image " +
+                ",[ImageUrl] = @ImageUrl ,[WebImageUrl] = @WebImageUrl ,[InfromationArticle] = @InfromationArticle " +
+                ",[Updated] = GETUTCDATE() " +
+                $"WHERE [MainArticle].[NetUid] = @NetUid ",
+                blog);
     }
 }

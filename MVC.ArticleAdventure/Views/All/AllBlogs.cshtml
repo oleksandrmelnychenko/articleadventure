@@ -7,8 +7,23 @@
             <article class="article_item">
                 <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
                     <div class="item_container">
-                        @* <input type="hidden" asp-for="@article.Title" />
-                    <input type="hidden" asp-for="@article.Description" />*@
+
+                        <div style="display:flex">
+                            <div style="display:flex; width:80%;">
+                                @foreach (var tag in Article.ArticleTags)
+                                {
+                                    <div style="width:20%; height: 25px; text-align: center; margin-left: 10px; background-color:@tag.SupTag.Color;">
+                                        @tag.SupTag.Name
+                                    </div>
+                                }
+                            </div>
+                            <div>
+                                <div style="justify-content: right; display: flex;">
+                                    @Article.Created
+                                </div>
+                            </div>
+
+                        </div>
 
                         <div style="width: calc(100% - 320px); height: 150px;background-color: #fff;margin: 10px 0px 10px 0px;">
                             <div style=" display:flex;height: 75%;">
@@ -20,15 +35,11 @@
                                     <div class="inputs" style="width: 90%;">
                                         <div class="input" style="width:100%">
                                             <div style="font-size:18px">@Article.Price $</div>
-                                            @*<input type="text" placeholder="Price" asp-for="@article.Price" />*@
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            @foreach (var tag in Article.ArticleTags)
-                            {
-                                @*<div style="background-color:@tag.Color">@tag.Name </div>*@
-                            }
+
                         </div>
 
                     </div>
@@ -45,8 +56,7 @@
                     </div>
                 </div>
             </article>
-        }
-        @*@foreach (var Article in Model.Articles)
+            @*@foreach (var Article in Model.Articles)
         {
         <article class="article_item">
         <div class="item_container">

@@ -32,16 +32,15 @@ namespace domain.ArticleAdventure.Repositories.Blog
             ,new { NetUid = netUid}).Single();
 
         public void Remove(Guid netUid) =>
-            _connection.Execute("UPDATE [Blogs]" +
-                "SET [Deleted] = 1 " +
-                "WHERE NetUid = @NetUid ", new { NetUid = netUid }
+            _connection.Execute("DELETE FROM [ArticleAdventure].[dbo].[AuthorArticle] " +
+                "WHERE AuthorArticle.NetUID = @NetUID", new { NetUID = netUid }
                 );
         public void Update(AuthorArticle blog) =>
-            _connection.Execute("Update [Blogs] " +
+            _connection.Execute("Update [AuthorArticle] " +
                 "SET [Title] = @Title, [Description] = @Description, [Body] = @Body ,[Image] = @Image " +
                 ",[ImageUrl] = @ImageUrl ,[WebImageUrl] = @WebImageUrl ,[EditorValue] = @EditorValue ,[MetaKeywords] = @MetaKeywords " +
-                ",[MetaDescription] = @MetaDescription ,[Url] = @Url ,[Updated] = GETUTCDATE() " +
-                $"WHERE [Blogs].[NetUid] = @NetUid ",
+                ",[MetaDescription] = @MetaDescription ,[Price] = @Price ,[Url] = @Url ,[Updated] = GETUTCDATE() " +
+                $"WHERE [AuthorArticle].[NetUid] = @NetUid ",
                 blog);
     }
 }

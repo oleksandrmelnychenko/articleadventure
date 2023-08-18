@@ -19,13 +19,13 @@ namespace MVC.ArticleAdventure.Controllers
     public class AllController : Controller
     {
         private readonly ILogger<AllController> _logger;
-        private readonly IArticleService _authenticationService;
+        private readonly IArticleService _supArticleService;
         private readonly IMainArticleService _mainArticleService;
         private readonly ITagService _tagService;
         public AllController(ILogger<AllController> logger, IArticleService authenticationService, IMainArticleService mainArticleService, ITagService tagService)
         {
             _logger = logger;
-            _authenticationService = authenticationService;
+            _supArticleService = authenticationService;
             _mainArticleService = mainArticleService;
             _tagService = tagService;
         }
@@ -90,6 +90,31 @@ namespace MVC.ArticleAdventure.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("ChangeMainArticle")]
+        [Authorize]
+        public async Task<IActionResult> ChangeMainArticle(ChangeMainArticleModel changeArticleModel)
+        {
+            var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
+            var selectSupTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS);
+
+            mainArticle.ArticleTags.Clear();
+
+            foreach (var item in selectSupTags)
+            {
+                var mainTag = new MainArticleTags
+                {
+                    MainArticleId = mainArticle.Id,
+                    SupTag = item,
+                    SupTagId = item.Id,
+                };
+                mainArticle.ArticleTags.Add(mainTag);
+            }
+            await _mainArticleService.Update(mainArticle);
+            ModelState.Clear();
+            return Redirect("~/All/AllBlogs");
+        }
+
         [HttpGet]
         [Route("IsSelectChangeLocalSupTag")]
         public async Task<IActionResult> IsSelectChangeLocalSupTag(Guid IsSelectSupTagsNetUid)
@@ -128,17 +153,19 @@ namespace MVC.ArticleAdventure.Controllers
             return Redirect($"~/ChangeMainArticle?netUidArticle={sessionStorageMainArticle.NetUid}");
         }
 
-        [HttpPost]
-        [Route("ChangeMainArticle")]
-        [Authorize]
-        public async Task<IActionResult> ChangeMainArticle(ChangeMainArticleModel changeArticleModel)
-        {
-            var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
 
-            ModelState.Clear();
-            return View();
+        [HttpGet]
+        [Route("GetInformationArticle")]
+        [Authorize]
+        public async Task<IActionResult> GetInformationArticle(Guid netUidArticle)
+        {
+            var mainArticle = await _mainArticleService.GetArticle(netUidArticle);
+
+            GetInformationArticleModel changeArticleModel = new GetInformationArticleModel { MainArticle = mainArticle };
+            return View(changeArticleModel);
         }
 
+        
 
         [HttpGet]
         [Route("ChangeSupArticle")]
@@ -155,22 +182,39 @@ namespace MVC.ArticleAdventure.Controllers
             return View(changeArticleModel);
         }
 
+        [HttpGet]
+        [Route("RemoveSupArticle")]
+        [Authorize]
+        public async Task<IActionResult> RemoveSupArticle(Guid RemoveNetUidArticle)
+        {
+
+            var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
+
+            var supArticle = mainArticle.Articles.First(x => x.NetUid == RemoveNetUidArticle);
+
+            mainArticle.Articles.Remove(supArticle);
+
+            await _supArticleService.Remove(RemoveNetUidArticle);
+
+            SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE, mainArticle);
+
+            ChangeArticleModel changeArticleModel = new ChangeArticleModel { Article = supArticle };
+            return Redirect($"~/ChangeMainArticle?netUidArticle={mainArticle.NetUid}");
+        }
+
         [HttpPost]
         [Route("ChangeSupArticle")]
         [Authorize]
         public async Task<IActionResult> ChangeSupArticle(ChangeArticleModel changeBlogModel)
         {
-            //await _authenticationService.Update(changeBlogModel.Article);
-
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
-
 
             var article = mainArticle.Articles.FirstOrDefault(article => article.NetUid == changeBlogModel.Article.NetUid);
             article.Title = changeBlogModel.Article.Title;
             article.Description = changeBlogModel.Article.Description;
             article.Body = changeBlogModel.Article.Body;
             article.Price = changeBlogModel.Article.Price;
-
+            await _supArticleService.Update(article);
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE, mainArticle);
 
             return Redirect($"~/ChangeMainArticle?netUidArticle={mainArticle.NetUid}");
@@ -179,24 +223,15 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> AllBlogs()
         {
-            //if (!(User.FindFirstValue("role") == IdentityRoles.User))
-            //{
-            //    return Redirect("~/Login");
-            //}
-            //var Articles = await _authenticationService.GetAllArticles();
             var mainArtilces = await _mainArticleService.GetAllArticles();
-            //MainArticle AuthorArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, "mainArticle");
-            //var mainArticle = new List<MainArticle>();
-            //mainArticle.Add(AuthorArticle);
             AllArticlesModel model = new AllArticlesModel { mainArticles = mainArtilces };
             return View(model);
-            //return View(model);
         }
 
         [Authorize]
         public async Task<IActionResult> Remove(Guid netUidArticle)
         {
-            await _authenticationService.Remove(netUidArticle);
+            await _supArticleService.Remove(netUidArticle);
             return Redirect("~/All/AllBlogs");
         }
 
@@ -204,9 +239,9 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("InfoArticle")]
         public async Task<IActionResult> InfoArticle(Guid NetUidArticle)
         {
-            MainArticle AuthorArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, "mainArticle");
-
-            return View();
+            var article = await _mainArticleService.GetArticle(NetUidArticle);
+            InfoArticleModel infoArticleModel = new InfoArticleModel { MainArticle = article };
+            return View(infoArticleModel);
         }
     }
 }

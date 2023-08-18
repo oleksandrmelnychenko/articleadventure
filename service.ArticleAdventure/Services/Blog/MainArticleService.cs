@@ -1,5 +1,6 @@
 ﻿using domain.ArticleAdventure.DbConnectionFactory.Contracts;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.Repositories.Blog;
 using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using domain.ArticleAdventure.Repositories.Tag.Contracts;
 using service.ArticleAdventure.Services.Blog.Contracts;
@@ -45,57 +46,59 @@ namespace service.ArticleAdventure.Services.Blog
                     foreach (var item in article.Articles)
                     {
                         item.MainArticleId = idMainArticle;
-                         _articleRepositoryFactory.New(connection).AddArticle(item);
+                        _articleRepositoryFactory.New(connection).AddArticle(item);
 
                     }
                     return idMainArticle;
-                    //_mainRepositoryFactory.New(connection)
                 }
             });
         }
 
-        public Task<MainArticle> GetArticle(Guid netUid)
-        {
-            return Task.Run(() =>
+        public Task<MainArticle> GetArticle(Guid netUid) =>
+            Task.Run(() =>
              {
                  using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                  {
                      return _mainRepositoryFactory.New(connection).GetArticle(netUid);
                  }
              });
-            return null;
-        }
+        
 
-        public Task<List<MainArticle>> GetAllArticles()
+        public Task<List<MainArticle>> GetAllArticles() => 
+            Task.Run(() =>
         {
-            return Task.Run(() =>
+            using (IDbConnection connection = _connectionFactory.NewSqlConnection())
             {
-                using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                return _mainRepositoryFactory.New(connection).GetAllArticles();
+            }
+        });
+
+        public Task Remove(Guid netUid) => 
+            Task.Run(() =>
+        {
+            using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+            {
+                _mainRepositoryFactory.New(connection).RemoveMainArticle(netUid);
+            }
+        });
+
+        public Task Update(MainArticle Article) => 
+            Task.Run(() =>
+        {
+
+            using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+            {
+               var mainArticle = _mainRepositoryFactory.New(connection).GetArticle(Article.NetUid);
+
+                _mainRepositoryFactory.New(connection).UpdateMainArticle(Article);
+                _mainArticleTagsFactory.New(connection).RemoveMainTag(Article.Id);
+
+                foreach (var tag in Article.ArticleTags)
                 {
-                    return _mainRepositoryFactory.New(connection).GetAllArticles();
+                        _mainArticleTagsFactory.New(connection).AddMainTag(tag);
                 }
-            });
-            return null;
-        }
 
-        public Task Remove(Guid netUid)
-        //=> Task.Run(() => {
-
-        //    using (IDbConnection connection = _connectionFactory.NewSqlConnection())
-        //    {
-        //        _blogRepositoryFactory.New(connection).Remove(netUid);
-        //    }
-        //});
-        { return null; }
-
-        public Task Update(MainArticle Article)
-        //=> Task.Run(() => {
-
-        //    using (IDbConnection connection = _connectionFactory.NewSqlConnection())
-        //    {
-        //        _blogRepositoryFactory.New(connection).Update(Article);
-        //    }
-        //});
-        { return null; }
+            }
+        });
     }
 }

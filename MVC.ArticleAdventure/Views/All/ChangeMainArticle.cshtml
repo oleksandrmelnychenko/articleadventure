@@ -1,10 +1,4 @@
 ﻿@model domain.ArticleAdventure.Models.ChangeMainArticleModel
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
 <div class="article_change">
     <div class="meta_row_all_buttons">
         @foreach (var mainTag in Model.MainTags)
@@ -13,26 +7,13 @@
             {
                 if (subTags.IsSelected)
                 {
-                    <button style="background-color:#af4444" onclick="location.href='@Url.Action("CancelChangeLocalSupTag", "All",new {RemoveSupTagsNetUid = subTags.NetUid})'">Сancel</button>
+                    <button style="background-color:#af4444" onclick="location.href='@Url.Action("CancelChangeLocalSupTag", "All",new {RemoveSupTagsNetUid = subTags.NetUid})'">@subTags.Name</button>
                 }
                 else
                 {
                     <button onclick="location.href='@Url.Action("IsSelectChangeLocalSupTag", "All",new {IsSelectSupTagsNetUid = subTags.NetUid})'">@subTags.Name</button>
                 }
             }
-            
-            @*@foreach (var subTag in mainTag.SupTag)
-            {
-                if (subTag.IsSelected)
-                {
-                    <button style="background-color:#af4444" onclick="location.href='@Url.Action("RemoveLocalSupTag", "New",new {RemoveSupTagsNetUid = subTag.NetUid})'">Сancel</button>
-                }
-                else
-                {
-                    <button onclick="location.href='@Url.Action("IsSelectLocalSupTag", "New",new {IsSelectSupTagsNetUid = subTag.NetUid})'">@subTag.Name</button>
-                }
-
-            }*@
         }
     </div>
     <form asp-controller="New">
@@ -57,9 +38,6 @@
             @foreach (var article in Model.MainArticle.Articles)
             {
                 <input type="hidden" asp-for="@article.Body" />
-                @* <input type="hidden" asp-for="@article.Title" />
-            <input type="hidden" asp-for="@article.Description" />*@
-
                 <div style="width: calc(100% - 320px); height: 150px;background-color: #fff;margin: 10px 0px 10px 0px;">
                     <div style=" display:flex;height: 75%;">
                         <div style="width:100%;">
@@ -78,11 +56,16 @@
                     <div style="text-align: center;">
                         <div>
                             <button value="Change" type="button" onclick="location.href='@Url.Action("ChangeSupArticle",new {ChangeNetUidArticle =article.NetUid})'">Change</button>
-                            <button value="Delete " type="button" onclick="location.href='@Url.Action("SomeRemove", "All",new {DeleteNetUidArticle =article.NetUid})'">Delete</button>
+                            <button value="Delete " type="button" onclick="location.href='@Url.Action("RemoveSupArticle", "All",new {RemoveNetUidArticle =article.NetUid})'">Delete</button>
                         </div>
                     </div>
                 </div>
             }
+            <div>
+                <button type="button" onclick="location.href='@Url.Action("AddSupArticle","New",new {netUidMainArticle = Model.MainArticle.NetUid})'">Add Sup Article</button>
+
+            </div>
+
         </div>
         <div class="meta_row">
             <div class="inputs" style="width:100%">
@@ -98,18 +81,7 @@
                 </div>
             </div>
         </div>
-        <button formaction="ChangeMainArticle" formmethod="post" type="submit" value="Save">Create</button>
-
-        @* <div class="meta_row_all_buttons">
-        @foreach (var mainTag in Model.MainTags)
-        {
-        @foreach (var subTag in mainTag.SubTags)
-        {
-        <button formaction="IsSelect" formmethod="post">@subTag.Name</button>
-        }
-        }
-        </div>*@
-        @*<input type="file"/>*@
+        <button formaction="ChangeMainArticle" formmethod="post" type="submit" value="Save">Save Changes</button>
     </form>
 
 </div>

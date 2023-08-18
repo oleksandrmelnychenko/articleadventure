@@ -11,8 +11,8 @@ namespace domain.ArticleAdventure.Repositories.Tag.Contracts
     {
         MainTag GetMainTag(Guid NetUidTag);
         long AddMainTag(MainArticleTags tag);
-        void RemoveMainTag(Guid NetUidTag);
-        void ChangeMainTag(MainArticleTags tag);
+        void RemoveMainTag(long NetUidTag);
+        void UpdateMainTag(MainArticleTags tag);
         List<MainArticleTags> AllMainTag();
     }
 }

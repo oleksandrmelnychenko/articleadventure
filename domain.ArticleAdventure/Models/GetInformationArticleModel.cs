@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace domain.ArticleAdventure.Models
 {
-    public class BasketModel
+    public class GetInformationArticleModel
     {
-        public List<MainArticle>? BasketArticles { get; set; }
-
-        public int FullPrice { get; set; }
+        public MainArticle MainArticle { get; set; }
 
     }
 }

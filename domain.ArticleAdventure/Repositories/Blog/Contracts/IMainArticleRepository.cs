@@ -13,9 +13,9 @@ namespace domain.ArticleAdventure.Repositories.Blog.Contracts
 
         List<MainArticle> GetAllArticles();
 
-        void Remove(Guid netUid);
+        void RemoveMainArticle(Guid netUid);
 
-        void Update(MainArticle blog);
+        void UpdateMainArticle(MainArticle blog);
 
         MainArticle GetArticle(Guid netUid);
     }

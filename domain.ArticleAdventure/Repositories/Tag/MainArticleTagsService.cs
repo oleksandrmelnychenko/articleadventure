@@ -30,7 +30,7 @@ namespace domain.ArticleAdventure.Repositories.Tag
             throw new NotImplementedException();
         }
 
-        public void ChangeMainTag(MainArticleTags tag)
+        public void UpdateMainTag(MainArticleTags tag)
         {
             throw new NotImplementedException();
         }
@@ -39,10 +39,11 @@ namespace domain.ArticleAdventure.Repositories.Tag
         {
             throw new NotImplementedException();
         }
-
-        public void RemoveMainTag(Guid NetUidTag)
-        {
-            throw new NotImplementedException();
-        }
+       
+        public void RemoveMainTag(long mainArticleId)
+            => _connection.Execute("DELETE FROM [ArticleAdventure].[dbo].[ArticleTags] " +
+                "WHERE MainArticleId = @MainArticleId "
+                , new { MainArticleId = mainArticleId }
+                );
     }
 }

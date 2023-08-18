@@ -1,0 +1,51 @@
+﻿@model domain.ArticleAdventure.Models.GetInformationArticleModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="container_content">
+    <div class="articles_list_container">
+        @foreach (var Article in Model.MainArticle.Articles)
+        {
+            <article class="article_item">
+                <div class="item_container">
+                    <div class="item_title">
+                        @Article.Title
+                        <div class="item_created">@Article.Created</div>
+                    </div>
+                    <div class="item_body">@Html.Raw(Article.Body)</div>
+                    <div class="item_tags">
+                        @foreach (var item in Model.MainArticle.ArticleTags)
+                        {
+                            <ol>
+                                <li>
+                                    <span style="background-color:@item.SupTag.Color;">@item.SupTag.Name</span>
+                                </li>
+                            </ol>
+                        }
+@*                        <ol>
+                            <li>
+                                <span>CRM Software</span>
+                            </li>
+                            <li>
+                                <span>CRM System</span>
+                            </li>
+                            <li>
+                                <span>Customer Relationship Management</span>
+                            </li>
+                            <li>
+                                <span>Customer Support</span>
+                            </li>
+                            <li>
+                                <span>Mobile App</span>
+                            </li>
+                        </ol>*@
+
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+</div>

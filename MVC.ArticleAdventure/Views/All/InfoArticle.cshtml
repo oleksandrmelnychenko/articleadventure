@@ -7,38 +7,58 @@
 
 <div class="container_content">
     <div class="articles_list_container">
-        <div>
+       <div style="display:flex;">
             <div>
-                <div>@Model.MainArticle.Title</div>
-                <div>@Model.MainArticle.Description</div>
-                <div>Created: @Model.MainArticle.Created</div>
+                <div style="display:flex;">
+                    @foreach (var tag in Model.MainArticle.ArticleTags)
+                    {
+                        <div style=" width: 100px; height: 25px; text-align: center; margin-left: 10px;background-color:@tag.SupTag.Color;">
+                            @tag.SupTag.Name
+                        </div>
+                    }
+                </div>
+                <div style="margin-bottom: 50px;">
+                    <h1>@Model.MainArticle.Title</h1>
+                    <h2>@Model.MainArticle.Description</h2>
+                    <div>Created: @Model.MainArticle.Created</div>
 
-            </div>
-            <div>
-                <div>Information</div>
-                <div>@Model.MainArticle.InfromationArticle</div>
-            </div>
-            <div>
+                </div>
+
                 <div>Материалы Статьи</div>
-                @foreach (var article in Model.MainArticle.Articles)
-                {
-                    <div>
-                        <div>@article.Title</div>
-                        <div>@article.Description</div>
-                    </div>
-                    <div>@article.Price</div>
-                }
+                <div>
+                    <div>@Model.MainArticle.Articles.Count() sections</div>
+                </div>
+                <div style=" border-left: 1px solid #3d87c5; border-right: 1px solid #d1d7dc;">
+                    @foreach (var article in Model.MainArticle.Articles)
+                    {
+                        <div style="display:flex; border-top: 1px solid #3d87c5; border-bottom: 1px solid #3d87c5;">
+                            <div style="width:75%">
+                                <div>@article.Title</div>
+                                <div>@article.Description</div>
+                            </div>
+                            <div style="width:25%;text-align:center;">@article.Price $</div>
+                        </div>
+                    }
+                </div>
+                <div>
+                    <h3>Article information:</h3>
+                    <div>@Model.MainArticle.InfromationArticle</div>
+                </div>
             </div>
-        </div>
-        <div>
-            <div>@Model.MainArticle.Price</div>
-            <div>
-                <div>Go to the Cart</div>
-                <div>❤️</div>
-                <div>Buy now</div>
-            </div>
-            <div></div>
 
-        </div>
+            <div>
+                <div>@Model.MainArticle.Price $</div>
+                <div >
+                    <div style="display:flex;">
+                        <button onclick="location.href='@Url.Action("SetFavoriteArticle", "Stripe",new {netUidArticle = Model.MainArticle.NetUid})'"> Go to the Cart</button>
+                        <button>♥</button>
+                    </div>
+                    <button style="width: 100px;" onclick="location.href='@Url.Action("GetInformationArticle", "All",new {netUidArticle = Model.MainArticle.NetUid})'">Buy now</button>
+                </div>
+                <div></div>
+
+            </div>
+       </div>
+       
     </div>
 </div>
