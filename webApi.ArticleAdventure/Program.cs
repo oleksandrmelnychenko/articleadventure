@@ -31,6 +31,9 @@ using domain.ArticleAdventure.Repositories.Identity.Contracts;
 using domain.ArticleAdventure.Repositories.Identity;
 using domain.ArticleAdventure.Repositories.Tag.Contracts;
 using domain.ArticleAdventure.Repositories.Tag;
+using Stripe;
+using service.ArticleAdventure.Services.Stripe.Contracts;
+using service.ArticleAdventure.Services.Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath);
@@ -39,6 +42,7 @@ builder.Configuration.AddEnvironmentVariables();
 
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppSettingsProperties(builder.Configuration);
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppEnvironmentRootPath(builder.Environment.ContentRootPath);
+StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
 
 builder.Services.AddDbContext<ArticleAdventureDataContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString(ConnectionStringNames.DbConnectionString)));
@@ -89,6 +93,11 @@ builder.Services.AddResponseCompression();
 
 builder.Services.AddScoped<IResponseFactory, ResponseFactory>();
 
+builder.Services
+    .AddScoped<CustomerService>()
+    .AddScoped<ChargeService>()
+    .AddScoped<TokenService>()
+    .AddScoped<IStripeService, StripeService>();
 builder.Services.AddTransient<IArticleRepositoryFactory, ArticleRepositoryFactory>();
 builder.Services.AddTransient<IMainArticleRepositoryFactory, MainArticleRepositoryFactory>();
 builder.Services.AddTransient<ITagRepositoryFactory, TagRepositoryFactory>();
