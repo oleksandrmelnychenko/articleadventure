@@ -5,56 +5,58 @@
         {
 
             <article class="article_item">
-                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
-                    <div class="item_container">
+                <div class="item_container">
 
-                        <div style="display:flex">
-                            <div style="display:flex; width:80%;">
+                    <div class="item_header">
+                        <div class="img">
+                        </div>
+                        <div class="title_container">
+                            <div class="title">@Article.Title</div>
+
+                            <div class="created">
+                                @Article.Created
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item_body">
+                        <p>
+                            @Article.Description
+                        </p>
+                        
+
+                        <div class="item_tags">
+                            <ol>
+
                                 @foreach (var tag in Article.ArticleTags)
                                 {
-                                    <div style="width:20%; height: 25px; text-align: center; margin-left: 10px; background-color:@tag.SupTag.Color;">
-                                        @tag.SupTag.Name
-                                    </div>
+                                    <li>
+                                        <span style="color:@tag.SupTag.Color;">#</span>
+                                        <span>@tag.SupTag.Name</span>
+                                    </li>
                                 }
+                            </ol>
+                            <div class="price">
+                                @Article.Price $
                             </div>
-                            <div>
-                                <div style="justify-content: right; display: flex;">
-                                    @Article.Created
-                                </div>
-                            </div>
-
                         </div>
-
-                        <div style="width: calc(100% - 320px); height: 150px;background-color: #fff;margin: 10px 0px 10px 0px;">
-                            <div style=" display:flex;height: 75%;">
-                                <div style="width:100%;">
-                                    <div style="font-size:23px">@Article.Title</div>
-                                    <div style="font-size:18px">@Article.Description</div>
-                                </div>
-                                <div class="meta_row" style="align-self: center; width:20%">
-                                    <div class="inputs" style="width: 90%;">
-                                        <div class="input" style="width:100%">
-                                            <div style="font-size:18px">@Article.Price $</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </a>
-
-                <div class="item_controls">
-                    <div class="controls_wrapper">
-                        <input formmethod="get"
-                               class="delete"
-                               type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
-                        <input formmethod="get"
-                               class="change"
-                               type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeMainArticle", "All",new {netUidArticle =Article.NetUid})'" />
                     </div>
                 </div>
+
+                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_btn">
+                    Continue Reading
+                </a>
+
+                @* <div class="item_controls">
+            <div class="controls_wrapper">
+            <input formmethod="get"
+            class="delete"
+            type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
+            <input formmethod="get"
+            class="change"
+            type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeMainArticle", "All",new {netUidArticle =Article.NetUid})'" />
+            </div>
+            </div>*@
             </article>
             @*@foreach (var Article in Model.Articles)
         {

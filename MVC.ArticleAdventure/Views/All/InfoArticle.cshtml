@@ -7,58 +7,83 @@
 
 <div class="container_content">
     <div class="articles_list_container">
-       <div style="display:flex;">
-            <div>
-                <div style="display:flex;">
-                    @foreach (var tag in Model.MainArticle.ArticleTags)
-                    {
-                        <div style=" width: 100px; height: 25px; text-align: center; margin-left: 10px;background-color:@tag.SupTag.Color;">
-                            @tag.SupTag.Name
-                        </div>
-                    }
-                </div>
-                <div style="margin-bottom: 50px;">
-                    <h1>@Model.MainArticle.Title</h1>
-                    <h2>@Model.MainArticle.Description</h2>
-                    <div>Created: @Model.MainArticle.Created</div>
+        <div class="list_info_wrapper">
+            <div class="list_left">
+                <div class="article_item archicle_info_item">
+                    <div class="item_container">
 
-                </div>
+                        <div class="item_header">
+                            <div class="title_container">
+                                <div class="title">@Model.MainArticle.Title</div>
 
-                <div>Материалы Статьи</div>
-                <div>
-                    <div>@Model.MainArticle.Articles.Count() sections</div>
-                </div>
-                <div style=" border-left: 1px solid #3d87c5; border-right: 1px solid #d1d7dc;">
-                    @foreach (var article in Model.MainArticle.Articles)
-                    {
-                        <div style="display:flex; border-top: 1px solid #3d87c5; border-bottom: 1px solid #3d87c5;">
-                            <div style="width:75%">
-                                <div>@article.Title</div>
-                                <div>@article.Description</div>
+                                <div class="created">
+                                    @Model.MainArticle.Created
+                                </div>
                             </div>
-                            <div style="width:25%;text-align:center;">@article.Price $</div>
                         </div>
-                    }
-                </div>
-                <div>
-                    <h3>Article information:</h3>
-                    <div>@Model.MainArticle.InfromationArticle</div>
-                </div>
-            </div>
 
-            <div>
-                <div>@Model.MainArticle.Price $</div>
-                <div >
-                    <div style="display:flex;">
-                        <button onclick="location.href='@Url.Action("SetFavoriteArticle", "Stripe",new {netUidArticle = Model.MainArticle.NetUid})'"> Go to the Cart</button>
-                        <button>♥</button>
+                        <div class="item_body">
+                            <p>
+                                @Model.MainArticle.Description
+                            </p>
+
+                            <div class="item_tags">
+                                <ol>
+
+                                    @foreach (var tag in Model.MainArticle.ArticleTags)
+                                    {
+                                        <li>
+                                            <span style="color:@tag.SupTag.Color;">#</span>
+                                            <span>@tag.SupTag.Name</span>
+                                        </li>
+                                    }
+                                </ol>
+                            </div>
+                        </div>
                     </div>
-                    <button style="width: 100px;" onclick="location.href='@Url.Action("GetInformationArticle", "All",new {netUidArticle = Model.MainArticle.NetUid})'">Buy now</button>
                 </div>
-                <div></div>
 
+                <div class="item_box_title">Materials Articles</div>
+                <div class="archicle_info_item">
+                    <div>
+                        <div>@Model.MainArticle.Articles.Count() sections</div>
+                    </div>
+                    <ul class="articles_list">
+                        @foreach (var article in Model.MainArticle.Articles)
+                        {
+                            <li>
+                                <div>
+                                    <div class="t">@article.Title</div>
+                                    <div class="d">@article.Description</div>
+                                </div>
+                                <div class="price_cell">@article.Price $</div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="archicle_info_item">
+                    <div>
+                        <h3>Article information:</h3>
+                        <div>@Model.MainArticle.InfromationArticle</div>
+                    </div>
+
+
+                </div>
             </div>
-       </div>
-       
+
+            <div class="list_pay">
+                <div class="archicle_info_item sticky">
+                    <div>@Model.MainArticle.Price $</div>
+                    <div>
+                        <div style="display:flex;">
+                            <button onclick="location.href='@Url.Action("SetFavoriteArticle", "Stripe",new {netUidArticle = Model.MainArticle.NetUid})'"> Go to the Cart</button>
+                            <button>♥</button>
+                        </div>
+                        <button style="width: 100px;" onclick="location.href='@Url.Action("GetInformationArticle", "All",new {netUidArticle = Model.MainArticle.NetUid})'">Buy now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

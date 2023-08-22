@@ -88,9 +88,21 @@ header .logOut a:hover svg {
 
 .body_container {
   padding: 60px 0 0 0;
-  background-color: #f2f3f5;
 }
 .body_container .container_content {
   width: 960px;
   margin: 0 auto;
+}
+
+body {
+  --epcl-main-color: #ff4c60;
+  --epcl-secondary-color: #65ebe7;
+  --epcl-titles-color: #454360;
+  --epcl-black-color: #4b4870;
+  --epcl-text-color: #596172;
+  --epcl-border-color: #eee;
+  --epcl-input-bg-color: #f9f9fe;
+  font: 17px "Source Serif Pro", "Source Sans Pro", serif;
+  background-color: #f9f9fe !important;
+  color: var(--epcl-text-color);
 }

@@ -98,6 +98,11 @@ namespace MVC.ArticleAdventure.Controllers
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
             var selectSupTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS);
 
+            mainArticle.Title = changeArticleModel.MainArticle.Title;
+            mainArticle.InfromationArticle = changeArticleModel.MainArticle.InfromationArticle;
+            mainArticle.Description = changeArticleModel.MainArticle.Description;
+            mainArticle.Price = changeArticleModel.MainArticle.Price;
+
             mainArticle.ArticleTags.Clear();
 
             foreach (var item in selectSupTags)
