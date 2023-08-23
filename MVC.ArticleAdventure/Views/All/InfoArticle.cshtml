@@ -43,12 +43,9 @@
                             </div>
                         </div>
                     </div>
-<<<<<<< HEAD
                     @*<button style="width: 100px;" onclick="location.href='@Url.Action("GetInformationArticle", "All",new {netUidArticle = Model.MainArticle.NetUid})'">Buy now</button>*@
-                    <button style="width: 100px;" onclick="location.href='@Url.Action("BuyNow", "Stripe",new {netUidBuyArticle = Model.MainArticle.NetUid})'">Buy now</button>
 
-=======
->>>>>>> 736595a1e5d57d4616ed38df0aa9389e92677298
+
                 </div>
 
                 <div class="item_box_title">Materials Articles</div>
@@ -92,8 +89,9 @@
                         <button class="like_box">
                             <svg class="svg-icon" style="overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M539.569231 61.046154l90.584615 295.384615c3.938462 11.815385 15.753846 17.723077 27.569231 17.723077h295.384615c29.538462 0 41.353846 39.384615 17.723077 57.107692l-240.246154 177.23077c-9.846154 7.876923-13.784615 21.661538-9.846153 33.476923L834.953846 945.230769c7.876923 27.569231-21.661538 51.2-45.292308 33.476923L531.692308 785.723077c-9.846154-7.876923-23.630769-7.876923-35.446154 0L236.307692 978.707692c-23.630769 17.723077-55.138462-5.907692-45.292307-33.476923l110.276923-303.261538c3.938462-11.815385 0-25.6-9.846154-33.476923l-240.246154-177.23077c-23.630769-17.723077-9.846154-57.107692 17.723077-57.107692h295.384615c13.784615 0 23.630769-3.938462 27.569231-17.723077L484.430769 59.076923c7.876923-27.569231 47.261538-25.6 55.138462 1.969231z" /></svg>
                         </button>
+                        <button class="archicle_btn full"  onclick="location.href='@Url.Action("BuyNow", "Stripe",new {netUidBuyArticle = Model.MainArticle.NetUid})'">Buy now</button>
 
-                        <button class="archicle_btn full" onclick="location.href='@Url.Action("GetInformationArticle", "All",new {netUidArticle = Model.MainArticle.NetUid})'">Buy now</button>
+                        @*<button class="archicle_btn full" onclick="location.href='@Url.Action("GetInformationArticle", "All",new {netUidArticle = Model.MainArticle.NetUid})'">GetArticle</button>*@
                     </div>
                 </div>
             </div>
