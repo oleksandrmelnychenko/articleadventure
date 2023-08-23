@@ -93,6 +93,9 @@ header .logOut a:hover svg {
   width: 960px;
   margin: 0 auto;
 }
+.body_container .container_content.w1260 {
+  width: 1260px;
+}
 
 body {
   --epcl-main-color: #ff4c60;

@@ -26,6 +26,35 @@
     z-index: 2;
 }
 
+.archicle_btn {
+    color: #fff;
+    font-size: 15px;
+    padding: 8px 25px;
+    letter-spacing: .5px;
+    font-family: "Josefin Sans",sans-serif;
+    border: 2px solid var(--epcl-black-color);
+    background-color: var(--epcl-black-color);
+    position: relative;
+    min-height: 44px;
+
+    &.full {
+        width: 100%;
+    }
+
+    &:before {
+        content: '';
+        @include position_absolute(2px,2px,2px,2px,1);
+        transition: all .3s ease;
+        border: 1px solid var(--epcl-black-color);
+    }
+
+    &:hover {
+        &:before {
+            border-color: #fff;
+        }
+    }
+}
+
 .article_item {
     .item_controls {
         width: 100%;
@@ -243,17 +272,78 @@
         position: sticky;
         top: 80px;
     }
+
+    &.price_item_container {
+        .img {
+            height: 160px;
+            box-shadow: 0 0 1px red;
+            @include position_absolute(0,0,auto,0);
+        }
+
+        .like_box {
+            width: 44px;
+            height: 44px;
+            background-color: transparent;
+            float: left;
+            transition: all .3s ease;
+            border: 1px solid var(--epcl-black-color);
+
+            svg {
+                fill: var( --epcl-secondary-color);
+                width: 32px;
+                transition: all 234ms linear;
+            }
+
+
+            &.isActive,
+            &:hover {
+                cursor: pointer;
+
+                svg {
+                    fill: var(--epcl-main-color);
+                }
+            }
+        }
+
+        .price {
+            font-size: 38px;
+            line-height: 1.2;
+            margin-bottom: 17.6px;
+            font-weight: 700;
+            font-family: "Josefin Sans", sans-serif;
+            color: var(--epcl-titles-color);
+            margin-top: 150px;
+        }
+
+        .controls {
+            .archicle_btn {
+                margin-bottom: 10px;
+
+                &.withLike {
+                    width: calc(100% - 50px);
+                    float: left;
+                    margin-right: 6px;
+                }
+            }
+        }
+    }
+
+    .sectionsCount {
+        color: var(--epcl-text-color);
+        letter-spacing: 0.5px;
+        font-size: 16px;
+    }
 }
 
 .list_info_wrapper {
     display: flex;
 
     .list_left {
-        width: calc(100% - 260px);
+        width: calc(100% - 360px);
     }
 
     .list_pay {
-        width: 240px;
+        width: 340px;
         margin-left: 20px;
     }
 }

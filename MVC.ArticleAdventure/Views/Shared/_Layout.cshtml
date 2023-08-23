@@ -117,9 +117,23 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @*<script src="_content/AntDesign/js/ant-design-blazor.js" asp-append-version="true"></script>*@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ant-design-blazor/0.4.1/_content/AntDesign/js/ant-design-blazor.min.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.20/tinymce.min.js"></script>
+   @* <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.20/tinymce.min.js"></script>
     <script type="text/javascript">
         tinymce.init({ selector: 'textarea', height: 300, weight: 300 });
+    </script>*@
+    //
+    <script src="https://cdn.tiny.cloud/1/k5ii9rm59cstg182bo9zodyavodnwfavfs2bt8f8khq2erj2/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+            menubar: 'file edit view insert format tools table help',
+            toolbar_location: "top",
+            toolbar: 'undo redo | bold italic underline strikethrough | fontselect | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor | charmap emoticons | fullscreen  preview | insertfile image media link anchor codesample | ltr rtl',
+            toolbar_mode: 'sliding',
+            fontsize_formats: "8px 10px 11px 12px 14px 16px 18px 20px 24px 28px 36px 40px",
+            height: "680"
+        });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

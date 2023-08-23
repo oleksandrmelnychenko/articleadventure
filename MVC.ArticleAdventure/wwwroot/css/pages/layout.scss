@@ -84,12 +84,17 @@ header {
         }
     }
 }
+
 .body_container {
     padding: $header_height 0 0 0;
 
     .container_content {
         width: 960px;
         margin: 0 auto;
+
+        &.w1260 {
+            width: 1260px;
+        }
     }
 }
 
