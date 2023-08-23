@@ -97,6 +97,10 @@ namespace MVC.ArticleAdventure.Controllers
         {
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
             var selectSupTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS);
+            mainArticle.InfromationArticle = changeArticleModel.MainArticle.Title;
+            mainArticle.InfromationArticle = changeArticleModel.MainArticle.InfromationArticle;
+            mainArticle.Description = changeArticleModel.MainArticle.Description;
+            mainArticle.Price = changeArticleModel.MainArticle.Price;
 
             mainArticle.ArticleTags.Clear();
 
@@ -231,7 +235,7 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> Remove(Guid netUidArticle)
         {
-            await _supArticleService.Remove(netUidArticle);
+            await _mainArticleService.Remove(netUidArticle);
             return Redirect("~/All/AllBlogs");
         }
 

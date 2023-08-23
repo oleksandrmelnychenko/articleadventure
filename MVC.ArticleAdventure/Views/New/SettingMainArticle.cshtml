@@ -62,12 +62,20 @@
                     </div>
                     <div style="text-align: center;">
                         <div>
+                            <button value="Change" type="button" onclick="location.href='@Url.Action("ChangeLocalSupArticle",new {ChangeIdArticle =article.Id})'">Change</button>
+                            <button value="Delete " type="button" onclick="location.href='@Url.Action("RemoveLocalSupArticle",new {RemoveIdArticle =article.Id})'">Delete</button>
+                    </div>
+                       @* <div>
                             <input value="Сhange" type="submit" asp-page-handler="Submit" />
                             <input  class="change" value="Delete" type="submit" asp-page-handler="Submit" />
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             }
+            <div>
+                <button type="button" onclick="location.href='@Url.Action("AddNewSupArticle","New")'">Add Sup Article</button>
+
+            </div>
         </div>
         <div class="meta_row">
             <div class="inputs" style="width:100%">

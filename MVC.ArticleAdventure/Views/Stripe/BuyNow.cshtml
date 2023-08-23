@@ -1,0 +1,20 @@
+﻿@model domain.ArticleAdventure.Models.BuyNowModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        // Код, який виконається при завантаженні сторінки
+        const pubKey = '@Model.orderResponse.PubKey';
+        const sessionId = '@Model.orderResponse.SessionId';
+        checkout(pubKey, sessionId);
+    });
+    function checkout(pubKey, sessionId) {
+        const stripe = Stripe(pubKey);
+        stripe.redirectToCheckout({ sessionId });
+    }
+    checkout('@Model.orderResponse.PubKey', '@Model.orderResponse.SessionId');
+</script>
+<button onclick="checkout('@Model.orderResponse.PubKey', '@Model.orderResponse.SessionId')">Оформити замовлення</button>

@@ -11,11 +11,6 @@ namespace domain.ArticleAdventure.Models
         public List<AuthorArticle> authorArticles { get; set; } = new List<AuthorArticle>();
 
         public AuthorArticle authorArticle { get; set; }
-        public string InfromationArticle { get; set; }
-        public string MainPrice { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Body { get; set; }
         public Guid NetUidTags { get; set; }
     }
 }

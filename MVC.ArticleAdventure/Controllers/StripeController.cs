@@ -15,12 +15,14 @@ namespace MVC.ArticleAdventure.Controllers
         private readonly ILogger<StripeController> _logger;
         private readonly IArticleService _authenticationService;
         private readonly IMainArticleService _mainArticleService;
+        private readonly IStripeService _stripeService;
 
-        public StripeController(ILogger<StripeController> logger, IArticleService authenticationService, IMainArticleService mainArticleService)
+        public StripeController(ILogger<StripeController> logger, IArticleService authenticationService, IMainArticleService mainArticleService, IStripeService stripeService)
         {
             _logger = logger;
             _authenticationService = authenticationService;
             _mainArticleService = mainArticleService;
+            _stripeService = stripeService;
         }
 
         [HttpGet]
@@ -83,12 +85,20 @@ namespace MVC.ArticleAdventure.Controllers
             {
                 listAuthorArticle.Add(article);
                 SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CART_ARTICLE, listAuthorArticle);
-
             }
 
             return Redirect("~/All/AllBlogs");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> BuyNow(Guid netUidBuyArticle)
+        {
+            var article = await _mainArticleService.GetArticle(netUidBuyArticle);
+            var orderInfo = await _stripeService.BuyStripe(article);
+
+            BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo };
+            return View(buyNowModel);
+        }
 
     }
 }

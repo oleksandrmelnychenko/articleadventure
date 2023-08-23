@@ -2,7 +2,8 @@
 {
     public static class SessionStoragePath
     {
-        public const string CREATE_MAIN_ARTICLE = "mainArticle";
+        public const string CREATE_SUP_ARTICLE = "CreateSupArticle";
+        public const string CREATE_MAIN_ARTICLE = "CreateMainArticle";
         public const string CHANGE_MAIN_ARTICLE = "ChangeMainArticle";
         public const string CHANGE_MAIN_TAGS = "ChangeMainTags";
         public const string ID_MAIN_ARTICLE = "idMainArticle";

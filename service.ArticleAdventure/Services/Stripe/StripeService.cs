@@ -1,6 +1,7 @@
 ﻿using domain.ArticleAdventure.Entities;
 using service.ArticleAdventure.Services.Stripe.Contracts;
 using Stripe;
+using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,78 +26,60 @@ namespace service.ArticleAdventure.Services.Stripe
             _tokenService = tokenService;
         }
 
-        /// <summary>
-        /// Create a new customer at Stripe through API using customer and card details from records.
-        /// </summary>
-        /// <param name="customer">Stripe Customer</param>
-        /// <param name="ct">Cancellation Token</param>
-        /// <returns>Stripe Customer</returns>
-        public async Task<StripeCustomer> AddStripeCustomerAsync(AddStripeCustomer customer, CancellationToken ct)
+        public async Task<CheckoutOrderResponse> CheckOut(MainArticle mainArticle,string thisApiUrl)
         {
-            // Set Stripe Token options based on customer data
-            TokenCreateOptions tokenOptions = new TokenCreateOptions
+            var options = new SessionCreateOptions
             {
-                Card = new TokenCardOptions
+                // Stripe calls the URLs below when certain checkout events happen such as success and failure.
+                SuccessUrl = $"{thisApiUrl}/api/v1/stripe/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
+                CancelUrl = "https://localhost:7197/" + "failed",  // Checkout cancelled.
+                PaymentMethodTypes = new List<string> // Only card available in test mode?
+            {
+                "card"
+            },
+                LineItems = new List<SessionLineItemOptions>
+            {
+                new()
                 {
-                    Name = customer.Name,
-                    Number = customer.CreditCard.CardNumber,
-                    ExpYear = customer.CreditCard.ExpirationYear,
-                    ExpMonth = customer.CreditCard.ExpirationMonth,
-                    Cvc = customer.CreditCard.Cvc
-                }
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = mainArticle.Price * 100, // Price is in USD cents. 
+                        Currency = "USD",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = mainArticle.Title,
+                            Description = mainArticle.Description,
+                            //Images = new List<string> { product.ImageUrl }
+                        },
+                    },
+                    Quantity = 1,
+                },
+            },
+                Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
             };
 
-            // Create new Stripe Token
-            Token stripeToken = await _tokenService.CreateAsync(tokenOptions, null, ct);
+            var service = new SessionService();
+            var session = await service.CreateAsync(options);
 
-            // Set Customer options using
-            CustomerCreateOptions customerOptions = new CustomerCreateOptions
+            var pubKey = "pk_test_51NdTsYLwAUt6I3BOPOMdxTKOoBPd9UErIyY7J7NY4XwOTDHHfmeFGbcQK18m4KJ6x1g9UZ5TizySV8TxnhamzQbS00cbtKuMRf";
+
+            var checkoutOrderResponse = new CheckoutOrderResponse()
             {
-                Name = customer.Name,
-                Email = customer.Email,
-                Source = stripeToken.Id
+                SessionId = session.Id,
+                PubKey = pubKey
             };
+            return checkoutOrderResponse;
 
-            // Create customer at Stripe
-            Customer createdCustomer = await _customerService.CreateAsync(customerOptions, null, ct);
-
-            // Return the created customer at stripe
-            return new StripeCustomer { Name =  createdCustomer.Name, Email = createdCustomer.Email, CustomerId = createdCustomer.Id };
         }
 
-        /// <summary>
-        /// Add a new payment at Stripe using Customer and Payment details.
-        /// Customer has to exist at Stripe already.
-        /// </summary>
-        /// <param name="payment">Stripe Payment</param>
-        /// <param name="ct">Cancellation Token</param>
-        /// <returns><Stripe Payment/returns>
-        public async Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct)
+        public async Task CheckoutSuccess(string sessionId)
         {
-            // Set the options for the payment we would like to create at Stripe
-            ChargeCreateOptions paymentOptions = new ChargeCreateOptions
-            {
-                Customer = payment.CustomerId,
-                ReceiptEmail = payment.ReceiptEmail,
-                Description = payment.Description,
-                Currency = payment.Currency,
-                Amount = payment.Amount
-            };
+            var sessionService = new SessionService();
+            var session = sessionService.Get(sessionId);
 
-            // Create the payment
-            var createdPayment = await _chargeService.CreateAsync(paymentOptions, null, ct);
-
-            // Return the payment to requesting method
-            return new StripePayment
-            {
-                CustomerId = createdPayment.CustomerId,
-                ReceiptEmail = createdPayment.ReceiptEmail,
-                Description = createdPayment.Description,
-                Currency = createdPayment.Currency,
-                Amount = createdPayment.Amount,
-                PaymentId = createdPayment.Id
-            };
-             
+            // Here you can save order and customer details to your database.
+            var total = session.AmountTotal.Value;
+            var customerEmail = session.CustomerDetails.Email;
         }
     }
 }

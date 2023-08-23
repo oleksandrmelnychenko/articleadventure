@@ -53,7 +53,9 @@
                         <button onclick="location.href='@Url.Action("SetFavoriteArticle", "Stripe",new {netUidArticle = Model.MainArticle.NetUid})'"> Go to the Cart</button>
                         <button>♥</button>
                     </div>
-                    <button style="width: 100px;" onclick="location.href='@Url.Action("GetInformationArticle", "All",new {netUidArticle = Model.MainArticle.NetUid})'">Buy now</button>
+                    @*<button style="width: 100px;" onclick="location.href='@Url.Action("GetInformationArticle", "All",new {netUidArticle = Model.MainArticle.NetUid})'">Buy now</button>*@
+                    <button style="width: 100px;" onclick="location.href='@Url.Action("BuyNow", "Stripe",new {netUidBuyArticle = Model.MainArticle.NetUid})'">Buy now</button>
+
                 </div>
                 <div></div>
 

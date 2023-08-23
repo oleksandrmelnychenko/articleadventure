@@ -11,7 +11,7 @@ namespace webApi.ArticleAdventure.Controllers
     [AssignControllerRoute(WebApiEnvironment.Current, WebApiVersion.ApiVersion1, ApplicationSegments.Stripe)]
     public class StripeController : WebApiControllerBase
     {
-        IStripeService _stripeService;
+        private readonly IStripeService _stripeService;
         public StripeController(IResponseFactory responseFactory,IStripeService stripeService) : base(responseFactory)
         {
             _stripeService = stripeService;
@@ -22,14 +22,14 @@ namespace webApi.ArticleAdventure.Controllers
             return View();
         }
         [HttpPost]
-        [AssignActionRoute(StripeSegments.ADD_STRIPE_CUSTOMER)]
-        public async Task<IActionResult> AddStripeCustomerAsync([FromBody] AddStripeCustomer customer,
-            CancellationToken ct)
+        [AssignActionRoute(StripeSegments.CHECKOUT)]
+        public async Task<IActionResult> CheckoutOrder([FromBody] MainArticle mainArticle)
         {
             try
             {
-               var customerResponce = await _stripeService.AddStripeCustomerAsync(customer,ct);
-                return Ok(SuccessResponseBody(customerResponce, "Статус успешно изменён."));
+                //var customerResponce = await _stripeService.AddStripeCustomerAsync(customer,ct);
+                var s = await _stripeService.CheckOut(mainArticle, "https://localhost:7192");
+                return Ok(SuccessResponseBody(s, "Статус успешно изменён."));
             }
             catch (Exception exc)
             {
@@ -38,15 +38,15 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
 
-        [HttpPost]
-        [AssignActionRoute(StripeSegments.ADD_STRIPE_PAYMENT)]
-        public async Task<IActionResult> AddStripePayment([FromBody] AddStripePayment payment,
-           CancellationToken ct)
+        [HttpGet]
+        [AssignActionRoute(StripeSegments.CHECKOUT_SUCCESS)]
+        public async Task<IActionResult> CheckoutSuccess(string sessionId)
         {
             try
             {
-                var paymentResponce = await _stripeService.AddStripePaymentAsync(payment, ct);
-                return Ok(SuccessResponseBody(paymentResponce, "Статус успешно изменён."));
+                //var customerResponce = await _stripeService.AddStripeCustomerAsync(customer,ct);
+                await _stripeService.CheckoutSuccess(sessionId);
+                return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
             }
             catch (Exception exc)
             {
