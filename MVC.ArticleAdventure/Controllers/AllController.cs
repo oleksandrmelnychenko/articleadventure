@@ -102,6 +102,11 @@ namespace MVC.ArticleAdventure.Controllers
             mainArticle.Description = changeArticleModel.MainArticle.Description;
             mainArticle.Price = changeArticleModel.MainArticle.Price;
 
+            mainArticle.Title = changeArticleModel.MainArticle.Title;
+            mainArticle.InfromationArticle = changeArticleModel.MainArticle.InfromationArticle;
+            mainArticle.Description = changeArticleModel.MainArticle.Description;
+            mainArticle.Price = changeArticleModel.MainArticle.Price;
+
             mainArticle.ArticleTags.Clear();
 
             foreach (var item in selectSupTags)
