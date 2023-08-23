@@ -613,7 +613,7 @@ body {
   cursor: pointer;
 }
 .archicle_info_item.price_item_container .like_box.isActive svg, .archicle_info_item.price_item_container .like_box:hover svg {
-  fill: var(--epcl-main-color);
+  fill: var(--epcl-black-color);
 }
 .archicle_info_item.price_item_container .price {
   font-size: 38px;
