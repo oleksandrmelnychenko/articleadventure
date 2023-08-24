@@ -496,6 +496,7 @@ body {
   font-family: "Josefin Sans", sans-serif;
   font-size: 17px;
   font-weight: 500;
+  text-align: right;
 }
 .article_item .continueReading_btn {
   top: auto;
@@ -530,6 +531,51 @@ body {
 }
 .article_item .continueReading_btn:hover:before {
   border-color: #fff;
+}
+.article_item .priceBox_style {
+  top: auto;
+  left: auto;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  overflow: hidden;
+}
+.article_item .priceBox_style:before {
+  content: "";
+  width: 260px;
+  height: 260px;
+  top: auto;
+  left: auto;
+  right: -64%;
+  bottom: -64%;
+  z-index: 1;
+  position: absolute;
+  border-radius: 50%;
+  background: #f9f9fe;
+  border: 1px solid #f0f0fd;
+}
+.article_item .priceBox_style .continueReading_price {
+  top: auto;
+  left: auto;
+  right: 40px;
+  bottom: 40px;
+  z-index: 2;
+  position: absolute;
+  color: var(--epcl-text-color);
+  font-size: 18px;
+  font-family: "Source Serif Pro", "Source Sans Pro", serif;
+  line-height: 1;
+  letter-spacing: 0.25px;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.article_item .priceBox_style .continueReading_price span {
+  font-size: 38px;
+  font-weight: 100;
+  padding: 2px;
 }
 
 .archicle_info_item ul.articles_list {

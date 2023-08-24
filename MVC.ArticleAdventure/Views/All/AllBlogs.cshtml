@@ -36,9 +36,6 @@
                                     </li>
                                 }
                             </ol>
-                            <div class="price">
-                                @Article.Price $
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -46,6 +43,12 @@
                 <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_btn">
                     Continue Reading
                 </a>
+
+                <div class="priceBox_style">
+                    <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_price">
+                        <span>@Article.Price</span>$
+                    </a>
+                </div>
 
                 @* <div class="item_controls">
             <div class="controls_wrapper">
