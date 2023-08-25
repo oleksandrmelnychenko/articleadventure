@@ -1,0 +1,21 @@
+﻿@model domain.ArticleAdventure.Models.AccountSecurityModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div>
+    @Html.Partial("_RightSideProfileEdit")
+   <div>
+       <div>
+            <input type="text" disabled="true" placeholder="Your email: @Model.ChangeUser.Email"  />
+            <div></div>
+        </div>
+        <div style="display: grid;">
+            <input type="text" placeholder="CurrentPassword" asp-for="CurrentPassword" />
+            <input type="text" placeholder="NewPassword" asp-for="NewPassword" />
+            <input type="text" placeholder="ConfirmNewPassword" asp-for="ConfirmNewPassword" />
+        </div>
+   </div>
+</div>

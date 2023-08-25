@@ -31,4 +31,8 @@
     <ProjectReference Include="..\service.ArticleAdventure\service.ArticleAdventure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
 </Project>

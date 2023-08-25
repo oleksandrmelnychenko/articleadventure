@@ -17,6 +17,7 @@
 <body>
     @{
         var listAuthorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(Context.Session, SessionStoragePath.CART_ARTICLE);
+        var userProfile = SessionExtensionsMVC.Get<UserProfile>(Context.Session, SessionStoragePath.USER);
 
     }
     @{
@@ -80,11 +81,11 @@
                     <div class="user_menu_container">
                         <div class="line">
                             <div class="user_info">
-                                <div class="img_i">S</div>
+                                <div class="img_i">@userProfile?.UserName?.Substring(0, 1)</div>
                                 <div class="info_i">
                                     <div>
-                                        <div class="name">Serhii</div>
-                                        <div class="email">serhii_svystun@gmail.com</div>
+                                        <div class="name">@userProfile?.UserName</div>
+                                        <div class="email">@userProfile?.Email</div>
                                     </div>
                                 </div>
                             </div>
@@ -93,19 +94,19 @@
                         <div class="line">
                             <ul>
                                 <li>
-                                    <a asp-area="" asp-controller="New" asp-action="LogOutAccount">My Courses</a>
+                                    <a asp-area="" asp-controller="User" asp-action="MyArticles">My Courses</a>
                                 </li>
                                 <li>
-                                    <a asp-area="" asp-controller="New" asp-action="LogOutAccount">My Cart</a>
+                                    <a asp-area="" asp-controller="Stripe" asp-action="Basket">My Cart</a>
                                 </li>
                                 <li>
-                                    <a asp-area="" asp-controller="New" asp-action="LogOutAccount">Like Articles</a>
+                                    <a asp-area="" asp-controller="User" asp-action="MyFavoriteArticle">Like Articles</a>
                                 </li>
                                 <li>
-                                    <a asp-area="" asp-controller="New" asp-action="LogOutAccount">History buy</a>
+                                    <a asp-area="" asp-controller="User" asp-action="HistoryBuy">History buy</a>
                                 </li>
                                 <li>
-                                    <a asp-area="" asp-controller="New" asp-action="LogOutAccount">Setting Profile</a>
+                                    <a asp-area="" asp-controller="User" asp-action="EditProfile">Setting Profile</a>
                                 </li>
                             </ul>
                         </div>
@@ -139,14 +140,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @*<script src="_content/AntDesign/js/ant-design-blazor.js" asp-append-version="true"></script>*@
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ant-design-blazor/0.4.1/_content/AntDesign/js/ant-design-blazor.min.js" asp-append-version="true"></script>
-    @* <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.20/tinymce.min.js"></script>
-    <script type="text/javascript">
-    tinymce.init({ selector: 'textarea', height: 300, weight: 300 });
-    </script>*@
-    //
     <script src="https://cdn.tiny.cloud/1/k5ii9rm59cstg182bo9zodyavodnwfavfs2bt8f8khq2erj2/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script type="text/javascript">
         tinymce.init({

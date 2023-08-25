@@ -29,7 +29,7 @@ namespace service.ArticleAdventure.Services.UserManagement
             _identityRepositoriesFactory = identityRepositoriesFactory;
         }
 
-        public Task<UserResponseLogin> RequestToken(string userName, string password, bool rememberUser) =>
+        public Task<CompleteAccessToken> RequestToken(string userName, string password, bool rememberUser) =>
             Task.Run(async () =>
             {
                 if (string.IsNullOrEmpty(userName)) throw new Exception("Please enter your Email");
@@ -46,14 +46,14 @@ namespace service.ArticleAdventure.Services.UserManagement
                 
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    CompleteAccessToken s = TokenGenerator.GenerateToken(
+                   var tokenGenerate = TokenGenerator.GenerateToken(
                         _identityRepositoriesFactory.NewUserTokenRepository(connection),
                         claims.Claims,
                         user,
                         rememberUser
                     );
-                    UserResponseLogin userResponseLogin = new UserResponseLogin { AccessToken = s.AccessToken, RefreshToken = s.RefreshToken };
-                    return userResponseLogin;
+                    return new CompleteAccessToken { AccessToken = tokenGenerate.AccessToken, RefreshToken = tokenGenerate.RefreshToken , UserNetUid = user.NetId};
+
                 }
             });
 

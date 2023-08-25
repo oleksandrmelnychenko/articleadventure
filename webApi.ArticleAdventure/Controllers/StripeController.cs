@@ -23,12 +23,12 @@ namespace webApi.ArticleAdventure.Controllers
         }
         [HttpPost]
         [AssignActionRoute(StripeSegments.CHECKOUT)]
-        public async Task<IActionResult> CheckoutOrder([FromBody] MainArticle mainArticle)
+        public async Task<IActionResult> CheckoutOrder( string emailUser,[FromBody] MainArticle mainArticle)
         {
             try
             {
                 //var customerResponce = await _stripeService.AddStripeCustomerAsync(customer,ct);
-                var s = await _stripeService.CheckOut(mainArticle, "https://localhost:7192");
+                var s = await _stripeService.CheckOut(mainArticle, "https://localhost:7192", emailUser);
                 return Ok(SuccessResponseBody(s, "Статус успешно изменён."));
             }
             catch (Exception exc)

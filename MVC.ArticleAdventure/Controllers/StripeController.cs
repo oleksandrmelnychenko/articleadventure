@@ -94,7 +94,9 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> BuyNow(Guid netUidBuyArticle)
         {
             var article = await _mainArticleService.GetArticle(netUidBuyArticle);
-            var orderInfo = await _stripeService.BuyStripe(article);
+            var userProfile = SessionExtensionsMVC.Get<UserProfile>(HttpContext.Session, SessionStoragePath.USER);
+
+            var orderInfo = await _stripeService.BuyStripe(article,userProfile.Email);
 
             BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo };
             return View(buyNowModel);

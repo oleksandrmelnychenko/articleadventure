@@ -1,7 +1,10 @@
-﻿using domain.ArticleAdventure.Models;
+﻿using domain.ArticleAdventure.EntityHelpers.Identity;
+using domain.ArticleAdventure.Helpers;
+using domain.ArticleAdventure.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
 using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
@@ -37,26 +40,24 @@ namespace MVC.ArticleAdventure.Controllers
             {
                 return View(userLogin);
             }
-            UserResponseLogin response = await _authenticationService.Login(userLogin);
-            if (response.ResponseResult != null)
-            {
-                //добавити сповіщення про неправильний логін
-                return View();
-            }
-            else
-            {
-                await SignIn(response);
-                return Redirect("/");
-            }
-            
+            CompleteAccessToken response = await _authenticationService.Login(userLogin);
+            var user = await _authenticationService.GetProfile(response.UserNetUid);
+
+            SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.USER, user);
+
+            await SignIn(response);
+            return Redirect("/");
+
+
         }
 
-        private async Task SignIn(UserResponseLogin response)
+        private async Task SignIn(CompleteAccessToken response)
         {
             var token = GetTokenFormat(response.AccessToken);
 
             var claims = new List<Claim>();
             claims.Add(new Claim("JWT", response.AccessToken));
+            claims.Add(new Claim("Guid", response.UserNetUid.ToString()));
             claims.AddRange(token.Claims);
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -80,7 +81,7 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("CreateAccount")]
         public async Task<IActionResult> CreateAccount()
         {
-            RegisterModel registerModel = new RegisterModel { IsEmailConfirmed = false};
+            RegisterModel registerModel = new RegisterModel { IsEmailConfirmed = false };
             return View(registerModel);
         }
         [HttpPost]
@@ -92,7 +93,7 @@ namespace MVC.ArticleAdventure.Controllers
                 return View(registerModel);
             }
             var token = await _userProfileService.CreateAccount(registerModel);
-            if (token.ResponseResult!= null)
+            if (token.ResponseResult != null)
             {
                 //тут треба щось на перевірте почту
                 return View(registerModel);
@@ -107,9 +108,9 @@ namespace MVC.ArticleAdventure.Controllers
 
         [HttpGet]
         [Route("emailConfirmation")]
-        public async Task<IActionResult> emailConfirmation(string access_token,string userId)
+        public async Task<IActionResult> emailConfirmation(string access_token, string userId)
         {
-           var resultSucceeded =  await _userProfileService.EmailConformation(access_token, userId);
+            var resultSucceeded = await _userProfileService.EmailConformation(access_token, userId);
             if (resultSucceeded)
             {
                 return View();
@@ -118,7 +119,7 @@ namespace MVC.ArticleAdventure.Controllers
             {
                 return View();
             }
-            
+
         }
     }
 }

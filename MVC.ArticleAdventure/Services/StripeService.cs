@@ -19,10 +19,10 @@ namespace MVC.ArticleAdventure.Services
             _httpClient = httpClient;
         }
 
-        public async Task<CheckoutOrderResponse> BuyStripe(MainArticle mainArticle)
+        public async Task<CheckoutOrderResponse> BuyStripe(MainArticle mainArticle, string Email)
         {
 
-           var response = await _httpClient.PostAsJsonAsync(PathTag.BUY_STRIPE, mainArticle);
+           var response = await _httpClient.PostAsJsonAsync($"{PathTag.BUY_STRIPE}?emailUser={Email}", mainArticle);
 
             var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
             CheckoutOrderResponse orderResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<CheckoutOrderResponse>(successResponse.Body.ToString());

@@ -4,6 +4,6 @@ namespace MVC.ArticleAdventure.Services.Contract
 {
     public interface IStripeService
     {
-        Task<CheckoutOrderResponse> BuyStripe(MainArticle mainArticle);
+        Task<CheckoutOrderResponse> BuyStripe(MainArticle mainArticle,string Email);
     }
 }

@@ -70,5 +70,21 @@ namespace webApi.ArticleAdventure.Controllers
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
             }
         }
+        [HttpGet]
+        [AssignActionRoute(UserManagementSegments.GET_USER_NETUID)]
+        public async Task<IActionResult> GetNetUidUser(Guid userNetId)
+        {
+            try
+            {
+
+                return Ok(SuccessResponseBody(await _userProfileService.GetById(userNetId), "New user successfully updated Email"));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+
     }
 }

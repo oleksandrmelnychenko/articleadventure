@@ -3,6 +3,7 @@ using service.ArticleAdventure.Services.Stripe.Contracts;
 using Stripe;
 using Stripe.Checkout;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace service.ArticleAdventure.Services.Stripe
 {
-    public class StripeService:IStripeService
+    public class StripeService : IStripeService
     {
         private readonly ChargeService _chargeService;
         private readonly CustomerService _customerService;
@@ -26,17 +27,25 @@ namespace service.ArticleAdventure.Services.Stripe
             _tokenService = tokenService;
         }
 
-        public async Task<CheckoutOrderResponse> CheckOut(MainArticle mainArticle,string thisApiUrl)
+        public async Task<CheckoutOrderResponse> CheckOut(MainArticle mainArticle, string thisApiUrl, string userEmail)
         {
+
+            var metaData = new Dictionary<string, string>()
+                                {
+                                   { "ID", mainArticle.Id.ToString() }
+                                };
             var options = new SessionCreateOptions
             {
+                CustomerEmail = userEmail,
+
                 // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                 SuccessUrl = $"{thisApiUrl}/api/v1/stripe/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
                 CancelUrl = "https://localhost:7197/" + "failed",  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> // Only card available in test mode?
-            {
-                "card"
-            },
+                {
+                    "card"
+                },
+                //Metadata = metaData,
                 LineItems = new List<SessionLineItemOptions>
             {
                 new()
@@ -49,8 +58,11 @@ namespace service.ArticleAdventure.Services.Stripe
                         {
                             Name = mainArticle.Title,
                             Description = mainArticle.Description,
-                            //Images = new List<string> { product.ImageUrl }
+                            //Metadata = metaData
+            //Images = new List<string> { product.ImageUrl }
                         },
+                        
+
                     },
                     Quantity = 1,
                 },
@@ -76,7 +88,7 @@ namespace service.ArticleAdventure.Services.Stripe
         {
             var sessionService = new SessionService();
             var session = sessionService.Get(sessionId);
-
+             
             // Here you can save order and customer details to your database.
             var total = session.AmountTotal.Value;
             var customerEmail = session.CustomerDetails.Email;

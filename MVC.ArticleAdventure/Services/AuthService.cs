@@ -1,4 +1,6 @@
 ﻿using common.ArticleAdventure.ResponceBuilder;
+using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.EntityHelpers.Identity;
 using domain.ArticleAdventure.Models;
 using Microsoft.Extensions.Options;
 using MVC.ArticleAdventure.Extensions;
@@ -17,27 +19,25 @@ namespace MVC.ArticleAdventure.Services
             _httpClient = httpClient;
         }
 
-        public async Task<UserResponseLogin> Login(UserLogin userLogin)
+        public async Task<CompleteAccessToken> Login(UserLogin userLogin)
         {
             var loginContent = GetContent(userLogin);
             //request token
             var response = await _httpClient.GetAsync($"/api/v1/usermanagement/token/request?email={userLogin.Email}&password={userLogin.Password}&rememberUser=True");
 
-            if (!CustomContainErrorResponse(response))
-            {
-                return new UserResponseLogin
-                {
-                    ResponseResult = await DeserializeObjectResponse<ErrorResponse>(response)
-                };
-            }
-            else
-            {
-                var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-                UserResponseLogin userResponseLogin = Newtonsoft.Json.JsonConvert.DeserializeObject<UserResponseLogin>(successResponse.Body.ToString());
-                return userResponseLogin;
-            }
+            var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+            CompleteAccessToken userResponseLogin = Newtonsoft.Json.JsonConvert.DeserializeObject<CompleteAccessToken>(successResponse.Body.ToString());
+            return userResponseLogin;
 
+        }
 
+        public async Task<UserProfile> GetProfile(Guid guid)
+        {
+            var response = await _httpClient.GetAsync($"/api/v1/usermanagement/get/netuid?userNetId={guid}");
+
+            var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+            UserProfile userResponseLogin = Newtonsoft.Json.JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+            return userResponseLogin;
         }
 
         public async Task<UserResponseLogin> Register(UserRegister userRegister)

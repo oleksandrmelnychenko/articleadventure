@@ -17,6 +17,9 @@ namespace database.ArticleAdventure.EntityMaps
 
             entity.ToTable("UserProfile");
             entity.Property(e => e.UserName).HasMaxLength(150);
+            entity.Property(e => e.SurName).HasMaxLength(150).IsRequired(false);
+            entity.Property(e => e.LinkPictureUser).IsRequired(false);
+            entity.Property(e => e.InformationAccount).IsRequired(false);
             entity.Property(e => e.Email).HasMaxLength(150);
         }
     }

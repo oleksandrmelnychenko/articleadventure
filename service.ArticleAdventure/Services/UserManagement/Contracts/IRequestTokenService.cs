@@ -10,7 +10,7 @@ namespace service.ArticleAdventure.Services.UserManagement.Contracts
 {
     public interface IRequestTokenService
     {
-        Task<UserResponseLogin> RequestToken(string userName, string password, bool rememberUser);
+        Task<CompleteAccessToken> RequestToken(string userName, string password, bool rememberUser);
 
         Task<CompleteAccessToken> RefreshToken(string refreshToken);
 

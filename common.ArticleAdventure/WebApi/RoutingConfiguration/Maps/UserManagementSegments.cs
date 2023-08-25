@@ -19,6 +19,7 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
         public const string FULL_UPDATE_USER_PROFILE = "update";
 
         public const string EMAIL_CONFORMATION = "email";
+        public const string GET_USER_NETUID = "get/netuid";
 
     }
 }

@@ -33,8 +33,7 @@ namespace database.ArticleAdventure.EntityMaps
                 .IsRequired()
                 .HasMaxLength(250);
             entity.Property(p => p.Description)
-                .IsRequired()
-                .HasMaxLength(250);
+                .IsRequired();
             entity.Property(p => p.Image)
                .IsRequired(false)
                .HasMaxLength(250);

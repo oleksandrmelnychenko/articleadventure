@@ -88,6 +88,7 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> LogOutAccount()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var userGuidClaim = User.FindFirst("Guid");
             return Redirect("~/Login");
         }
 

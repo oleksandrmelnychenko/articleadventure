@@ -1,0 +1,16 @@
+﻿@model domain.ArticleAdventure.Models.EditProfileModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div style="display:flex">
+    @Html.Partial("_RightSideProfileEdit")
+
+    <div style="display: grid;">
+        <input type="text" placeholder="Name" asp-for="UserProfile.UserName" />
+        <input type="text" placeholder="SurName" asp-for="UserProfile.SurName" />
+        <input type="text" placeholder="InformationAccount" asp-for="UserProfile.InformationAccount" />
+    </div>
+</div>
