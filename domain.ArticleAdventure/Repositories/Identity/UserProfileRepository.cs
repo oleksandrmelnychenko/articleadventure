@@ -100,6 +100,15 @@ namespace domain.ArticleAdventure.Repositories.Identity
                 userProfile
             );
 
+        public void UpdateAccountInformation(UserProfile userProfile) =>
+           _connection.Execute(
+               "UPDATE [UserProfile] " +
+               "SET [UserName] = @UserName, [InformationAccount] = @InformationAccount, [SurName] = @SurName, " +
+               "[Updated] = GETUTCDATE() " +
+               "WHERE ID = @Id",
+               userProfile
+           );
+
         public void Remove(long id) =>
             _connection.Execute(
                 "UPDATE [UserProfile] " +

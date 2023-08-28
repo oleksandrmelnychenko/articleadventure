@@ -8,9 +8,10 @@
 <div style="display:flex">
     @Html.Partial("_RightSideProfileEdit")
 
-    <div style="display: grid;">
+    <form style="display: grid;">
         <input type="text" placeholder="Name" asp-for="UserProfile.UserName" />
         <input type="text" placeholder="SurName" asp-for="UserProfile.SurName" />
         <input type="text" placeholder="InformationAccount" asp-for="UserProfile.InformationAccount" />
-    </div>
+        <button formmethod="post">change</button>
+    </form>
 </div>

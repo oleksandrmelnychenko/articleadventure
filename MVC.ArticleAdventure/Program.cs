@@ -23,6 +23,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddHttpClient<IArticleService, ArticleService>();
 builder.Services.AddHttpClient<IStripeService, StripeService>();
+builder.Services.AddHttpClient<IUserService, UserService>();
 builder.Services.AddHttpClient<IMainArticleService, MainArticleService>();
 builder.Services.AddHttpClient<ITagService, TagService>();
 builder.Services.AddHttpClient<IUserProfileService, UserProfileService>();

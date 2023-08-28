@@ -81,11 +81,11 @@
                     <div class="user_menu_container">
                         <div class="line">
                             <div class="user_info">
-                                <div class="img_i">@userProfile?.UserName?.Substring(0, 1)</div>
+                                <div class="img_i">@Context.Request.Cookies[CookiesPath.USER_NAME]?.Substring(0, 1)</div>
                                 <div class="info_i">
                                     <div>
-                                        <div class="name">@userProfile?.UserName</div>
-                                        <div class="email">@userProfile?.Email</div>
+                                        <div class="name">@Context.Request.Cookies[CookiesPath.USER_NAME]</div>
+                                        <div class="email">@Context.Request.Cookies[CookiesPath.EMAIL]</div>
                                     </div>
                                 </div>
                             </div>

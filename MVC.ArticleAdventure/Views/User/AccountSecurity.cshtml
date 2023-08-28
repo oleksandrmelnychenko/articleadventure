@@ -1,21 +1,34 @@
-﻿@model domain.ArticleAdventure.Models.AccountSecurityModel
+﻿@using MVC.ArticleAdventure.Helpers;
+@model domain.ArticleAdventure.Models.AccountSecurityModel
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
-<div>
+<div style="display:flex;">
     @Html.Partial("_RightSideProfileEdit")
    <div>
-       <div>
-            <input type="text" disabled="true" placeholder="Your email: @Model.ChangeUser.Email"  />
-            <div></div>
-        </div>
-        <div style="display: grid;">
-            <input type="text" placeholder="CurrentPassword" asp-for="CurrentPassword" />
-            <input type="text" placeholder="NewPassword" asp-for="NewPassword" />
-            <input type="text" placeholder="ConfirmNewPassword" asp-for="ConfirmNewPassword" />
-        </div>
+            <input type="text" disabled="true" placeholder="Your email: @Context.Request.Cookies[CookiesPath.EMAIL] " />
+
+        <form asp-action="AccountSecurityEmail">
+                <h2>Изменение адреса электронной почты</h2>
+                <div>
+                    <label for="newEmail">Новый адрес электронной почты:</label>
+                    <input type="email" asp-for ="NewEmail" name="newEmail" required>
+
+                    <label for="password">Пароль:</label>
+                   <input type="password" asp-for="ConfirmPasswordUpdateEmail" >
+
+                    <button formmethod="post" type="submit">Сохранить изменения</button>
+                </div>
+            </form>
+        <form asp-action="AccountSecurity" style="display: grid;">
+            <input type="password" placeholder="CurrentPassword" asp-for="CurrentPassword" />
+            <input type="password" placeholder="NewPassword" asp-for="NewPassword" />
+            <input type="password" placeholder="ConfirmNewPassword" asp-for="ConfirmNewPassword" />
+        </form>
+        <button formmethod="post">Save</button>
    </div>
 </div>
+

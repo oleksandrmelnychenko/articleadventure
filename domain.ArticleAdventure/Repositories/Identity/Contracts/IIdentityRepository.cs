@@ -39,6 +39,8 @@ namespace domain.ArticleAdventure.Repositories.Identity.Contracts
 
         Task UpdateUser(User user);
 
+        Task<bool> CheckPassword(UserProfile userProfile, string password);
+
         Task UpdateUsersUserName(User user, string username);
 
         void UpdateUsersDisplayName(User user, string username);

@@ -2,12 +2,10 @@
 @using domain.ArticleAdventure.Entities;
 @using domain.ArticleAdventure.Helpers;
 @{
-    var user = SessionExtensionsMVC.Get<UserProfile>(Context.Session, SessionStoragePath.USER);
-
 }
 <div>
     <div>Image</div>
-    <div>@user.UserName</div>
+    <div>@Context.Request.Cookies[CookiesPath.USER_NAME]</div>
     <div style="display: grid;">
         <a asp-controller="User" asp-action="MyProfile">View Profile</a>
         <a asp-controller="User" asp-action="EditProfile">Edit Profile</a>

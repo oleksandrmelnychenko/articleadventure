@@ -11,10 +11,12 @@ namespace MVC.ArticleAdventure.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IArticleService _authenticationService;
-        public UserController(ILogger<UserController> logger, IArticleService authenticationService)
+        private readonly IUserService _userService;
+        public UserController(ILogger<UserController> logger, IArticleService authenticationService, IUserService userService)
         {
             _logger = logger;
             _authenticationService = authenticationService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -40,8 +42,22 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("EditProfile")]
         public async Task<IActionResult> EditProfile()
         {
-            var user = SessionExtensionsMVC.Get<UserProfile>(HttpContext.Session, SessionStoragePath.USER);
+            var userName = Request.Cookies[CookiesPath.USER_NAME];
+            var surName = Request.Cookies[CookiesPath.SURNAME];
+            var informationArticle = Request.Cookies[CookiesPath.INFORMATION_ARTICLE];
+
+            UserProfile user = new UserProfile { UserName = userName, InformationAccount = informationArticle, SurName = surName };
             EditProfileModel editProfileModel = new EditProfileModel { UserProfile = user };
+            return View(editProfileModel);
+        }
+        [HttpPost]
+        [Route("EditProfile")]
+        public async Task<IActionResult> EditProfile(EditProfileModel editProfileModel)
+        {
+            var guidUser = User.FindFirst("Guid");
+
+            editProfileModel.UserProfile.NetUid = Guid.Parse(guidUser.Value);
+            await _userService.ChangeAccountInformation(editProfileModel.UserProfile);
             return View(editProfileModel);
         }
 
@@ -66,6 +82,28 @@ namespace MVC.ArticleAdventure.Controllers
             AccountSecurityModel accountSecurityModel = new AccountSecurityModel { ChangeUser = user };
             return View(accountSecurityModel);
         }
-        
+        [HttpPost]
+        [Route("AccountSecurity")]
+        public async Task<IActionResult> AccountSecurity(AccountSecurityModel accountSecurityModel)
+        {
+            if (accountSecurityModel.NewPassword != accountSecurityModel.ConfirmNewPassword)
+            {
+                return View(accountSecurityModel);
+            }
+            var userGuidClaim = User.FindFirst("Guid");
+            await _userService.ChangePassword(Guid.Parse(userGuidClaim.Value), accountSecurityModel.NewPassword, accountSecurityModel.CurrentPassword);
+            return View(accountSecurityModel);
+        }
+
+        [HttpPost]
+        [Route("AccountSecurityEmail")]
+        public async Task<IActionResult> AccountSecurityEmail(AccountSecurityModel accountSecurityModel)
+        {
+            var userGuidClaim = User.FindFirst("Guid");
+
+            await _userService.ChangeEmail(Guid.Parse(userGuidClaim.Value), accountSecurityModel.NewEmail, accountSecurityModel.ConfirmPasswordUpdateEmail);
+            return View("AccountSecurity");
+        }
+
     }
 }

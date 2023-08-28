@@ -27,25 +27,6 @@ namespace MVC.ArticleAdventure.Services
             var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
             CheckoutOrderResponse orderResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<CheckoutOrderResponse>(successResponse.Body.ToString());
             return orderResponse;
-            //var loginContent = GetContent(userLogin);
-            ////request token
-            //var response = await _httpClient.GetAsync($"/api/v1/usermanagement/token/request?email={userLogin.Email}&password={userLogin.Password}&rememberUser=True");
-
-            //if (!CustomContainErrorResponse(response))
-            //{
-            //    return new UserResponseLogin
-            //    {
-            //        ResponseResult = await DeserializeObjectResponse<ErrorResponse>(response)
-            //    };
-            //}
-            //else
-            //{
-            //    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-            //    UserResponseLogin userResponseLogin = Newtonsoft.Json.JsonConvert.DeserializeObject<UserResponseLogin>(successResponse.Body.ToString());
-            //    return userResponseLogin;
-            //}
-
-
         }
     }
 }

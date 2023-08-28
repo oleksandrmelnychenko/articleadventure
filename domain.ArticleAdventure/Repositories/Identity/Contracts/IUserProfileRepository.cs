@@ -23,6 +23,7 @@ namespace domain.ArticleAdventure.Repositories.Identity.Contracts
 
         void Update(UserProfile userProfile);
 
+        void UpdateAccountInformation(UserProfile userProfile);
         void Remove(long id);
 
         void Remove(Guid netId);

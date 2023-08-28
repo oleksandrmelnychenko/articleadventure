@@ -5,6 +5,7 @@ using domain.ArticleAdventure.Entities;
 using Microsoft.AspNetCore.Mvc;
 using service.ArticleAdventure.Services.UserManagement.Contracts;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace webApi.ArticleAdventure.Controllers
 {
@@ -61,7 +62,6 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                
                 return Ok(SuccessResponseBody(await _userProfileService.ConforimEmail(token, userId), "New user successfully updated Email"));
             }
             catch (Exception exc)
@@ -76,8 +76,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-
-                return Ok(SuccessResponseBody(await _userProfileService.GetById(userNetId), "New user successfully updated Email"));
+                return Ok(SuccessResponseBody(await _userProfileService.GetById(userNetId), "Get user by NetUid"));
             }
             catch (Exception exc)
             {
@@ -85,6 +84,49 @@ namespace webApi.ArticleAdventure.Controllers
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
             }
         }
-
+        
+        [HttpGet]
+        [AssignActionRoute(UserManagementSegments.UPDATE_PASSWORD)]
+        public async Task<IActionResult> UpdatePassword(Guid userProfileNetUid, string newPassword,string oldPassword)
+        {
+            try
+            {
+                return Ok(SuccessResponseBody(await _userProfileService.UpdatePassword(userProfileNetUid, newPassword, oldPassword), "New user successfully updated Password"));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+        [HttpGet]
+        [AssignActionRoute(UserManagementSegments.UPDATE_EMAIL)]
+        public async Task<IActionResult> UpdateEmail(Guid userProfileNetUid, string newEmail, string password)
+        {
+            try
+            {
+                return Ok(SuccessResponseBody(await _userProfileService.UpdateEmail(userProfileNetUid, newEmail, password), "User successfully updated Email"));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+        [HttpPost]
+        [AssignActionRoute(UserManagementSegments.UPDATE_ACCOUNT_INFORMATION)]
+        public async Task<IActionResult> UpdateAccountInformation([FromBody] UserProfile userProfile)
+        {
+            try
+            {
+                await _userProfileService.UpdateAccountInformation(userProfile);
+                return Ok(SuccessResponseBody(null, "user successfully updated Account Information"));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
     }
 }

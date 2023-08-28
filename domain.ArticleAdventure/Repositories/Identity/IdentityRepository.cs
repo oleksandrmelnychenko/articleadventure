@@ -179,9 +179,10 @@ namespace domain.ArticleAdventure.Repositories.Identity
         public async Task<User> GetUserByUserNetId(Guid userNetId)
         {
             IList<User> users = await _userManager.GetUsersForClaimAsync(new Claim("NetId", userNetId.ToString()));
-
             return users.FirstOrDefault();
         }
+
+
 
         public async Task UpdateUsersEmail(User user, string email)
         {
@@ -211,6 +212,7 @@ namespace domain.ArticleAdventure.Repositories.Identity
                 new { Uid = user.Id, DisplayName = username });
             user.DisplayName = username;
         }
+
 
         public async Task ReAssignUsersRole(User user, bool grantAdministrativePermissions)
         {
@@ -249,6 +251,20 @@ namespace domain.ArticleAdventure.Repositories.Identity
             }
 
             throw new Exception(resetPasswordResult.Errors.FirstOrDefault()?.Description ?? string.Empty);
+        }
+
+        public async Task<bool> CheckPassword(UserProfile userProfile, string password)
+        {
+            User user = await _userManager.FindByEmailAsync(userProfile.Email);
+
+            if (await _userManager.CheckPasswordAsync(user, password))
+            {
+                return true;
+            }
+
+            return false;
+
+
         }
 
         public async Task Delete(Guid userNetId)

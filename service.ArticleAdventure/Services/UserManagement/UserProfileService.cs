@@ -2,6 +2,7 @@
 using domain.ArticleAdventure.DbConnectionFactory.Contracts;
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.IdentityEntities;
+using domain.ArticleAdventure.Repositories.Identity;
 using domain.ArticleAdventure.Repositories.Identity.Contracts;
 using Microsoft.AspNetCore.Identity;
 using service.ArticleAdventure.MailSenderServices;
@@ -32,17 +33,17 @@ namespace service.ArticleAdventure.Services.UserManagement
             _identityRepositoriesFactory = identityRepositoriesFactory;
             _mailSenderFactory = mailSenderFactory;
         }
-        public Task<IdentityResult> ConforimEmail(string emailConfirmationToken,string userId) => Task.Run(async () =>
+        public Task<IdentityResult> ConforimEmail(string emailConfirmationToken, string userId) => Task.Run(async () =>
         {
             using (IDbConnection connection = _connectionFactory.NewSqlConnection())
             {
                 IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository();
                 User findUserById = await identityRepository.FindByIdAsync(userId);
                 IdentityResult confirmEmailResult = await identityRepository.ConfirmEmailAsync(findUserById, emailConfirmationToken);
-                
+
                 return confirmEmailResult;
             }
-         });
+        });
         public Task<UserProfile> Create(UserProfile userProfile, string password) =>
            Task.Run(async () =>
            {
@@ -75,7 +76,7 @@ namespace service.ArticleAdventure.Services.UserManagement
                        var emailConfirmationToken = await identityRepository.GenerateEmailConfirmationToken(user);
                        var mailService = _mailSenderFactory.NewMailSenderService();
                        mailService.SendTokenToEmail(userProfile.Email, emailConfirmationToken, "https://localhost:7197/", user.Id);
-                      
+
                        return userProfile;
                    }
                    catch (Exception)
@@ -149,6 +150,109 @@ namespace service.ArticleAdventure.Services.UserManagement
                {
                    using IDbConnection connection = _connectionFactory.NewSqlConnection();
                    return _identityRepositoriesFactory.NewUserProfileRepository(connection).Get(userNetId);
+
+               });
+
+        public Task<UserProfile> UpdateAccountInformation(UserProfile userProfile) =>
+               Task.Run(async () =>
+               {
+                   using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                   {
+                       IUserProfileRepository userProfileRepository =
+                            _identityRepositoriesFactory.NewUserProfileRepository(connection);
+
+                       UserProfile existingProfile =
+                           userProfileRepository.Get(userProfile.NetUid);
+
+                       if (existingProfile == null) throw new Exception("Dev exception. Such user does not exists");
+
+                       IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository();
+
+                       User user = await identityRepository.GetUserByUserNetId(userProfile.NetUid);
+
+                       if (!existingProfile.UserName.Equals(userProfile.UserName))
+                       {
+                           identityRepository.UpdateUsersDisplayName(user, userProfile.UserName);
+                       }
+
+                       existingProfile.SurName = userProfile.SurName;
+                       existingProfile.InformationAccount = userProfile.InformationAccount;
+                       existingProfile.UserName = userProfile.UserName;
+
+                       userProfileRepository.UpdateAccountInformation(existingProfile);
+
+                       return userProfileRepository.Get(existingProfile.Id);
+
+                   }
+               });
+
+        public Task<UserProfile> UpdateEmail(Guid userProfileNetUid, string email, string password) =>
+               Task.Run(async () =>
+               {
+                   if (userProfileNetUid == null) throw new Exception("Dev exception. Entity can not be empty");
+
+                   using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                   {
+                       IUserProfileRepository userProfileRepository =
+                            _identityRepositoriesFactory.NewUserProfileRepository(connection);
+
+                       UserProfile existingProfile =
+                           userProfileRepository.Get(userProfileNetUid);
+
+                       if (existingProfile == null) throw new Exception("Dev exception. Such user does not exists");
+
+                       IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository();
+
+                       User user = await identityRepository.GetUserByUserNetId(userProfileNetUid);
+
+
+                       var isPassword = await identityRepository.CheckPassword(existingProfile, password);
+                       if (!isPassword) throw new Exception("The password you entered is incorrect");
+
+                       if (!existingProfile.Email.Equals(email))
+                       {
+                           await identityRepository.UpdateUsersEmail(user, email);
+                       }
+
+                       existingProfile.Email = email;
+                       User userСonfirmEmail = await identityRepository.GetUserByUserNetId(userProfileNetUid);
+                       var emailConfirmationToken = await identityRepository.GenerateEmailConfirmationToken(userСonfirmEmail);
+                       await ConforimEmail(emailConfirmationToken, userСonfirmEmail.Id);
+                       userProfileRepository.Update(existingProfile);
+
+                       return userProfileRepository.Get(existingProfile.Id);
+                   }
+
+               });
+
+        public Task<UserProfile> UpdatePassword(Guid netUiduserProfile, string password, string oldPassword) =>
+               Task.Run(async () =>
+               {
+                   if (netUiduserProfile == null) throw new Exception("Dev exception. Entity can not be empty");
+
+                   using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                   {
+                       IUserProfileRepository userProfileRepository =
+                            _identityRepositoriesFactory.NewUserProfileRepository(connection);
+
+                       UserProfile existingProfile =
+                           userProfileRepository.Get(netUiduserProfile);
+
+                       if (existingProfile == null) throw new Exception("Dev exception. Such user does not exists");
+
+                       IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository();
+
+                       User user = await identityRepository.GetUserByUserNetId(netUiduserProfile);
+                       var isPassword = await identityRepository.CheckPassword(existingProfile, oldPassword);
+                       if (!isPassword) throw new Exception("The password you entered is incorrect");
+
+                       if (!string.IsNullOrEmpty(password))
+                       {
+                           await identityRepository.UpdatePassword(user, password);
+                       }
+                       return userProfileRepository.Get(existingProfile.Id);
+                   }
+
                });
     }
 

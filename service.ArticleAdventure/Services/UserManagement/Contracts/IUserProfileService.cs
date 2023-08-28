@@ -15,5 +15,10 @@ namespace service.ArticleAdventure.Services.UserManagement.Contracts
         Task<UserProfile> FullUpdate(UserProfile userProfile, string password);
         Task<UserProfile> GetById(Guid userNetId);
         Task<IdentityResult> ConforimEmail(string token, string userId);
+
+        Task<UserProfile> UpdatePassword(Guid userProfileNetUid, string password,string oldPassword);
+        Task<UserProfile> UpdateEmail(Guid userProfileNetUid, string Email,string password);
+        Task<UserProfile> UpdateAccountInformation(UserProfile userProfile);
+
     }
 }
