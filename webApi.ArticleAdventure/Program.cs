@@ -34,15 +34,18 @@ using domain.ArticleAdventure.Repositories.Tag;
 using Stripe;
 using service.ArticleAdventure.Services.Stripe.Contracts;
 using service.ArticleAdventure.Services.Stripe;
+using domain.ArticleAdventure.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.SetBasePath(builder.Environment.ContentRootPath);
+builder.Configuration.SetBasePath(builder.Environment.ContentRootPath); 
 builder.Configuration.AddJsonFile("appsettings.json");
 builder.Configuration.AddEnvironmentVariables();
+ArticleAdventureFolderManager.InitializeServerFolderManager(builder.Environment.ContentRootPath, builder.Configuration.GetValue<string>("ServerSettings:ServerUrl"));
 
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppSettingsProperties(builder.Configuration);
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppEnvironmentRootPath(builder.Environment.ContentRootPath);
 StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
+;
 
 builder.Services.AddDbContext<ArticleAdventureDataContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString(ConnectionStringNames.DbConnectionString)));

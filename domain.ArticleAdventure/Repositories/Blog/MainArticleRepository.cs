@@ -21,10 +21,10 @@ namespace domain.ArticleAdventure.Repositories.Blog
         //, @Image, @ImageUrl, @WebImageUrl
         public long AddMainArticle(MainArticle blog)
             => _connection.Query<long>("INSERT INTO [MainArticle] " +
-            "([Title], [Description] ,[InfromationArticle] ,[Price] ,[Updated] ) " +
+            "([Title], [Description] ,[InfromationArticle] ,[Price] ,[ImageUrl] ,[Updated] ) " +
             "VALUES " +
             "(@Title, @Description" +
-            ", @InfromationArticle , @Price, GETUTCDATE());" +
+            ", @InfromationArticle , @Price, @ImageUrl, GETUTCDATE());" +
             "SELECT SCOPE_IDENTITY()", blog
             ).Single();
 

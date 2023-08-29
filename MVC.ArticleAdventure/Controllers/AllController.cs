@@ -116,7 +116,8 @@ namespace MVC.ArticleAdventure.Controllers
                 mainArticle.ArticleTags.Add(mainTag);
             }
             await _mainArticleService.Update(mainArticle);
-            ModelState.Clear();
+            HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_ARTICLE);
+            HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_TAGS);
             return Redirect("~/All/AllBlogs");
         }
 

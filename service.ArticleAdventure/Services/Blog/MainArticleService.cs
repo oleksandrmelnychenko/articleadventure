@@ -1,8 +1,10 @@
 ﻿using domain.ArticleAdventure.DbConnectionFactory.Contracts;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.Repositories.Blog;
 using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using domain.ArticleAdventure.Repositories.Tag.Contracts;
+using Microsoft.AspNetCore.Http;
 using service.ArticleAdventure.Services.Blog.Contracts;
 using System;
 using System.Collections.Generic;
@@ -30,12 +32,24 @@ namespace service.ArticleAdventure.Services.Blog
             _articleRepositoryFactory = articleRepositoryFactory;
         }
 
-        public Task<long> AddArticle(MainArticle article)
+        public Task<long> AddArticle(MainArticle article,IFormFile filePhotoMainArticle)
         {
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
+                    string exention = ".png";
+
+                    if (filePhotoMainArticle!= null)
+                    {
+                        string pathLogo = Path.Combine(ArticleAdventureFolderManager.GetFilesFolderPath(), ArticleAdventureFolderManager.GetStaticImageFolder(), filePhotoMainArticle.FileName + exention);
+                        article.ImageUrl = Path.Combine( ArticleAdventureFolderManager.GetStaticServerUrlImageFolder(), filePhotoMainArticle.FileName + exention);
+
+                        using (var stream = new FileStream(pathLogo, FileMode.Create))
+                        {
+                            await filePhotoMainArticle.CopyToAsync(stream);
+                        }
+                    }
                     var idMainArticle = _mainRepositoryFactory.New(connection).AddMainArticle(article);
 
                     foreach (var tag in article.ArticleTags)

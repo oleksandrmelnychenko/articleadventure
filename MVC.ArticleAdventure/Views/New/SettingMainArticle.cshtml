@@ -20,7 +20,7 @@
             }
         }
     </div>
-    <form asp-controller="New">
+    <form asp-controller="New" enctype="multipart/form-data">
         <div class="meta_row">
             <div class="inputs" style="width:100%">
                 <div class="input" style="width:100%">
@@ -77,6 +77,10 @@
 
             </div>
         </div>
+        <div style="display:flex">
+            <input type="file" asp-for="@Model.PhotoMainArticle"
+                   enctype="multipart/form-data" multiple accept=".jpg,.jpeg,.png" />
+        </div>
         <div class="meta_row">
             <div class="inputs" style="width:100%">
                 <div class="input" style="width:100%;">
@@ -92,6 +96,8 @@
             </div>
         </div>
         <button formaction="SettingMainArticle" formmethod="post" type="submit" value="Save">Create</button>
+
+       
 
         @* <div class="meta_row_all_buttons">
         @foreach (var mainTag in Model.MainTags)

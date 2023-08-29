@@ -6,7 +6,7 @@ namespace MVC.ArticleAdventure.Services.Contract
     {
         public Task<MainArticle> GetArticle(Guid netUidArticle);
         public Task<List<MainArticle>> GetAllArticles();
-        public Task AddArticle(MainArticle article);
+        public Task AddArticle(MainArticle article,IFormFile photoMainArticle);
         public Task Update(MainArticle article);
         public Task Remove(Guid netUidArticle);
     }

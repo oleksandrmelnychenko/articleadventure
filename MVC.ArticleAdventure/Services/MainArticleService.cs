@@ -5,6 +5,8 @@ using MVC.ArticleAdventure.Extensions;
 using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
 using Newtonsoft.Json;
+using System.IO;
+using System.Text;
 
 namespace MVC.ArticleAdventure.Services
 {
@@ -17,9 +19,20 @@ namespace MVC.ArticleAdventure.Services
 
             _httpClient = httpClient;
         }
-        public async Task AddArticle(MainArticle article)
+        public async Task AddArticle(MainArticle article, IFormFile photoMainArticle)
         {
-            await _httpClient.PostAsJsonAsync(PathMainArticle.ADD_ARTICLE, article);
+            using var form = new MultipartFormDataContent();
+
+            // Сериализуем объект article в JSON и добавляем его как контент
+            var jsonArticle = JsonConvert.SerializeObject(article);
+            var stringContentArticle = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
+            form.Add(stringContentArticle, "article");
+            
+            // Добавляем файл как контент
+            using var streamContent = new StreamContent(photoMainArticle.OpenReadStream());
+            form.Add(streamContent, "filePhotoMainArticle", photoMainArticle.FileName);
+
+            var response = await _httpClient.PostAsync(PathMainArticle.ADD_ARTICLE, form);
         }
 
         public async Task<List<MainArticle>> GetAllArticles()

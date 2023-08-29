@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Authentication;
 using domain.ArticleAdventure.IdentityEntities;
 using Microsoft.AspNetCore.Identity;
+using domain.ArticleAdventure.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<AppSettings>(builder.Configuration);

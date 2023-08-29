@@ -3,6 +3,7 @@ using common.ArticleAdventure.WebApi;
 using common.ArticleAdventure.WebApi.RoutingConfiguration.Maps;
 using domain.ArticleAdventure.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using service.ArticleAdventure.Services.Blog.Contracts;
 using System.Net;
 
@@ -35,11 +36,13 @@ namespace webApi.ArticleAdventure.Controllers
 
         [HttpPost]
         [AssignActionRoute(ArticleSegments.ADD)]
-        public async Task<IActionResult> AddArticle([FromBody] MainArticle article)
+        public async Task<IActionResult> AddArticle([FromForm] string article, [FromForm] IFormFile filePhotoMainArticle)
         {
             try
             {
-                await _mainArticleService.AddArticle(article);
+                MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
+
+                await _mainArticleService.AddArticle(articleDeserialize, filePhotoMainArticle);
                 return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
             }
             catch (Exception exc)

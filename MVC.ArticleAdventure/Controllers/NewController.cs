@@ -18,7 +18,7 @@ namespace MVC.ArticleAdventure.Controllers
         private readonly IMainArticleService _mainArticleService;
         private readonly ITagService _tagService;
 
-
+       
         public NewController(ILogger<NewController> logger, IArticleService authenticationService, IMainArticleService mainArticleService, ITagService tagService)
         {
             _logger = logger;
@@ -239,20 +239,23 @@ namespace MVC.ArticleAdventure.Controllers
             AuthorArticle.ArticleTags = new List<MainArticleTags>();
 
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE, AuthorArticle);
-
-            foreach (var item in selectSupTags)
+            if (selectSupTags?.Count() > 0)
             {
-                var mainTag = new MainArticleTags
+                foreach (var item in selectSupTags)
                 {
-                    MainArticleId = AuthorArticle.Id,
-                    SupTag = item,
-                    SupTagId = item.Id,
-                };
-                AuthorArticle.ArticleTags.Add(mainTag);
+                    var mainTag = new MainArticleTags
+                    {
+                        MainArticleId = AuthorArticle.Id,
+                        SupTag = item,
+                        SupTagId = item.Id,
+                    };
+                    AuthorArticle.ArticleTags.Add(mainTag);
+                }
             }
+            
             HttpContext.Session.Remove(SessionStoragePath.CREATE_MAIN_ARTICLE);
             HttpContext.Session.Remove(SessionStoragePath.CHOOSE_NEW_SUP_TAGS);
-            await _mainArticleService.AddArticle(AuthorArticle);
+            await _mainArticleService.AddArticle(AuthorArticle,settingMainArticleModel.PhotoMainArticle);
             return Redirect("~/All/AllBlogs");
         }
     }
