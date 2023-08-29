@@ -20,11 +20,13 @@ namespace webApi.ArticleAdventure.Controllers
         }
         [HttpPost]
         [AssignActionRoute(ArticleSegments.UPDATE)]
-        public async Task<IActionResult> Update([FromBody] MainArticle article)
+        public async Task<IActionResult> Update([FromForm] string article, [FromForm] IFormFile filePhotoMainArticle)
         {
             try
             {
-                await _mainArticleService.Update(article);
+                MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
+
+                await _mainArticleService.Update(articleDeserialize, filePhotoMainArticle);
                 return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
             }
             catch (Exception exc)

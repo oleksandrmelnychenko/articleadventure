@@ -81,7 +81,9 @@
 
             <div class="list_pay">
                 <div class="archicle_info_item sticky price_item_container">
-                    <div class="img"></div>
+                    <div class="img">
+                        <img src="@Model.MainArticle.ImageUrl" style="height: 160px; box-shadow: 0 0 1px red; top: 0; left: 0; right: 0;  bottom: auto; z-index: 1; position: absolute;" />
+                    </div>
                     <div class="price">@Model.MainArticle.Price $</div>
                     <div class="controls">
                         <button class="archicle_btn withLike" onclick="location.href='@Url.Action("SetFavoriteArticle", "Stripe",new {netUidArticle = Model.MainArticle.NetUid})'"> Go to the Cart</button>

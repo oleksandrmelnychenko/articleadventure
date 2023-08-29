@@ -12,7 +12,7 @@ namespace service.ArticleAdventure.Services.Blog.Contracts
     {
         Task<long> AddArticle(MainArticle blog,IFormFile PhotoMainArticle);
         Task<List<MainArticle>> GetAllArticles();
-        Task Update(MainArticle blogs);
+        Task Update(MainArticle blogs, IFormFile filePhotoMainArticle);
         Task Remove(Guid netUid);
         Task<MainArticle> GetArticle(Guid netUid);
     }

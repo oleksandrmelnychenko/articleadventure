@@ -96,22 +96,32 @@ namespace service.ArticleAdventure.Services.Blog
             }
         });
 
-        public Task Update(MainArticle Article) => 
-            Task.Run(() =>
+        public Task Update(MainArticle article,IFormFile filePhotoMainArticle) => 
+            Task.Run(async () =>
         {
-
             using (IDbConnection connection = _connectionFactory.NewSqlConnection())
             {
-               var mainArticle = _mainRepositoryFactory.New(connection).GetArticle(Article.NetUid);
+                string exention = ".png";
 
-                _mainRepositoryFactory.New(connection).UpdateMainArticle(Article);
-                _mainArticleTagsFactory.New(connection).RemoveMainTag(Article.Id);
+                if (filePhotoMainArticle != null)
+                {
+                    string pathLogo = Path.Combine(ArticleAdventureFolderManager.GetFilesFolderPath(), ArticleAdventureFolderManager.GetStaticImageFolder(), filePhotoMainArticle.FileName + exention);
+                    article.ImageUrl = Path.Combine(ArticleAdventureFolderManager.GetStaticServerUrlImageFolder(), filePhotoMainArticle.FileName + exention);
 
-                foreach (var tag in Article.ArticleTags)
+                    using (var stream = new FileStream(pathLogo, FileMode.Create))
+                    {
+                        await filePhotoMainArticle.CopyToAsync(stream);
+                    }
+                }
+                var mainArticle = _mainRepositoryFactory.New(connection).GetArticle(article.NetUid);
+
+                _mainRepositoryFactory.New(connection).UpdateMainArticle(article);
+                _mainArticleTagsFactory.New(connection).RemoveMainTag(article.Id);
+
+                foreach (var tag in article.ArticleTags)
                 {
                         _mainArticleTagsFactory.New(connection).AddMainTag(tag);
                 }
-
             }
         });
     }

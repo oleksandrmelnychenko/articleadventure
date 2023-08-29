@@ -46,8 +46,13 @@ namespace MVC.ArticleAdventure.Controllers
             //SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.USER, user);
             Response.Cookies.Append(CookiesPath.USER_NAME,user.UserName);
             Response.Cookies.Append(CookiesPath.EMAIL,user.Email);
-            Response.Cookies.Append(CookiesPath.SURNAME, user.SurName);
-            Response.Cookies.Append(CookiesPath.INFORMATION_PROFILE, user.InformationAccount);
+            if (user.SurName!= null)
+            {
+                Response.Cookies.Append(CookiesPath.SURNAME, user.SurName);
+
+            }
+            if (user.InformationAccount != null)
+                Response.Cookies.Append(CookiesPath.INFORMATION_PROFILE, user.InformationAccount);
 
             await SignIn(response);
             return Redirect("/");

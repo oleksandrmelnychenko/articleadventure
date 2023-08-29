@@ -104,18 +104,21 @@ namespace MVC.ArticleAdventure.Controllers
             mainArticle.Price = changeArticleModel.MainArticle.Price;
 
             mainArticle.ArticleTags.Clear();
-
-            foreach (var item in selectSupTags)
+            if (selectSupTags != null)
             {
-                var mainTag = new MainArticleTags
+                foreach (var item in selectSupTags)
                 {
-                    MainArticleId = mainArticle.Id,
-                    SupTag = item,
-                    SupTagId = item.Id,
-                };
-                mainArticle.ArticleTags.Add(mainTag);
+                    var mainTag = new MainArticleTags
+                    {
+                        MainArticleId = mainArticle.Id,
+                        SupTag = item,
+                        SupTagId = item.Id,
+                    };
+                    mainArticle.ArticleTags.Add(mainTag);
+                }
             }
-            await _mainArticleService.Update(mainArticle);
+            
+            await _mainArticleService.Update(mainArticle,changeArticleModel.PhotoMainArticle);
             HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_ARTICLE);
             HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_TAGS);
             return Redirect("~/All/AllBlogs");

@@ -16,7 +16,7 @@
             }
         }
     </div>
-    <form asp-controller="New">
+    <form asp-controller="New" enctype="multipart/form-data">
         <div class="meta_row">
             <div class="inputs" style="width:100%">
                 <div class="input" style="width:100%">
@@ -67,6 +67,17 @@
             </div>
 
         </div>
+        <div style="display:flex">
+            <input type="file" asp-for="PhotoMainArticle"
+                   enctype="multipart/form-data" multiple accept=".jpg,.jpeg,.png" />
+        </div>
+        @if (Model.MainArticle.ImageUrl!= null)
+        {
+            <div>
+                <img src="@Model.MainArticle.ImageUrl" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+            </div>
+        }
+        
         <div class="meta_row">
             <div class="inputs" style="width:100%">
                 <div class="input" style="width:100%;">

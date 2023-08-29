@@ -23,7 +23,7 @@
                         <p>
                             @Article.Description
                         </p>
-                        
+
 
                         <div class="item_tags">
                             <ol>
@@ -50,59 +50,17 @@
                     </a>
                 </div>
 
-                @* <div class="item_controls">
-            <div class="controls_wrapper">
-            <input formmethod="get"
-            class="delete"
-            type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
-            <input formmethod="get"
-            class="change"
-            type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeMainArticle", "All",new {netUidArticle =Article.NetUid})'" />
-            </div>
-            </div>*@
+               @* <div class="item_controls">
+                    <div class="controls_wrapper">
+                        <input formmethod="get"
+                               class="delete"
+                               type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
+                        <input formmethod="get"
+                               class="change"
+                               type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeMainArticle", "All",new {netUidArticle =Article.NetUid})'" />
+                    </div>
+                </div>*@
             </article>
-            @*@foreach (var Article in Model.Articles)
-        {
-        <article class="article_item">
-        <div class="item_container">
-        <div onclick="location.href='@Url.Action("SetFavoriteArticle", "Stripe",new {netUidArticle =Article.NetUid})'">favorite</div>
-        <div class="item_title">
-        @Article.Title
-        <div class="item_created">@Article.Created</div>
-        </div>
-        <div class="item_body">@Html.Raw(Article.Body)</div>
-        <div class="item_tags">
-        <ol>
-        <li>
-        <span>CRM Software</span>
-        </li>
-        <li>
-        <span>CRM System</span>
-        </li>
-        <li>
-        <span>Customer Relationship Management</span>
-        </li>
-        <li>
-        <span>Customer Support</span>
-        </li>
-        <li>
-        <span>Mobile App</span>
-        </li>
-        </ol>
-
-        </div>
-        <div class="item_controls">
-        <div class="controls_wrapper">
-        <input formmethod="get"
-        class="delete"
-        type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
-        <input formmethod="get"
-        class="change"
-        type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeBLog", "All",new {netUidArticle =Article.NetUid})'" />
-        </div>
-        </div>
-        </div>
-        </article>*@
         }
     </div>
 </div>

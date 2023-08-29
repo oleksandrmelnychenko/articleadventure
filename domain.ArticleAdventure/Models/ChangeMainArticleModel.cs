@@ -1,4 +1,5 @@
 ﻿using domain.ArticleAdventure.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace domain.ArticleAdventure.Models
     {
         public MainArticle MainArticle { get; set; }
         public List<MainTag> MainTags { get; set; }
+        public IFormFile PhotoMainArticle { get; set; }
     }
 }

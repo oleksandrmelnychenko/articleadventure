@@ -66,9 +66,18 @@ namespace MVC.ArticleAdventure.Services
             var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
         }
 
-        public async Task Update(MainArticle article)
+        public async Task Update(MainArticle article, IFormFile photoMainArticle)
         {
-            var response = await _httpClient.PostAsJsonAsync(PathMainArticle.UPDATE_ARTICLE, article);
+            using var form = new MultipartFormDataContent();
+
+            var jsonArticle = JsonConvert.SerializeObject(article);
+            var stringContentArticle = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
+            form.Add(stringContentArticle, "article");
+
+            using var streamContent = new StreamContent(photoMainArticle.OpenReadStream());
+            form.Add(streamContent, "filePhotoMainArticle", photoMainArticle.FileName);
+
+            var response = await _httpClient.PostAsync(PathMainArticle.UPDATE_ARTICLE, form);
         }
     }
 }
