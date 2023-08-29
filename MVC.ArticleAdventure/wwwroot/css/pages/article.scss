@@ -16,7 +16,8 @@
 }
 
 .article_item,
-.archicle_info_item {
+.archicle_info_item,
+.tag_group_item {
     background-color: #fff;
     margin: 0 auto 50px;
     padding: 50px 60px;
@@ -55,7 +56,8 @@
     }
 }
 
-.article_item {
+.article_item,
+.tags_page {
     .item_controls {
         width: 100%;
         display: flex;
@@ -386,11 +388,6 @@
     }
 }
 
-
-
-
-
-
 .article_change {
     width: 1200px;
     margin: 0 auto;
@@ -443,6 +440,141 @@
             outline: none;
             color: #fff;
             border-radius: 2px;
+        }
+    }
+}
+
+.tags_page {
+    width: 960px;
+
+    .tags_row {
+        form {
+            display: table;
+            width: 100%;
+
+            .inputs {
+                width: calc(100% - 240px);
+
+                input {
+                    display: block;
+                    background: #f9f9fe;
+                    border: 1px solid #f0f0fd;
+                    color: var(--epcl-text-color);
+                    font-size: 14px;
+                    font-family: "Source Serif Pro","Source Sans Pro",serif;
+                    line-height: 1.8;
+                    letter-spacing: .25px;
+                    padding: 15px 20px;
+                    height: 45px;
+                    width: 100%;
+                    margin-bottom: 15px;
+                    outline: 0;
+                    transition: all .3s ease;
+                }
+
+                .input {
+                    width: calc(100% - 54px);
+
+                    input {
+                        //
+                    }
+                }
+
+                .inputColor {
+                    width: 50px;
+                    margin-left: 4px;
+
+                    input {
+                        padding: 6px;
+                    }
+                }
+
+                .input,
+                .inputColor {
+                    float: left;
+                }
+            }
+
+            .buttons {
+                width: 240px;
+                padding-left: 10px;
+                float: left;
+                display: flex;
+
+                button {
+                    display: inline-block;
+                    width: 115px;
+                    color: #fff;
+                    letter-spacing: .5px;
+                    position: relative;
+                    z-index: 2;
+                    //box-shadow: 0px 3px 5px -1px rgba(7,10,25,.2);
+                    box-shadow: none;
+                    outline: none;
+                    border: none;
+                    background-color: var(--epcl-blue-bg-color);
+                    font-family: "Josefin Sans",sans-serif;
+                    font-size: 14px;
+                    line-height: 1;
+                    padding: 0 5px;
+                    text-align: center;
+                    font-weight: 400;
+                    transition: all .3s ease;
+                    height: 45px;
+
+                    &:last-child {
+                        margin-left: 10px;
+                        background-color: var(--epcl-orang-bg-color);
+                    }
+
+                    &[disabled] {
+                        opacity: 0.4;
+                    }
+                }
+            }
+        }
+
+        .mainTags_list {
+            width: 100%;
+            border-top: 1px dashed #e0e0e0;
+            margin: 0;
+            padding-top: 10px;
+            padding-right: 0;
+
+            h2 {
+                font-weight: 500;
+                font-family: "Josefin Sans",sans-serif;
+                color: var(--epcl-titles-color);
+                //
+                font-size: 20px;
+                padding-top: 30px;
+                margin-bottom: 10px;
+                line-height: 1.4;
+            }
+
+            ol {
+                li {
+                    position: relative;
+                    margin-bottom: 10px;
+
+                    button {
+                        border: none;
+                        box-shadow: none;
+                        background-color: transparent;
+
+                        &.delete {
+                            background-color: var( --epcl-main-color);
+                        }
+                    }
+                }
+            }
+
+            h2 + ol {
+                padding-left: 30px;
+                margin-left: 10px;
+                border-left: 1px dashed #e0e0e0;
+                padding-top: 10px;
+            }
         }
     }
 }

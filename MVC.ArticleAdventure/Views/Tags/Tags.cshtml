@@ -1,96 +1,106 @@
 ﻿@model domain.ArticleAdventure.Models.TagsModel
-<div class="article_change">
-    <form asp-controller="Tags">
-        <div class="meta_row">
+<div class="article_change tags_page">
+    <div class="tags_row tag_group_item">
+        <form asp-controller="Tags">
             <input type="hidden" asp-for="AddMainTag.NetUid" />
 
             <div class="inputs">
-                <div class="input" style="width: calc(95% - 8px);">
-                    <input type="text" placeholder="NameMainTag" asp-for="AddMainTag.Name" />
+                <div class="input">
+                    <input type="text" placeholder="Name Main Tag" asp-for="AddMainTag.Name" />
                     <span asp-validation-for="@Model.AddMainTag.Name" class="text-danger"></span>
                 </div>
                 <div class="inputColor">
                     <input type="color" asp-for="AddMainTag.Color" />
                 </div>
             </div>
-            @if (Model.AddMainTag?.NetUid != null)
-            {
-                <button style="margin-right: 10px;" type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>
+            <div class="buttons">
+                @if (Model.AddMainTag?.NetUid != null)
+                {
+                    <button type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>
+                }
+                else
+                {
+                    <button disabled="true" type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>
+                }
+                <button type="submit" formaction="AddMainTag" formmethod="post" value="Save">Save</button>
+            </div>
+        </form>
 
-            }
-            else
-            {
-                <button style="margin-right: 10px; background-color:#ccd5bc" disabled="true" type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>
-            }
-            <button style="margin-right: 10px;" type="submit" formaction="AddMainTag" formmethod="post" value="Save">Save</button>
-           
+        <div class="item_tags mainTags_list">
+            <ol>
+                @foreach (var MainTag in Model.MainTags)
+                {
+                    <li>
+                        @if (MainTag.IsSelected)
+                        {
+                            @*<button style="" onclick="location.href='@Url.Action("RemoveSupTag", "Tags",new {RemoveSupTagsNetUid = subTag.NetUid})'">Delete</button>*@
+                            <button class="delete" type="submit" value="Save" onclick="location.href='@Url.Action("RemoveMainTag", "Tags",new {RemoveMainTagsNetUid =MainTag.NetUid})'">Delete</button>
+                        }
+                        else
+                        {
+                            <button type="submit" value="Save" onclick="location.href='@Url.Action("GetMainTag", "Tags",new {ChangeMainTagsNetUid =MainTag.NetUid})'">
+                                <span style="color:@MainTag.Color">#</span>
+                                <span>@MainTag.Name</span>
+                            </button>
+                        }
+                    </li>
+                }
+            </ol>
         </div>
-    </form>
-
-    <div class="meta_row">
-        @foreach (var MainTag in Model.MainTags)
-        {
-
-            if (MainTag.IsSelected)
-            {
-                @*<button style="" onclick="location.href='@Url.Action("RemoveSupTag", "Tags",new {RemoveSupTagsNetUid = subTag.NetUid})'">Delete</button>*@
-                <button style="margin-right: 10px; background-color:#af4444" type="submit" value="Save" onclick="location.href='@Url.Action("RemoveMainTag", "Tags",new {RemoveMainTagsNetUid =MainTag.NetUid})'">Delete</button>
-
-            }
-            else
-            {
-                <button style="margin-right: 10px;" type="submit" value="Save" onclick="location.href='@Url.Action("GetMainTag", "Tags",new {ChangeMainTagsNetUid =MainTag.NetUid})'">@MainTag.Name</button>
-
-            }
-
-        }
     </div>
-    <form asp-controller="Tags">
-        <div class="meta_row">
+
+    <div class="tags_row tag_group_item">
+        <form asp-controller="Tags">
             <input type="hidden" asp-for="AddSupTag.NetUid" />
             <input type="hidden" asp-for="AddMainTag.Id" />
             <div class="inputs">
-                <div class="input" style="width: calc(95% - 8px);">
-                    <input type="text" placeholder="NameSupTag" asp-for="AddSupTag.Name" />
+                <div class="input">
+                    <input type="text" placeholder="Name Sup Tag" asp-for="AddSupTag.Name" />
                     <span asp-validation-for="@Model.AddSupTag.Name" class="text-danger"></span>
                 </div>
                 <div class="inputColor">
                     <input type="color" asp-for="AddSupTag.Color" />
                 </div>
             </div>
-            @if (Model.AddSupTag?.NetUid != null)
-            {
-                <button style="margin-right: 10px;" type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
-                <button style="margin-right: 10px; background-color:#ccd5bc" disabled="true" type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
-            }
-            else
-            {
-                <button style="margin-right: 10px; background-color:#ccd5bc" disabled="true" type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
-                <button style="margin-right: 10px;" type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
-
-
-            }
-        </div>
-    </form>
-    <div>
-        <div class="meta_row" style="display:block;">
+            <div class="buttons">
+                @if (Model.AddSupTag?.NetUid != null)
+                {
+                    <button type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
+                    <button disabled="true" type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
+                }
+                else
+                {
+                    <button disabled="true" type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
+                    <button type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
+                }
+            </div>
+        </form>
+        <div class="item_tags mainTags_list">
             @foreach (var MainTag in Model.MainTags)
             {
-                <h1>@MainTag.Name</h1>
 
-                @foreach (var subTag in MainTag.SubTags)
-                {
-                    if (subTag.IsSelected)
+                <h2>@MainTag.Name</h2>
+
+                <ol>
+                    @foreach (var subTag in MainTag.SubTags)
                     {
-                        <button style="background-color:#af4444" onclick="location.href='@Url.Action("RemoveSupTag", "Tags",new {RemoveSupTagsNetUid = subTag.NetUid})'">Delete</button>
-                    }
-                    else
-                    {
-                        <button onclick="location.href='@Url.Action("GetSupTag", "Tags",new {ChangeSupTagsNetUid =subTag.NetUid})'">@subTag.Name</button>
-                    }
+                        <li>
+                            @if (subTag.IsSelected)
+                            {
+                                <button class="delete" onclick="location.href='@Url.Action("RemoveSupTag", "Tags",new {RemoveSupTagsNetUid = subTag.NetUid})'">Delete</button>
+                            }
+                            else
+                            {
+                                <button onclick="location.href='@Url.Action("GetSupTag", "Tags",new {ChangeSupTagsNetUid =subTag.NetUid})'">
+                                    <span style="color:@subTag.Color">#</span>
+                                    <span>@subTag.Name</span>
+                                </button>
+                            }
+                        </li>
 
 
-                }
+                    }
+                </ol>
             }
         </div>
     </div>
