@@ -5,6 +5,6 @@
         public const string USER_NAME = "userName";
         public const string EMAIL = "Email";
         public const string SURNAME = "surname";
-        public const string INFORMATION_ARTICLE = "informationArticle";
+        public const string INFORMATION_PROFILE = "informationProfile";
     }
 }

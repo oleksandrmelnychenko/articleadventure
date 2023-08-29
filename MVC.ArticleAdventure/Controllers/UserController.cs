@@ -1,4 +1,5 @@
-﻿using domain.ArticleAdventure.Entities;
+﻿using Azure;
+using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,13 +11,16 @@ namespace MVC.ArticleAdventure.Controllers
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
-        private readonly IArticleService _authenticationService;
+        private readonly IArticleService _articleService;
+        private readonly IAuthService _authenticationService;
+
         private readonly IUserService _userService;
-        public UserController(ILogger<UserController> logger, IArticleService authenticationService, IUserService userService)
+        public UserController(ILogger<UserController> logger, IArticleService articleService, IUserService userService,IAuthService authService)
         {
             _logger = logger;
-            _authenticationService = authenticationService;
+            _articleService = articleService;
             _userService = userService;
+            _authenticationService = authService;
         }
 
         [HttpGet]
@@ -33,10 +37,23 @@ namespace MVC.ArticleAdventure.Controllers
             return View();
         }
         [HttpGet]
-        [Route("MyProfile")]
-        public async Task<IActionResult> MyProfile()
+        [Route("Profile")]
+        public async Task<IActionResult> Profile(Guid netUidProfile)
         {
-            return View();
+            if (netUidProfile != Guid.Empty)
+            {
+                var user = await _authenticationService.GetProfile(netUidProfile);
+
+                ProfileModel model = new ProfileModel { InformationAccount = user.InformationAccount, UserName = user.UserName, SurName = user.SurName };
+                return View(model);
+
+            }
+
+            var userName = Request.Cookies[CookiesPath.USER_NAME];
+            var surName = Request.Cookies[CookiesPath.SURNAME];
+            var informationProfile = Request.Cookies[CookiesPath.INFORMATION_PROFILE];
+            ProfileModel profileModel = new ProfileModel { InformationAccount= informationProfile, UserName = userName, SurName = surName };
+            return View(profileModel);
         }
         [HttpGet]
         [Route("EditProfile")]
@@ -44,9 +61,9 @@ namespace MVC.ArticleAdventure.Controllers
         {
             var userName = Request.Cookies[CookiesPath.USER_NAME];
             var surName = Request.Cookies[CookiesPath.SURNAME];
-            var informationArticle = Request.Cookies[CookiesPath.INFORMATION_ARTICLE];
+            var informationProfile = Request.Cookies[CookiesPath.INFORMATION_PROFILE];
 
-            UserProfile user = new UserProfile { UserName = userName, InformationAccount = informationArticle, SurName = surName };
+            UserProfile user = new UserProfile { UserName = userName, InformationAccount = informationProfile, SurName = surName };
             EditProfileModel editProfileModel = new EditProfileModel { UserProfile = user };
             return View(editProfileModel);
         }
