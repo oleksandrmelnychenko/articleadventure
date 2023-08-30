@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace domain.ArticleAdventure.Entities
 {
-    public class AddStripePayment
+    public class AddStripePayment:EntityBase
     {
-        public string CustomerId { get; set; }
+        public string MainArticleId { get; set; }
         public string ReceiptEmail { get; set; }
         public string Description { get; set; }
         public string Currency { get; set; }

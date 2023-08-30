@@ -22,14 +22,30 @@ namespace webApi.ArticleAdventure.Controllers
             return View();
         }
         [HttpPost]
-        [AssignActionRoute(StripeSegments.CHECKOUT)]
-        public async Task<IActionResult> CheckoutOrder( string emailUser,[FromBody] MainArticle mainArticle)
+        [AssignActionRoute(StripeSegments.CHECKOUT_BUY_NOW)]
+        public async Task<IActionResult> CheckoutOrderBuyNowMain( string emailUser,[FromBody] MainArticle mainArticle)
         {
             try
             {
                 //var customerResponce = await _stripeService.AddStripeCustomerAsync(customer,ct);
-                var s = await _stripeService.CheckOut(mainArticle, "https://localhost:7192", emailUser);
+                var s = await _stripeService.CheckOutBuyNow(mainArticle, "https://localhost:7192", emailUser);
                 return Ok(SuccessResponseBody(s, "Статус успешно изменён."));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+
+
+        [HttpPost]
+        [AssignActionRoute(StripeSegments.CHECKOUT_BUY_CART)]
+        public async Task<IActionResult> CheckoutOrderBuyCartMain(string emailUser, [FromBody] List<MainArticle> mainArticle)
+        {
+            try
+            {
+                return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
             }
             catch (Exception exc)
             {
@@ -46,6 +62,21 @@ namespace webApi.ArticleAdventure.Controllers
             {
                 //var customerResponce = await _stripeService.AddStripeCustomerAsync(customer,ct);
                 await _stripeService.CheckoutSuccess(sessionId);
+                return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+        [HttpGet]
+        [AssignActionRoute(StripeSegments.CHECKOUT_FAILED)]
+        public async Task<IActionResult> CheckoutFailed()
+        {
+            try
+            {
+                //var customerResponce = await _stripeService.AddStripeCustomerAsync(customer,ct);
                 return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
             }
             catch (Exception exc)

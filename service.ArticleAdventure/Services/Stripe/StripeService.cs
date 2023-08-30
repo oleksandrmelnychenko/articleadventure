@@ -27,20 +27,21 @@ namespace service.ArticleAdventure.Services.Stripe
             _tokenService = tokenService;
         }
 
-        public async Task<CheckoutOrderResponse> CheckOut(MainArticle mainArticle, string thisApiUrl, string userEmail)
+        public async Task<CheckoutOrderResponse> CheckOutBuyNow(MainArticle mainArticle, string thisApiUrl, string userEmail)
         {
 
             var metaData = new Dictionary<string, string>()
                                 {
-                                   { "ID", mainArticle.Id.ToString() }
+                                   { "IDArticle", mainArticle.Id.ToString() },
+                                   { "IDUser", mainArticle.Id.ToString() }
                                 };
             var options = new SessionCreateOptions
             {
+                Metadata = metaData,
                 CustomerEmail = userEmail,
-
                 // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                 SuccessUrl = $"{thisApiUrl}/api/v1/stripe/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                CancelUrl = "https://localhost:7197/" + "failed",  // Checkout cancelled.
+                CancelUrl = $"{thisApiUrl}/api/v1/stripe/checkout/failed" ,  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> // Only card available in test mode?
                 {
                     "card"
@@ -48,7 +49,7 @@ namespace service.ArticleAdventure.Services.Stripe
                 //Metadata = metaData,
                 LineItems = new List<SessionLineItemOptions>
             {
-                new()
+                new SessionLineItemOptions()
                 {
                     PriceData = new SessionLineItemPriceDataOptions
                     {
@@ -59,7 +60,7 @@ namespace service.ArticleAdventure.Services.Stripe
                             Name = mainArticle.Title,
                             Description = mainArticle.Description,
                             //Metadata = metaData
-            //Images = new List<string> { product.ImageUrl }
+                            Images = new List<string> { mainArticle.ImageUrl }
                         },
                         
 
@@ -87,11 +88,16 @@ namespace service.ArticleAdventure.Services.Stripe
         public async Task CheckoutSuccess(string sessionId)
         {
             var sessionService = new SessionService();
-            var session = sessionService.Get(sessionId);
-             
+            Session session = sessionService.Get(sessionId);
+            var paymentService = new PaymentIntentService();
+            PaymentIntent x = paymentService.Get(session.PaymentIntentId);
+            
             // Here you can save order and customer details to your database.
             var total = session.AmountTotal.Value;
+            //session.
+            var g = session.CustomerDetails.Name;
             var customerEmail = session.CustomerDetails.Email;
         }
     }
 }
+ 
