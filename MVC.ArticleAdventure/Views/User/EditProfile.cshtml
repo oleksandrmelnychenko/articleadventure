@@ -6,12 +6,17 @@
 }
 
 <div style="display:flex">
-    @Html.Partial("_RightSideProfileEdit")
-
-    <form style="display: grid;">
-        <input type="text" placeholder="Name" asp-for="UserProfile.UserName" />
-        <input type="text" placeholder="SurName" asp-for="UserProfile.SurName" />
-        <input type="text" placeholder="InformationAccount" asp-for="UserProfile.InformationAccount" />
-        <button formmethod="post">change</button>
-    </form>
+    <div class="profile_page">
+        <div class="sideBar_container">
+            @Html.Partial("_RightSideProfileEdit")
+        </div>
+        <div class="content_container">
+            <form style="display: grid;">
+                <input type="text" placeholder="Name" asp-for="UserProfile.UserName" />
+                <input type="text" placeholder="SurName" asp-for="UserProfile.SurName" />
+                <input type="text" placeholder="InformationAccount" asp-for="UserProfile.InformationAccount" />
+                <button formmethod="post">change</button>
+            </form>
+        </div>
+    </div>
 </div>

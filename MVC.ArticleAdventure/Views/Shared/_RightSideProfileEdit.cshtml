@@ -3,13 +3,20 @@
 @using domain.ArticleAdventure.Helpers;
 @{
 }
-<div>
-    <div>Image</div>
-    <div>@Context.Request.Cookies[CookiesPath.USER_NAME]</div>
-    <div style="display: grid;">
-        <a asp-controller="User" asp-action="Profile">View Profile</a>
-        <a asp-controller="User" asp-action="EditProfile">Edit Profile</a>
-        <a asp-controller="User" asp-action="AccountSecurity">AccountSecurity</a>
-        <a asp-controller="New" asp-action="LogOutAccount">Log Out</a>
-    </div>
+<div class="sideProfile">
+    <div class="avatar">B</div>
+    <div class="user_name">@Context.Request.Cookies[CookiesPath.USER_NAME]</div>
+
+    <div class="line"></div>
+
+    <ul>
+        <li><a asp-controller="User" asp-action="Profile">View Profile</a></li>
+        <li> <a asp-controller="User" asp-action="EditProfile">Edit Profile</a></li>
+        <li><a asp-controller="User" asp-action="AccountSecurity">AccountSecurity</a></li>
+    </ul>
+
+    <div class="line"></div>
+    <ul>
+        <li> <a asp-controller="New" asp-action="LogOutAccount">Log Out</a></li>
+    </ul>
 </div>

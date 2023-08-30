@@ -5,8 +5,16 @@
 *@
 @{
 }
-<div>
-    <h2>@Model.UserName</h2>
-    <h2>@Model.SurName</h2>
+<div class="profile_page">
+    <div class="sideBar_container">
+        @Html.Partial("_RightSideProfileEdit")
+    </div>
+    <div class="content_container">
+        <div>
+            <h2>@Model.UserName</h2>
+            <h2>@Model.SurName</h2>
+        </div>
+        <div>@Model.InformationAccount</div>
+    </div>
 </div>
-<div>@Model.InformationAccount</div>
+

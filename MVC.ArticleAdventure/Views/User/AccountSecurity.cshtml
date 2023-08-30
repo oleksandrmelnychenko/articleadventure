@@ -6,29 +6,60 @@
 *@
 @{
 }
-<div style="display:flex;">
-    @Html.Partial("_RightSideProfileEdit")
-   <div>
-            <input type="text" disabled="true" placeholder="Your email: @Context.Request.Cookies[CookiesPath.EMAIL] " />
+<div class="profile_page">
+    <div class="sideBar_container">
+        @Html.Partial("_RightSideProfileEdit")
+    </div>
+    <div class="content_container">
+        <div class="content_header">
+            <h1>
+                Account
+            </h1>
+            <p>
+                Here you can change your account settings and password.
+            </p>
+        </div>
 
-        <form asp-action="AccountSecurityEmail">
-                <h2>Изменение адреса электронной почты</h2>
-                <div>
-                    <label for="newEmail">Новый адрес электронной почты:</label>
-                    <input type="email" asp-for ="NewEmail" name="newEmail" required>
+        <div class="content_body">
+            <div class="t">Email:</div>
+            <div class="input_email_wrapper">
+                <input type="text" disabled placeholder="Your email: @Context.Request.Cookies[CookiesPath.EMAIL] " />
+                <label for="isOpenModal">Edit</label>
+            </div>
 
-                    <label for="password">Пароль:</label>
-                   <input type="password" asp-for="ConfirmPasswordUpdateEmail" >
 
-                    <button formmethod="post" type="submit">Сохранить изменения</button>
-                </div>
+            <div class="line"></div>
+            <div class="t">Password:</div>
+            <form asp-action="AccountSecurity" style="display: grid;">
+                <input type="password" placeholder="CurrentPassword" asp-for="CurrentPassword" />
+                <input type="password" placeholder="NewPassword" asp-for="NewPassword" />
+                <input type="password" placeholder="ConfirmNewPassword" asp-for="ConfirmNewPassword" />
             </form>
-        <form asp-action="AccountSecurity" style="display: grid;">
-            <input type="password" placeholder="CurrentPassword" asp-for="CurrentPassword" />
-            <input type="password" placeholder="NewPassword" asp-for="NewPassword" />
-            <input type="password" placeholder="ConfirmNewPassword" asp-for="ConfirmNewPassword" />
-        </form>
-        <button formmethod="post">Save</button>
-   </div>
-</div>
+            <div class="button_float_wrapper">
+                <button formmethod="post">Save</button>
+            </div>
+        </div>
+        <div class="modal_wrapper">
+            <input type="checkbox" id="isOpenModal" />
+            <div class="modal_container">
+                <div class="modal_form">
+                    <label class="close_modal" for="isOpenModal">x</label>
+                    <form asp-action="AccountSecurityEmail">
+                        <h4>Changing your email address</h4>
+                        <div>
+                            <label for="newEmail">New email address:</label>
+                            <input type="email" asp-for="NewEmail" name="newEmail" required>
 
+                            <label for="password">Password:</label>
+                            <input type="password" asp-for="ConfirmPasswordUpdateEmail">
+                            <div class="button_float_wrapper">
+                                <button formmethod="post" type="submit">Save changes</button>
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
