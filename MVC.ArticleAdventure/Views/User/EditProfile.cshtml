@@ -5,17 +5,28 @@
 @{
 }
 
-<div style="display:flex">
-    <div class="profile_page">
-        <div class="sideBar_container">
-            @Html.Partial("_RightSideProfileEdit")
+<div class="profile_page">
+    <div class="sideBar_container">
+        @Html.Partial("_RightSideProfileEdit")
+    </div>
+    <div class="content_container">
+        <div class="content_header">
+            <h1>
+                Public profile
+            </h1>
+            <p>
+                Add information about yourself
+            </p>
         </div>
-        <div class="content_container">
-            <form style="display: grid;">
+        <div class="content_body">
+            <form>
                 <input type="text" placeholder="Name" asp-for="UserProfile.UserName" />
                 <input type="text" placeholder="SurName" asp-for="UserProfile.SurName" />
                 <input type="text" placeholder="InformationAccount" asp-for="UserProfile.InformationAccount" />
-                <button formmethod="post">change</button>
+
+                <div class="button_float_wrapper">
+                    <button formmethod="post">Change</button>
+                </div>
             </form>
         </div>
     </div>
