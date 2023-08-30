@@ -761,11 +761,15 @@
     }
 }
 
-.line {
-    width: 100%;
-    height: 1px;
-    border-bottom: 1px dashed #e0e0e0;
-    margin: 20px 0;
+.sideProfile,
+.profile_page {
+
+    .line {
+        width: 100%;
+        height: 1px;
+        border-bottom: 1px dashed #e0e0e0;
+        margin: 20px 0;
+    }
 }
 
 .sideProfile {
