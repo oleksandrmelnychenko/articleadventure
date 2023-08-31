@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace domain.ArticleAdventure.Entities
 {
-    public class StripePayment
+    public class StripePayment:EntityBase
     {
-        public string CustomerId { get; set; }
+        public string MainArticleId { get; set; }
+        public string UserId { get; set; }
         public string ReceiptEmail { get; set; }
         public string Description { get; set; }
         public string Currency { get; set; }

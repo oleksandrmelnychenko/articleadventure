@@ -11,7 +11,7 @@ namespace service.ArticleAdventure.Services.Stripe.Contracts
     {
        
 
-        Task<CheckoutOrderResponse> CheckOut(MainArticle mainArticle, string thisApiUrl,string userEmail);
+        Task<CheckoutOrderResponse> CheckOutBuyNow(MainArticle mainArticle, string thisApiUrl,string userEmail);
         Task CheckoutSuccess(string sessionId);
     }
 }
