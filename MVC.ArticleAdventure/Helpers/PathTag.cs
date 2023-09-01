@@ -11,7 +11,5 @@
         public const string REMOVE_MAIN_TAG = "api/v1/tags/remove/maintag";
         public const string CHANGE_MAIN_TAG = "api/v1/tags/change/maintag";
         public const string CHANGE_SUP_TAG = "api/v1/tags/change/suptag";
-        public const string BUY_NOW_STRIPE = "api/v1/stripe/checkout/buynow";
-        public const string BUY_CART_STRIPE = "api/v1/stripe/checkout/buycart";
     }
 }

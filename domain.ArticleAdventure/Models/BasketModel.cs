@@ -11,7 +11,7 @@ namespace domain.ArticleAdventure.Models
     {
         public List<MainArticle>? BasketArticles { get; set; }
 
-        public int FullPrice { get; set; }
+        public double FullPrice { get; set; }
 
     }
 }

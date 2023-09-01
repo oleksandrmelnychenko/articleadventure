@@ -22,12 +22,15 @@ namespace MVC.ArticleAdventure.Controllers
         private readonly IArticleService _supArticleService;
         private readonly IMainArticleService _mainArticleService;
         private readonly ITagService _tagService;
-        public AllController(ILogger<AllController> logger, IArticleService authenticationService, IMainArticleService mainArticleService, ITagService tagService)
+        private readonly IStripeService _stripeService;
+
+        public AllController(ILogger<AllController> logger, IArticleService authenticationService, IMainArticleService mainArticleService, ITagService tagService, IStripeService stripeService)
         {
             _logger = logger;
             _supArticleService = authenticationService;
             _mainArticleService = mainArticleService;
             _tagService = tagService;
+            _stripeService = stripeService;
         }
 
         [HttpGet]
@@ -248,7 +251,18 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("InfoArticle")]
         public async Task<IActionResult> InfoArticle(Guid NetUidArticle)
         {
+            
             var article = await _mainArticleService.GetArticle(NetUidArticle);
+            var email = Request.Cookies[CookiesPath.EMAIL];
+
+            List<StripePayment> payments = await _stripeService.CheckPaymentsHaveUser(email);
+            var checkArticle = payments.Where(x => x.MainArticleId == article.Id).ToList();
+
+            if (checkArticle.Count() != 0)
+            {
+                //GetInformationArticleModel getInformationArticleModel = new GetInformationArticleModel { MainArticle = article };
+                return Redirect($"~/GetInformationArticle/?NetUidArticle={article.NetUid}");
+            }
             InfoArticleModel infoArticleModel = new InfoArticleModel { MainArticle = article };
             return View(infoArticleModel);
         }

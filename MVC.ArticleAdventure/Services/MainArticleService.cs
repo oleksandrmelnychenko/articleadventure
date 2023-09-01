@@ -59,6 +59,21 @@ namespace MVC.ArticleAdventure.Services
                 return authorArticleResponce;
             }
         }
+        public async Task<MainArticle> GetArticle(long id)
+        {
+            var response = await _httpClient.GetAsync($"{PathMainArticle.GET_ARTICLE}?id={id}");
+
+            if (!CustomContainErrorResponse(response))
+            {
+                return new MainArticle();
+            }
+            else
+            {
+                var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                MainArticle authorArticleResponce = JsonConvert.DeserializeObject<MainArticle>(successResponse.Body.ToString());
+                return authorArticleResponce;
+            }
+        }
 
         public async Task Remove(Guid netUidArticle)
         {

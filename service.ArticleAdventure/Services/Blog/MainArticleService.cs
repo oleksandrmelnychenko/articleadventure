@@ -76,7 +76,15 @@ namespace service.ArticleAdventure.Services.Blog
                      return _mainRepositoryFactory.New(connection).GetArticle(netUid);
                  }
              });
-        
+        public Task<MainArticle> GetArticle(long id) =>
+            Task.Run(() =>
+            {
+                using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                {
+                    return _mainRepositoryFactory.New(connection).GetArticle(id);
+                }
+            });
+
 
         public Task<List<MainArticle>> GetAllArticles() => 
             Task.Run(() =>

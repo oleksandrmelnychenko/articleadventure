@@ -7,7 +7,7 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public string Body { get; set; }
-        public string Price { get; set; }
+        public double Price { get; set; }
         public string Image { get; set; }
         public string ImageUrl { get; set; }
         public string WebImageUrl { get; set; }

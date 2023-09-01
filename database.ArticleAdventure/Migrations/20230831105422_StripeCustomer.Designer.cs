@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using database.ArticleAdventure;
 
@@ -11,9 +12,10 @@ using database.ArticleAdventure;
 namespace database.ArticleAdventure.Migrations
 {
     [DbContext(typeof(ArticleAdventureDataContext))]
-    partial class ArticleAdventureDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230831105422_StripeCustomer")]
+    partial class StripeCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,8 +81,9 @@ namespace database.ArticleAdventure.Migrations
                         .HasColumnName("NetUID")
                         .HasDefaultValueSql("newid()");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -197,9 +200,9 @@ namespace database.ArticleAdventure.Migrations
                         .HasColumnName("NetUID")
                         .HasDefaultValueSql("newid()");
 
-                    b.Property<double>("Price")
+                    b.Property<int>("Price")
                         .HasMaxLength(250)
-                        .HasColumnType("float");
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -407,8 +410,8 @@ namespace database.ArticleAdventure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .ValueGeneratedOnAdd()

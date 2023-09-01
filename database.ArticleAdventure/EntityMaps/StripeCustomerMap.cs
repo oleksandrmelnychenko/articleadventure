@@ -1,6 +1,5 @@
 ﻿using domain.ArticleAdventure.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,20 +8,19 @@ using System.Threading.Tasks;
 
 namespace database.ArticleAdventure.EntityMaps
 {
-    public class PaymentMap : EntityBaseMap<Payment>
+    public class StripeCustomerMap : EntityBaseMap<StripeCustomer>
     {
-        public override void Map(EntityTypeBuilder<Payment> entity)
+        public override void Map(EntityTypeBuilder<StripeCustomer> entity)
         {
             base.Map(entity);
 
-            entity.Property(p => p.PaymentStatus)
+            entity.Property(p => p.Name)
                 .IsRequired(false)
                 .HasMaxLength(250);
-            entity.Property(p => p.PaymentAmount)
+            entity.Property(p => p.Email)
                 .IsRequired();
-            entity.Property(p => p.OrderId)
+            entity.Property(p => p.UserId)
                 .IsRequired();
         }
-
     }
 }

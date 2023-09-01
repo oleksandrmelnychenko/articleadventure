@@ -16,7 +16,8 @@ namespace database.ArticleAdventure
         public DbSet<MainArticleTags> ArticleTags { get; set; }
         public DbSet<MainArticle> MainArticle { get; set; }
         public DbSet<Order> Order { get; set; }
-        public DbSet<Payment> Payment { get; set; }
+        public DbSet<StripePayment> stripePayments { get; set; }
+        public DbSet<StripeCustomer> stripeCustomers { get; set; }
         public DbSet<FavoriteArticle> FavoriteArticles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -31,8 +32,10 @@ namespace database.ArticleAdventure
 
             builder.AddConfiguration(new OrderMap());
 
-            builder.AddConfiguration(new PaymentMap());
+            builder.AddConfiguration(new StripePaymentMap());
 
+            builder.AddConfiguration(new StripeCustomerMap());
+            
             builder.AddConfiguration(new MainArticleTagsMap());
             
             builder.AddConfiguration(new MainArticleMap());

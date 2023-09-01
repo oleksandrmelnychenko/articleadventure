@@ -5,6 +5,7 @@ using common.ArticleAdventure.ResponceBuilder.Contracts;
 using service.ArticleAdventure.Services.Stripe.Contracts;
 using domain.ArticleAdventure.Entities;
 using System.Net;
+using domain.ArticleAdventure.Helpers;
 
 namespace webApi.ArticleAdventure.Controllers
 {
@@ -28,8 +29,8 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 //var customerResponce = await _stripeService.AddStripeCustomerAsync(customer,ct);
-                var s = await _stripeService.CheckOutBuyNow(mainArticle, "https://localhost:7192", emailUser);
-                return Ok(SuccessResponseBody(s, "Статус успешно изменён."));
+                var checkout = await _stripeService.CheckOutBuyNow(mainArticle, "", emailUser);
+                return Ok(SuccessResponseBody(checkout, "Статус успешно изменён.")); 
             }
             catch (Exception exc)
             {
@@ -62,7 +63,7 @@ namespace webApi.ArticleAdventure.Controllers
             {
                 //var customerResponce = await _stripeService.AddStripeCustomerAsync(customer,ct);
                 await _stripeService.CheckoutSuccess(sessionId);
-                return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
+                return Ok(SuccessResponseBody(null, "Статус успешно изменён.")); 
             }
             catch (Exception exc)
             {
@@ -78,6 +79,22 @@ namespace webApi.ArticleAdventure.Controllers
             {
                 //var customerResponce = await _stripeService.AddStripeCustomerAsync(customer,ct);
                 return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+        [HttpGet]
+        [AssignActionRoute(StripeSegments.CHECK_PAYMENTS_HAVE_USER)]
+        public async Task<IActionResult> CheckPaymentsHaveUser(string userMail)
+        {
+            try
+            {
+                var payments = await _stripeService.CheckPaymentsHaveUser(userMail);
+                //var customerResponce = await _stripeService.AddStripeCustomerAsync(customer,ct);
+                return Ok(SuccessResponseBody(payments, "Статус успешно изменён."));
             }
             catch (Exception exc)
             {

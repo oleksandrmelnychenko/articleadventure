@@ -22,11 +22,26 @@ namespace MVC.ArticleAdventure.Services
         public async Task<CheckoutOrderResponse> BuyStripe(MainArticle mainArticle, string Email)
         {
 
-           var response = await _httpClient.PostAsJsonAsync($"{PathTag.BUY_NOW_STRIPE}?emailUser={Email}", mainArticle);
+           var response = await _httpClient.PostAsJsonAsync($"{PathStripe.BUY_NOW_STRIPE}?emailUser={Email}", mainArticle);
 
             var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
             CheckoutOrderResponse orderResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<CheckoutOrderResponse>(successResponse.Body.ToString());
             return orderResponse;
+        }
+
+        public async Task<List<StripePayment>> CheckPaymentsHaveUser(string userEmail)
+        {
+
+            var response = await _httpClient.GetAsync($"{PathStripe.CHECK_PAYMENTS_HAVE_USER}?userMail={userEmail}");
+           var payments = await DeserializeResponse<List<StripePayment>>(response);
+            return payments;
+        }
+
+        public async Task CheckoutSuccess(string sessionId)
+        {
+            var response = await _httpClient.GetAsync($"{PathStripe.CHECK_SUCCESS}?sessionId={sessionId}");
+
+            
         }
     }
 }

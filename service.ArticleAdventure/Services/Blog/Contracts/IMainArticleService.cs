@@ -15,5 +15,6 @@ namespace service.ArticleAdventure.Services.Blog.Contracts
         Task Update(MainArticle blogs, IFormFile filePhotoMainArticle);
         Task Remove(Guid netUid);
         Task<MainArticle> GetArticle(Guid netUid);
+        Task<MainArticle> GetArticle(long id);
     }
 }

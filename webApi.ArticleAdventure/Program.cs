@@ -35,12 +35,14 @@ using Stripe;
 using service.ArticleAdventure.Services.Stripe.Contracts;
 using service.ArticleAdventure.Services.Stripe;
 using domain.ArticleAdventure.Helpers;
+using domain.ArticleAdventure.Repositories.Stripe;
+using domain.ArticleAdventure.Repositories.Stripe.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath); 
 builder.Configuration.AddJsonFile("appsettings.json");
 builder.Configuration.AddEnvironmentVariables();
-ArticleAdventureFolderManager.InitializeServerFolderManager(builder.Environment.ContentRootPath, builder.Configuration.GetValue<string>("ServerSettings:ServerUrl"));
+ArticleAdventureFolderManager.InitializeServerFolderManager(builder.Environment.ContentRootPath, builder.Configuration.GetValue<string>("ServerSettings:ServerUrl"), builder.Configuration.GetValue<string>("ServerSettings:ClientUrl"));
 
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppSettingsProperties(builder.Configuration);
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppEnvironmentRootPath(builder.Environment.ContentRootPath);
@@ -103,6 +105,7 @@ builder.Services
     .AddScoped<IStripeService, StripeService>();
 builder.Services.AddTransient<IArticleRepositoryFactory, ArticleRepositoryFactory>();
 builder.Services.AddTransient<IMainArticleRepositoryFactory, MainArticleRepositoryFactory>();
+builder.Services.AddTransient<IStripeRepositoryFactory, StripeRepositoryFactory>();
 builder.Services.AddTransient<ITagRepositoryFactory, TagRepositoryFactory>();
 builder.Services.AddTransient<IMainArticleTagsFactory, MainArticleTagsFactory>();
 

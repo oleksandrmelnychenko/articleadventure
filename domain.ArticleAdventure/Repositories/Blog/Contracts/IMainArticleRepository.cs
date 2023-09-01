@@ -18,5 +18,6 @@ namespace domain.ArticleAdventure.Repositories.Blog.Contracts
         void UpdateMainArticle(MainArticle blog);
 
         MainArticle GetArticle(Guid netUid);
+        MainArticle GetArticle(long id);
     }
 }

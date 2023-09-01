@@ -10,16 +10,18 @@ namespace domain.ArticleAdventure.Helpers
     {
         private static string _serverPath;
         private static string _serverUrl;
+        private static string _clientUrl;
 
 
         private static string _staticFolder = "wwwroot\\";
 
         private static string _imagelFiles = "images";
 
-        public static void InitializeServerFolderManager(string serverPath,string serverUrl)
+        public static void InitializeServerFolderManager(string serverPath,string serverUrl,string clientUrl)
         {
             _serverPath = serverPath;
             _serverUrl = serverUrl;
+            _clientUrl = clientUrl;
             CreateImageFilesFolderIfNotExists();
         }
 
@@ -30,7 +32,8 @@ namespace domain.ArticleAdventure.Helpers
                 Directory.CreateDirectory(Path.Combine(_serverPath, _imagelFiles));
             }
         }
-
+        public static string GetServerPath() => _serverUrl;
+        public static string GetClientPath() => _clientUrl;
         public static string GetFilesFolderPath() => Path.Combine(_serverPath, _staticFolder);
 
         //public static string GetStaticFolder() => _staticFolder;
