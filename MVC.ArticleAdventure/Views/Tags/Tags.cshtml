@@ -20,7 +20,7 @@
                 }
                 else
                 {
-                    <button disabled="true" type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>
+                    <button disabled type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>
                 }
                 <button type="submit" formaction="AddMainTag" formmethod="post" value="Save">Save</button>
             </div>
@@ -66,11 +66,11 @@
                 @if (Model.AddSupTag?.NetUid != null)
                 {
                     <button type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
-                    <button disabled="true" type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
+                    <button disabled type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
                 }
                 else
                 {
-                    <button disabled="true" type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
+                    <button disabled type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
                     <button type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
                 }
             </div>
