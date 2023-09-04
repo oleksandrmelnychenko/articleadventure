@@ -628,7 +628,7 @@ body {
 .tags_page .priceBox_style .continueReading_price {
   top: auto;
   left: auto;
-  right: 40px;
+  right: 20px;
   bottom: 40px;
   z-index: 2;
   position: absolute;
@@ -642,7 +642,7 @@ body {
 }
 .article_item .priceBox_style .continueReading_price span,
 .tags_page .priceBox_style .continueReading_price span {
-  font-size: 38px;
+  font-size: 33px;
   font-weight: 100;
   padding: 2px;
 }
