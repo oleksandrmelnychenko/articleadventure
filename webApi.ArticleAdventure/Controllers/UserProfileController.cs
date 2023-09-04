@@ -119,8 +119,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                await _userProfileService.UpdateAccountInformation(userProfile);
-                return Ok(SuccessResponseBody(null, "user successfully updated Account Information"));
+                return Ok(SuccessResponseBody(await _userProfileService.UpdateAccountInformation(userProfile), "user successfully updated Account Information"));
             }
             catch (Exception exc)
             {

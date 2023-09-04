@@ -1,4 +1,6 @@
-﻿using domain.ArticleAdventure.EntityHelpers.Identity;
+﻿using Azure;
+using common.ArticleAdventure.WebApi;
+using domain.ArticleAdventure.EntityHelpers.Identity;
 using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -12,23 +14,30 @@ using System.Security.Claims;
 
 namespace MVC.ArticleAdventure.Controllers
 {
-    public class IdentityController : Controller
+    public class IdentityController : MVCControllerBase
     {
         private readonly ILogger<IdentityController> _logger;
         private readonly IAuthService _authenticationService;
         private readonly IUserProfileService _userProfileService;
+        private readonly IStripeService _stripeService;
+        private readonly IMainArticleService _mainArticleService;
 
-        public IdentityController(ILogger<IdentityController> logger, IAuthService authenticationService, IUserProfileService userProfileService)
+        public IdentityController(ILogger<IdentityController> logger, IAuthService authenticationService,
+            IUserProfileService userProfileService, IStripeService stripeService,
+            IMainArticleService mainArticleService)
         {
             _logger = logger;
             _authenticationService = authenticationService;
             _userProfileService = userProfileService;
+            _stripeService = stripeService;
+            _mainArticleService = mainArticleService;
         }
 
         [HttpGet]
         [Route("Login")]
         public async Task<IActionResult> Login()
         {
+            ModelState.AddModelError("str", "Email not found or matched");
             //_authenticationService.Login();
             return View();
         }
@@ -40,26 +49,36 @@ namespace MVC.ArticleAdventure.Controllers
             {
                 return View(userLogin);
             }
-            CompleteAccessToken response = await _authenticationService.Login(userLogin);
-            var user = await _authenticationService.GetProfile(response.UserNetUid);
 
-            //SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.USER, user);
-            Response.Cookies.Append(CookiesPath.USER_NAME,user.UserName);
-            Response.Cookies.Append(CookiesPath.EMAIL,user.Email);
-            if (user.SurName!= null)
+            var response = await _authenticationService.Login(userLogin);
+            if (response.IsSuccess)
             {
-                Response.Cookies.Append(CookiesPath.SURNAME, user.SurName);
+                var user = await _authenticationService.GetProfile(response.Data.UserNetUid);
+                if (user.IsSuccess)
+                {
+                    Response.Cookies.Append(CookiesPath.USER_NAME, user.Data.UserName);
+                    Response.Cookies.Append(CookiesPath.EMAIL, user.Data.Email);
+                    if (user.Data.SurName != null)
+                    {
+                        Response.Cookies.Append(CookiesPath.SURNAME, user.Data.SurName);
 
+                    }
+                    if (user.Data.InformationAccount != null)
+                        Response.Cookies.Append(CookiesPath.INFORMATION_PROFILE, user.Data.InformationAccount);
+                }
+                await SignIn(response.Data);
             }
-            if (user.InformationAccount != null)
-                Response.Cookies.Append(CookiesPath.INFORMATION_PROFILE, user.InformationAccount);
+            else
+            {
+                await SetErrorMessage(response.Error.Message);
+                return View(userLogin);
+            }
 
-            await SignIn(response);
             return Redirect("/");
 
 
         }
-
+        [NonAction]
         private async Task SignIn(CompleteAccessToken response)
         {
             var token = GetTokenFormat(response.AccessToken);
@@ -101,23 +120,24 @@ namespace MVC.ArticleAdventure.Controllers
             {
                 return View(registerModel);
             }
-            var token = await _userProfileService.CreateAccount(registerModel);
-            if (token.ResponseResult != null)
+            var result = await _userProfileService.CreateAccount(registerModel);
+            if (result.IsSuccess)
             {
-                //тут треба щось на перевірте почту
+                registerModel.IsEmailConfirmed = true;
                 return View(registerModel);
+                //тут треба щось на перевірте почту
             }
             else
             {
-                registerModel.IsEmailConfirmed = true;
+                await SetErrorMessage(result.Error.Message);
                 return View(registerModel);
             }
         }
 
 
         [HttpGet]
-        [Route("emailConfirmation")]
-        public async Task<IActionResult> emailConfirmation(string access_token, string userId)
+        [Route("EmailConfirmation")]
+        public async Task<IActionResult> EmailConfirmation(string access_token, string userId)
         {
             var resultSucceeded = await _userProfileService.EmailConformation(access_token, userId);
             if (resultSucceeded)

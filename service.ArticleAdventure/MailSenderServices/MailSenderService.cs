@@ -46,7 +46,7 @@ namespace service.ArticleAdventure.MailSenderServices
 
                     mssObj.Subject = "Fize sign up confirm";
                     string codeHtmlVersion = HttpUtility.UrlEncode(AccessToken);
-                    var confirmUrl = baseUrl + "emailConfirmation?access_token=" + codeHtmlVersion + "&userId="+ userId;
+                    var confirmUrl = baseUrl + "EmailConfirmation?access_token=" + codeHtmlVersion + "&userId="+ userId;
 
                     var confirmButton = "<a href=\"" + confirmUrl + "\">link</a>";
 

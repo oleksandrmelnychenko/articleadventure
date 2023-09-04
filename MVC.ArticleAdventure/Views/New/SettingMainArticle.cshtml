@@ -16,7 +16,6 @@
                 {
                     <button onclick="location.href='@Url.Action("IsSelectLocalSupTag", "New",new {IsSelectSupTagsNetUid = subTag.NetUid})'">@subTag.Name</button>
                 }
-
             }
         }
     </div>
@@ -25,26 +24,22 @@
             <div class="inputs" style="width:100%">
                 <div class="input" style="width:100%">
                     <input type="text" placeholder="Title" asp-for="MainArticle.Title" />
+                    <span asp-validation-for="@Model.MainArticle.Title" class="text-danger"></span>
                 </div>
             </div>
-
-
         </div>
         <div class="meta_row">
             <div class="inputs" style="width:100%">
                 <div class="input" style="width:100%">
                     <input type="text" placeholder="Description" asp-for="MainArticle.Description" />
+                    @*<span asp-validation-for="@Model.MainArticle.Description" class="text-danger"></span>*@
                 </div>
             </div>
         </div>
-       
         <div>
             @foreach (var article in Model.MainArticle.Articles)
             {
                 <input type="hidden" asp-for="@article.Body" />
-               @* <input type="hidden" asp-for="@article.Title" />
-                <input type="hidden" asp-for="@article.Description" />*@
-
                 <div style="width: calc(100% - 320px); height: 150px;background-color: #fff;margin: 10px 0px 10px 0px;">
                     <div style=" display:flex;height: 75%;">
                         <div style="width:100%;">
@@ -55,7 +50,6 @@
                             <div class="inputs" style="width: 90%;">
                                 <div class="input" style="width:100%">
                                     <div style="font-size:18px">@article.Price $</div>
-                                    @*<input type="text" placeholder="Price" asp-for="@article.Price" />*@
                                 </div>
                             </div>
                         </div>
@@ -65,16 +59,11 @@
                             <button value="Change" type="button" onclick="location.href='@Url.Action("ChangeLocalSupArticle",new {ChangeIdArticle =article.Id})'">Change</button>
                             <button value="Delete " type="button" onclick="location.href='@Url.Action("RemoveLocalSupArticle",new {RemoveIdArticle =article.Id})'">Delete</button>
                     </div>
-                       @* <div>
-                            <input value="Сhange" type="submit" asp-page-handler="Submit" />
-                            <input  class="change" value="Delete" type="submit" asp-page-handler="Submit" />
-                        </div>*@
                     </div>
                 </div>
             }
             <div>
                 <button type="button" onclick="location.href='@Url.Action("AddNewSupArticle","New")'">Add Sup Article</button>
-
             </div>
         </div>
         <div style="display:flex">
@@ -85,6 +74,7 @@
             <div class="inputs" style="width:100%">
                 <div class="input" style="width:100%;">
                     <input type="text" placeholder="Infromation Article" asp-for="MainArticle.InfromationArticle" />
+                    @*<span asp-validation-for="@Model.MainArticle.InfromationArticle" class="text-danger"></span>*@
                 </div>
             </div>
         </div>
@@ -92,23 +82,10 @@
             <div class="inputs" style="width:100%">
                 <div class="input" style="width:100%">
                     <input type="text" placeholder="Price $" asp-for="MainArticle.Price" />
+                    @*<span asp-validation-for="@Model.MainArticle.Price" class="text-danger"></span>*@
                 </div>
             </div>
         </div>
         <button formaction="SettingMainArticle" formmethod="post" type="submit" value="Save">Create</button>
-
-       
-
-        @* <div class="meta_row_all_buttons">
-        @foreach (var mainTag in Model.MainTags)
-        {
-        @foreach (var subTag in mainTag.SubTags)
-        {
-        <button formaction="IsSelect" formmethod="post">@subTag.Name</button>
-        }
-        }
-        </div>*@
-        @*<input type="file"/>*@
     </form>
-
 </div>

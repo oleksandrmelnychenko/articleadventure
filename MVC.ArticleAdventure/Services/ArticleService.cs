@@ -37,15 +37,8 @@ namespace MVC.ArticleAdventure.Services
         public async Task<AuthorArticle> GetArticle(Guid netUidArticle)
         {
             var response = await _httpClient.GetAsync($"{PathArticle.GET_ARTICLE}?netUidArticle={netUidArticle}");
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    return await DeserializeResponceObject<AuthorArticle>(response);
-            //}
-            //else
-            //{
-            //    return null;
-            //}
-            if(!CustomContainErrorResponse(response))
+            
+            if (!CustomContainErrorResponse(response))
             {
                 return new AuthorArticle();
             }
@@ -65,7 +58,8 @@ namespace MVC.ArticleAdventure.Services
 
         public async Task Update(AuthorArticle article)
         {
-           var response = await _httpClient.PostAsJsonAsync(PathArticle.UPDATE_ARTICLE, article);
+            var response = await _httpClient.PostAsJsonAsync(PathArticle.UPDATE_ARTICLE, article);
         }
+        
     }
 }

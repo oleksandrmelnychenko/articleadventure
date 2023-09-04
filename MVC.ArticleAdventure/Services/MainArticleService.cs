@@ -94,5 +94,12 @@ namespace MVC.ArticleAdventure.Services
 
             var response = await _httpClient.PostAsync(PathMainArticle.UPDATE_ARTICLE, form);
         }
+
+        public async Task<List<MainArticle>> GetAllArticles(long idUser)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync($"{PathMainArticle.GET_ALL_ARTICLE_USER}?idUser={idUser}");
+            var userResponseLogin = await DeserializeResponse<List<MainArticle>>(response);
+            return userResponseLogin;
+        }
     }
 }

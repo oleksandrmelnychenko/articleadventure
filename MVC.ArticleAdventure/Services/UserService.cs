@@ -1,5 +1,7 @@
 ﻿using common.ArticleAdventure.ResponceBuilder;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.EntityHelpers.Identity;
+using domain.ArticleAdventure.Models;
 using Microsoft.Extensions.Options;
 using MVC.ArticleAdventure.Extensions;
 using MVC.ArticleAdventure.Helpers;
@@ -20,9 +22,31 @@ namespace MVC.ArticleAdventure.Services
 
             _httpClient = httpClient;
         }
-        public async Task ChangeAccountInformation(UserProfile userProfile)
+        public async Task<ExecutionResult<UserProfile>> ChangeAccountInformation(UserProfile userProfile)
         {
-            var response = await _httpClient.PostAsJsonAsync(PathUser.UPDATE_ACCOUNT_INFORMATION, userProfile);
+            var result = new ExecutionResult<UserProfile>();
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync(PathUser.UPDATE_ACCOUNT_INFORMATION, userProfile);
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
 
         }
 

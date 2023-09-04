@@ -1,4 +1,6 @@
 ﻿using Azure;
+using common.ArticleAdventure.WebApi;
+using common.ArticleAdventure.WebApi.RoutingConfiguration;
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.Models;
@@ -8,14 +10,14 @@ using MVC.ArticleAdventure.Services.Contract;
 
 namespace MVC.ArticleAdventure.Controllers
 {
-    public class UserController : Controller
+    public class UserController : MVCControllerBase
     {
         private readonly ILogger<UserController> _logger;
         private readonly IArticleService _articleService;
         private readonly IAuthService _authenticationService;
 
         private readonly IUserService _userService;
-        public UserController(ILogger<UserController> logger, IArticleService articleService, IUserService userService,IAuthService authService)
+        public UserController(ILogger<UserController> logger, IArticleService articleService, IUserService userService, IAuthService authService)
         {
             _logger = logger;
             _articleService = articleService;
@@ -44,7 +46,7 @@ namespace MVC.ArticleAdventure.Controllers
             {
                 var user = await _authenticationService.GetProfile(netUidProfile);
 
-                ProfileModel model = new ProfileModel { InformationAccount = user.InformationAccount, UserName = user.UserName, SurName = user.SurName };
+                ProfileModel model = new ProfileModel { InformationAccount = user.Data.InformationAccount, UserName = user.Data.UserName, SurName = user.Data.SurName };
                 return View(model);
 
             }
@@ -52,7 +54,7 @@ namespace MVC.ArticleAdventure.Controllers
             var userName = Request.Cookies[CookiesPath.USER_NAME];
             var surName = Request.Cookies[CookiesPath.SURNAME];
             var informationProfile = Request.Cookies[CookiesPath.INFORMATION_PROFILE];
-            ProfileModel profileModel = new ProfileModel { InformationAccount= informationProfile, UserName = userName, SurName = surName };
+            ProfileModel profileModel = new ProfileModel { InformationAccount = informationProfile, UserName = userName, SurName = surName };
             return View(profileModel);
         }
         [HttpGet]
@@ -74,7 +76,11 @@ namespace MVC.ArticleAdventure.Controllers
             var guidUser = User.FindFirst("Guid");
 
             editProfileModel.UserProfile.NetUid = Guid.Parse(guidUser.Value);
-            await _userService.ChangeAccountInformation(editProfileModel.UserProfile);
+            var result = await _userService.ChangeAccountInformation(editProfileModel.UserProfile);
+            if (result.IsSuccess)
+            {
+                await SetSuccessMessage(SuccessMessages.UpdateProfile);
+            }
             return View(editProfileModel);
         }
 
@@ -91,6 +97,7 @@ namespace MVC.ArticleAdventure.Controllers
         {
             return View();
         }
+
         [HttpGet]
         [Route("AccountSecurity")]
         public async Task<IActionResult> AccountSecurity()
@@ -99,6 +106,7 @@ namespace MVC.ArticleAdventure.Controllers
             AccountSecurityModel accountSecurityModel = new AccountSecurityModel { ChangeUser = user };
             return View(accountSecurityModel);
         }
+
         [HttpPost]
         [Route("AccountSecurity")]
         public async Task<IActionResult> AccountSecurity(AccountSecurityModel accountSecurityModel)

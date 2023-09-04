@@ -16,5 +16,6 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
         public const string UPDATE = "update";
         public const string GET_ALL_BLOGS = "get/all";
         public const string GET_ARTICLE = "get";
+        public const string GET_USER_ARTICLES = "get/user/articles";
     }
 }

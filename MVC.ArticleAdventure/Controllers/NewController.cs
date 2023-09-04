@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using domain.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Helpers;
+using common.ArticleAdventure.WebApi;
+using common.ArticleAdventure.WebApi.RoutingConfiguration;
 
 namespace MVC.ArticleAdventure.Controllers
 {
-    public class NewController : Controller
+    public class NewController : MVCControllerBase
     {
         private readonly ILogger<NewController> _logger;
         private readonly IArticleService _supArticleService;
@@ -229,9 +231,10 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("SettingMainArticle")]
         public async Task<IActionResult> SettingMainArticle(SettingMainArticleModel settingMainArticleModel)
         {
+           
             MainArticle AuthorArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE);
-            var selectSupTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHOOSE_NEW_SUP_TAGS);
-
+            var supTagsSelect = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHOOSE_NEW_SUP_TAGS);
+            var mainTags = await _tagService.GetAllTags();
             AuthorArticle.Title = settingMainArticleModel.MainArticle.Title;
             AuthorArticle.Description = settingMainArticleModel.MainArticle.Description;
             AuthorArticle.InfromationArticle = settingMainArticleModel.MainArticle.InfromationArticle;
@@ -239,9 +242,9 @@ namespace MVC.ArticleAdventure.Controllers
             AuthorArticle.ArticleTags = new List<MainArticleTags>();
 
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE, AuthorArticle);
-            if (selectSupTags?.Count() > 0)
+            if (supTagsSelect?.Count() > 0)
             {
-                foreach (var item in selectSupTags)
+                foreach (var item in supTagsSelect)
                 {
                     var mainTag = new MainArticleTags
                     {
@@ -252,9 +255,40 @@ namespace MVC.ArticleAdventure.Controllers
                     AuthorArticle.ArticleTags.Add(mainTag);
                 }
             }
-            
+            else
+            {
+                if (supTagsSelect != null && supTagsSelect.Count() != 0)
+                {
+                    foreach (var supTag in supTagsSelect)
+                    {
+                        mainTags
+                        .SelectMany(mainTag => mainTag.SubTags)
+                        .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
+                    }
+                }
+                settingMainArticleModel.MainTags = mainTags;
+                await SetErrorMessage(ErrorMessages.ChooseTags);
+                return View(settingMainArticleModel);
+            }
+            if (settingMainArticleModel.PhotoMainArticle == null)
+            {
+                if (supTagsSelect != null && supTagsSelect.Count() != 0)
+                {
+                    foreach (var supTag in supTagsSelect)
+                    {
+                        mainTags
+                        .SelectMany(mainTag => mainTag.SubTags)
+                        .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
+                    }
+                }
+                settingMainArticleModel.MainTags = mainTags;
+                await SetErrorMessage(ErrorMessages.ChoosePhoto);
+                return View(settingMainArticleModel);
+            }
+
             HttpContext.Session.Remove(SessionStoragePath.CREATE_MAIN_ARTICLE);
             HttpContext.Session.Remove(SessionStoragePath.CHOOSE_NEW_SUP_TAGS);
+            
             await _mainArticleService.AddArticle(AuthorArticle,settingMainArticleModel.PhotoMainArticle);
             return Redirect("~/All/AllBlogs");
         }

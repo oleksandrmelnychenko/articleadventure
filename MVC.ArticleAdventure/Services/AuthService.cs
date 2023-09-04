@@ -5,6 +5,8 @@ using domain.ArticleAdventure.Models;
 using Microsoft.Extensions.Options;
 using MVC.ArticleAdventure.Extensions;
 using MVC.ArticleAdventure.Services.Contract;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace MVC.ArticleAdventure.Services
 {
@@ -19,42 +21,69 @@ namespace MVC.ArticleAdventure.Services
             _httpClient = httpClient;
         }
 
-        public async Task<CompleteAccessToken> Login(UserLogin userLogin)
+        public async Task<ExecutionResult<CompleteAccessToken>> Login(UserLogin userLogin)
         {
-            var loginContent = GetContent(userLogin);
-            //request token
-            var response = await _httpClient.GetAsync($"/api/v1/usermanagement/token/request?email={userLogin.Email}&password={userLogin.Password}&rememberUser=True");
+            var result = new ExecutionResult<CompleteAccessToken>();
 
-            var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-            CompleteAccessToken userResponseLogin = Newtonsoft.Json.JsonConvert.DeserializeObject<CompleteAccessToken>(successResponse.Body.ToString());
-            return userResponseLogin;
-
-        }
-
-        public async Task<UserProfile> GetProfile(Guid guid)
-        {
-            var response = await _httpClient.GetAsync($"/api/v1/usermanagement/get/netuid?userNetId={guid}");
-
-            var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-            UserProfile userResponseLogin = Newtonsoft.Json.JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
-            return userResponseLogin;
-        }
-
-        public async Task<UserResponseLogin> Register(UserRegister userRegister)
-        {
-            var registerContent = GetContent(userRegister);
-
-            var response = await _httpClient.PostAsync("/api/identity/RegisterUser", registerContent);
-
-            if (!CustomContainErrorResponse(response))
+            try
             {
-                return new UserResponseLogin
+                var loginContent = GetContent(userLogin);
+
+                var response = await _httpClient.GetAsync($"/api/v1/usermanagement/token/request?email={userLogin.Email}&password={userLogin.Password}&rememberUser=True");
+                if (response.IsSuccessStatusCode)
                 {
-                    ResponseResult = await DeserializeObjectResponse<ErrorResponse>(response)
-                };
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<CompleteAccessToken>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
             }
 
-            return await DeserializeObjectResponse<UserResponseLogin>(response);
+            return result;
+        }
+
+        public async Task<ExecutionResult<UserProfile>> GetProfile(Guid guid)
+        {
+            var result = new ExecutionResult<UserProfile>();
+
+            var response = await _httpClient.GetAsync($"/api/v1/usermanagement/get/netuid?userNetId={guid}");
+
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
         }
     }
+
+   
+
+    
+
+   
 }

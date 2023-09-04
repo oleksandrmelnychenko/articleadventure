@@ -16,5 +16,7 @@ namespace service.ArticleAdventure.Services.Blog.Contracts
         Task Remove(Guid netUid);
         Task<MainArticle> GetArticle(Guid netUid);
         Task<MainArticle> GetArticle(long id);
+        Task<List<MainArticle>> GetAllArticlesUser(long idUser);
+
     }
 }

@@ -99,5 +99,21 @@ namespace webApi.ArticleAdventure.Controllers
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
             }
         }
+        [HttpGet]
+        [AssignActionRoute(ArticleSegments.GET_USER_ARTICLES)]
+        public async Task<IActionResult> GetUserArticle(long idUser)
+        {
+            try
+            {
+                var article = await _mainArticleService.GetAllArticlesUser(idUser);
+                return Ok(SuccessResponseBody(article, "Успешно вытянуты данные."));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+
     }
 }

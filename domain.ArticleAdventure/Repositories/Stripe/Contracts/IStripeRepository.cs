@@ -14,5 +14,7 @@ namespace domain.ArticleAdventure.Repositories.Stripe.Contracts
         public List<StripePayment> CheckPaymentMainArticle(string receiptEmail, long mainArticleid, long UserId);
         public StripePayment GetPayment(long MainArticleId, long SupArticleId, long UserId);
         public void SetStatusPayment(Guid netUidPayment, string paymentStatus);
+        public List<StripePayment> GetPaymentIUserdMainArticle(long UserId);
+
     }
 }

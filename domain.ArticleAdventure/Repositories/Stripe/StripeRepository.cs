@@ -26,7 +26,14 @@ namespace domain.ArticleAdventure.Repositories.Stripe
            "SELECT SCOPE_IDENTITY()", payment
            ).Single();
 
-
+        public List<StripePayment> GetPaymentIUserdMainArticle(long userId)
+            => _connection.Query<StripePayment>("SELECT * FROM [stripePayments] AS Payment " +
+                "WHERE Payment.UserId = @UserId " +
+                "AND PaymentStatus ='paid'",
+                new
+                {
+                    UserId = userId,
+                }).ToList();
         public List<StripePayment> GetPaymentEmailMainArticle(string receiptEmail)
             => _connection.Query<StripePayment>("SELECT * FROM [stripePayments] AS Payment " +
                 "WHERE Payment.ReceiptEmail = @ReceiptEmail " +
@@ -72,5 +79,7 @@ namespace domain.ArticleAdventure.Repositories.Stripe
                     NetUid = netUidPayment,
                     PaymentStatus = paymentStatus
                 });
+
+       
     }
 }

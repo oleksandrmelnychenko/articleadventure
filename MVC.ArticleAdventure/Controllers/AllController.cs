@@ -240,6 +240,8 @@ namespace MVC.ArticleAdventure.Controllers
             return View(model);
         }
 
+       
+
         [Authorize]
         public async Task<IActionResult> Remove(Guid netUidArticle)
         {

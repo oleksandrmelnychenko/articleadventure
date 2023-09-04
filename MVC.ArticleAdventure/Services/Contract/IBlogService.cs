@@ -10,6 +10,5 @@ namespace MVC.ArticleAdventure.Services.Contract
         public Task Update(AuthorArticle Article);
         public Task Remove(Guid netUidArticle);
 
-
     }
 }

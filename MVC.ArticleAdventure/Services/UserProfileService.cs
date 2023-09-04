@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using common.ArticleAdventure.ResponceBuilder;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.EntityHelpers.Identity;
 using domain.ArticleAdventure.IdentityEntities;
 using domain.ArticleAdventure.Models;
 using Microsoft.AspNetCore.Identity;
@@ -24,39 +25,94 @@ namespace MVC.ArticleAdventure.Services
 
             _httpClient = httpClient;
         }
-        public async Task<UserResponseLogin> CreateAccount(RegisterModel registerModel)
+        public async Task<ExecutionResult<UserProfile>> CreateAccount(RegisterModel registerModel)
         {
-            UserProfile userProfile = new UserProfile { Email = registerModel.Email, UserName = registerModel.UserName };
-            var response = await _httpClient.PostAsJsonAsync($"{PathUserProfile.CREATE_USER}/?password={registerModel.Password}", userProfile);
 
-            if (!CustomContainErrorResponse(response))
+            var result = new ExecutionResult<UserProfile>();
+
+            try
             {
-                return new UserResponseLogin
+                UserProfile userProfile = new UserProfile { Email = registerModel.Email, UserName = registerModel.UserName };
+                var response = await _httpClient.PostAsJsonAsync($"{PathUserProfile.CREATE_USER}/?password={registerModel.Password}", userProfile);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    ResponseResult = await DeserializeObjectResponse<ErrorResponse>(response)
-                };
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
             }
-            else
+            catch (Exception e)
             {
-                var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-                UserProfile userResponseLogin = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
-                return new UserResponseLogin();
+                result.Error.Message = e.Message;
             }
+
+            return result;
+
+           
+
+            //if (!CustomContainErrorResponse(response))
+            //{
+            //    return new UserResponseLogin
+            //    {
+            //        ResponseResult = await DeserializeObjectResponse<ErrorResponse>(response)
+            //    };
+            //}
+            //else
+            //{
+            //    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+            //    UserProfile userResponseLogin = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+            //    return new UserResponseLogin();
+            //}
         }
         public async Task<bool> EmailConformation(string token,string userId)
         {
-            string codeHtmlVersion = HttpUtility.UrlEncode(token);
-            var response = await _httpClient.GetAsync($"/api/v1/usermanagement/email?token= " + codeHtmlVersion + "&userId="+ userId);
-            if (!CustomContainErrorResponse(response))
+
+            var result = new ExecutionResult<UserProfile>();
+
+            try
             {
-                return false;
+                string codeHtmlVersion = HttpUtility.UrlEncode(token);
+                var response = await _httpClient.GetAsync($"/api/v1/usermanagement/email?token= " + codeHtmlVersion + "&userId=" + userId);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
             }
-            else
+            catch (Exception e)
             {
-                var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-                IdentityResult result = JsonConvert.DeserializeObject<IdentityResult>(successResponse.Body.ToString());
-                return result.Succeeded;
+                result.Error.Message = e.Message;
             }
+
+            return result.IsSuccess;
+
+
+            
+            //if (!CustomContainErrorResponse(response))
+            //{
+            //    return false;
+            //}
+            //else
+            //{
+            //    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+            //    IdentityResult result = JsonConvert.DeserializeObject<IdentityResult>(successResponse.Body.ToString());
+            //    return result.Succeeded;
+            //}
         }
     }
 }
