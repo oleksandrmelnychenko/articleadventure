@@ -240,7 +240,7 @@
         }
 
         .continueReading_price {
-            @include position_absolute(auto,40px,40px,auto,2);
+            @include position_absolute(auto,20px,40px,auto,2);
             color: var(--epcl-text-color);
             font-size: 18px;
             font-family: "Source Serif Pro","Source Sans Pro",serif;
@@ -250,7 +250,7 @@
             text-decoration: underline;
 
             span {
-                font-size: 38px;
+                font-size: 33px;
                 font-weight: 100;
                 padding: 2px;
             }

@@ -11,39 +11,34 @@
         {
             <article class="article_item">
                 <div class="item_container">
-                    <div class="item_title">
-                        @Article.Title
-                        <div class="item_created">@Article.Created</div>
+                    <div class="item_header">
+                        <div class="title_container">
+                            <div class="title">@Article.Title</div>
+                            <div class="created">
+                                @Article.Created
+                            </div>
+                        </div>
                     </div>
-                    <div class="item_body">@Html.Raw(Article.Body)</div>
-                    <div class="item_tags">
-                        @foreach (var item in Model.MainArticle.ArticleTags)
-                        {
-                            <ol>
-                                <li>
-                                    <span style="background-color:@item.SupTag.Color;">@item.SupTag.Name</span>
-                                </li>
-                            </ol>
-                        }
-@*                        <ol>
-                            <li>
-                                <span>CRM Software</span>
-                            </li>
-                            <li>
-                                <span>CRM System</span>
-                            </li>
-                            <li>
-                                <span>Customer Relationship Management</span>
-                            </li>
-                            <li>
-                                <span>Customer Support</span>
-                            </li>
-                            <li>
-                                <span>Mobile App</span>
-                            </li>
-                        </ol>*@
 
+
+                    <div class="item_body">
+                        <p>
+                            @Html.Raw(Article.Body)
+                        </p>
+                        
+                        <div class="item_tags">
+                            <ol>
+                                @foreach (var item in Model.MainArticle.ArticleTags)
+                                {
+                                    <li>
+                                        <span style="color:@item.SupTag.Color">#</span>
+                                        <span>@item.SupTag.Name</span>
+                                    </li>
+                                }
+                            </ol>
+                        </div>
                     </div>
+
                 </div>
             </article>
         }
