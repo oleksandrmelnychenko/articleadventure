@@ -16,7 +16,7 @@ namespace MVC.ArticleAdventure.Controllers
             _authenticationService = authService;
             _logger = logger;
         }
-
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             //var userGuidClaim = User.FindFirst("Guid");

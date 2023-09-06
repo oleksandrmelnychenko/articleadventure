@@ -5,12 +5,15 @@ using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Mvc;
 using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
 using Newtonsoft.Json.Linq;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace MVC.ArticleAdventure.Controllers
 {
@@ -54,9 +57,11 @@ namespace MVC.ArticleAdventure.Controllers
             if (response.IsSuccess)
             {
                 var user = await _authenticationService.GetProfile(response.Data.UserNetUid);
+                
                 if (user.IsSuccess)
                 {
                     Response.Cookies.Append(CookiesPath.USER_NAME, user.Data.UserName);
+                    Response.Cookies.Append(CookiesPath.USER_ID, user.Data.Id.ToString());
                     Response.Cookies.Append(CookiesPath.EMAIL, user.Data.Email);
                     if (user.Data.SurName != null)
                     {
@@ -67,14 +72,16 @@ namespace MVC.ArticleAdventure.Controllers
                         Response.Cookies.Append(CookiesPath.INFORMATION_PROFILE, user.Data.InformationAccount);
                 }
                 await SignIn(response.Data);
+                
+
+                return Redirect("/");
             }
             else
             {
                 await SetErrorMessage(response.Error.Message);
                 return View(userLogin);
             }
-
-            return Redirect("/");
+            
 
 
         }

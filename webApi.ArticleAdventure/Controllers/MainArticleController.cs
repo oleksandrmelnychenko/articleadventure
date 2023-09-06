@@ -100,8 +100,8 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpGet]
-        [AssignActionRoute(ArticleSegments.GET_USER_ARTICLES)]
-        public async Task<IActionResult> GetUserArticle(long idUser)
+        [AssignActionRoute(ArticleSegments.GET_USER_ALL_ARTICLES)]
+        public async Task<IActionResult> GetAllUserArticle(long idUser)
         {
             try
             {
@@ -115,5 +115,20 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
 
+        [HttpGet]
+        [AssignActionRoute(ArticleSegments.GET_USER_ARTICLE)]
+        public async Task<IActionResult> GetUserArticle(Guid netUidArticle, long idUser)
+        {
+            try
+            {
+                var article = await _mainArticleService.GetArticleUser(netUidArticle, idUser);
+                return Ok(SuccessResponseBody(article, "Успешно вытянуты данные."));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
     }
 }

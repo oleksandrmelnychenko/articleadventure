@@ -28,7 +28,7 @@ namespace MVC.ArticleAdventure.Services
             return System.Text.Json.JsonSerializer.Deserialize<T>(await responseMessage.Content.ReadAsStringAsync(), options);
         }
 
-        protected async Task<T> DeserializeResponse<T>(HttpResponseMessage responseMessage)
+        protected async Task<T> DeserializeІSuccessResponse<T>(HttpResponseMessage responseMessage)
         {
             var successResponse = await responseMessage.Content.ReadFromJsonAsync<SuccessResponse>();
             var orderResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(successResponse.Body.ToString());

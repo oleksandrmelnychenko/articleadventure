@@ -1,4 +1,5 @@
 ﻿using Azure;
+using common.ArticleAdventure.ResponceBuilder;
 using common.ArticleAdventure.WebApi;
 using common.ArticleAdventure.WebApi.RoutingConfiguration;
 using domain.ArticleAdventure.Entities;
@@ -7,6 +8,7 @@ using domain.ArticleAdventure.Models;
 using Microsoft.AspNetCore.Mvc;
 using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
+using Newtonsoft.Json;
 
 namespace MVC.ArticleAdventure.Controllers
 {
@@ -15,21 +17,25 @@ namespace MVC.ArticleAdventure.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly IArticleService _articleService;
         private readonly IAuthService _authenticationService;
-
+        private readonly IMainArticleService _mainArticleService;
         private readonly IUserService _userService;
-        public UserController(ILogger<UserController> logger, IArticleService articleService, IUserService userService, IAuthService authService)
+        public UserController(ILogger<UserController> logger, IArticleService articleService, IUserService userService, IAuthService authService, IMainArticleService mainArticleService)
         {
             _logger = logger;
             _articleService = articleService;
             _userService = userService;
             _authenticationService = authService;
+            _mainArticleService = mainArticleService;
         }
 
         [HttpGet]
         [Route("MyArticles")]
         public async Task<IActionResult> MyArticles()
         {
-            return View();
+            var StringuserID = Request.Cookies[CookiesPath.USER_ID];
+            var paymentArticles =await _mainArticleService.GetAllArticlesUser(long.Parse(StringuserID));
+            MyArticlesModel myArticlesModel = new MyArticlesModel { mainArticles = paymentArticles.Data };
+            return View(myArticlesModel);
         }
 
         [HttpGet]
@@ -45,11 +51,12 @@ namespace MVC.ArticleAdventure.Controllers
             if (netUidProfile != Guid.Empty)
             {
                 var user = await _authenticationService.GetProfile(netUidProfile);
-
                 ProfileModel model = new ProfileModel { InformationAccount = user.Data.InformationAccount, UserName = user.Data.UserName, SurName = user.Data.SurName };
                 return View(model);
 
             }
+
+          
 
             var userName = Request.Cookies[CookiesPath.USER_NAME];
             var surName = Request.Cookies[CookiesPath.SURNAME];

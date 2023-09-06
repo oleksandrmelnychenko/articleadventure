@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.IdentityEntities;
 using domain.ArticleAdventure.Repositories.Stripe.Contracts;
 using System;
 using System.Collections.Generic;
@@ -27,21 +28,160 @@ namespace domain.ArticleAdventure.Repositories.Stripe
            ).Single();
 
         public List<StripePayment> GetPaymentIUserdMainArticle(long userId)
-            => _connection.Query<StripePayment>("SELECT * FROM [stripePayments] AS Payment " +
-                "WHERE Payment.UserId = @UserId " +
-                "AND PaymentStatus ='paid'",
-                new
+        {
+            List<StripePayment> stripePayments = new List<StripePayment>();
+            _connection.Query<StripePayment, MainArticle, AuthorArticle, StripePayment>("SELECT stripePayments.*, " +
+            "mainArticle.*, " +
+            "authorArticle.* " +
+            "FROM [ArticleAdventure].[dbo].[stripePayments] as stripePayments " +
+            "LEFT JOIN [ArticleAdventure].[dbo].[MainArticle] as mainArticle " +
+            "ON stripePayments.MainArticleId = mainArticle.ID " +
+            "LEFT JOIN [ArticleAdventure].[dbo].[AuthorArticle] as authorArticle " +
+            "ON stripePayments.SupArticleId = authorArticle.ID " +
+            "WHERE mainArticle.Deleted = 0 " +
+            "AND authorArticle.Deleted = 0 " +
+            "AND stripePayments.PaymentStatus = 'paid' " +
+            "AND stripePayments.UserId = @UserId",
+                (stripePayment, mainArticle, supArticle) =>
                 {
-                    UserId = userId,
-                }).ToList();
+                    //|| stripePayments.Any(x => x.MainArticleId.Equals(mainArticle.Id))
+                    if (stripePayments.Any(c => c.Id.Equals(stripePayment.Id)) )
+                    {
+                        stripePayment = stripePayments.First(x => x.Id.Equals(stripePayment.Id));
+                    }
+                    else
+                    {
+                        stripePayments.Add(stripePayment);
+                    }
+
+                    if (stripePayments.Any(x => x.MainArticle.Id.Equals(mainArticle.Id)))
+                    {
+                        mainArticle = stripePayments.Select(x => x.MainArticle).First(x => x.Id.Equals(mainArticle.Id));
+                    }
+                    else
+                    {
+                        stripePayments.Where(x => x.MainArticleId == mainArticle.Id).ToList().ForEach(x => x.MainArticle = mainArticle);
+                    }
+
+                    //if (stripePayments.Any(x=>x.MainArticle.Articles.Any(x=>x.Id.Equals(supArticle.Id))))
+                    //{
+                    //    supArticle = stripePayments.SelectMany(x => x.MainArticle.Articles).First(x => x.Id.Equals(supArticle.Id));
+                    //}
+                    //else
+                    //{
+                    //    stripePayments.Where(x => x.SupArticleId == supArticle.Id).ToList().ForEach(x => x.MainArticle.Articles.Add(supArticle));
+                    //}
+
+                    if (stripePayments.Any(x => x.SupArticle.Id.Equals(supArticle.Id)))
+                    {
+                        supArticle = stripePayments.Select(x => x.SupArticle).First(x => x.Id.Equals(mainArticle.Id));
+                    }
+                    else
+                    {
+                        stripePayments.Where(x => x.SupArticleId == supArticle.Id).ToList().ForEach(x => x.SupArticle = supArticle);
+                    }
+                    return stripePayment;
+                }, new { UserId = userId }).ToList();
+
+            return stripePayments;
+        }
         public List<StripePayment> GetPaymentEmailMainArticle(string receiptEmail)
-            => _connection.Query<StripePayment>("SELECT * FROM [stripePayments] AS Payment " +
-                "WHERE Payment.ReceiptEmail = @ReceiptEmail " +
-                "AND PaymentStatus ='paid'",
-                new
+        {
+            List<StripePayment> stripePayments = new List<StripePayment>();
+            _connection.Query<StripePayment, MainArticle, AuthorArticle, StripePayment>("SELECT stripePayments.*, " +
+            "mainArticle.*, " +
+            "authorArticle.* " +
+            "FROM [ArticleAdventure].[dbo].[stripePayments] as stripePayments " +
+            "LEFT JOIN [ArticleAdventure].[dbo].[MainArticle] as mainArticle " +
+            "ON stripePayments.MainArticleId = mainArticle.ID " +
+            "LEFT JOIN [ArticleAdventure].[dbo].[AuthorArticle] as authorArticle " +
+            "ON stripePayments.SupArticleId = authorArticle.ID " +
+            "WHERE mainArticle.Deleted = 0 " +
+            "AND authorArticle.Deleted = 0 " +
+            "AND stripePayments.PaymentStatus = 'paid' " +
+            "AND stripePayments.ReceiptEmail = @ReceiptEmail",
+                (stripePayment, mainArticle, supArticle) =>
                 {
-                    ReceiptEmail = receiptEmail,
+                    if (stripePayments.Any(c => c.Id.Equals(stripePayment.Id)))
+                    {
+                        stripePayment = stripePayments.First(x => x.Id.Equals(stripePayment.Id));
+                    }
+                    else
+                    {
+                        stripePayments.Add(stripePayment);
+                    }
+
+                    if (stripePayments.Any(x => x.MainArticle.Id.Equals(mainArticle.Id)))
+                    {
+                        mainArticle = stripePayments.Select(x => x.MainArticle).First(x => x.Id.Equals(mainArticle.Id));
+                    }
+                    else
+                    {
+                        stripePayments.Where(x => x.MainArticleId == mainArticle.Id).ToList().ForEach(x => x.MainArticle = mainArticle);
+                    }
+                    if (stripePayments.Any(x => x.SupArticle.Id.Equals(supArticle.Id)))
+                    {
+                        supArticle = stripePayments.Select(x => x.SupArticle).First(x => x.Id.Equals(mainArticle.Id));
+                    }
+                    else
+                    {
+                        stripePayments.Where(x => x.SupArticleId == supArticle.Id).ToList().ForEach(x => x.SupArticle = supArticle);
+                    }
+                    return stripePayment;
+                }, new { ReceiptEmail = receiptEmail }).ToList();
+
+            return stripePayments;
+        }
+        public List<StripePayment> GetPaymentMainArticle(long userId,long mainArticleId)
+        {
+            List<StripePayment> stripePayments = new List<StripePayment>();
+            _connection.Query<StripePayment, MainArticle, AuthorArticle, StripePayment>("SELECT stripePayments.*, " +
+            "mainArticle.*, " +
+            "authorArticle.* " +
+            "FROM [ArticleAdventure].[dbo].[stripePayments] as stripePayments " +
+            "LEFT JOIN [ArticleAdventure].[dbo].[MainArticle] as mainArticle " +
+            "ON stripePayments.MainArticleId = mainArticle.ID " +
+            "LEFT JOIN [ArticleAdventure].[dbo].[AuthorArticle] as authorArticle " +
+            "ON stripePayments.SupArticleId = authorArticle.ID " +
+            "WHERE mainArticle.Deleted = 0 " +
+            "AND authorArticle.Deleted = 0 " +
+            "AND stripePayments.PaymentStatus = 'paid' " +
+            "AND stripePayments.UserId = @UserId " +
+            "AND stripePayments.MainArticleId = @MainArticleId",
+                (stripePayment, mainArticle, supArticle) =>
+                {
+                    if (stripePayments.Any(c => c.Id.Equals(stripePayment.Id)))
+                    {
+                        stripePayment = stripePayments.First(x => x.Id.Equals(stripePayment.Id));
+                    }
+                    else
+                    {
+                        stripePayments.Add(stripePayment);
+                    }
+
+                    if (stripePayments.Any(x => x.MainArticle.Id.Equals(mainArticle.Id)))
+                    {
+                        mainArticle = stripePayments.Select(x => x.MainArticle).First(x => x.Id.Equals(mainArticle.Id));
+                    }
+                    else
+                    {
+                        stripePayments.Where(x => x.MainArticleId == mainArticle.Id).ToList().ForEach(x => x.MainArticle = mainArticle);
+                    }
+                    if (stripePayments.Any(x => x.SupArticle.Id.Equals(supArticle.Id)))
+                    {
+                        supArticle = stripePayments.Select(x => x.SupArticle).First(x => x.Id.Equals(mainArticle.Id));
+                    }
+                    else
+                    {
+                        stripePayments.Where(x => x.SupArticleId == supArticle.Id).ToList().ForEach(x => x.SupArticle = supArticle);
+                    }
+                    return stripePayment;
+                }, new { UserId = userId ,
+                    MainArticleId = mainArticleId ,
                 }).ToList();
+
+            return stripePayments;
+        }
         public List<StripePayment> CheckPaymentMainArticle(string receiptEmail, long mainArticleid, long userId)
             => _connection.Query<StripePayment>("SELECT * FROM [stripePayments] AS Payment " +
             "WHERE Payment.ReceiptEmail = @ReceiptEmail" +
@@ -80,6 +220,6 @@ namespace domain.ArticleAdventure.Repositories.Stripe
                     PaymentStatus = paymentStatus
                 });
 
-       
+
     }
 }

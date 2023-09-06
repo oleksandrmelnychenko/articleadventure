@@ -1,12 +1,16 @@
 ﻿using common.ArticleAdventure.ResponceBuilder;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.IdentityEntities;
 using Microsoft.Extensions.Options;
 using MVC.ArticleAdventure.Extensions;
 using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 using System.Text;
+using System.Web;
 
 namespace MVC.ArticleAdventure.Services
 {
@@ -59,6 +63,36 @@ namespace MVC.ArticleAdventure.Services
                 return authorArticleResponce;
             }
         }
+
+        public async Task<ExecutionResult<MainArticle>> GetArticleUser(Guid netUidArticle,long idUser)
+        {
+            var result = new ExecutionResult<MainArticle>();
+
+            try
+            {
+                var response = await _httpClient.GetAsync($"{PathMainArticle.GET_ARTICLE_USER}?netUidArticle={netUidArticle}&idUser={idUser}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<MainArticle>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
+
         public async Task<MainArticle> GetArticle(long id)
         {
             var response = await _httpClient.GetAsync($"{PathMainArticle.GET_ARTICLE}?id={id}");
@@ -95,11 +129,37 @@ namespace MVC.ArticleAdventure.Services
             var response = await _httpClient.PostAsync(PathMainArticle.UPDATE_ARTICLE, form);
         }
 
-        public async Task<List<MainArticle>> GetAllArticles(long idUser)
+        public async Task<ExecutionResult<List<MainArticle>>> GetAllArticlesUser(long idUser)
         {
+            var result = new ExecutionResult<List<MainArticle>>();
+
             HttpResponseMessage response = await _httpClient.GetAsync($"{PathMainArticle.GET_ALL_ARTICLE_USER}?idUser={idUser}");
-            var userResponseLogin = await DeserializeResponse<List<MainArticle>>(response);
-            return userResponseLogin;
+
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<MainArticle>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
+
+            //HttpResponseMessage response = await _httpClient.GetAsync($"{PathMainArticle.GET_ALL_ARTICLE_USER}?idUser={idUser}");
+            //var userResponseLogin = await DeserializeResponse<List<MainArticle>>(response);
+            //return userResponseLogin;
         }
     }
 }

@@ -171,10 +171,28 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> GetInformationArticle(Guid netUidArticle)
         {
-            var mainArticle = await _mainArticleService.GetArticle(netUidArticle);
+            var userId = long.Parse(Request.Cookies[CookiesPath.USER_ID]);
 
-            GetInformationArticleModel changeArticleModel = new GetInformationArticleModel { MainArticle = mainArticle };
-            return View(changeArticleModel);
+            var responseMainArticle = await _mainArticleService.GetArticleUser(netUidArticle,userId);
+            var mainArtilce = await _mainArticleService.GetArticle(netUidArticle);
+
+            foreach (var SupArticle in mainArtilce.Articles)
+            { 
+                if (!responseMainArticle.Data.Articles.Any(x => x.Id.Equals(SupArticle.Id)))
+                {
+                    //need realization
+                    var s = "aboba";
+                }
+            }
+            if (responseMainArticle.IsSuccess)
+            {
+                if (responseMainArticle.Data != null)
+                {
+                    GetInformationArticleModel changeArticleModel = new GetInformationArticleModel { MainArticle = responseMainArticle.Data };
+                    return View(changeArticleModel);
+                }
+            }
+                return Redirect($"~/InfoArticle?netUidArticle={netUidArticle}");
         }
 
         
@@ -224,7 +242,7 @@ namespace MVC.ArticleAdventure.Controllers
             var article = mainArticle.Articles.FirstOrDefault(article => article.NetUid == changeBlogModel.Article.NetUid);
             article.Title = changeBlogModel.Article.Title;
             article.Description = changeBlogModel.Article.Description;
-            article.Body = changeBlogModel.Article.Body;
+            article.Body = changeBlogModel.Article.Body; 
             article.Price = changeBlogModel.Article.Price;
             await _supArticleService.Update(article);
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE, mainArticle);
@@ -257,8 +275,10 @@ namespace MVC.ArticleAdventure.Controllers
             var article = await _mainArticleService.GetArticle(NetUidArticle);
             var email = Request.Cookies[CookiesPath.EMAIL];
 
-            List<StripePayment> payments = await _stripeService.CheckPaymentsHaveUser(email);
-            var checkArticle = payments.Where(x => x.MainArticleId == article.Id).ToList();
+            var payments = await _stripeService.CheckPaymentsHaveUser(email);
+
+            var articles = ConvertPaymentsIntoArticles.Convert(payments.Data);
+            var checkArticle = payments.Data.Where(x => x.MainArticleId == article.Id).ToList();
 
             if (checkArticle.Count() != 0)
             {

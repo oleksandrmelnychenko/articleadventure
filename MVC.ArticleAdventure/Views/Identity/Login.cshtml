@@ -34,9 +34,26 @@
             <div class="auth">
                 <a asp-controller="Identity" asp-action="CreateAccount">Sign Up</a>
             </div>
-
         </form>
-
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+               
+                saveToLocalStorage();
+                var myData = localStorage.getItem("myData");
+                if (myData) {
+                    // Знайдено дані в localStorage, відобразіть їх на сторінці
+                    document.getElementById("dataContainer").innerText = myData;
+                } else {
+                    // Даних в localStorage не знайдено
+                    document.getElementById("dataContainer").innerText = "Дані не знайдено в localStorage.";
+                }
+            });
+            function saveToLocalStorage() {
+                // JavaScript code to save data to localStorage
+                localStorage.setItem("myData", "aboba");
+            }
+           
+        </script>
         @*<tr>
         <td>&nbsp;</td>
         <td>

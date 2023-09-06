@@ -5,6 +5,8 @@ using Microsoft.Extensions.Options;
 using MVC.ArticleAdventure.Extensions;
 using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
+using Newtonsoft.Json;
+using System;
 
 namespace MVC.ArticleAdventure.Services
 {
@@ -29,12 +31,35 @@ namespace MVC.ArticleAdventure.Services
             return orderResponse;
         }
 
-        public async Task<List<StripePayment>> CheckPaymentsHaveUser(string userEmail)
+        public async Task<ExecutionResult<List<StripePayment>>> CheckPaymentsHaveUser(string userEmail)
         {
 
+            var result = new ExecutionResult<List<StripePayment>>();
+
             var response = await _httpClient.GetAsync($"{PathStripe.CHECK_PAYMENTS_HAVE_USER}?userMail={userEmail}");
-           var payments = await DeserializeResponse<List<StripePayment>>(response);
-            return payments;
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<StripePayment>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
+            //var payments = await DeserializeІSuccessResponse<List<StripePayment>>(response);
+            //return payments;
         }
 
         public async Task CheckoutSuccess(string sessionId)

@@ -146,51 +146,50 @@ namespace service.ArticleAdventure.Services.Blog
                     List<AuthorArticle> filterAticle = new List<AuthorArticle>();
                     var stripeRepository = _stripeRepositoryFactory.New(connection);
                     var stripePayments = stripeRepository.GetPaymentIUserdMainArticle(idUser);
-
-
-                    foreach (var payment in stripePayments)
+                    foreach (var stripePayment in stripePayments)
                     {
-                        var mainArticle = _mainRepositoryFactory.New(connection).GetArticle(payment.MainArticleId);
-                        if (!mainArticles.Any(x=>x.Id == mainArticle.Id))
+                        if (mainArticles.Any(x => x.Id.Equals(stripePayment.MainArticleId)))
                         {
-                            mainArticles.Add(mainArticle);
+                            mainArticles.Where(x => x.Id == stripePayment.MainArticleId).ToList().ForEach(x => x.Articles.Add(stripePayment.SupArticle));
                         }
-                        
-                    }
-
-                    authorArticles.AddRange(mainArticles.SelectMany(x => x.Articles));
-
-
-                    mainArticles.ForEach(x => x.Articles.Clear());
-
-                    foreach (var article in authorArticles)
-                    {
-                        if (stripePayments.Any(x=>x.SupArticleId==article.Id))
+                        else
                         {
-                            filterAticle.Add(article);
+                            mainArticles.Add(stripePayment.MainArticle);
+                            mainArticles.Where(x => x.Id == stripePayment.MainArticleId).ToList().ForEach(x => x.Articles.Add(stripePayment.SupArticle));
                         }
                     }
-
-                    foreach (var article in mainArticles)
-                    {
-                        if (stripePayments.Any(x=>x.MainArticleId==article.Id))
-                        {
-
-                        }
-                    }
-
-                    //foreach (var article in mainArticles)
-                    //{
-                    //    foreach (var filterArt in filterAticle)
-                    //    {
-                    //        if (stripePayments.Any(x=>x.SupArticleId== filterArt.Id))
-                    //        {
-                    //            article.Articles.Add(filterArt);
-                    //        }
-                    //    }
-                    //}
 
                     return mainArticles;
+                }
+            });
+
+        public Task<MainArticle> GetArticleUser(Guid netUidArticle,long idUser) =>
+            Task.Run(async () =>
+            {
+                using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                {
+                    MainArticle mainArticles = new MainArticle();
+                    List<AuthorArticle> authorArticles = new List<AuthorArticle>();
+                    List<AuthorArticle> filterAticle = new List<AuthorArticle>();
+                    var stripeRepository = _stripeRepositoryFactory.New(connection);
+                    var mainArticle = _mainRepositoryFactory.New(connection).GetArticle(netUidArticle);
+                    var stripePayments = stripeRepository.GetPaymentMainArticle(idUser,mainArticle.Id);
+                    foreach (var stripePayment in stripePayments)
+                    {
+                        if (mainArticles.Id.Equals(stripePayment.MainArticleId))
+                        {
+                            mainArticles.Articles.Add(stripePayment.SupArticle);
+                        }
+                        else
+                        {
+                            mainArticles = stripePayment.MainArticle;
+                            mainArticles.Articles.Add(stripePayment.SupArticle);
+                        }
+                    }
+
+                    return mainArticles;
+                    //return mainArticles.First();
+
                 }
             });
     }

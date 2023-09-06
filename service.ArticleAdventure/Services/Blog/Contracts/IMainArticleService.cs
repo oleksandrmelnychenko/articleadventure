@@ -17,6 +17,7 @@ namespace service.ArticleAdventure.Services.Blog.Contracts
         Task<MainArticle> GetArticle(Guid netUid);
         Task<MainArticle> GetArticle(long id);
         Task<List<MainArticle>> GetAllArticlesUser(long idUser);
+        Task<MainArticle> GetArticleUser(Guid netUidArticle, long idUser);
 
     }
 }
