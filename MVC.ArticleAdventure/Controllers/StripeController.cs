@@ -102,6 +102,20 @@ namespace MVC.ArticleAdventure.Controllers
             BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo };
             return View(buyNowModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> BuySup(Guid netUidBuyArticle)
+        {
+            var article = await _mainArticleService.GetArticle(netUidBuyArticle);
+
+            var email = Request.Cookies[CookiesPath.EMAIL];
+
+
+            var orderInfo = await _stripeService.BuyStripe(article, email);
+            BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo };
+            return View(buyNowModel);
+        }
+        
         [HttpGet]
         public async Task<IActionResult> SuccessBuy(string sessionId)
         {
