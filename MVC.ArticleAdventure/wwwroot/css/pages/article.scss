@@ -190,6 +190,77 @@
         }
     }
 
+    .read_more_container {
+        //padding-left: 20px;
+        width: calc(100% - 140px);
+
+        .rm_wrapper {
+            //border: 1px solid #e0e0e0;
+            //box-shadow: inset 0 0 8px 10px #222;
+            text-align: right;
+        }
+
+        h6 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--epcl-black-color);
+            line-height: 1;
+        }
+
+        span.rm_info {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--epcl-black-color);
+            line-height: 1;
+            display: block;
+            margin: 0 0 20px;
+        }
+
+        .btns_row {
+            height: 45px;
+
+            button {
+                display: inline-block;
+                //width: 115px;
+                color: #fff;
+                letter-spacing: 0.5px;
+                position: relative;
+                z-index: 2;
+                box-shadow: none;
+                outline: none;
+                border: none;
+                background-color: var(--epcl-blue-bg-color);
+                font-family: "Josefin Sans", sans-serif;
+                font-size: 14px;
+                line-height: 1;
+                padding: 0 15px;
+                text-align: center;
+                font-weight: 400;
+                transition: all 0.3s ease;
+                height: 45px;
+                white-space: nowrap;
+
+                &:before {
+                    content: "";
+                    @include position_absolute(2px,2px,2px,2px);
+                    transition: all 0.3s ease;
+                    border: 1px solid transparent;
+                }
+
+                &.fullPrice {
+                    margin-left: 10px;
+                    background-color: var(--epcl-orang-bg-color);
+                }
+
+                &:hover {
+                    &:before {
+                        border-color: #fff;
+                    }
+                }
+            }
+        }
+    }
+
     .item_container {
         //box-shadow: 0 0 1px red;
     }
@@ -762,13 +833,18 @@
 }
 
 .sideProfile,
-.profile_page {
+.profile_page,
+article.article_item {
 
     .line {
         width: 100%;
         height: 1px;
         border-bottom: 1px dashed #e0e0e0;
         margin: 20px 0;
+
+        &.nLinePrice {
+            width: calc(100% - 140px);
+        }
     }
 }
 

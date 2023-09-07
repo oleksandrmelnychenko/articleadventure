@@ -25,7 +25,7 @@
                         <p>
                             @Html.Raw(Article.Body)
                         </p>
-                        
+
                         <div class="item_tags">
                             <ol>
                                 @foreach (var item in Model.MainArticle.ArticleTags)
@@ -50,7 +50,6 @@
                     <div class="item_header">
                         <div class="title_container">
                             <div class="title">@article.Title</div>
-                            <div>@article.Description</div>
                             <div class="created">
                                 @article.Created
                             </div>
@@ -59,23 +58,27 @@
 
 
                     <div class="item_body">
-                        <div class="item_tags">
-                            <div>
-                                Want to read more?
-                                You can easily buy a part of the course, or you can buy the Full Version.
-                            </div>
-                            <button>buy a piece </button><button>Buy Full Article @Model.MainArticle.Price $</button>
-                            
-                        </div>
-                    </div>
-                    <div class="meta_row">
-                        <div class="inputs" style="width:100%">
-                            <div class="input" style="width:100%">
-                                <input type="text" placeholder="Price $" asp-for="@article.Price" />
-                            </div>
-                        </div>
-                    </div>
+                        <p>@article.Description</p>
 
+                        <div class="line nLinePrice"></div>
+
+                        <div class="read_more_container">
+                           <div class="rm_wrapper">
+                                <h6>Want to read more?</h6>
+                                <span class="rm_info">You can easily buy a part of the course, or you can buy the Full Version.</span>
+                                <div class="btns_row">
+                                    <button>Buy a piece</button>
+                                    <button class="fullPrice">Buy Full Article @Model.MainArticle.Price $</button>
+                                </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="priceBox_style">
+                    <a href="~/InfoArticle?NetUidArticle={@article.NetUid}" class="continueReading_price">
+                        <span>@article.Price</span>$
+                    </a>
                 </div>
             </article>
         }
