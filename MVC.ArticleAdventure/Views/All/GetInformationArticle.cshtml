@@ -64,7 +64,7 @@
                                 Want to read more?
                                 You can easily buy a part of the course, or you can buy the Full Version.
                             </div>
-                            <button>buy a piece </button><button>Buy Full Article @Model.MainArticle.Price $</button>
+                            <button onclick="location.href='@Url.Action("BuySup", "Stripe",new {netUidBuyArticle = article.NetUid})'">buy a piece </button><button>Buy Full Article @Model.MainArticle.Price $</button>
                             
                         </div>
                     </div>

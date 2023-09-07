@@ -3,6 +3,7 @@ using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.IdentityEntities;
 using Microsoft.Extensions.Options;
 using MVC.ArticleAdventure.Extensions;
+using MVC.ArticleAdventure.Extensions.Contract;
 using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
 using Newtonsoft.Json;
@@ -31,14 +32,40 @@ namespace MVC.ArticleAdventure.Services
             var jsonArticle = JsonConvert.SerializeObject(article);
             var stringContentArticle = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
             form.Add(stringContentArticle, "article");
-            
+
             // Добавляем файл как контент
             using var streamContent = new StreamContent(photoMainArticle.OpenReadStream());
             form.Add(streamContent, "filePhotoMainArticle", photoMainArticle.FileName);
 
             var response = await _httpClient.PostAsync(PathMainArticle.ADD_ARTICLE, form);
         }
+        public async Task<ExecutionResult<AuthorArticle>> GeSupArticle(Guid netUidArticle){
+            var result = new ExecutionResult<AuthorArticle>();
 
+            try
+            {
+                var response = await _httpClient.GetAsync($"{PathMainArticle.GET_SUP_ARTICLE}?netUidArticle={netUidArticle}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<AuthorArticle>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
         public async Task<List<MainArticle>> GetAllArticles()
         {
             HttpResponseMessage response = await _httpClient.GetAsync(PathMainArticle.GET_ALL_ARTICLE);

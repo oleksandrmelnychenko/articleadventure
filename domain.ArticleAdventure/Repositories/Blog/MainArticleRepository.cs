@@ -153,6 +153,10 @@ namespace domain.ArticleAdventure.Repositories.Blog
 
         }
 
+        public AuthorArticle GetSupArticle(Guid netUid)
+        {
+            throw new NotImplementedException();
+        }
         public MainArticle GetArticle(Guid netUid)
         {
             MainArticle articleMain = new MainArticle();
@@ -210,6 +214,8 @@ namespace domain.ArticleAdventure.Repositories.Blog
             return articleMain;
 
         }
+
+       
 
         public void RemoveMainArticle(Guid netUid)
             => _connection.Execute("DELETE FROM [ArticleAdventure].[dbo].[MainArticle] " +
