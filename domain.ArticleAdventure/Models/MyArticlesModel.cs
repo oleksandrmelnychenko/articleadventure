@@ -10,5 +10,6 @@ namespace domain.ArticleAdventure.Models
     public class MyArticlesModel
     {
         public List<MainArticle> mainArticles { get; set; }
+        
     }
 }

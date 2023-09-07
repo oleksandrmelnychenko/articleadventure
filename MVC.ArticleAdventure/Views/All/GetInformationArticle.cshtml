@@ -42,5 +42,42 @@
                 </div>
             </article>
         }
+
+        @foreach (var article in Model.NotBuyArticle)
+        {
+            <article class="article_item">
+                <div class="item_container">
+                    <div class="item_header">
+                        <div class="title_container">
+                            <div class="title">@article.Title</div>
+                            <div>@article.Description</div>
+                            <div class="created">
+                                @article.Created
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="item_body">
+                        <div class="item_tags">
+                            <div>
+                                Want to read more?
+                                You can easily buy a part of the course, or you can buy the Full Version.
+                            </div>
+                            <button>buy a piece </button><button>Buy Full Article @Model.MainArticle.Price $</button>
+                            
+                        </div>
+                    </div>
+                    <div class="meta_row">
+                        <div class="inputs" style="width:100%">
+                            <div class="input" style="width:100%">
+                                <input type="text" placeholder="Price $" asp-for="@article.Price" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+        }
     </div>
 </div>

@@ -34,7 +34,7 @@ namespace MVC.ArticleAdventure.Controllers
         {
             var StringuserID = Request.Cookies[CookiesPath.USER_ID];
             var paymentArticles =await _mainArticleService.GetAllArticlesUser(long.Parse(StringuserID));
-            MyArticlesModel myArticlesModel = new MyArticlesModel { mainArticles = paymentArticles.Data };
+            MyArticlesModel myArticlesModel = new MyArticlesModel { mainArticles = paymentArticles.Data};
             return View(myArticlesModel);
         }
 

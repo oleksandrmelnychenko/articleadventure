@@ -172,7 +172,7 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> GetInformationArticle(Guid netUidArticle)
         {
             var userId = long.Parse(Request.Cookies[CookiesPath.USER_ID]);
-
+            GetInformationArticleModel changeArticleModel = new GetInformationArticleModel();
             var responseMainArticle = await _mainArticleService.GetArticleUser(netUidArticle,userId);
             var mainArtilce = await _mainArticleService.GetArticle(netUidArticle);
 
@@ -180,15 +180,14 @@ namespace MVC.ArticleAdventure.Controllers
             { 
                 if (!responseMainArticle.Data.Articles.Any(x => x.Id.Equals(SupArticle.Id)))
                 {
-                    //need realization
-                    var s = "aboba";
+                    changeArticleModel.NotBuyArticle.Add(SupArticle);
                 }
             }
             if (responseMainArticle.IsSuccess)
             {
                 if (responseMainArticle.Data != null)
                 {
-                    GetInformationArticleModel changeArticleModel = new GetInformationArticleModel { MainArticle = responseMainArticle.Data };
+                    changeArticleModel.MainArticle = responseMainArticle.Data;
                     return View(changeArticleModel);
                 }
             }
