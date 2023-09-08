@@ -12,8 +12,8 @@ namespace MVC.ArticleAdventure.Services.Contract
         public Task<MainArticle> GetArticle(Guid netUidArticle);
         public Task<MainArticle> GetArticle(long id);
         public Task<List<MainArticle>> GetAllArticles();
-        public Task AddArticle(MainArticle article,IFormFile photoMainArticle);
-        public Task Update(MainArticle article, IFormFile photoMainArticle);
+        public Task<ExecutionResult<long>> AddArticle(MainArticle article,IFormFile photoMainArticle);
+        public Task<ExecutionResult<long>> Update(MainArticle article, IFormFile photoMainArticle);
         public Task Remove(Guid netUidArticle);
     }
 }

@@ -67,8 +67,7 @@ namespace domain.ArticleAdventure.Repositories.Identity
             ).SingleOrDefault();
 
         public IEnumerable<UserProfile> GetAllFiltered(string value, int limit, int offset)
-        {
-            return _connection.Query<UserProfile>(
+            => _connection.Query<UserProfile>(
                         ";WITH [Filter_CTE] " +
                         "AS ( " +
                         "SELECT [UserProfile].ID " +
@@ -89,7 +88,6 @@ namespace domain.ArticleAdventure.Repositories.Identity
                         "AND [Filter].RowNumber <= @Limit + @Offset",
                         new { Value = value, Limit = limit, Offset = offset }
                     );
-        }
 
         public void Update(UserProfile userProfile) =>
             _connection.Execute(
@@ -124,5 +122,66 @@ namespace domain.ArticleAdventure.Repositories.Identity
                 "WHERE NetUID = @NetId",
                 new { NetId = netId }
             );
+
+        public long SetFavoriteArticle(long mainArticleId, long userId) =>
+         _connection.Query<long>(
+             "INSERT INTO [FavoriteArticles] " +
+             "([MainArticleId], [UserId], [Updated]) " +
+             "VALUES " +
+             "(@MainArticleId, @UserId,GETUTCDATE()); " +
+             "SELECT SCOPE_IDENTITY()",
+             new
+             {
+                 MainArticleId = mainArticleId,
+                 UserId = userId
+             }
+         ).Single();
+
+        public List<FavoriteArticle> GetAllFavoriteArticle(long userId) {
+
+            List<FavoriteArticle> favoriteArticles = new List<FavoriteArticle>();
+
+            _connection.Query<FavoriteArticle,MainArticle,FavoriteArticle>(
+                  "SELECT favoriteArticles.*, " +
+                  "mainArticle.* " +
+                  "FROM [ArticleAdventure].[dbo].[FavoriteArticles] as favoriteArticles " +
+                  "LEFT JOIN [ArticleAdventure].[dbo].[MainArticle] as mainArticle " +
+                  "On mainArticle.ID = favoriteArticles.MainArticleId " +
+                  "where favoriteArticles.UserId = @UserId ",
+               (favoriteArticle, mainArticle) =>
+               {
+                   if (favoriteArticles.Any(x=>x.Id.Equals(favoriteArticle.Id)))
+                   {
+                       favoriteArticle = favoriteArticles.First(x => x.Id.Equals(favoriteArticle.Id));
+                   }
+                   else
+                   {
+                       favoriteArticles.Add(favoriteArticle);
+                   }
+
+                   if (favoriteArticles.Any(x=>x.MainArticle.Id.Equals(mainArticle.Id)))
+                   {
+                       mainArticle = favoriteArticles.First(x => x.MainArticle.Id.Equals(mainArticle.Id)).MainArticle;
+                   }
+                   else
+                   {
+                       favoriteArticles.Where(x => x.MainArticleId == mainArticle.Id).ToList()
+                       .ForEach(x=>x.MainArticle = mainArticle);
+                   }
+                  
+                   return favoriteArticle;
+               },
+               new { UserId = userId }).ToList();
+
+
+
+            return favoriteArticles;
+        }
+            
+
+        public long RemoveFavoriteArticle(Guid netUidFavoriteArticle) 
+            => _connection.Execute("DELETE FROM [ArticleAdventure].[dbo].[MainArticle] " +
+                "WHERE MainArticle.NetUID = @NetUID",
+                new { NetUID = netUidFavoriteArticle });
     }
 }

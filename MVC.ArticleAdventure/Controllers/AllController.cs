@@ -1,4 +1,6 @@
 ﻿using common.ArticleAdventure.IdentityConfiguration;
+using common.ArticleAdventure.WebApi;
+using common.ArticleAdventure.WebApi.RoutingConfiguration;
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.IdentityEntities;
@@ -16,7 +18,7 @@ using System.Security.Claims;
 
 namespace MVC.ArticleAdventure.Controllers
 {
-    public class AllController : Controller
+    public class AllController : MVCControllerBase
     {
         private readonly ILogger<AllController> _logger;
         private readonly IArticleService _supArticleService;
@@ -121,10 +123,20 @@ namespace MVC.ArticleAdventure.Controllers
                 }
             }
             
-            await _mainArticleService.Update(mainArticle,changeArticleModel.PhotoMainArticle);
-            HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_ARTICLE);
-            HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_TAGS);
-            return Redirect("~/All/AllBlogs");
+            var response = await _mainArticleService.Update(mainArticle,changeArticleModel.PhotoMainArticle);
+            if (response.IsSuccess)
+            {
+                HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_ARTICLE);
+                HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_TAGS);
+                await SetSuccessMessage(SuccessMessages.UpdateArticle);
+                return Redirect("~/All/AllBlogs");
+            }
+            else
+            {
+                await SetErrorMessage(response.Error.Message);
+                return View(changeArticleModel);
+            }
+           
         }
 
         [HttpGet]

@@ -33,8 +33,8 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> MyArticles()
         {
             var StringuserID = Request.Cookies[CookiesPath.USER_ID];
-            var paymentArticles =await _mainArticleService.GetAllArticlesUser(long.Parse(StringuserID));
-            MyArticlesModel myArticlesModel = new MyArticlesModel { mainArticles = paymentArticles.Data};
+            var paymentArticles = await _mainArticleService.GetAllArticlesUser(long.Parse(StringuserID));
+            MyArticlesModel myArticlesModel = new MyArticlesModel { mainArticles = paymentArticles.Data };
             return View(myArticlesModel);
         }
 
@@ -56,7 +56,7 @@ namespace MVC.ArticleAdventure.Controllers
 
             }
 
-          
+
 
             var userName = Request.Cookies[CookiesPath.USER_NAME];
             var surName = Request.Cookies[CookiesPath.SURNAME];
@@ -95,7 +95,14 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("MyFavoriteArticle")]
         public async Task<IActionResult> MyFavoriteArticle()
         {
-            return View();
+            MyFavoriteArticleModel myFavoriteArticleModel = new MyFavoriteArticleModel();
+            var guidUser = User.FindFirst("Guid");
+            var result = await _userService.GetAllFavoriteArticle(Guid.Parse(guidUser.Value));
+            if (result.IsSuccess)
+            {
+                myFavoriteArticleModel.favoriteArticles = result.Data;
+            }
+            return View(myFavoriteArticleModel);
         }
 
         [HttpGet]
@@ -136,6 +143,14 @@ namespace MVC.ArticleAdventure.Controllers
             await _userService.ChangeEmail(Guid.Parse(userGuidClaim.Value), accountSecurityModel.NewEmail, accountSecurityModel.ConfirmPasswordUpdateEmail);
             return View("AccountSecurity");
         }
+        [HttpGet]
+        [Route("SetFavoriteArticle")]
+        public async Task<IActionResult> SetFavoriteArticle(Guid netUidArticle)
+        {
+            var userGuidClaim = User.FindFirst("Guid");
+            await _userService.SetFavoriteArticle(Guid.Parse(userGuidClaim.Value), netUidArticle);
 
+            return Redirect($"~/InfoArticle{netUidArticle}");
+        }
     }
 }

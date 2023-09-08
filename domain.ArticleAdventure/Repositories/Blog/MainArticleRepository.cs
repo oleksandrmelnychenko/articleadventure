@@ -153,10 +153,9 @@ namespace domain.ArticleAdventure.Repositories.Blog
 
         }
 
-        public AuthorArticle GetSupArticle(Guid netUid)
-        {
-            throw new NotImplementedException();
-        }
+        public AuthorArticle GetSupArticle(Guid netUid) => _connection.Query<AuthorArticle>("SELECT * FROM [AuthorArticle] AS AuthorArticle " +
+                "WHERE AuthorArticle.NetUid = @NetUid"
+            , new { NetUid = netUid }).Single();
         public MainArticle GetArticle(Guid netUid)
         {
             MainArticle articleMain = new MainArticle();
@@ -225,7 +224,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
         public void UpdateMainArticle(MainArticle blog) 
             => _connection.Execute("Update [MainArticle] " +
                 "SET [Title] = @Title, [Description] = @Description,[Image] = @Image " +
-                ",[ImageUrl] = @ImageUrl ,[WebImageUrl] = @WebImageUrl ,[InfromationArticle] = @InfromationArticle " +
+                ",[ImageUrl] = @ImageUrl ,[Price] = @Price, [WebImageUrl] = @WebImageUrl ,[InfromationArticle] = @InfromationArticle " +
                 ",[Updated] = GETUTCDATE() " +
                 $"WHERE [MainArticle].[NetUid] = @NetUid ",
                 blog);

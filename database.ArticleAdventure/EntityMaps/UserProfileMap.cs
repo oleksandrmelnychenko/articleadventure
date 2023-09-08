@@ -15,7 +15,6 @@ namespace database.ArticleAdventure.EntityMaps
         {
             base.Map(entity);
 
-            entity.ToTable("UserProfile");
             entity.Property(e => e.UserName).HasMaxLength(150);
             entity.Property(e => e.SurName).HasMaxLength(150).IsRequired(false);
             entity.Property(e => e.LinkPictureUser).IsRequired(false);

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace database.ArticleAdventure.Migrations.Business
+namespace database.ArticleAdventure.Migrations
 {
-    public partial class UpdateUser : Migration
+    public partial class Update : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

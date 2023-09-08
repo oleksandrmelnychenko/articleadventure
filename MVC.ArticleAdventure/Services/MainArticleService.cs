@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Text;
 using System.Web;
 
@@ -24,20 +25,42 @@ namespace MVC.ArticleAdventure.Services
 
             _httpClient = httpClient;
         }
-        public async Task AddArticle(MainArticle article, IFormFile photoMainArticle)
+        public async Task<ExecutionResult<long>> AddArticle(MainArticle article, IFormFile photoMainArticle)
         {
-            using var form = new MultipartFormDataContent();
+            var result = new ExecutionResult<long>();
 
-            // Сериализуем объект article в JSON и добавляем его как контент
-            var jsonArticle = JsonConvert.SerializeObject(article);
-            var stringContentArticle = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
-            form.Add(stringContentArticle, "article");
+            try
+            {
+                using var form = new MultipartFormDataContent();
 
-            // Добавляем файл как контент
-            using var streamContent = new StreamContent(photoMainArticle.OpenReadStream());
-            form.Add(streamContent, "filePhotoMainArticle", photoMainArticle.FileName);
+                var jsonArticle = JsonConvert.SerializeObject(article);
+                var stringContentArticle = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
+                form.Add(stringContentArticle, "article");
 
-            var response = await _httpClient.PostAsync(PathMainArticle.ADD_ARTICLE, form);
+                using var streamContent = new StreamContent(photoMainArticle.OpenReadStream());
+                form.Add(streamContent, "filePhotoMainArticle", photoMainArticle.FileName);
+                var response = await _httpClient.PostAsync(PathMainArticle.ADD_ARTICLE, form);
+
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<long>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
         }
         public async Task<ExecutionResult<AuthorArticle>> GeSupArticle(Guid netUidArticle){
             var result = new ExecutionResult<AuthorArticle>();
@@ -142,21 +165,54 @@ namespace MVC.ArticleAdventure.Services
             var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
         }
 
-        public async Task Update(MainArticle article, IFormFile photoMainArticle)
+        public async Task<ExecutionResult<long>> Update(MainArticle article, IFormFile photoMainArticle)
         {
-            using var form = new MultipartFormDataContent();
-
-            var jsonArticle = JsonConvert.SerializeObject(article);
-            var stringContentArticle = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
-            form.Add(stringContentArticle, "article");
-            if (photoMainArticle != null)
+            var result = new ExecutionResult<long>();
+            HttpResponseMessage response;
+            try
             {
-                using var streamContent = new StreamContent(photoMainArticle.OpenReadStream());
-                form.Add(streamContent, "filePhotoMainArticle", photoMainArticle.FileName);
-            }
-            
+                using var form = new MultipartFormDataContent();
+                var jsonArticle = JsonConvert.SerializeObject(article);
+                var stringContentArticle = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
+                form.Add(stringContentArticle, "article");
+                if (photoMainArticle != null)
+                {
+                    using (var streamContent = new StreamContent(photoMainArticle.OpenReadStream()))
+                    {
+                        form.Add(streamContent, "filePhotoMainArticle", photoMainArticle.FileName);
+                        response = await _httpClient.PostAsync(PathMainArticle.UPDATE_ARTICLE, form);
+                        
+                    }
 
-            var response = await _httpClient.PostAsync(PathMainArticle.UPDATE_ARTICLE, form);
+                }
+                else
+                {
+                     response = await _httpClient.PostAsync(PathMainArticle.UPDATE_ARTICLE, form);
+                }
+
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<long>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+
+
+            
         }
 
         public async Task<ExecutionResult<List<MainArticle>>> GetAllArticlesUser(long idUser)

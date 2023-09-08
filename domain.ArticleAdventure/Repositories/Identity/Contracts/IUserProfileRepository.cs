@@ -23,6 +23,9 @@ namespace domain.ArticleAdventure.Repositories.Identity.Contracts
 
         void Update(UserProfile userProfile);
 
+        long SetFavoriteArticle(long mainArticleId, long userId);
+        List<FavoriteArticle> GetAllFavoriteArticle(long userId);
+        long RemoveFavoriteArticle(Guid netUidFavoriteArticle);
         void UpdateAccountInformation(UserProfile userProfile);
         void Remove(long id);
 

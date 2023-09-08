@@ -11,7 +11,11 @@ namespace service.ArticleAdventure.Services.Stripe.Contracts
     {
 
         Task<List<StripePayment>> CheckPaymentsHaveUser(string userMail);
-        Task<CheckoutOrderResponse> CheckOutBuyNow(MainArticle mainArticle, string thisApiUrl,string userEmail);
-        Task CheckoutSuccess(string sessionId);
+        Task<CheckoutOrderResponse> CheckOutBuyNowMainArticle(MainArticle mainArticle,string userEmail);
+        Task<CheckoutOrderResponse> CheckOutBuyCartMainArticle(List<MainArticle> mainArticle,string userEmail);
+        Task<CheckoutOrderResponse> CheckOutBuyNowSupArticle(AuthorArticle mainArticle,string userEmail);
+        Task CheckoutSuccessMainArticle(string sessionId);
+        Task CheckoutSuccessSupArticle(string sessionId);
+        Task CheckoutSuccessMainArticleList(string sessionId);
     }
 }

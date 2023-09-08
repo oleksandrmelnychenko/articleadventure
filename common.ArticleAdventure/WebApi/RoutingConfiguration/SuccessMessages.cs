@@ -8,6 +8,7 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration
 {
     public static class SuccessMessages
     {
-        public const string UpdateProfile = "Update Profile";
+        public const string UpdateProfile = "Great! Update Profile";
+        public const string UpdateArticle = "Great! Update Article";
     }
 }

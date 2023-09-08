@@ -232,27 +232,27 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> SettingMainArticle(SettingMainArticleModel settingMainArticleModel)
         {
            
-            MainArticle AuthorArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE);
+            MainArticle MainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE);
             var supTagsSelect = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHOOSE_NEW_SUP_TAGS);
             var mainTags = await _tagService.GetAllTags();
-            AuthorArticle.Title = settingMainArticleModel.MainArticle.Title;
-            AuthorArticle.Description = settingMainArticleModel.MainArticle.Description;
-            AuthorArticle.InfromationArticle = settingMainArticleModel.MainArticle.InfromationArticle;
-            AuthorArticle.Price = settingMainArticleModel.MainArticle.Price;
-            AuthorArticle.ArticleTags = new List<MainArticleTags>();
+            MainArticle.Title = settingMainArticleModel.MainArticle.Title;
+            MainArticle.Description = settingMainArticleModel.MainArticle.Description;
+            MainArticle.InfromationArticle = settingMainArticleModel.MainArticle.InfromationArticle;
+            MainArticle.Price = settingMainArticleModel.MainArticle.Price;
+            MainArticle.ArticleTags = new List<MainArticleTags>();
 
-            SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE, AuthorArticle);
+            SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE, MainArticle);
             if (supTagsSelect?.Count() > 0)
             {
                 foreach (var item in supTagsSelect)
                 {
                     var mainTag = new MainArticleTags
                     {
-                        MainArticleId = AuthorArticle.Id,
+                        MainArticleId = MainArticle.Id,
                         SupTag = item,
                         SupTagId = item.Id,
                     };
-                    AuthorArticle.ArticleTags.Add(mainTag);
+                    MainArticle.ArticleTags.Add(mainTag);
                 }
             }
             else
@@ -267,6 +267,7 @@ namespace MVC.ArticleAdventure.Controllers
                     }
                 }
                 settingMainArticleModel.MainTags = mainTags;
+                settingMainArticleModel.MainArticle = MainArticle;
                 await SetErrorMessage(ErrorMessages.ChooseTags);
                 return View(settingMainArticleModel);
             }
@@ -282,6 +283,7 @@ namespace MVC.ArticleAdventure.Controllers
                     }
                 }
                 settingMainArticleModel.MainTags = mainTags;
+                settingMainArticleModel.MainArticle = MainArticle;
                 await SetErrorMessage(ErrorMessages.ChoosePhoto);
                 return View(settingMainArticleModel);
             }
@@ -289,7 +291,7 @@ namespace MVC.ArticleAdventure.Controllers
             HttpContext.Session.Remove(SessionStoragePath.CREATE_MAIN_ARTICLE);
             HttpContext.Session.Remove(SessionStoragePath.CHOOSE_NEW_SUP_TAGS);
             
-            await _mainArticleService.AddArticle(AuthorArticle,settingMainArticleModel.PhotoMainArticle);
+            await _mainArticleService.AddArticle(MainArticle,settingMainArticleModel.PhotoMainArticle);
             return Redirect("~/All/AllBlogs");
         }
     }

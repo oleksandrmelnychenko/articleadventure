@@ -21,15 +21,44 @@ namespace MVC.ArticleAdventure.Services
             _httpClient = httpClient;
         }
 
-        public async Task<CheckoutOrderResponse> BuyStripe(MainArticle mainArticle, string Email)
+        public async Task<CheckoutOrderResponse> BuyStripeMainArticle(MainArticle mainArticle, string Email)
         {
 
-           var response = await _httpClient.PostAsJsonAsync($"{PathStripe.BUY_NOW_STRIPE}?emailUser={Email}", mainArticle);
+           var response = await _httpClient.PostAsJsonAsync($"{PathStripe.BUY_NOW_STRIPE_MAIN_ARTICLE}?emailUser={Email}", mainArticle);
 
             var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
             CheckoutOrderResponse orderResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<CheckoutOrderResponse>(successResponse.Body.ToString());
             return orderResponse;
         }
+
+        public async Task<ExecutionResult<CheckoutOrderResponse>> BuyStripeSupArticle(AuthorArticle mainArticle, string Email)
+        {
+            var result = new ExecutionResult<CheckoutOrderResponse>();
+
+            var response = await _httpClient.PostAsJsonAsync($"{PathStripe.BUY_NOW_STRIPE_SUP_ARTICLE}?emailUser={Email}", mainArticle);
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<CheckoutOrderResponse>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
+        }
+
 
         public async Task<ExecutionResult<List<StripePayment>>> CheckPaymentsHaveUser(string userEmail)
         {
@@ -65,8 +94,10 @@ namespace MVC.ArticleAdventure.Services
         public async Task CheckoutSuccess(string sessionId)
         {
             var response = await _httpClient.GetAsync($"{PathStripe.CHECK_SUCCESS}?sessionId={sessionId}");
-
-            
+        }
+        public async Task CheckoutSuccessSup(string sessionId)
+        {
+            var response = await _httpClient.GetAsync($"{PathStripe.CHECK_SUCCESS_SUP}?sessionId={sessionId}");
         }
     }
 }

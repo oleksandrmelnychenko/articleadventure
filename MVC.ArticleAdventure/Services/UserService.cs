@@ -65,5 +65,84 @@ namespace MVC.ArticleAdventure.Services
             var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
             UserProfile userResponseLogin = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
         }
+
+        public async Task<ExecutionResult<long>> SetFavoriteArticle(Guid userProfileNetUid, Guid MainArtilceNetUid)
+        {
+            var result = new ExecutionResult<long>();
+            try
+            {
+                var response = await _httpClient.GetAsync($"{PathUser.SET_FAVORITE_ARTICLE}?netUidArticle={MainArtilceNetUid}&netUidUser={userProfileNetUid}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<long>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
+        public async Task<ExecutionResult<List<FavoriteArticle>>> GetAllFavoriteArticle(Guid userProfileNetUid)
+        {
+            var result = new ExecutionResult<List<FavoriteArticle>>();
+            try
+            {
+                var response = await _httpClient.GetAsync($"{PathUser.GET_FAVORITE_ARTICLE}?userProfileNetUid={userProfileNetUid}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<FavoriteArticle>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
+        public async Task<ExecutionResult<long>> RemoveFavoriteArticle(Guid netUidFavoriteArticle)
+        {
+            var result = new ExecutionResult<long>();
+            try
+            {
+                var response = await _httpClient.GetAsync($"{PathUser.REMOVE_FAVORITE_ARTICLE}?netUidFavoriteArticle={netUidFavoriteArticle}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<long>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
     }
 } 

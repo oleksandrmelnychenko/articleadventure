@@ -13,7 +13,7 @@ namespace domain.ArticleAdventure.Repositories.Stripe.Contracts
         public List<StripePayment> GetPaymentEmailMainArticle(string receiptEmail);
         public List<StripePayment> CheckPaymentMainArticle(string receiptEmail, long mainArticleid, long UserId);
         public StripePayment GetPayment(long MainArticleId, long SupArticleId, long UserId);
-        public void SetStatusPayment(Guid netUidPayment, string paymentStatus);
+        public void SetStatusPayment(Guid netUidPayment);
         public List<StripePayment> GetPaymentIUserdMainArticle(long UserId);
         List<StripePayment> GetPaymentMainArticle(long userId, long mainArticleId);
     }

@@ -8,9 +8,14 @@ namespace domain.ArticleAdventure.Entities
 {
     public class FavoriteArticle:EntityBase
     {
-        public string UserId { get; set; }
+        public long UserId { get; set; }
         public UserProfile User  { get; set; }
-        public string MainArticleId { get; set; }
+        public long MainArticleId { get; set; }
         public MainArticle MainArticle { get; set; }
+
+        public FavoriteArticle()
+        {
+            MainArticle = new MainArticle();
+        }
     }
 }

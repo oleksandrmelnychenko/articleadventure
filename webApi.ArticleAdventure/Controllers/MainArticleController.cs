@@ -21,13 +21,14 @@ namespace webApi.ArticleAdventure.Controllers
         [HttpPost]
         [AssignActionRoute(ArticleSegments.UPDATE)]
         public async Task<IActionResult> Update([FromForm] string article, [FromForm] IFormFile filePhotoMainArticle)
-        {
+        { 
             try
             {
+
                 MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
 
-                await _mainArticleService.Update(articleDeserialize, filePhotoMainArticle);
-                return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
+                
+                return Ok(SuccessResponseBody(await _mainArticleService.Update(articleDeserialize, filePhotoMainArticle), "Статус успешно изменён."));
             }
             catch (Exception exc)
             {
@@ -44,8 +45,7 @@ namespace webApi.ArticleAdventure.Controllers
             {
                 MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
 
-                await _mainArticleService.AddArticle(articleDeserialize, filePhotoMainArticle);
-                return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
+                return Ok(SuccessResponseBody(await _mainArticleService.AddArticle(articleDeserialize, filePhotoMainArticle), "Статус успешно изменён."));
             }
             catch (Exception exc)
             {
@@ -106,7 +106,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                var article = await _mainArticleService.GetArticle(netUidArticle);
+                var article = await _mainArticleService.GetSupArticle(netUidArticle);
                 return Ok(SuccessResponseBody(article, "Успешно вытянуты данные."));
             }
             catch (Exception exc)

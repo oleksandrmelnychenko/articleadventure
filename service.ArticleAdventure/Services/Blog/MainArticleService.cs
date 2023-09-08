@@ -80,12 +80,12 @@ namespace service.ArticleAdventure.Services.Blog
                  }
              });
 
-        public Task<MainArticle> GetSupArticle(Guid netUid) =>
+        public Task<AuthorArticle> GetSupArticle(Guid netUid) =>
           Task.Run(() =>
           {
               using (IDbConnection connection = _connectionFactory.NewSqlConnection())
               {
-                  return _mainRepositoryFactory.New(connection).GetArticle(netUid);
+                  return _mainRepositoryFactory.New(connection).GetSupArticle(netUid);
               }
           });
         public Task<MainArticle> GetArticle(long id) =>
@@ -116,7 +116,7 @@ namespace service.ArticleAdventure.Services.Blog
             }
         });
 
-        public Task Update(MainArticle article, IFormFile filePhotoMainArticle) =>
+        public Task<long> Update(MainArticle article, IFormFile filePhotoMainArticle) =>
             Task.Run(async () =>
         {
             using (IDbConnection connection = _connectionFactory.NewSqlConnection())
@@ -134,7 +134,6 @@ namespace service.ArticleAdventure.Services.Blog
                     }
                 }
                 var mainArticle = _mainRepositoryFactory.New(connection).GetArticle(article.NetUid);
-
                 _mainRepositoryFactory.New(connection).UpdateMainArticle(article);
                 _mainArticleTagsFactory.New(connection).RemoveMainTag(article.Id);
 
@@ -142,6 +141,7 @@ namespace service.ArticleAdventure.Services.Blog
                 {
                     _mainArticleTagsFactory.New(connection).AddMainTag(tag);
                 }
+                return mainArticle.Id;
             }
         });
 
@@ -151,8 +151,6 @@ namespace service.ArticleAdventure.Services.Blog
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
                     List<MainArticle> mainArticles = new List<MainArticle>();
-                    List<AuthorArticle> authorArticles = new List<AuthorArticle>();
-                    List<AuthorArticle> filterAticle = new List<AuthorArticle>();
                     var stripeRepository = _stripeRepositoryFactory.New(connection);
                     var stripePayments = stripeRepository.GetPaymentIUserdMainArticle(idUser);
                     foreach (var stripePayment in stripePayments)

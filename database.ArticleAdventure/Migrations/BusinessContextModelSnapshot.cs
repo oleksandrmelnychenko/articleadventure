@@ -3,19 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using database.ArticleAdventure;
 
 #nullable disable
 
-namespace database.ArticleAdventure.Migrations.Business
+namespace database.ArticleAdventure.Migrations
 {
     [DbContext(typeof(BusinessContext))]
-    [Migration("20230824143628_UpdateUser")]
-    partial class UpdateUser
+    partial class BusinessContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -9,5 +9,8 @@ namespace MVC.ArticleAdventure.Services.Contract
 
         public Task ChangePassword(Guid userProfileNetUid, string newPassword, string oldPassword);
         public Task ChangeEmail(Guid userProfileNetUid, string newEmail, string password);
+        public Task<ExecutionResult<long>> SetFavoriteArticle(Guid userProfileNetUid, Guid MainArtilceNetUid);
+        public Task<ExecutionResult<List<FavoriteArticle>>> GetAllFavoriteArticle(Guid userProfileNetUid);
+        public Task<ExecutionResult<long>> RemoveFavoriteArticle(Guid netUidFavoriteArticle);
     }
 }

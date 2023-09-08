@@ -127,5 +127,48 @@ namespace webApi.ArticleAdventure.Controllers
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
             }
         }
+
+        [HttpGet]
+        [AssignActionRoute(UserManagementSegments.SET_FAVORITE_ARTICLE)]
+        public async Task<IActionResult> SetFavoriteArticle(Guid netUidArticle,Guid netUidUser)
+        {
+            try
+            {
+                return Ok(SuccessResponseBody(await _userProfileService.SetFavoriteArticle(netUidArticle,netUidUser), "user successfully updated Account Information"));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+        [HttpGet]
+        [AssignActionRoute(UserManagementSegments.GET_FAVORITE_ARTICLE)]
+        public async Task<IActionResult> getFavoriteArticle(Guid userProfileNetUid)
+        {
+            try
+            {
+                return Ok(SuccessResponseBody(await _userProfileService.GetAllFavoriteArticle(userProfileNetUid), "user successfully updated Account Information"));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+        [HttpGet]
+        [AssignActionRoute(UserManagementSegments.REMOVE_FAVORITE_ARTICLE)]
+        public async Task<IActionResult> RemoveFavoriteArticle(Guid netUidFavoriteArticle)
+        {
+            try
+            {
+                return Ok(SuccessResponseBody(await _userProfileService.RemoveFavoriteArticle(netUidFavoriteArticle), "user successfully updated Account Information"));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
     }
 }

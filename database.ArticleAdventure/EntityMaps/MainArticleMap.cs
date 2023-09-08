@@ -18,15 +18,11 @@ namespace database.ArticleAdventure.EntityMaps
                .WithOne(e => e.MainArticle)
                .IsRequired(false)
                .HasForeignKey(e => e.MainArticleId)
-               .IsRequired(false)
-               .OnDelete(DeleteBehavior.Cascade)
                .IsRequired(false);
             entity.HasMany(e => e.ArticleTags)
                .WithOne(e => e.MainArticle)
                .IsRequired(false)
                .HasForeignKey(e => e.MainArticleId)
-               .IsRequired(false)
-               .OnDelete(DeleteBehavior.Cascade)
                .IsRequired(false);
 
             entity.Property(p => p.Title)

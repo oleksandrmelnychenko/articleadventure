@@ -65,6 +65,7 @@
                                 </div>
                                 <div class="price_cell">@article.Price $</div>
                             </li>
+                            <button type="button" onclick="location.href='@Url.Action("BuySup", "Stripe",new {netUidBuyArticle = article.NetUid})'">buy part of the article</button>
                         }
                     </ul>
                 </div>
@@ -86,9 +87,9 @@
                     </div>
                     <div class="price">@Model.MainArticle.Price $</div>
                     <div class="controls">
-                        <button class="archicle_btn withLike" onclick="location.href='@Url.Action("SetFavoriteArticle", "Stripe",new {netUidArticle = Model.MainArticle.NetUid})'"> Go to the Cart</button>
+                        <button class="archicle_btn withLike" onclick="location.href='@Url.Action("SetСartArticle", "Stripe",new {netUidArticle = Model.MainArticle.NetUid})'"> Go to the Cart</button>
 
-                        <button class="like_box">
+                        <button type="button" class="like_box" onclick="location.href='@Url.Action("SetFavoriteArticle", "User",new {netUidArticle = Model.MainArticle.NetUid})'">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve">
 <path d="M326.632,10.346c-38.733,0-74.991,17.537-99.132,46.92c-24.141-29.383-60.399-46.92-99.132-46.92
 	C57.586,10.346,0,67.931,0,138.714c0,55.426,33.049,119.535,98.23,190.546c50.162,54.649,104.729,96.96,120.257,108.626l9.01,6.769

@@ -17,7 +17,6 @@ namespace database.ArticleAdventure.EntityMaps
             entity.HasOne(p => p.SupTag)
                 .WithMany(p => p.MainArticleTags)
                 .HasForeignKey(p => p.SupTagId)
-                .IsRequired(false)
                .OnDelete(DeleteBehavior.Cascade)
                .IsRequired(false);
         }

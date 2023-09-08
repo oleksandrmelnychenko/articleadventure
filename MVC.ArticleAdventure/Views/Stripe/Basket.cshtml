@@ -5,36 +5,43 @@
 *@
 @{
 }
-<div class="article_change" >
+<div class="article_change">
     <h1>Basket</h1>
-    @if (Model.BasketArticles == null )
+    @if (Model.BasketArticles == null)
     {
         <div style="display:flex;">
             <div>Shopping cart is empty. Continue searching to find the article you are looking for.</div>
         </div>
+        <button>
+            <a asp-action="AllBlogs" asp-controller="All" type="button">continue searching</a>
+        </button>
     }
     else
     {
-      <div style="display:flex;">
+        <div style="display:flex;">
             <div style="width:calc(70% - 4px); ">
+                <div>@Model.BasketArticles.Count() course in the shopping cart </div>
                 @foreach (var article in Model.BasketArticles)
                 {
                     <div class="desired_articles">
                         @article.Title
                     </div>
-                    <div>@article.Articles.Count() sections</div>
                     <div>@article.Price $</div>
+                    <div class="img">
+                        <img src="@article.ImageUrl" style="height: 160px;" />
+                    </div>
 
                     <button onclick="location.href='@Url.Action("RemoveFavoriteArticle", "Stripe",new {netUidArticle = article.NetUid})'">Remove Article </button>
                 }
             </div>
             <div>
-                <div>Full Price: @Model.FullPrice</div>
+                <h3>Total:</h3>
+                <div>@Model.FullPrice</div>
                 <button>Order Processing</button>
             </div>
-      </div>
+        </div>
     }
 
 
-    
+
 </div>

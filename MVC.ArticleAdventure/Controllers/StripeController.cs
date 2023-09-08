@@ -69,7 +69,7 @@ namespace MVC.ArticleAdventure.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SetFavoriteArticle(Guid netUidArticle)
+        public async Task<IActionResult> SetСartArticle(Guid netUidArticle)
         {
             var article = await _mainArticleService.GetArticle(netUidArticle);
             var listAuthorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(HttpContext.Session, SessionStoragePath.CART_ARTICLE);
@@ -98,7 +98,7 @@ namespace MVC.ArticleAdventure.Controllers
             var email = Request.Cookies[CookiesPath.EMAIL];
 
 
-            var orderInfo = await _stripeService.BuyStripe(article, email);
+            var orderInfo = await _stripeService.BuyStripeMainArticle(article, email);
             BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo };
             return View(buyNowModel);
         }
@@ -106,14 +106,13 @@ namespace MVC.ArticleAdventure.Controllers
         [HttpGet]
         public async Task<IActionResult> BuySup(Guid netUidBuyArticle)
         {
-            var article = await _mainArticleService.GetArticle(netUidBuyArticle);
-
+            var article = await _mainArticleService.GeSupArticle(netUidBuyArticle);
             var email = Request.Cookies[CookiesPath.EMAIL];
 
 
-            var orderInfo = await _stripeService.BuyStripe(article, email);
-            BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo };
-            return View(buyNowModel);
+            var orderInfo = await _stripeService.BuyStripeSupArticle(article.Data, email);
+            BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo.Data };
+            return View("BuyNow",buyNowModel);
         }
         
         [HttpGet]
@@ -123,6 +122,13 @@ namespace MVC.ArticleAdventure.Controllers
 
             return View();
         }
-        
+        [HttpGet]
+        public async Task<IActionResult> SuccessBuySup(string sessionId)
+        {
+            await _stripeService.CheckoutSuccessSup(sessionId);
+
+            return View();
+        }
+
     }
 }

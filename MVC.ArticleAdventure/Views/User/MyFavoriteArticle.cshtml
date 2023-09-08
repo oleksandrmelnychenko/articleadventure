@@ -1,13 +1,57 @@
-﻿@*
+﻿@model domain.ArticleAdventure.Models.MyFavoriteArticleModel
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
-<div class="profile_page">
-    <div class="sideBar_container">
-        @Html.Partial("_RightSideProfileEdit")
-    </div>
-    <div class="content_container">
-        //
+<div class="container_content">
+    <div class="articles_list_container">
+        @foreach (var Article in Model.favoriteArticles)
+        {
+
+            <article class="article_item">
+                <div class="item_container">
+
+                    <div class="item_header">
+                        <div class="img">
+                            <img src="@Article.MainArticle.ImageUrl" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                        </div>
+                        <div class="title_container">
+                            <div class="title">@Article.MainArticle.Title</div>
+                            <div class="created">
+                                @Article.Created
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item_body">
+                        <p>
+                            @Article.MainArticle.Description
+                        </p>
+                    </div>
+                </div>
+
+                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_btn">
+                    Continue Reading
+                </a>
+
+                <div class="priceBox_style">
+                    <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_price">
+                        <span>@Article.MainArticle.Price</span>$
+                    </a>
+                </div>
+
+                @* <div class="item_controls">
+            <div class="controls_wrapper">
+            <input formmethod="get"
+            class="delete"
+            type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
+            <input formmethod="get"
+            class="change"
+            type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeMainArticle", "All",new {netUidArticle =Article.NetUid})'" />
+            </div>
+            </div>*@
+            </article>
+        }
     </div>
 </div>

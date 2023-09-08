@@ -3,19 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using database.ArticleAdventure;
 
 #nullable disable
 
-namespace database.ArticleAdventure.Migrations
+namespace database.ArticleAdventure.Migrations.ArticleAdventureData
 {
     [DbContext(typeof(ArticleAdventureDataContext))]
-    [Migration("20230831111516_doublePrice")]
-    partial class doublePrice
+    partial class ArticleAdventureDataContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,11 +124,7 @@ namespace database.ArticleAdventure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("0");
 
-                    b.Property<string>("MainArticleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("MainArticleId1")
+                    b.Property<long>("MainArticleId")
                         .HasColumnType("bigint");
 
                     b.Property<Guid>("NetUid")
@@ -142,18 +136,16 @@ namespace database.ArticleAdventure.Migrations
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("UserId1")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MainArticleId1");
+                    b.HasIndex("MainArticleId")
+                        .IsUnique();
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("FavoriteArticles");
                 });
@@ -199,9 +191,9 @@ namespace database.ArticleAdventure.Migrations
                         .HasColumnName("NetUID")
                         .HasDefaultValueSql("newid()");
 
-                    b.Property<int>("Price")
+                    b.Property<double>("Price")
                         .HasMaxLength(250)
-                        .HasColumnType("int");
+                        .HasColumnType("float");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -412,6 +404,9 @@ namespace database.ArticleAdventure.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
+                    b.Property<long>("ArticleMainId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("Created")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -457,6 +452,15 @@ namespace database.ArticleAdventure.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ArticleMainId")
+                        .IsUnique();
+
+                    b.HasIndex("SupArticleId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("stripePayments");
                 });
@@ -566,8 +570,7 @@ namespace database.ArticleAdventure.Migrations
                 {
                     b.HasOne("domain.ArticleAdventure.Entities.MainArticle", "MainArticle")
                         .WithMany("Articles")
-                        .HasForeignKey("MainArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("MainArticleId");
 
                     b.Navigation("MainArticle");
                 });
@@ -575,14 +578,14 @@ namespace database.ArticleAdventure.Migrations
             modelBuilder.Entity("domain.ArticleAdventure.Entities.FavoriteArticle", b =>
                 {
                     b.HasOne("domain.ArticleAdventure.Entities.MainArticle", "MainArticle")
-                        .WithMany()
-                        .HasForeignKey("MainArticleId1")
+                        .WithOne()
+                        .HasForeignKey("domain.ArticleAdventure.Entities.FavoriteArticle", "MainArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("domain.ArticleAdventure.Entities.UserProfile", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
+                        .WithOne()
+                        .HasForeignKey("domain.ArticleAdventure.Entities.FavoriteArticle", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -595,8 +598,7 @@ namespace database.ArticleAdventure.Migrations
                 {
                     b.HasOne("domain.ArticleAdventure.Entities.MainArticle", "MainArticle")
                         .WithMany("ArticleTags")
-                        .HasForeignKey("MainArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("MainArticleId");
 
                     b.HasOne("domain.ArticleAdventure.Entities.SupTag", "SupTag")
                         .WithMany("MainArticleTags")
@@ -606,6 +608,33 @@ namespace database.ArticleAdventure.Migrations
                     b.Navigation("MainArticle");
 
                     b.Navigation("SupTag");
+                });
+
+            modelBuilder.Entity("domain.ArticleAdventure.Entities.StripePayment", b =>
+                {
+                    b.HasOne("domain.ArticleAdventure.Entities.MainArticle", "MainArticle")
+                        .WithOne()
+                        .HasForeignKey("domain.ArticleAdventure.Entities.StripePayment", "ArticleMainId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("domain.ArticleAdventure.Entities.AuthorArticle", "SupArticle")
+                        .WithOne()
+                        .HasForeignKey("domain.ArticleAdventure.Entities.StripePayment", "SupArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("domain.ArticleAdventure.Entities.UserProfile", "UserProfile")
+                        .WithOne()
+                        .HasForeignKey("domain.ArticleAdventure.Entities.StripePayment", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MainArticle");
+
+                    b.Navigation("SupArticle");
+
+                    b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("domain.ArticleAdventure.Entities.SupTag", b =>

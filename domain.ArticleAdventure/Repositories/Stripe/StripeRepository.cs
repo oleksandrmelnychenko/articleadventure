@@ -210,14 +210,14 @@ namespace domain.ArticleAdventure.Repositories.Stripe
                 }
            ).SingleOrDefault();
 
-        public void SetStatusPayment(Guid netUidPayment, string paymentStatus)
+        public void SetStatusPayment(Guid netUidPayment)
             => _connection.Execute("Update [stripePayments] " +
                 "SET [PaymentStatus] = @PaymentStatus,[Updated] = GETUTCDATE() " +
                 $"WHERE [stripePayments].[NetUid] = @NetUid ",
                 new
                 {
                     NetUid = netUidPayment,
-                    PaymentStatus = paymentStatus
+                    PaymentStatus = "paid"
                 });
 
 

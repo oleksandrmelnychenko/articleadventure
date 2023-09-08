@@ -24,12 +24,21 @@ namespace database.ArticleAdventure.EntityMaps
                 .IsRequired();
             entity.Property(p => p.Description)
                .IsRequired();
-            entity.Property(p => p.SupArticleId)
-               .IsRequired();
-            entity.Property(p => p.MainArticleId)
-               .IsRequired();
-            entity.Property(p => p.UserId)
-               .IsRequired();
+
+            entity.HasOne(fa => fa.SupArticle)
+           .WithOne()
+           .HasForeignKey<StripePayment>(fa => fa.SupArticleId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(fa => fa.MainArticle)
+             .WithOne()
+             .HasForeignKey<StripePayment>(fa => fa.MainArticleId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(fa => fa.UserProfile)
+            .WithOne()
+            .HasForeignKey<StripePayment>(fa => fa.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
             entity.Property(p => p.ReceiptEmail)
               .IsRequired();
 

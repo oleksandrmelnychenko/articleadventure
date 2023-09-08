@@ -2,8 +2,10 @@
 using domain.ArticleAdventure.DbConnectionFactory.Contracts;
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.IdentityEntities;
+using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using domain.ArticleAdventure.Repositories.Identity;
 using domain.ArticleAdventure.Repositories.Identity.Contracts;
+using domain.ArticleAdventure.Repositories.Stripe.Contracts;
 using Microsoft.AspNetCore.Identity;
 using service.ArticleAdventure.MailSenderServices;
 using service.ArticleAdventure.MailSenderServices.Contracts;
@@ -22,16 +24,19 @@ namespace service.ArticleAdventure.Services.UserManagement
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly IIdentityRepositoriesFactory _identityRepositoriesFactory;
         private readonly IMailSenderFactory _mailSenderFactory;
+        private readonly IMainArticleRepositoryFactory _mainRepositoryFactory;
 
 
         public UserProfileService(
               IDbConnectionFactory connectionFactory,
               IIdentityRepositoriesFactory identityRepositoriesFactory,
-              IMailSenderFactory mailSenderFactory)
+              IMailSenderFactory mailSenderFactory,
+              IMainArticleRepositoryFactory mainRepositoryFactory)
         {
             _connectionFactory = connectionFactory;
             _identityRepositoriesFactory = identityRepositoriesFactory;
             _mailSenderFactory = mailSenderFactory;
+            _mainRepositoryFactory = mainRepositoryFactory;
         }
         public Task<IdentityResult> ConforimEmail(string emailConfirmationToken, string userId) => Task.Run(async () =>
         {
@@ -151,6 +156,35 @@ namespace service.ArticleAdventure.Services.UserManagement
                    using IDbConnection connection = _connectionFactory.NewSqlConnection();
                    return _identityRepositoriesFactory.NewUserProfileRepository(connection).Get(userNetId);
 
+               });
+
+        public Task<List<FavoriteArticle>> GetAllFavoriteArticle(Guid userProfileNetUid) =>
+               Task.Run(() =>
+               {
+                   using IDbConnection connection = _connectionFactory.NewSqlConnection();
+
+                   var user = _identityRepositoriesFactory.NewUserProfileRepository(connection).Get(userProfileNetUid);
+                   return _identityRepositoriesFactory.NewUserProfileRepository(connection).GetAllFavoriteArticle(user.Id);
+               });
+
+        public Task<long> RemoveFavoriteArticle(Guid netUidFavoriteArticle) =>
+               Task.Run(() =>
+               {
+                   using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                   {
+                       return _identityRepositoriesFactory.NewUserProfileRepository(connection).RemoveFavoriteArticle(netUidFavoriteArticle);
+                   }
+               });
+
+        public Task<long> SetFavoriteArticle(Guid netUidArticle, Guid netUidUser) =>
+               Task.Run(() =>
+               {
+                   using IDbConnection connection = _connectionFactory.NewSqlConnection();
+
+                   var user = _identityRepositoriesFactory.NewUserProfileRepository(connection).Get(netUidUser);
+                   var article = _mainRepositoryFactory.New(connection).GetArticle(netUidArticle);
+
+                   return _identityRepositoriesFactory.NewUserProfileRepository(connection).SetFavoriteArticle(article.Id, user.Id);
                });
 
         public Task<UserProfile> UpdateAccountInformation(UserProfile userProfile) =>
