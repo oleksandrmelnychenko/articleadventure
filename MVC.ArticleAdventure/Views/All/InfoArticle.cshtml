@@ -60,12 +60,18 @@
                         {
                             <li>
                                 <div>
-                                    <div class="t">@article.Title</div>
+                                    <div class="t">
+                                        @article.Title
+                                    </div>
                                     <div class="d">@article.Description</div>
                                 </div>
-                                <div class="price_cell">@article.Price $</div>
+                                <div class="price_cell">
+                                    @article.Price $
+
+                                    <button type="button" onclick="location.href='@Url.Action("BuySup", "Stripe",new {netUidBuyArticle = article.NetUid})'">buy part of the article</button>
+                                </div>
                             </li>
-                            <button type="button" onclick="location.href='@Url.Action("BuySup", "Stripe",new {netUidBuyArticle = article.NetUid})'">buy part of the article</button>
+
                         }
                     </ul>
                 </div>

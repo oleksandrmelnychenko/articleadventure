@@ -476,6 +476,12 @@ body {
   letter-spacing: 0.5px;
   font-size: 17px;
 }
+.article_item .item_body img,
+.tags_page .item_body img {
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+}
 .article_item .item_header,
 .tags_page .item_header {
   display: flex;
@@ -723,7 +729,7 @@ body {
   padding: 0;
 }
 .archicle_info_item ul.articles_list li {
-  padding: 10px 120px 10px 20px;
+  padding: 10px 220px 10px 20px;
   position: relative;
 }
 .archicle_info_item ul.articles_list li .t {
@@ -744,28 +750,38 @@ body {
   border-radius: 50%;
 }
 .archicle_info_item ul.articles_list li .price_cell {
-  top: 50%;
+  top: 0;
   left: auto;
   right: 0;
   bottom: auto;
   z-index: 1;
   position: absolute;
-  -moz-transform: translate(0, -50%);
-  -ms-transform: translate(0, -50%);
-  -o-transform: translate(0, -50%);
-  -webkit-transform: translate(0, -50%);
-  transform: translate(0, -50%);
-  width: 120px;
+  width: 200px;
   padding-left: 20px;
   font-size: 16px;
   text-align: right;
   font-weight: 600;
 }
+.archicle_info_item ul.articles_list li .price_cell button {
+  display: inline;
+  margin: 6px 0 0;
+  padding: 0;
+  background-color: transparent;
+  box-shadow: none;
+  border: 1px solid var(--epcl-black-color);
+  color: var(--epcl-black-color);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 0 10px;
+  height: 29px;
+}
+.archicle_info_item ul.articles_list li .price_cell button:hover {
+  cursor: pointer;
+  background-color: var(--epcl-black-color);
+  color: #fff;
+}
 .archicle_info_item ul.articles_list li:hover {
   cursor: pointer;
-}
-.archicle_info_item ul.articles_list li:hover .t {
-  text-decoration: underline;
 }
 .archicle_info_item.sticky {
   position: sticky;
