@@ -416,6 +416,11 @@
             height: 160px;
             box-shadow: 0 0 1px red;
             @include position_absolute(0,0,auto,0);
+            overflow: hidden;
+
+            img {
+                width: 100%;
+            }
         }
 
         .like_box {

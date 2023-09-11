@@ -438,6 +438,10 @@ body {
   bottom: auto;
   z-index: 1;
   position: absolute;
+  overflow: hidden;
+}
+.archicle_info_item.price_item_container .img img {
+  width: 100%;
 }
 .archicle_info_item.price_item_container .like_box {
   width: 44px;
