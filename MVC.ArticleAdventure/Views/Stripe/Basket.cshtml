@@ -7,7 +7,7 @@
 }
 
 <div class="container_content w1260">
-    <div class="basket_page">
+    <form asp-controller="Stripe" class="basket_page">
         <h1>Basket</h1>
         @if (Model.BasketArticles == null)
         {
@@ -51,9 +51,9 @@
                 <div class="basket_price">
                     <div class="hh3">Total:</div>
                     <div class="fullPrice">@Model.FullPrice $</div>
-                    <button class="archicle_btn">Order Processing</button>
+                    <button asp-action="Basket" type="submit" class="archicle_btn">Order Processing</button>
                 </div>
             </div>
         }
-    </div>
+    </form>
 </div>
