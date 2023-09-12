@@ -36,15 +36,28 @@ namespace MVC.ArticleAdventure.Controllers
                 var fullPrice = listAutorArticle.Select(x => x.Price).Sum();
                 basketModel.FullPrice = fullPrice;
             }
-
-
-
-            //SessionExtensionsMVC.Set(HttpContext.Session, "article", article);
-            if (listAutorArticle == null)
-            {
-                //basketModel.BasketArticles = new List<AuthorArticle>();
-            }
             return View(basketModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Basket(BasketModel basketModel)
+        {
+            var email = Request.Cookies[CookiesPath.EMAIL];
+            var listAutorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(HttpContext.Session, SessionStoragePath.CART_ARTICLE);
+
+            var result = await _stripeService.BuyStripeCartArticle(listAutorArticle, email);
+            BuyNowModel buyNowModel = new BuyNowModel { orderResponse = result.Data };
+            return View("BuyNow", buyNowModel);
+            //var listAutorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(HttpContext.Session, SessionStoragePath.CART_ARTICLE);
+            //BasketModel basketModel = new BasketModel { BasketArticles = listAutorArticle };
+
+            //if (listAutorArticle != null)
+            //{
+            //    var fullPrice = listAutorArticle.Select(x => x.Price).Sum();
+            //    basketModel.FullPrice = fullPrice;
+            //}
+
+            //return View(basketModel);
         }
 
         [HttpGet]
@@ -129,6 +142,13 @@ namespace MVC.ArticleAdventure.Controllers
 
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> SuccessBuyCart(string sessionId)
+        {
+            await _stripeService.CheckoutSuccessCart(sessionId);
+            HttpContext.Session.Remove(SessionStoragePath.CART_ARTICLE);
 
+            return View();
+        }
     }
 }

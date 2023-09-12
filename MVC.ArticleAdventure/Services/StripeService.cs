@@ -59,6 +59,33 @@ namespace MVC.ArticleAdventure.Services
             return result;
         }
 
+        public async Task<ExecutionResult<CheckoutOrderResponse>> BuyStripeCartArticle(List<MainArticle> mainArticle, string Email)
+        {
+            var result = new ExecutionResult<CheckoutOrderResponse>();
+
+            var response = await _httpClient.PostAsJsonAsync($"{PathStripe.BUY_NOW_STRIPE_CART_ARTICLE}?emailUser={Email}", mainArticle);
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<CheckoutOrderResponse>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
+        }
 
         public async Task<ExecutionResult<List<StripePayment>>> CheckPaymentsHaveUser(string userEmail)
         {
@@ -98,6 +125,11 @@ namespace MVC.ArticleAdventure.Services
         public async Task CheckoutSuccessSup(string sessionId)
         {
             var response = await _httpClient.GetAsync($"{PathStripe.CHECK_SUCCESS_SUP}?sessionId={sessionId}");
+        }
+
+        public async Task CheckoutSuccessCart(string sessionId)
+        {
+            var response = await _httpClient.GetAsync($"{PathStripe.CHECK_SUCCESS_CART}?sessionId={sessionId}");
         }
     }
 }

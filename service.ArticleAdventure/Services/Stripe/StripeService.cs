@@ -1,6 +1,7 @@
 ﻿using domain.ArticleAdventure.DbConnectionFactory.Contracts;
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.Helpers;
+using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using domain.ArticleAdventure.Repositories.Identity.Contracts;
 using domain.ArticleAdventure.Repositories.Stripe.Contracts;
 using service.ArticleAdventure.Services.Stripe.Contracts;
@@ -24,13 +25,14 @@ namespace service.ArticleAdventure.Services.Stripe
         private readonly IIdentityRepositoriesFactory _identityRepositoriesFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly IStripeRepositoryFactory _stripeRepositoryFactory;
+        private readonly IMainArticleRepositoryFactory _mainArticleRepositoryFactory;
 
         public StripeService(
             ChargeService chargeService,
             CustomerService customerService,
             TokenService tokenService,
             IIdentityRepositoriesFactory identityRepositoriesFactory,
-            IDbConnectionFactory connectionFactory, IStripeRepositoryFactory stripeRepositoryFactory)
+            IDbConnectionFactory connectionFactory, IStripeRepositoryFactory stripeRepositoryFactory, IMainArticleRepositoryFactory mainArticleRepositoryFactory)
         {
             _chargeService = chargeService;
             _customerService = customerService;
@@ -38,6 +40,7 @@ namespace service.ArticleAdventure.Services.Stripe
             _identityRepositoriesFactory = identityRepositoriesFactory;
             _connectionFactory = connectionFactory;
             _stripeRepositoryFactory = stripeRepositoryFactory;
+            _mainArticleRepositoryFactory = mainArticleRepositoryFactory;
         }
 
         public async Task<List<StripePayment>> CheckPaymentsHaveUser(string userEmail)
@@ -138,7 +141,7 @@ namespace service.ArticleAdventure.Services.Stripe
 
         }
 
-        private static SessionCreateOptions SessionCreate(double price, string title, string description, string userEmail, Dictionary<string, string> metaData,string UrlSuccess)
+        private static SessionCreateOptions SessionCreate(double price, string title, string description, string userEmail, Dictionary<string, string> metaData, string UrlSuccess)
         {
             var options = new SessionCreateOptions
             {
@@ -171,49 +174,6 @@ namespace service.ArticleAdventure.Services.Stripe
                     Quantity = 1,
                 },
             },
-                Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
-            };
-            return options;
-        }
-
-        private static SessionCreateOptions SessionCreateList(List<MainArticle> mainArticles,string userEmail, Dictionary<string, string> metaData, string UrlSuccess)
-        {
-
-            List<SessionLineItemOptions> sessionLineItemOptions = new List<SessionLineItemOptions>();
-
-
-            foreach (var mainArticle in mainArticles)
-            {
-                sessionLineItemOptions.Add(new SessionLineItemOptions
-                {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        UnitAmount = (long)(mainArticle.Price * 100),
-                        Currency = "USD",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = mainArticle.Title,
-                            Description = mainArticle.Description
-                        },
-
-
-                    },
-                    Quantity = 1,
-                });
-            }
-            var options = new SessionCreateOptions
-            {
-                Metadata = metaData,
-                CustomerEmail = userEmail,
-                // Stripe calls the URLs below when certain checkout events happen such as success and failure.
-                SuccessUrl = $"{ArticleAdventureFolderManager.GetClientPath()}/Stripe/{UrlSuccess}/sup?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                CancelUrl = $"{ArticleAdventureFolderManager.GetServerPath()}/api/v1/stripe/checkout/failed",  // Checkout cancelled.
-                PaymentMethodTypes = new List<string> // Only card available in test mode?
-                {
-                    "card"
-                },
-                //Metadata = metaData,
-                LineItems = sessionLineItemOptions,
                 Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
             };
             return options;
@@ -257,7 +217,7 @@ namespace service.ArticleAdventure.Services.Stripe
 
             }
         }
-        public async Task CheckoutSuccessMainArticleList(string sessionId)
+        public async Task CheckoutSuccessCartArticle(string sessionId)
         {
             using (IDbConnection connection = _connectionFactory.NewSqlConnection())
             {
@@ -265,6 +225,9 @@ namespace service.ArticleAdventure.Services.Stripe
                           _identityRepositoriesFactory.NewUserProfileRepository(connection);
 
                 List<StripePayment> stripePayments = new List<StripePayment>();
+                List<MainArticle> mainArticles = new List<MainArticle>();
+
+
 
                 var sessionService = new SessionService();
                 Session session = sessionService.Get(sessionId);
@@ -274,20 +237,35 @@ namespace service.ArticleAdventure.Services.Stripe
 
                 Dictionary<string, string> metaData = session.Metadata;
                 var keys = metaData.Keys.ToList();
-                var MainArticleId = metaData["IDMainArticle"];
 
                 var NetUidUser = metaData["NetUidUser"];
                 metaData.Remove("NetUidUser");
+
+                foreach (var MainArticleId in metaData.Values.ToList())
+                {
+                    var mainArticle = _mainArticleRepositoryFactory.New(connection).GetArticle(long.Parse(MainArticleId));
+                    mainArticles.Add(mainArticle);
+                }
+
                 var valuesSupArticles = metaData.Values.ToList();
                 var stripeRepositoryFactory = _stripeRepositoryFactory.New(connection);
 
                 UserProfile userProfile = userProfileRepository.Get(Guid.Parse(NetUidUser));
 
-                foreach (var idSupArticle in metaData.Values.ToList())
+                foreach (var mainArticle in mainArticles)
                 {
-                    StripePayment s = stripeRepositoryFactory.GetPayment(long.Parse(MainArticleId), long.Parse(idSupArticle), userProfile.Id);
-                    stripePayments.Add(s);
+                    foreach (var supArticle in mainArticle.Articles)
+                    {
+                        StripePayment payment = stripeRepositoryFactory.GetPayment(mainArticle.Id, supArticle.Id, userProfile.Id);
+                        stripePayments.Add(payment);
+                    }
                 }
+
+                //foreach (var MainArticleId in metaData.Values.ToList())
+                //{
+                //    StripePayment s = stripeRepositoryFactory.GetPayment(long.Parse(), long.Parse(MainArticleId), userProfile.Id);
+                //    stripePayments.Add(s);
+                //}
 
                 foreach (var payment in stripePayments)
                 {
@@ -311,6 +289,7 @@ namespace service.ArticleAdventure.Services.Stripe
 
                 List<StripePayment> checkStripePayments = new List<StripePayment>();
 
+                List<SessionLineItemOptions> listSession = new List<SessionLineItemOptions>();
 
                 foreach (var mainArticle in mainArticles)
                 {
@@ -322,6 +301,24 @@ namespace service.ArticleAdventure.Services.Stripe
                             checkStripePayments.Add(Payments);
                         }
                     }
+                    var sessionLineItemOptions = new SessionLineItemOptions()
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)(mainArticle.Price * 100),
+                            Currency = "USD",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = mainArticle.Title,
+                                Description = mainArticle.Description
+                            },
+
+
+                        },
+                        Quantity = 1,
+                    };
+                    listSession.Add(sessionLineItemOptions);
+
 
                 }
                 StripeCustomer stripeCustomer = new StripeCustomer
@@ -333,24 +330,28 @@ namespace service.ArticleAdventure.Services.Stripe
 
                 var metaData = new Dictionary<string, string>()
                 {
-
                    { "NetUidUser", userProfile.NetUid.ToString() }
                 };
 
                 for (int i = 0; i < mainArticles.Count; i++)
                 {
                     metaData.Add($"IDMainArticle{i + 1}", mainArticles[i].Id.ToString());
-                    for (int j = 0; j < mainArticles[i].Articles.Count; j++)
-                    {
-                        metaData.Add($"IDSupArticle{i}{j + 1}", mainArticles[i].Articles[j].Id.ToString());
-                    }
                 }
-
-
-                
-
-                SessionCreateOptions options = SessionCreateList(mainArticles, userEmail, metaData, "SuccessBuy");
-
+                var options = new SessionCreateOptions
+                {
+                    Metadata = metaData,
+                    CustomerEmail = userEmail,
+                    // Stripe calls the URLs below when certain checkout events happen such as success and failure.
+                    SuccessUrl = $"{ArticleAdventureFolderManager.GetClientPath()}/Stripe/SuccessBuyCart?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
+                    CancelUrl = $"{ArticleAdventureFolderManager.GetServerPath()}/api/v1/stripe/checkout/failed",  // Checkout cancelled.
+                    PaymentMethodTypes = new List<string> // Only card available in test mode?
+                {
+                    "card"
+                },
+                    //Metadata = metaData,
+                    LineItems = listSession,
+                    Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
+                };
                 var service = new SessionService();
                 var session = await service.CreateAsync(options);
 
@@ -378,12 +379,11 @@ namespace service.ArticleAdventure.Services.Stripe
                         };
                         stripePayments.Add(stripePayment);
                     }
-                   
-                }
 
-                if (checkStripePayments.Count() == 0)
+                }
+                foreach (var payment in stripePayments)
                 {
-                    foreach (var payment in stripePayments)
+                    if (!checkStripePayments.Any(x => x.SupArticleId.Equals(payment.SupArticleId) && x.MainArticleId.Equals(payment.MainArticleId)))
                     {
                         stripeRepository.AddPayment(payment);
                     }
@@ -391,6 +391,26 @@ namespace service.ArticleAdventure.Services.Stripe
 
                 return checkoutOrderResponse;
             }
+        }
+
+        private static SessionCreateOptions SessionCreateCart(string userEmail, List<SessionLineItemOptions> listSession, Dictionary<string, string> metaData)
+        {
+            var options = new SessionCreateOptions
+            {
+                Metadata = metaData,
+                CustomerEmail = userEmail,
+                // Stripe calls the URLs below when certain checkout events happen such as success and failure.
+                SuccessUrl = $"{ArticleAdventureFolderManager.GetClientPath()}/Stripe/SuccessBuyСart?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
+                CancelUrl = $"{ArticleAdventureFolderManager.GetServerPath()}/api/v1/stripe/checkout/failed",  // Checkout cancelled.
+                PaymentMethodTypes = new List<string> // Only card available in test mode?
+                {
+                    "card"
+                },
+                //Metadata = metaData,
+                LineItems = listSession,
+                Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
+            };
+            return options;
         }
 
         public async Task<CheckoutOrderResponse> CheckOutBuyNowSupArticle(AuthorArticle supArticle, string userEmail)
@@ -425,7 +445,7 @@ namespace service.ArticleAdventure.Services.Stripe
 
 
 
-                SessionCreateOptions options = SessionCreate(supArticle.Price, supArticle.Title, supArticle.Description, userEmail, metaData,"SuccessBuySup");
+                SessionCreateOptions options = SessionCreate(supArticle.Price, supArticle.Title, supArticle.Description, userEmail, metaData, "SuccessBuySup");
 
                 var service = new SessionService();
                 var session = await service.CreateAsync(options);
@@ -496,6 +516,6 @@ namespace service.ArticleAdventure.Services.Stripe
             }
         }
 
-      
+
     }
 }
