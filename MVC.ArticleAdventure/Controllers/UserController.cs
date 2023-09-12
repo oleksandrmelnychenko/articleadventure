@@ -148,9 +148,28 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> SetFavoriteArticle(Guid netUidArticle)
         {
             var userGuidClaim = User.FindFirst("Guid");
-            await _userService.SetFavoriteArticle(Guid.Parse(userGuidClaim.Value), netUidArticle);
-
-            return Redirect($"~/InfoArticle{netUidArticle}");
+            var favoriteArticle = await _userService.GetFavoriteArticle(Guid.Parse(userGuidClaim.Value), netUidArticle);
+            if (favoriteArticle.Data == null)
+            {
+                var result = await _userService.SetFavoriteArticle(Guid.Parse(userGuidClaim.Value), netUidArticle);
+                if (result.IsSuccess)
+                {
+                    await SetSuccessMessage(SuccessMessages.SetArticle);
+                    return Redirect($"~/InfoArticle?netUidArticle={netUidArticle}");
+                }
+            }
+            await SetErrorMessage(ErrorMessages.FavoriteArticleIsExist);
+            return Redirect($"~/InfoArticle?NetUidArticle={netUidArticle}");
         }
+
+        [HttpGet]
+        [Route("RemoveFavoriteArticle")]
+        public async Task<IActionResult> RemoveFavoriteArticle(Guid netUidFavoriteArticle,Guid netUidArticle)
+        {
+            
+            var favoriteArticle = await _userService.RemoveFavoriteArticle( netUidFavoriteArticle);
+            return Redirect($"~/InfoArticle?NetUidArticle={netUidArticle}");
+        }
+
     }
 }

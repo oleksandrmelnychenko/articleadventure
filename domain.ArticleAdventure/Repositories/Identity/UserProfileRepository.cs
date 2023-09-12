@@ -123,12 +123,19 @@ namespace domain.ArticleAdventure.Repositories.Identity
                 new { NetId = netId }
             );
 
+        public FavoriteArticle GetFavoriteArticle(long userId, long mainArticleId)
+            => _connection.Query<FavoriteArticle>(
+                  "SELECT * FROM [FavoriteArticles] AS favoriteArticles " +
+                  "WHERE favoriteArticles.MainArticleId = @MainArticleId " +
+                  "AND favoriteArticles.UserId = @UserId ",
+               new { UserId = userId, MainArticleId = mainArticleId }).SingleOrDefault();
+
         public long SetFavoriteArticle(long mainArticleId, long userId) =>
          _connection.Query<long>(
              "INSERT INTO [FavoriteArticles] " +
              "([MainArticleId], [UserId], [Updated]) " +
              "VALUES " +
-             "(@MainArticleId, @UserId,GETUTCDATE()); " +
+             "(@MainArticleId, @UserId, GETUTCDATE()); " +
              "SELECT SCOPE_IDENTITY()",
              new
              {
@@ -137,11 +144,12 @@ namespace domain.ArticleAdventure.Repositories.Identity
              }
          ).Single();
 
-        public List<FavoriteArticle> GetAllFavoriteArticle(long userId) {
+        public List<FavoriteArticle> GetAllFavoriteArticle(long userId)
+        {
 
             List<FavoriteArticle> favoriteArticles = new List<FavoriteArticle>();
 
-            _connection.Query<FavoriteArticle,MainArticle,FavoriteArticle>(
+            _connection.Query<FavoriteArticle, MainArticle, FavoriteArticle>(
                   "SELECT favoriteArticles.*, " +
                   "mainArticle.* " +
                   "FROM [ArticleAdventure].[dbo].[FavoriteArticles] as favoriteArticles " +
@@ -150,7 +158,7 @@ namespace domain.ArticleAdventure.Repositories.Identity
                   "where favoriteArticles.UserId = @UserId ",
                (favoriteArticle, mainArticle) =>
                {
-                   if (favoriteArticles.Any(x=>x.Id.Equals(favoriteArticle.Id)))
+                   if (favoriteArticles.Any(x => x.Id.Equals(favoriteArticle.Id)))
                    {
                        favoriteArticle = favoriteArticles.First(x => x.Id.Equals(favoriteArticle.Id));
                    }
@@ -159,16 +167,16 @@ namespace domain.ArticleAdventure.Repositories.Identity
                        favoriteArticles.Add(favoriteArticle);
                    }
 
-                   if (favoriteArticles.Any(x=>x.MainArticle.Id.Equals(mainArticle.Id)))
+                   if (favoriteArticles.Any(x => x.MainArticle.Id.Equals(mainArticle.Id)))
                    {
                        mainArticle = favoriteArticles.First(x => x.MainArticle.Id.Equals(mainArticle.Id)).MainArticle;
                    }
                    else
                    {
                        favoriteArticles.Where(x => x.MainArticleId == mainArticle.Id).ToList()
-                       .ForEach(x=>x.MainArticle = mainArticle);
+                       .ForEach(x => x.MainArticle = mainArticle);
                    }
-                  
+
                    return favoriteArticle;
                },
                new { UserId = userId }).ToList();
@@ -177,11 +185,13 @@ namespace domain.ArticleAdventure.Repositories.Identity
 
             return favoriteArticles;
         }
-            
 
-        public long RemoveFavoriteArticle(Guid netUidFavoriteArticle) 
-            => _connection.Execute("DELETE FROM [ArticleAdventure].[dbo].[MainArticle] " +
-                "WHERE MainArticle.NetUID = @NetUID",
+
+        public long RemoveFavoriteArticle(Guid netUidFavoriteArticle)
+            => _connection.Execute("DELETE FROM [ArticleAdventure].[dbo].[FavoriteArticles] " +
+                "WHERE FavoriteArticles.NetUID = @NetUID",
                 new { NetUID = netUidFavoriteArticle });
+
+
     }
 }

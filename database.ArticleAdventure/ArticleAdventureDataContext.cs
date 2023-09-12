@@ -26,7 +26,7 @@ namespace database.ArticleAdventure
 
             builder.AddConfiguration(new AuthorArticleMap());
 
-            builder.AddConfiguration(new TagMap());
+            builder.AddConfiguration(new TagMap()); 
 
             builder.AddConfiguration(new TagMainMap());
 

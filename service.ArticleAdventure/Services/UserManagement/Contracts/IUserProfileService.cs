@@ -20,6 +20,7 @@ namespace service.ArticleAdventure.Services.UserManagement.Contracts
         Task<UserProfile> UpdateEmail(Guid userProfileNetUid, string Email,string password);
         Task<UserProfile> UpdateAccountInformation(UserProfile userProfile);
         Task<long> SetFavoriteArticle(Guid netUidArticle , Guid netUidUser);
+        Task<FavoriteArticle> GetFavoriteArticle(Guid netUidArticle, Guid netUidUser);
         Task<List<FavoriteArticle>> GetAllFavoriteArticle( Guid userProfileNetUid);
         Task<long> RemoveFavoriteArticle(Guid netUidFavoriteArticle);
 

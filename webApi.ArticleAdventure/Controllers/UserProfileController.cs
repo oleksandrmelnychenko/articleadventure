@@ -143,12 +143,26 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpGet]
-        [AssignActionRoute(UserManagementSegments.GET_FAVORITE_ARTICLE)]
-        public async Task<IActionResult> getFavoriteArticle(Guid userProfileNetUid)
+        [AssignActionRoute(UserManagementSegments.GET_All_FAVORITE_ARTICLE)]
+        public async Task<IActionResult> GetAllFavoriteArticle(Guid userProfileNetUid)
         {
             try
             {
                 return Ok(SuccessResponseBody(await _userProfileService.GetAllFavoriteArticle(userProfileNetUid), "user successfully updated Account Information"));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+        [HttpGet]
+        [AssignActionRoute(UserManagementSegments.GET_FAVORITE_ARTICLE)]
+        public async Task<IActionResult> GetFavoriteArticle(Guid netUidArticle, Guid netUidUser)
+        {
+            try
+            {
+                return Ok(SuccessResponseBody(await _userProfileService.GetFavoriteArticle(netUidArticle, netUidUser), "user successfully updated Account Information"));
             }
             catch (Exception exc)
             {

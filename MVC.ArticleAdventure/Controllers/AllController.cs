@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC.ArticleAdventure.Helpers;
+using MVC.ArticleAdventure.Services;
 using MVC.ArticleAdventure.Services.Contract;
 using System.Data;
 using System.Security.Claims;
@@ -25,14 +26,18 @@ namespace MVC.ArticleAdventure.Controllers
         private readonly IMainArticleService _mainArticleService;
         private readonly ITagService _tagService;
         private readonly IStripeService _stripeService;
+        private readonly IUserService _userService;
 
-        public AllController(ILogger<AllController> logger, IArticleService authenticationService, IMainArticleService mainArticleService, ITagService tagService, IStripeService stripeService)
+        public AllController(ILogger<AllController> logger, IArticleService authenticationService,
+            IMainArticleService mainArticleService, ITagService tagService,
+            IStripeService stripeService, IUserService userService)
         {
             _logger = logger;
             _supArticleService = authenticationService;
             _mainArticleService = mainArticleService;
             _tagService = tagService;
             _stripeService = stripeService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -282,9 +287,21 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("InfoArticle")]
         public async Task<IActionResult> InfoArticle(Guid NetUidArticle)
         {
-            
+            InfoArticleModel infoArticleModel = new InfoArticleModel();
             var article = await _mainArticleService.GetArticle(NetUidArticle);
+
+            var userGuidClaim = User.FindFirst("Guid");
             var email = Request.Cookies[CookiesPath.EMAIL];
+            var favoriteArticle = await _userService.GetFavoriteArticle(Guid.Parse(userGuidClaim.Value), NetUidArticle);
+
+            if (favoriteArticle.IsSuccess)
+            {
+                if (favoriteArticle.Data != null)
+                {
+                    infoArticleModel.netUidFavoriteArticle = favoriteArticle.Data.NetUid;
+                    infoArticleModel.IsFavoriteArticle = true;
+                }
+            }
 
             var payments = await _stripeService.CheckPaymentsHaveUser(email);
 
@@ -296,7 +313,7 @@ namespace MVC.ArticleAdventure.Controllers
                 //GetInformationArticleModel getInformationArticleModel = new GetInformationArticleModel { MainArticle = article };
                 return Redirect($"~/GetInformationArticle/?NetUidArticle={article.NetUid}");
             }
-            InfoArticleModel infoArticleModel = new InfoArticleModel { MainArticle = article };
+             infoArticleModel.MainArticle = article;
             return View(infoArticleModel);
         }
     }

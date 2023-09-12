@@ -176,6 +176,17 @@ namespace service.ArticleAdventure.Services.UserManagement
                    }
                });
 
+        public Task<FavoriteArticle> GetFavoriteArticle(Guid netUidArticle, Guid netUidUser) =>
+            Task.Run(() => {
+
+                using IDbConnection connection = _connectionFactory.NewSqlConnection();
+
+                var user = _identityRepositoriesFactory.NewUserProfileRepository(connection).Get(netUidUser);
+                var article = _mainRepositoryFactory.New(connection).GetArticle(netUidArticle);
+                var favoriteArticle =_identityRepositoriesFactory.NewUserProfileRepository(connection).GetFavoriteArticle(user.Id, article.Id);
+                return favoriteArticle;
+            });
+
         public Task<long> SetFavoriteArticle(Guid netUidArticle, Guid netUidUser) =>
                Task.Run(() =>
                {
@@ -183,8 +194,12 @@ namespace service.ArticleAdventure.Services.UserManagement
 
                    var user = _identityRepositoriesFactory.NewUserProfileRepository(connection).Get(netUidUser);
                    var article = _mainRepositoryFactory.New(connection).GetArticle(netUidArticle);
-
-                   return _identityRepositoriesFactory.NewUserProfileRepository(connection).SetFavoriteArticle(article.Id, user.Id);
+                   var identityRepository = _identityRepositoriesFactory.NewUserProfileRepository(connection);
+                   if (identityRepository.GetFavoriteArticle(article.Id, user.Id)!= null)
+                   {
+                       throw new Exception("Favorite Article is already exists ");
+                   }
+                   return identityRepository.SetFavoriteArticle(article.Id, user.Id);
                });
 
         public Task<UserProfile> UpdateAccountInformation(UserProfile userProfile) =>

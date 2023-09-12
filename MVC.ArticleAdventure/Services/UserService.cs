@@ -92,12 +92,41 @@ namespace MVC.ArticleAdventure.Services
 
             return result;
         }
+        public async Task<ExecutionResult<FavoriteArticle>> GetFavoriteArticle(Guid userProfileNetUid, Guid MainArtilceNetUid)
+        {
+            var result = new ExecutionResult<FavoriteArticle>();
+            try
+            {
+                var response = await _httpClient.GetAsync($"{PathUser.GET_FAVORITE_ARTICLE}?netUidArticle={MainArtilceNetUid}&netUidUser={userProfileNetUid}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    if (successResponse.Body != null)
+                    {
+                        result.Data = JsonConvert.DeserializeObject<FavoriteArticle>(successResponse.Body.ToString());
+                    }
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
         public async Task<ExecutionResult<List<FavoriteArticle>>> GetAllFavoriteArticle(Guid userProfileNetUid)
         {
             var result = new ExecutionResult<List<FavoriteArticle>>();
             try
             {
-                var response = await _httpClient.GetAsync($"{PathUser.GET_FAVORITE_ARTICLE}?userProfileNetUid={userProfileNetUid}");
+                var response = await _httpClient.GetAsync($"{PathUser.GET_ALL_FAVORITE_ARTICLE}?userProfileNetUid={userProfileNetUid}");
                 if (response.IsSuccessStatusCode)
                 {
                     var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();

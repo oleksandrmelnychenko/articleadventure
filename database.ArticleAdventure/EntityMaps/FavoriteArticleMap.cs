@@ -14,12 +14,11 @@ namespace database.ArticleAdventure.EntityMaps
         public override void Map(EntityTypeBuilder<FavoriteArticle> entity)
         {
             base.Map(entity);
-            entity.HasOne(fa => fa.User)
-            .WithOne()
-            .HasForeignKey<FavoriteArticle>(fa => fa.UserId);
-            entity.HasOne(fa => fa.MainArticle)
-            .WithOne()
-            .HasForeignKey<FavoriteArticle>(fa => fa.MainArticleId);
+            entity.Property(p => p.UserId)
+               .IsRequired();
+            entity.Property(p => p.MainArticleId)
+               .IsRequired();
+           
         }
     }
 }

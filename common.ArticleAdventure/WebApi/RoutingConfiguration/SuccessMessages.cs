@@ -10,5 +10,6 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration
     {
         public const string UpdateProfile = "Great! Update Profile";
         public const string UpdateArticle = "Great! Update Article";
+        public const string SetArticle = "Great! Set favorite Article";
     }
 }

@@ -10,5 +10,6 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration
     {
         public static string ChooseTags = "No tags are selected";
         public static string ChoosePhoto = "No photo selected";
+        public const string FavoriteArticleIsExist = "Favorite Article is exist";
     }
 }

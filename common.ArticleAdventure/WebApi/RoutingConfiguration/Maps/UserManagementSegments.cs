@@ -30,6 +30,8 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
 
         public const string SET_FAVORITE_ARTICLE = "set/favorite/article";
 
+        public const string GET_All_FAVORITE_ARTICLE = "get/favorite/all/article";
+
         public const string GET_FAVORITE_ARTICLE = "get/favorite/article";
 
         public const string REMOVE_FAVORITE_ARTICLE = "remove/favorite/article";
