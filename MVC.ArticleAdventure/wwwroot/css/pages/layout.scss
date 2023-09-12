@@ -55,12 +55,47 @@ header {
     }
 
     .user_menu_wrapper {
-        width: $header_height;
+        min-width: $header_height;
         height: $header_height;
         position: fixed;
         top: 0;
         right: 0;
-        border-left: 1px solid rgba(#e0e0e0,0.4);
+        display: flex;
+
+        .basket {
+            min-width: $header_height;
+            height: $header_height;
+            position: relative;
+
+            border: {
+                width: 0 1px;
+                style: solid;
+                color: rgba(#e0e0e0,0.4);
+            }
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg {
+                color: #222;
+                font-size: 25px;
+                transform: translate(-3px,6px);
+            }
+
+            .count {
+                @include position_absolute(5px,5px,auto,auto);
+                background-color: var(--epcl-orang-bg-color);
+                padding: 2px 4px;
+                font-weight: 700;
+                font-size: 11px;
+                border-radius: 8px;
+                height: 20px;
+                min-width: 20px;
+                text-align: center;
+                line-height: 13px;
+            }
+        }
 
         .user_menu_icon {
             width: 24px;

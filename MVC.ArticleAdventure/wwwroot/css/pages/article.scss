@@ -17,7 +17,8 @@
 
 .article_item,
 .archicle_info_item,
-.tag_group_item {
+.tag_group_item,
+.basket_page {
     background-color: #fff;
     margin: 0 auto 50px;
     padding: 50px 60px;
@@ -105,6 +106,12 @@
             letter-spacing: .5px;
             font-size: 17px;
             //line-height: 1.2;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            aspect-ratio: auto;
         }
     }
 
@@ -337,7 +344,7 @@
         padding: 0;
 
         li {
-            padding: 10px 120px 10px 20px;
+            padding: 10px 220px 10px 20px;
             //box-shadow: 0 0 1px red;
             position: relative;
 
@@ -360,20 +367,41 @@
             }
 
             .price_cell {
-                @include position_absolute(50%,0,auto,auto);
-                @include transform_translate(0,-50%);
-                width: 120px;
+                @include position_absolute(0,0,auto,auto);
+                width: 200px;
                 padding-left: 20px;
                 font-size: 16px;
                 text-align: right;
                 font-weight: 600;
+
+                button {
+                    display: inline;
+                    margin: 6px 0 0;
+                    padding: 0;
+                    background-color: transparent;
+                    box-shadow: none;
+                    border: 1px solid var(--epcl-black-color);
+                    //text-decoration: underline;
+                    color: var(--epcl-black-color);
+                    //
+                    font-weight: 600;
+                    font-size: 14px;
+                    padding: 0 10px;
+                    height: 29px;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: var(--epcl-black-color);
+                        color: #fff;
+                    }
+                }
             }
 
             &:hover {
                 cursor: pointer;
 
                 .t {
-                    text-decoration: underline;
+                    //text-decoration: underline;
                 }
             }
         }
@@ -389,6 +417,11 @@
             height: 160px;
             box-shadow: 0 0 1px red;
             @include position_absolute(0,0,auto,0);
+            overflow: hidden;
+
+            img {
+                width: 100%;
+            }
         }
 
         .like_box {
@@ -834,7 +867,8 @@
 
 .sideProfile,
 .profile_page,
-article.article_item {
+article.article_item,
+.basket_page {
 
     .line {
         width: 100%;

@@ -5,44 +5,55 @@
 *@
 @{
 }
-<form asp-controller="Stripe" class="article_change">
-    <h1>Basket</h1>
-    @if (Model.BasketArticles == null)
-    {
-        <div style="display:flex;">
-            <div>Shopping cart is empty. Continue searching to find the article you are looking for.</div>
-        </div>
-        <button>
-            <a asp-action="AllBlogs" asp-controller="All" type="button">continue searching</a>
-        </button>
-    }
-    else
-    {
-        <div style="display:flex;">
-            <div style="width:calc(70% - 4px); ">
-                <div>@Model.BasketArticles.Count() course in the shopping cart </div>
-                @foreach (var article in Model.BasketArticles)
-                {
-                    <div class="desired_articles">
-                        @article.Title
-                    </div>
-                    <div>@article.Price $</div>
-                    <div class="img">
-                        <img src="@article.ImageUrl" style="height: 160px;" />
-                    </div>
 
-                    <button onclick="location.href='@Url.Action("RemoveFavoriteArticle", "Stripe",new {netUidArticle = article.NetUid})'">Remove Article </button>
-                }
+<div class="container_content w1260">
+    <div class="basket_page">
+        <h1>Basket</h1>
+        @if (Model.BasketArticles == null)
+        {
+            <div style="display:flex;">
+                <div>Shopping cart is empty. Continue searching to find the article you are looking for.</div>
             </div>
-            <div>
-                <h3>Total:</h3>
-                <div>@Model.FullPrice</div>
-                <input type="hidden" asp-for="BasketArticles" />
-                <button formmethod="post" >Order Processing</button>
+            <button>
+                <a asp-action="AllBlogs" asp-controller="All" type="button">continue searching</a>
+            </button>
+        }
+        else
+        {
+            <div class="basket_list_container">
+                <div class="basket_list">
+                    <div>@Model.BasketArticles.Count() course in the shopping cart </div>
+                    <ul>
+                        @foreach (var article in Model.BasketArticles)
+                        {
+                            <li class="basket_article_item">
+                                <div class="img">
+                                    <img src="@article.ImageUrl" />
+                                </div>
+
+                                <div class="text_wrapper">
+                                    <div class="title">
+                                        @article.Title
+                                    </div>
+                                    <p>@article.Description</p>
+                                    <div class="line"></div>
+                                    <div class="price">@article.Price $</div>
+                                </div>
+                                <div class="button">
+                                    <button class="remove" onclick="location.href='@Url.Action("RemoveFavoriteArticle", "Stripe",new {netUidArticle = article.NetUid})'">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none" /><line x1="216" y1="56" x2="40" y2="56" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" /><line x1="104" y1="104" x2="104" y2="168" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" /><line x1="152" y1="104" x2="152" y2="168" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" /><path d="M200,56V208a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V56" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" /><path d="M168,56V40a16,16,0,0,0-16-16H104A16,16,0,0,0,88,40V56" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" /></svg>
+                                    </button>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="basket_price">
+                    <div class="hh3">Total:</div>
+                    <div class="fullPrice">@Model.FullPrice $</div>
+                    <button class="archicle_btn">Order Processing</button>
+                </div>
             </div>
-        </div>
-    }
-
-
-
-</form>
+        }
+    </div>
+</div>
