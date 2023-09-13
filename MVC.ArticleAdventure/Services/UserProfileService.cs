@@ -54,22 +54,6 @@ namespace MVC.ArticleAdventure.Services
             }
 
             return result;
-
-           
-
-            //if (!CustomContainErrorResponse(response))
-            //{
-            //    return new UserResponseLogin
-            //    {
-            //        ResponseResult = await DeserializeObjectResponse<ErrorResponse>(response)
-            //    };
-            //}
-            //else
-            //{
-            //    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-            //    UserProfile userResponseLogin = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
-            //    return new UserResponseLogin();
-            //}
         }
         public async Task<bool> EmailConformation(string token,string userId)
         {

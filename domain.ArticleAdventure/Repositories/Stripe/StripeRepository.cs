@@ -44,7 +44,6 @@ namespace domain.ArticleAdventure.Repositories.Stripe
             "AND stripePayments.UserId = @UserId",
                 (stripePayment, mainArticle, supArticle) =>
                 {
-                    //|| stripePayments.Any(x => x.MainArticleId.Equals(mainArticle.Id))
                     if (stripePayments.Any(c => c.Id.Equals(stripePayment.Id)) )
                     {
                         stripePayment = stripePayments.First(x => x.Id.Equals(stripePayment.Id));
@@ -62,16 +61,6 @@ namespace domain.ArticleAdventure.Repositories.Stripe
                     {
                         stripePayments.Where(x => x.MainArticleId == mainArticle.Id).ToList().ForEach(x => x.MainArticle = mainArticle);
                     }
-
-                    //if (stripePayments.Any(x=>x.MainArticle.Articles.Any(x=>x.Id.Equals(supArticle.Id))))
-                    //{
-                    //    supArticle = stripePayments.SelectMany(x => x.MainArticle.Articles).First(x => x.Id.Equals(supArticle.Id));
-                    //}
-                    //else
-                    //{
-                    //    stripePayments.Where(x => x.SupArticleId == supArticle.Id).ToList().ForEach(x => x.MainArticle.Articles.Add(supArticle));
-                    //}
-
                     if (stripePayments.Any(x => x.SupArticle.Id.Equals(supArticle.Id)))
                     {
                         supArticle = stripePayments.Select(x => x.SupArticle).First(x => x.Id.Equals(mainArticle.Id));

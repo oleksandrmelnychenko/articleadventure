@@ -270,13 +270,56 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> AllBlogs()
         {
             List<MainTag> mainTags = await _tagService.GetAllTags();
+            var sessionStorageMainTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHOOSE_FILTER_SUP_TAGS);
 
+            if (sessionStorageMainTags != null && sessionStorageMainTags.Count() != 0)
+            {
+
+                foreach (var supTag in sessionStorageMainTags)
+                {
+                    mainTags
+                    .SelectMany(mainTag => mainTag.SubTags)
+                    .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
+                }
+            }
             var mainArtilces = await _mainArticleService.GetAllArticles();
             AllArticlesModel model = new AllArticlesModel { mainArticles = mainArtilces, ArticleTags = mainTags };
             return View(model);
         }
 
+        [HttpGet]
+        [Route("IsSelectFilterSupTag")]
+        public async Task<IActionResult> IsSelectFilterSupTag(Guid IsSelectSupTagsNetUid)
+        {
+            var mainTags = await _tagService.GetAllTags();
+            var findSupTag = mainTags
+            .SelectMany(mainTag => mainTag.SubTags)
+            .FirstOrDefault(subTag => subTag.NetUid == IsSelectSupTagsNetUid);
 
+            var filterSupTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHOOSE_FILTER_SUP_TAGS);
+            if (filterSupTags == null || filterSupTags.Count() == 0)
+            {
+                filterSupTags = new List<SupTag>();
+            }
+            filterSupTags.Add(findSupTag);
+            SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHOOSE_FILTER_SUP_TAGS, filterSupTags);
+            return Redirect("~/All/AllBlogs");
+        }
+
+        [HttpGet]
+        [Route("RemoveFilterlSupTag")]
+        public async Task<IActionResult> RemoveFilterlSupTag(Guid RemoveSupTagsNetUid)
+        {
+            var filterSupTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHOOSE_FILTER_SUP_TAGS);
+
+            var findSupTag = filterSupTags
+            .Select(mainTag => mainTag)
+            .FirstOrDefault(subTag => subTag.NetUid == RemoveSupTagsNetUid);
+            filterSupTags.Remove(findSupTag);
+            SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHOOSE_FILTER_SUP_TAGS, filterSupTags);
+
+            return Redirect("~/All/AllBlogs");
+        }
 
         [Authorize]
         public async Task<IActionResult> Remove(Guid netUidArticle)
@@ -291,6 +334,7 @@ namespace MVC.ArticleAdventure.Controllers
         {
             InfoArticleModel infoArticleModel = new InfoArticleModel();
             var article = await _mainArticleService.GetArticle(NetUidArticle);
+            
 
             var userGuidClaim = User.FindFirst("Guid");
             var email = Request.Cookies[CookiesPath.EMAIL];
@@ -312,7 +356,6 @@ namespace MVC.ArticleAdventure.Controllers
 
             if (checkArticle.Count() != 0)
             {
-                //GetInformationArticleModel getInformationArticleModel = new GetInformationArticleModel { MainArticle = article };
                 return Redirect($"~/GetInformationArticle/?NetUidArticle={article.NetUid}");
             }
             infoArticleModel.MainArticle = article;

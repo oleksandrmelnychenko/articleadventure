@@ -7,20 +7,27 @@
                 @foreach (var MainTag in Model.ArticleTags)
                 {
                     <div>
-                        <li>
                             <h5>@MainTag.Name</h5>
-                        </li>
                         @foreach (var SubTag in MainTag.SubTags)
                         {
                             <li>
-                                <span>
-                                    <input type="checkbox"/>
-                                </span>
+                                @if (SubTag.IsSelected)
+                                {
+                                    <span>
+                                        <input type="checkbox" value="true" onclick="location.href='@Url.Action("RemoveFilterlSupTag", "All",new {RemoveSupTagsNetUid = SubTag.NetUid})'" checked />
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>
+                                        <input type="checkbox" value="true" onclick="location.href='@Url.Action("IsSelectFilterSupTag", "All",new {IsSelectSupTagsNetUid = SubTag.NetUid})'"  />
+                                    </span>
+                                }
                                 <span style="color:@SubTag.Color">#</span>
                                 <span>@SubTag.Name</span>
                             </li>
                         }
-                    </div>    
+                    </div>     
                 }
                 </div>
             </div>
