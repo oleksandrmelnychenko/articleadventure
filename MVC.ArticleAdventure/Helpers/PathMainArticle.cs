@@ -4,6 +4,7 @@
     {
         public const string GET_ARTICLE_USER = "/api/v1/article/get/user/article";
         public const string GET_ALL_ARTICLE_USER = "/api/v1/article/get/user/articles";
+        public const string GET_USER_ALL_STRIPE_PAYMENTS = "/api/v1/article/get/user/stripepayments";
 
         public const string GET_SUP_ARTICLE = "/api/v1/article/get/suparticle";
         public const string GET_ARTICLE = "/api/v1/article/get";

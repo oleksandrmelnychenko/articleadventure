@@ -152,7 +152,8 @@ namespace service.ArticleAdventure.Services.Blog
                 {
                     List<MainArticle> mainArticles = new List<MainArticle>();
                     var stripeRepository = _stripeRepositoryFactory.New(connection);
-                    var stripePayments = stripeRepository.GetPaymentIUserdMainArticle(idUser);
+                    List<StripePayment> stripePayments = stripeRepository.GetPaymentIUserdMainArticle(idUser);
+
                     foreach (var stripePayment in stripePayments)
                     {
                         if (mainArticles.Any(x => x.Id.Equals(stripePayment.MainArticleId)))
@@ -167,6 +168,43 @@ namespace service.ArticleAdventure.Services.Blog
                     }
 
                     return mainArticles;
+                }
+            });
+
+        public Task<List<StripePayment>> GetAllPaymentArticleUser(long idUser) =>
+            Task.Run(async () =>
+            {
+                using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                {
+                    List<MainArticle> mainArticles = new List<MainArticle>();
+
+                    List<StripePayment> stripePaymentsUser = new List<StripePayment>();
+                    var stripeRepository = _stripeRepositoryFactory.New(connection);
+                    List<StripePayment> stripePayments = stripeRepository.GetPaymentIUserdMainArticle(idUser);
+
+                    foreach (var stripePayment in stripePayments)
+                    {
+                        if (mainArticles.Any(x => x.Id.Equals(stripePayment.MainArticleId)))
+                        {
+                            mainArticles.Where(x => x.Id == stripePayment.MainArticleId).ToList().ForEach(x => x.Articles.Add(stripePayment.SupArticle));
+                        }
+                        else
+                        {
+                            mainArticles.Add(stripePayment.MainArticle);
+                            mainArticles.Where(x => x.Id == stripePayment.MainArticleId).ToList().ForEach(x => x.Articles.Add(stripePayment.SupArticle));
+                        }
+                    }
+
+                    foreach (var stripePayment in stripePayments)
+                    {
+
+                        if (!stripePaymentsUser.Any(x => x.MainArticleId.Equals(stripePayment.MainArticleId)))
+                        {
+                            stripePaymentsUser.Add(stripePayment);
+                        }
+                    }
+
+                    return stripePaymentsUser;
                 }
             });
 

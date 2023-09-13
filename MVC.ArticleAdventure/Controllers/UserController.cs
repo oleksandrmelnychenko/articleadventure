@@ -109,7 +109,11 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("HistoryBuy")]
         public async Task<IActionResult> HistoryBuy()
         {
-            return View();
+            HistoryBuyModel historyBuyModel = new HistoryBuyModel();
+            var StringuserID = Request.Cookies[CookiesPath.USER_ID];
+            var paymentArticles = await _mainArticleService.GetAllStripePaymentsUser(long.Parse(StringuserID));
+            historyBuyModel.historyArticleBuy = paymentArticles.Data;
+            return View(historyBuyModel);
         }
 
         [HttpGet]

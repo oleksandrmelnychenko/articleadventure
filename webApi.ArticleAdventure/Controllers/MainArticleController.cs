@@ -116,6 +116,24 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
 
+        
+
+        [HttpGet]
+        [AssignActionRoute(ArticleSegments.GET_USER_ALL_STRIPE_PAYMENTS)]
+        public async Task<IActionResult> GetAllPaymentArticleUser(long idUser)
+        {
+            try
+            {
+                var article = await _mainArticleService.GetAllPaymentArticleUser(idUser);
+                return Ok(SuccessResponseBody(article, "Успешно вытянуты данные."));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+
         [HttpGet]
         [AssignActionRoute(ArticleSegments.GET_USER_ALL_ARTICLES)]
         public async Task<IActionResult> GetAllUserArticle(long idUser)

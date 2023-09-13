@@ -1,13 +1,59 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<div class="profile_page">
-    <div class="sideBar_container">
-        @Html.Partial("_RightSideProfileEdit")
-    </div>
-    <div class="content_container">
-        //
+﻿@model domain.ArticleAdventure.Models.HistoryBuyModel
+
+<div class="container_content">
+    <div class="articles_list_container">
+        @foreach (var StripePayment in Model.historyArticleBuy)
+        {
+            <div class="container_content w1260" style="width: 960px;">
+                <div class="basket_page">
+                    <div class="basket_list_container">
+                        <div class="basket_list" style="width: 960px;">
+                            <ul>
+                                <li class="basket_article_item">
+                                    <div class="img">
+                                        <img src="@StripePayment.MainArticle.ImageUrl" />
+                                    </div>
+
+                                    <div class="text_wrapper">
+                                        <div class="title">
+                                            @StripePayment.MainArticle.Title
+                                        </div>
+                                        <p>@StripePayment.Description</p>
+                                        <div class="line"></div>
+                                        <div class="price">@StripePayment.MainArticle.Price $</div>
+                                        <div>First buy: @StripePayment.Created</div>
+                                    </div>
+
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container_content w1260" style="width: 960px;">
+                <div class="basket_page">
+                    <div class="basket_list_container">
+                        <div class="basket_list" style="width: calc(100% - 30px);">
+                            <ul>
+                                @foreach (var article in StripePayment.MainArticle.Articles)
+                                {
+                                    <li class="basket_article_item">
+                                        <div class="text_wrapper">
+                                            <div class="title">
+                                                @article.Title
+                                            </div>
+                                            <p>@article.Description</p>
+                                            <div class="line"></div>
+                                            <div class="price">@article.Price $</div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>

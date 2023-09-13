@@ -243,9 +243,36 @@ namespace MVC.ArticleAdventure.Services
             }
             return result;
 
-            //HttpResponseMessage response = await _httpClient.GetAsync($"{PathMainArticle.GET_ALL_ARTICLE_USER}?idUser={idUser}");
-            //var userResponseLogin = await DeserializeResponse<List<MainArticle>>(response);
-            //return userResponseLogin;
+            
+        }
+
+        public async Task<ExecutionResult<List<StripePayment>>> GetAllStripePaymentsUser(long idUser)
+        {
+            var result = new ExecutionResult<List<StripePayment>>();
+
+            HttpResponseMessage response = await _httpClient.GetAsync($"{PathMainArticle.GET_USER_ALL_STRIPE_PAYMENTS}?idUser={idUser}");
+
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<StripePayment>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
         }
     }
 }
