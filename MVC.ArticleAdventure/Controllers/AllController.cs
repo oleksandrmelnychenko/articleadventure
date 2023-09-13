@@ -54,7 +54,7 @@ namespace MVC.ArticleAdventure.Controllers
 
             if (sessionStorageMainTags != null && sessionStorageMainTags.Count() != 0)
             {
-                
+
                 foreach (var supTag in sessionStorageMainTags)
                 {
                     mainTags
@@ -107,7 +107,7 @@ namespace MVC.ArticleAdventure.Controllers
         {
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
             var selectSupTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS);
-         
+
             mainArticle.Title = changeArticleModel.MainArticle.Title;
             mainArticle.InfromationArticle = changeArticleModel.MainArticle.InfromationArticle;
             mainArticle.Description = changeArticleModel.MainArticle.Description;
@@ -127,8 +127,8 @@ namespace MVC.ArticleAdventure.Controllers
                     mainArticle.ArticleTags.Add(mainTag);
                 }
             }
-            
-            var response = await _mainArticleService.Update(mainArticle,changeArticleModel.PhotoMainArticle);
+
+            var response = await _mainArticleService.Update(mainArticle, changeArticleModel.PhotoMainArticle);
             if (response.IsSuccess)
             {
                 HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_ARTICLE);
@@ -141,7 +141,7 @@ namespace MVC.ArticleAdventure.Controllers
                 await SetErrorMessage(response.Error.Message);
                 return View(changeArticleModel);
             }
-           
+
         }
 
         [HttpGet]
@@ -190,11 +190,11 @@ namespace MVC.ArticleAdventure.Controllers
         {
             var userId = long.Parse(Request.Cookies[CookiesPath.USER_ID]);
             GetInformationArticleModel changeArticleModel = new GetInformationArticleModel();
-            var responseMainArticle = await _mainArticleService.GetArticleUser(netUidArticle,userId);
+            var responseMainArticle = await _mainArticleService.GetArticleUser(netUidArticle, userId);
             var mainArtilce = await _mainArticleService.GetArticle(netUidArticle);
 
             foreach (var SupArticle in mainArtilce.Articles)
-            { 
+            {
                 if (!responseMainArticle.Data.Articles.Any(x => x.Id.Equals(SupArticle.Id)))
                 {
                     changeArticleModel.NotBuyArticle.Add(SupArticle);
@@ -208,10 +208,10 @@ namespace MVC.ArticleAdventure.Controllers
                     return View(changeArticleModel);
                 }
             }
-                return Redirect($"~/InfoArticle?netUidArticle={netUidArticle}");
+            return Redirect($"~/InfoArticle?netUidArticle={netUidArticle}");
         }
 
-        
+
 
         [HttpGet]
         [Route("ChangeSupArticle")]
@@ -258,7 +258,7 @@ namespace MVC.ArticleAdventure.Controllers
             var article = mainArticle.Articles.FirstOrDefault(article => article.NetUid == changeBlogModel.Article.NetUid);
             article.Title = changeBlogModel.Article.Title;
             article.Description = changeBlogModel.Article.Description;
-            article.Body = changeBlogModel.Article.Body; 
+            article.Body = changeBlogModel.Article.Body;
             article.Price = changeBlogModel.Article.Price;
             await _supArticleService.Update(article);
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE, mainArticle);
@@ -269,12 +269,14 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> AllBlogs()
         {
+            List<MainTag> mainTags = await _tagService.GetAllTags();
+
             var mainArtilces = await _mainArticleService.GetAllArticles();
-            AllArticlesModel model = new AllArticlesModel { mainArticles = mainArtilces };
+            AllArticlesModel model = new AllArticlesModel { mainArticles = mainArtilces, ArticleTags = mainTags };
             return View(model);
         }
 
-       
+
 
         [Authorize]
         public async Task<IActionResult> Remove(Guid netUidArticle)
@@ -313,7 +315,7 @@ namespace MVC.ArticleAdventure.Controllers
                 //GetInformationArticleModel getInformationArticleModel = new GetInformationArticleModel { MainArticle = article };
                 return Redirect($"~/GetInformationArticle/?NetUidArticle={article.NetUid}");
             }
-             infoArticleModel.MainArticle = article;
+            infoArticleModel.MainArticle = article;
             return View(infoArticleModel);
         }
     }

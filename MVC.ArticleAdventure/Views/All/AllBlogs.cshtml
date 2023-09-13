@@ -1,5 +1,31 @@
 ﻿@model domain.ArticleAdventure.Models.AllArticlesModel
-<div class="container_content">
+<div class="container_content" style="display:flex; width:1200px;">
+    <div class="list_pay" style="margin-right: 20px;">
+       
+            <div class="archicle_info_item sticky price_item_container">
+            <div class="controls" style="width: 200px;">
+                @foreach (var MainTag in Model.ArticleTags)
+                {
+                    <div>
+                        <li>
+                            <h5>@MainTag.Name</h5>
+                        </li>
+                        @foreach (var SubTag in MainTag.SubTags)
+                        {
+                            <li>
+                                <span>
+                                    <input type="checkbox"/>
+                                </span>
+                                <span style="color:@SubTag.Color">#</span>
+                                <span>@SubTag.Name</span>
+                            </li>
+                        }
+                    </div>    
+                }
+                </div>
+            </div>
+        
+    </div>
     <div class="articles_list_container">
         @foreach (var Article in Model.mainArticles)
         {
@@ -49,7 +75,7 @@
                         <span>@Article.Price</span>$
                     </a>
                 </div>
-
+                
                @* <div class="item_controls">
                     <div class="controls_wrapper">
                         <input formmethod="get"
@@ -63,4 +89,5 @@
             </article>
         }
     </div>
+    
 </div>

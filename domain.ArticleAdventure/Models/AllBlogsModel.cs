@@ -12,6 +12,7 @@ namespace domain.ArticleAdventure.Models
         public List<AuthorArticle> Articles { get; set; }
 
         public List<MainArticle> mainArticles { get; set; }
+        public List<MainTag> ArticleTags { get; set; }
         public Guid NetUid { get; set; }
     }
 }
