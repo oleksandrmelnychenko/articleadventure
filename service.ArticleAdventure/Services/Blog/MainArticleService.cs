@@ -97,7 +97,14 @@ namespace service.ArticleAdventure.Services.Blog
                 }
             });
 
-
+        public Task<List<MainArticle>> GetAllArticlesFilterSupTags(List<MainArticleTags> mainTags) =>
+            Task.Run(() =>
+            {
+                using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                {
+                    return _mainRepositoryFactory.New(connection).GetAllArticlesFilterSupTag(mainTags);
+                }
+            });
         public Task<List<MainArticle>> GetAllArticles() =>
             Task.Run(() =>
         {
@@ -237,5 +244,7 @@ namespace service.ArticleAdventure.Services.Blog
 
                 }
             });
+
+       
     }
 } 

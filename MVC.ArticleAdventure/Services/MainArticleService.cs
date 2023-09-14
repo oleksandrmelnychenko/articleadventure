@@ -89,6 +89,34 @@ namespace MVC.ArticleAdventure.Services
 
             return result;
         }
+        public async Task<ExecutionResult<List<MainArticle>>> GetAllArticlesFilterSupTags(List<MainArticleTags> mainArticleTags)
+        {
+            var result = new ExecutionResult<List<MainArticle>>();
+
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync(PathMainArticle.GET_ALL_ARTICLE_FILTER_SUP_TAGS, mainArticleTags);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<MainArticle>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
         public async Task<List<MainArticle>> GetAllArticles()
         {
             HttpResponseMessage response = await _httpClient.GetAsync(PathMainArticle.GET_ALL_ARTICLE);

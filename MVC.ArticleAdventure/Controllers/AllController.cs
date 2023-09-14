@@ -270,6 +270,9 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> AllBlogs()
         {
             List<MainTag> mainTags = await _tagService.GetAllTags();
+            List<MainArticleTags> mainArticleTags = new List<MainArticleTags>();
+            AllArticlesModel model = new AllArticlesModel { ArticleTags = mainTags };
+
             var sessionStorageMainTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHOOSE_FILTER_SUP_TAGS);
 
             if (sessionStorageMainTags != null && sessionStorageMainTags.Count() != 0)
@@ -283,7 +286,28 @@ namespace MVC.ArticleAdventure.Controllers
                 }
             }
             var mainArtilces = await _mainArticleService.GetAllArticles();
-            AllArticlesModel model = new AllArticlesModel { mainArticles = mainArtilces, ArticleTags = mainTags };
+
+            if (sessionStorageMainTags!= null && sessionStorageMainTags.Count() != 0)
+            {
+                foreach (var mainArticle in mainArtilces)
+                {
+                    foreach (var tag in mainArticle.ArticleTags)
+                    {
+                        if (sessionStorageMainTags.Any(x => x.Id == tag.SupTagId))
+                        {
+                            mainArticleTags.Add(tag);
+                        }
+
+                    }
+                }
+                var mainArticleFilter = await _mainArticleService.GetAllArticlesFilterSupTags(mainArticleTags);
+                model.mainArticles = mainArticleFilter.Data;
+
+            }
+            else
+            {
+                model.mainArticles = mainArtilces;
+            }
             return View(model);
         }
 

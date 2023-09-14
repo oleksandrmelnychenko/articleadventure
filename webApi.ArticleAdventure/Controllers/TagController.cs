@@ -127,7 +127,6 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
 
-
         [HttpGet]
         [AssignActionRoute(TagSegments.GET_MAIN_TAG)]
         public async Task<IActionResult> GetMainTag(Guid netUidMainTag)

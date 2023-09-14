@@ -17,8 +17,6 @@ namespace domain.ArticleAdventure.Repositories.Blog
         {
             _connection = connection;
         }
-        //,[Image] ,[ImageUrl] ,[WebImageUrl]
-        //, @Image, @ImageUrl, @WebImageUrl
         public long AddMainArticle(MainArticle blog)
             => _connection.Query<long>("INSERT INTO [MainArticle] " +
             "([Title], [Description] ,[InfromationArticle] ,[Price] ,[ImageUrl] ,[Updated] ) " +
@@ -28,10 +26,80 @@ namespace domain.ArticleAdventure.Repositories.Blog
             "SELECT SCOPE_IDENTITY()", blog
             ).Single();
 
+        public List<MainArticle> GetAllArticlesFilterSupTag(List<MainArticleTags> supTags)
+        {
+            List<MainArticle> mainArticles = new List<MainArticle>();
+
+            List<long> IdMainArticleTags = supTags.Select(x => x.MainArticleId).ToList();
+            _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag, MainArticle>("SELECT mainArticle.*, " +
+            "authorArticle.*, " +
+            "articleTags.*, " +
+            "supTags.* " +
+            "FROM [ArticleAdventure].[dbo].[MainArticle] AS mainArticle " +
+            "LEFT JOIN [ArticleAdventure].[dbo].[AuthorArticle] AS authorArticle " +
+            "ON mainArticle.ID = authorArticle.MainArticleId " +
+            "LEFT JOIN [ArticleAdventure].[dbo].[ArticleTags] AS articleTags " +
+            "ON mainArticle.ID = articleTags.MainArticleId " +
+            "LEFT JOIN [ArticleAdventure].[dbo].[SubTags] AS supTags " +
+            "ON supTags.ID = articleTags.SupTagId " +
+            "WHERE mainArticle.Deleted = 0 " +
+            "AND authorArticle.Deleted = 0 " +
+            "AND articleTags.Deleted = 0 ",
+                (mainArticle, article, articleMainTag, supTag) =>
+                {
+                    if (IdMainArticleTags.Any(x => x.Equals(articleMainTag.MainArticleId)))
+                    {
+                        if (mainArticles.Any(c => c.Id.Equals(mainArticle.Id)))
+                        {
+                            mainArticle = mainArticles.First(c => c.Id.Equals(mainArticle.Id));
+                        }
+                        else
+                        {
+                            mainArticles.Add(mainArticle);
+                        }
+
+                        if (mainArticles.Any(x => x.Articles.Any(x => x.Id.Equals(article.Id))))
+                        {
+                            article = mainArticles.SelectMany(artics => artics.Articles)
+                            .First(c => c.Id.Equals(article.Id));
+                        }
+                        else
+                        {
+
+                            mainArticles.Where(art => article.MainArticleId == art.Id)
+                            .ToList()
+                            .ForEach(art => art.Articles.Add(article));
+                        }
+
+                        if (mainArticles.Any(x => x.ArticleTags.Any(x => x.Id.Equals(articleMainTag.Id))))
+                        {
+                            articleMainTag = mainArticles.SelectMany(x => x.ArticleTags)
+                            .First(c => c.Id.Equals(articleMainTag.Id));
+                        }
+                        else
+                        {
+                            mainArticles.Where(a => articleMainTag.MainArticleId == a.Id)
+                            .ToList()
+                            .ForEach(x => x.ArticleTags.Add(articleMainTag));
+
+                            foreach (var art in mainArticles)
+                            {
+                                art.ArticleTags.Where(item => item.SupTagId == supTag.Id)
+                                              .ToList()
+                                              .ForEach(item => item.SupTag = supTag);
+                            }
+                        }
+                    }
+                    
+                    return mainArticle;
+                }).ToList();
+            return mainArticles;
+        }
+
+
         public List<MainArticle> GetAllArticles()
         {
             List<MainArticle> mainArticles = new List<MainArticle>();
-            //add getArticle
 
             _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag, MainArticle>("SELECT mainArticle.*, " +
             "authorArticle.*, " +
@@ -46,7 +114,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
             "ON supTags.ID = articleTags.SupTagId " +
             "WHERE mainArticle.Deleted = 0 " +
             "AND authorArticle.Deleted = 0 " +
-            "AND articleTags.Deleted = 0 " ,
+            "AND articleTags.Deleted = 0 ",
                 (mainArticle, article, articleMainTag, supTag) =>
                 {
                     if (mainArticles.Any(c => c.Id.Equals(mainArticle.Id)))
@@ -92,7 +160,6 @@ namespace domain.ArticleAdventure.Repositories.Blog
                     return mainArticle;
                 }).ToList();
             return mainArticles;
-            //return mainTags;
         }
 
         public MainArticle GetArticle(long id)
@@ -214,19 +281,21 @@ namespace domain.ArticleAdventure.Repositories.Blog
 
         }
 
-       
+
 
         public void RemoveMainArticle(Guid netUid)
             => _connection.Execute("DELETE FROM [ArticleAdventure].[dbo].[MainArticle] " +
                 "WHERE MainArticle.NetUID = @NetUID",
                 new { NetUID = netUid });
 
-        public void UpdateMainArticle(MainArticle blog) 
+        public void UpdateMainArticle(MainArticle blog)
             => _connection.Execute("Update [MainArticle] " +
                 "SET [Title] = @Title, [Description] = @Description,[Image] = @Image " +
                 ",[ImageUrl] = @ImageUrl ,[Price] = @Price, [WebImageUrl] = @WebImageUrl ,[InfromationArticle] = @InfromationArticle " +
                 ",[Updated] = GETUTCDATE() " +
                 $"WHERE [MainArticle].[NetUid] = @NetUid ",
                 blog);
+
+
     }
 }

@@ -69,6 +69,23 @@ namespace webApi.ArticleAdventure.Controllers
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
             }
         }
+
+        [HttpPost]
+        [AssignActionRoute(ArticleSegments.GET_ALL_ARTICLE_FILTER_SUP_TAGS)]
+        public async Task<IActionResult> GetAllArticleFilterSupTags([FromBody] List<MainArticleTags> mainArticleTags)
+        {
+            try
+            {
+                List<MainArticle> articles = await _mainArticleService.GetAllArticlesFilterSupTags(mainArticleTags);
+                return Ok(SuccessResponseBody(articles, "Успешно вытянуты данные."));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+
         [HttpGet]
         [AssignActionRoute(ArticleSegments.REMOVE_ARTICLE)]
         public async Task<IActionResult> EditArticle (Guid netUidArticle)

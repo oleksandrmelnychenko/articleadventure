@@ -13,6 +13,7 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
         public const string REMOVE_ARTICLE = "remove";
         public const string EDIT = "edit";
         public const string ALL_ARTICLE = "all";
+        public const string GET_ALL_ARTICLE_FILTER_SUP_TAGS = "get/all/suptag";
         public const string UPDATE = "update";
         public const string GET_SUP_ARTICLE = "get/suparticle";
         public const string GET_ALL_BLOGS = "get/all";

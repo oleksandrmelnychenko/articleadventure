@@ -12,6 +12,7 @@ namespace domain.ArticleAdventure.Repositories.Blog.Contracts
         long AddMainArticle(MainArticle blog);
 
         List<MainArticle> GetAllArticles();
+        List<MainArticle> GetAllArticlesFilterSupTag(List<MainArticleTags> supTags);
 
         void RemoveMainArticle(Guid netUid);
 
