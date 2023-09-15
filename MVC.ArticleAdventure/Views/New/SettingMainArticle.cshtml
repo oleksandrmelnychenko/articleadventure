@@ -1,7 +1,4 @@
 ﻿@model domain.ArticleAdventure.Models.SettingMainArticleModel
-@{
-}
-
 <div class="article_change">
     <div class="meta_row_all_buttons">
         @foreach (var mainTag in Model.MainTags)
@@ -32,7 +29,6 @@
             <div class="inputs" style="width:100%">
                 <div class="input" style="width:100%">
                     <input type="text" placeholder="Description" asp-for="MainArticle.Description" />
-                    @*<span asp-validation-for="@Model.MainArticle.Description" class="text-danger"></span>*@
                 </div>
             </div>
         </div>
@@ -74,7 +70,6 @@
             <div class="inputs" style="width:100%">
                 <div class="input" style="width:100%;">
                     <input type="text" placeholder="Infromation Article" asp-for="MainArticle.InfromationArticle" />
-                    @*<span asp-validation-for="@Model.MainArticle.InfromationArticle" class="text-danger"></span>*@
                 </div>
             </div>
         </div>
@@ -82,7 +77,6 @@
             <div class="inputs" style="width:100%">
                 <div class="input" style="width:100%">
                     <input type="text" placeholder="Price $" asp-for="MainArticle.Price" />
-                    @*<span asp-validation-for="@Model.MainArticle.Price" class="text-danger"></span>*@
                 </div>
             </div>
         </div>

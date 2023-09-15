@@ -114,8 +114,6 @@ namespace MVC.ArticleAdventure.Services
                 result.Error.Message = e.Message;
             }
             return result;
-            //var payments = await DeserializeІSuccessResponse<List<StripePayment>>(response);
-            //return payments;
         }
 
         public async Task CheckoutSuccess(string sessionId)

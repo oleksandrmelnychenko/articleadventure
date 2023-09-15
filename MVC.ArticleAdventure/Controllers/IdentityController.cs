@@ -40,8 +40,7 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login()
         {
-            ModelState.AddModelError("str", "Email not found or matched");
-            //_authenticationService.Login();
+
             return View();
         }
         [HttpPost]
@@ -73,7 +72,6 @@ namespace MVC.ArticleAdventure.Controllers
                 }
                 await SignIn(response.Data);
                 
-
                 return Redirect("/");
             }
             else
@@ -81,9 +79,6 @@ namespace MVC.ArticleAdventure.Controllers
                 await SetErrorMessage(response.Error.Message);
                 return View(userLogin);
             }
-            
-
-
         }
         [NonAction]
         private async Task SignIn(CompleteAccessToken response)
@@ -100,7 +95,7 @@ namespace MVC.ArticleAdventure.Controllers
             var authProperties = new AuthenticationProperties
             {
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(60),
-                IsPersistent = true //Multiple requests
+                IsPersistent = true
             };
 
             await HttpContext.SignInAsync(
@@ -108,6 +103,7 @@ namespace MVC.ArticleAdventure.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
         }
+        [NonAction]
         private static JwtSecurityToken GetTokenFormat(string jwtToken)
         {
             return new JwtSecurityTokenHandler().ReadToken(jwtToken) as JwtSecurityToken;
@@ -132,7 +128,6 @@ namespace MVC.ArticleAdventure.Controllers
             {
                 registerModel.IsEmailConfirmed = true;
                 return View(registerModel);
-                //тут треба щось на перевірте почту
             }
             else
             {

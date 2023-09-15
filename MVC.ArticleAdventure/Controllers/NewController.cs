@@ -38,7 +38,7 @@ namespace MVC.ArticleAdventure.Controllers
             .FirstOrDefault(subTag => subTag.NetUid == newBlogModel.NetUidTags);
             newBlogModel.SelectSupTags.Add(findSupTag);
             newBlogModel.MainTags = mainTags;
-            //NewBlogModel newBlogModel = new NewBlogModel { IsTags = true };
+
             return View("NewBlog", newBlogModel);
         }
 
@@ -118,7 +118,6 @@ namespace MVC.ArticleAdventure.Controllers
 
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE, mainArticle);
 
-
             return Redirect($"~/ChangeMainArticle?netUidArticle={authorArticleNetUid}");
         }
 
@@ -127,13 +126,11 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveLocalSupArticle(long RemoveIdArticle)
         {
-
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE);
 
             var supArticle = mainArticle.Articles.First(x => x.Id == RemoveIdArticle);
 
             mainArticle.Articles.Remove(supArticle);
-
 
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE, mainArticle);
 
@@ -144,7 +141,6 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> ChangeLocalSupArticle(long ChangeIdArticle)
         {
-
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE);
 
             var supArticle = mainArticle.Articles.First(x => x.Id == ChangeIdArticle);
@@ -231,10 +227,10 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("SettingMainArticle")]
         public async Task<IActionResult> SettingMainArticle(SettingMainArticleModel settingMainArticleModel)
         {
-           
             MainArticle MainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE);
             var supTagsSelect = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHOOSE_NEW_SUP_TAGS);
             var mainTags = await _tagService.GetAllTags();
+
             MainArticle.Title = settingMainArticleModel.MainArticle.Title;
             MainArticle.Description = settingMainArticleModel.MainArticle.Description;
             MainArticle.InfromationArticle = settingMainArticleModel.MainArticle.InfromationArticle;
@@ -271,6 +267,7 @@ namespace MVC.ArticleAdventure.Controllers
                 await SetErrorMessage(ErrorMessages.ChooseTags);
                 return View(settingMainArticleModel);
             }
+
             if (settingMainArticleModel.PhotoMainArticle == null)
             {
                 if (supTagsSelect != null && supTagsSelect.Count() != 0)

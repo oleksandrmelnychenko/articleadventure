@@ -19,11 +19,7 @@ namespace MVC.ArticleAdventure.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //var userGuidClaim = User.FindFirst("Guid");
-            
-            //var user = await _authenticationService.GetProfile(Guid.Parse(userGuidClaim.Value));
-
-            //SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.USER, user);
+           
             return View();
         }
 
@@ -32,10 +28,5 @@ namespace MVC.ArticleAdventure.Controllers
             return View();
         }
 
-        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        //public IActionResult Error()
-        //{
-        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
     }
 }

@@ -1,10 +1,6 @@
 ﻿@model domain.ArticleAdventure.Models.GetInformationArticleModel
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+
 <div class="container_content">
     <div class="articles_list_container">
         @foreach (var Article in Model.MainArticle.Articles)
@@ -19,8 +15,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="item_body">
                         <p>
                             @Html.Raw(Article.Body)
@@ -55,12 +49,8 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="item_body">
                         <p>@article.Description</p>
-
-
                         <div class="read_more_container">
                             <div class="rm_wrapper">
                                 <h6>Want to read more?</h6>

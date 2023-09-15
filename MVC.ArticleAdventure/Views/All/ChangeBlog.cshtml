@@ -1,25 +1,5 @@
 ﻿@model domain.ArticleAdventure.Models.ChangeArticleModel
 
-@*<div class="article_change">
-    @using (Html.BeginForm("ChangeBlog", "All", FormMethod.Post))
-    {
-        <input type="hidden" asp-for="Article.NetUid" />
-
-        <div class="meta_row">
-            <div class="inputs">
-                <div class="input">
-                    <input type="text" placeholder="Title" asp-for="Article.Title" />
-                </div>
-                <div class="input">
-                    <input type="text" placeholder="Description" asp-for="Article.Description" />
-                </div>
-            </div>
-            <button type="submit" value="Save">Save</button>
-        </div>
-
-        @Html.TextAreaFor(m => m.Article.Body)
-    }
-</div>*@
 <div class="article_change">
     <form asp-controller="New">
         <div class="meta_row">

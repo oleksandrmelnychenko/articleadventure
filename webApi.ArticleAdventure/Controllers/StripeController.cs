@@ -6,6 +6,7 @@ using service.ArticleAdventure.Services.Stripe.Contracts;
 using domain.ArticleAdventure.Entities;
 using System.Net;
 using domain.ArticleAdventure.Helpers;
+using common.ArticleAdventure.Helpers;
 
 namespace webApi.ArticleAdventure.Controllers
 {
@@ -28,8 +29,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                var checkout = await _stripeService.CheckOutBuyNowMainArticle(mainArticle, emailUser);
-                return Ok(SuccessResponseBody(checkout, "Статус успешно изменён.")); 
+                return Ok(SuccessResponseBody(await _stripeService.CheckOutBuyNowMainArticle(mainArticle, emailUser), ControllerMessageConstants.StripeMessage.CheckoutOrderBuyNowMainArticle)); 
             }
             catch (Exception exc)
             {
@@ -43,8 +43,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                var checkout = await _stripeService.CheckOutBuyNowSupArticle(supArticle, emailUser);
-                return Ok(SuccessResponseBody(checkout, "Статус успешно изменён."));
+                return Ok(SuccessResponseBody(await _stripeService.CheckOutBuyNowSupArticle(supArticle, emailUser), ControllerMessageConstants.StripeMessage.CheckoutOrderBuyNowSupArticle));
             }
             catch (Exception exc)
             {
@@ -60,8 +59,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                var checkout = await _stripeService.CheckOutBuyCartMainArticle(mainArticle, emailUser);
-                return Ok(SuccessResponseBody(checkout, "Статус успешно изменён."));
+                return Ok(SuccessResponseBody(await _stripeService.CheckOutBuyCartMainArticle(mainArticle, emailUser), ControllerMessageConstants.StripeMessage.CheckoutOrderBuyCartMain));
             }
             catch (Exception exc)
             {
@@ -77,7 +75,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 await _stripeService.CheckoutSuccessMainArticle(sessionId);
-                return Ok(SuccessResponseBody(null, "Статус успешно изменён.")); 
+                return Ok(SuccessResponseBody(null, ControllerMessageConstants.StripeMessage.CheckoutSuccessMainArticle)); 
             }
             catch (Exception exc)
             {
@@ -93,7 +91,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 await _stripeService.CheckoutSuccessSupArticle(sessionId);
-                return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
+                return Ok(SuccessResponseBody(null, ControllerMessageConstants.StripeMessage.CheckoutSuccessSupArticle));
             }
             catch (Exception exc)
             {
@@ -108,7 +106,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 await _stripeService.CheckoutSuccessCartArticle(sessionId);
-                return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
+                return Ok(SuccessResponseBody(null, ControllerMessageConstants.StripeMessage.CheckoutSuccessCart));
             }
             catch (Exception exc)
             {
@@ -122,7 +120,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(null, "Статус успешно изменён."));
+                return Ok(SuccessResponseBody(null, ControllerMessageConstants.StripeMessage.CheckoutFailed));
             }
             catch (Exception exc)
             {
@@ -137,7 +135,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 var payments = await _stripeService.CheckPaymentsHaveUser(userMail);
-                return Ok(SuccessResponseBody(payments, "Статус успешно изменён."));
+                return Ok(SuccessResponseBody(payments, ControllerMessageConstants.StripeMessage.CheckPaymentsHaveUser));
             }
             catch (Exception exc)
             {

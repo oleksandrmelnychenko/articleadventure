@@ -1,4 +1,5 @@
-﻿using common.ArticleAdventure.ResponceBuilder.Contracts;
+﻿using common.ArticleAdventure.Helpers;
+using common.ArticleAdventure.ResponceBuilder.Contracts;
 using common.ArticleAdventure.WebApi;
 using common.ArticleAdventure.WebApi.RoutingConfiguration.Maps;
 using domain.ArticleAdventure.Entities;
@@ -24,11 +25,8 @@ namespace webApi.ArticleAdventure.Controllers
         { 
             try
             {
-
                 MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
-
-                
-                return Ok(SuccessResponseBody(await _mainArticleService.Update(articleDeserialize, filePhotoMainArticle), "Статус успешно изменён."));
+                return Ok(SuccessResponseBody(await _mainArticleService.Update(articleDeserialize, filePhotoMainArticle), ControllerMessageConstants.ArticlesMessage.UpdateArticle));
             }
             catch (Exception exc)
             {
@@ -44,8 +42,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
-
-                return Ok(SuccessResponseBody(await _mainArticleService.AddArticle(articleDeserialize, filePhotoMainArticle), "Статус успешно изменён."));
+                return Ok(SuccessResponseBody(await _mainArticleService.AddArticle(articleDeserialize, filePhotoMainArticle), ControllerMessageConstants.ArticlesMessage.AddMainArticle));
             }
             catch (Exception exc)
             {
@@ -60,8 +57,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                List<MainArticle> articles = await _mainArticleService.GetAllArticles();
-                return Ok(SuccessResponseBody(articles, "Успешно вытянуты данные."));
+                return Ok(SuccessResponseBody(await _mainArticleService.GetAllArticles(), ControllerMessageConstants.ArticlesMessage.GetAllArticle));
             }
             catch (Exception exc)
             {
@@ -76,8 +72,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                List<MainArticle> articles = await _mainArticleService.GetAllArticlesFilterSupTags(mainArticleTags);
-                return Ok(SuccessResponseBody(articles, "Успешно вытянуты данные."));
+                return Ok(SuccessResponseBody(await _mainArticleService.GetAllArticlesFilterSupTags(mainArticleTags), ControllerMessageConstants.ArticlesMessage.AllArticleFilterSupTags));
             }
             catch (Exception exc)
             {
@@ -93,7 +88,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 await _mainArticleService.Remove(netUidArticle);
-                return Ok(SuccessResponseBody(null, "Успешно удаленые данные."));
+                return Ok(SuccessResponseBody(null, ControllerMessageConstants.ArticlesMessage.RemoveArticle));
             }
             catch (Exception exc)
             {
@@ -108,7 +103,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 var article = await _mainArticleService.GetArticle(netUidArticle);
-                return Ok(SuccessResponseBody(article, "Успешно вытянуты данные."));
+                return Ok(SuccessResponseBody(article, ControllerMessageConstants.ArticlesMessage.GetMainArticle));
             }
             catch (Exception exc)
             {
@@ -124,7 +119,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 var article = await _mainArticleService.GetSupArticle(netUidArticle);
-                return Ok(SuccessResponseBody(article, "Успешно вытянуты данные."));
+                return Ok(SuccessResponseBody(article, ControllerMessageConstants.ArticlesMessage.GetSupArticle));
             }
             catch (Exception exc)
             {
@@ -141,8 +136,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                var article = await _mainArticleService.GetAllPaymentArticleUser(idUser);
-                return Ok(SuccessResponseBody(article, "Успешно вытянуты данные."));
+                return Ok(SuccessResponseBody(await _mainArticleService.GetAllPaymentArticleUser(idUser), ControllerMessageConstants.ArticlesMessage.GetUserStripePayments));
             }
             catch (Exception exc)
             {
@@ -157,8 +151,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                var article = await _mainArticleService.GetAllArticlesUser(idUser);
-                return Ok(SuccessResponseBody(article, "Успешно вытянуты данные."));
+                return Ok(SuccessResponseBody(await _mainArticleService.GetAllArticlesUser(idUser), ControllerMessageConstants.ArticlesMessage.GetUserAllArticle));
             }
             catch (Exception exc)
             {
@@ -173,8 +166,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                var article = await _mainArticleService.GetArticleUser(netUidArticle, idUser);
-                return Ok(SuccessResponseBody(article, "Успешно вытянуты данные."));
+                return Ok(SuccessResponseBody(await _mainArticleService.GetArticleUser(netUidArticle, idUser), ControllerMessageConstants.ArticlesMessage.GetUserMainArticle));
             }
             catch (Exception exc)
             {

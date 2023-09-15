@@ -8,7 +8,6 @@ namespace MVC.ArticleAdventure.Services.Contract
         public Task<ExecutionResult<MainArticle>> GetArticleUser(Guid netUidArticle, long idUser);
         public Task<ExecutionResult<List<MainArticle>>> GetAllArticlesUser(long idUser);
         public Task<ExecutionResult<List<StripePayment>>> GetAllStripePaymentsUser(long idUser);
-
         public Task<ExecutionResult<AuthorArticle>> GeSupArticle(Guid netUidArticle);
         public Task<MainArticle> GetArticle(Guid netUidArticle);
         public Task<MainArticle> GetArticle(long id);

@@ -2,7 +2,6 @@
 
 <div class="auth_page_component">
     <div class="form_container">
-        @*<h3>natusvincer77@gmail.com</h3>*@
         @if (!Model.IsEmailConfirmed)
         {
             <form method="post">
@@ -54,14 +53,5 @@
                 </div>
             </div>
         }
-        @*<tr>
-        <td>&nbsp;</td>
-        <td>
-        <input asp-page-handler="Submit" type="submit" value="Sign In" onclick="location.href='@Url.Action("SendMail", "Identity")'" />
-        </td>
-        </tr>*@
     </div>
 </div>
-
-
-@*onclick="location.href='@Url.Action("Login", "Identity")'"*@

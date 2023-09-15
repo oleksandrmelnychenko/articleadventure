@@ -13,9 +13,7 @@ namespace MVC.ArticleAdventure.Helpers
             {
                 if (mainArticles.Any(x => x.Id.Equals(stripePayment.MainArticleId)))
                 {
-                    //mainArticles.SelectMany(x => x.Articles).ToList().ForEach(x => x.MainArticle.Articles.AddRange(stripePayment.MainArticle.Articles));
                     mainArticles.Where(x => x.Id == stripePayment.MainArticleId).ToList().ForEach(x => x.Articles.Add(stripePayment.SupArticle));
-                    //mainArticles.SelectMany(x => x.Articles).ToList().Add(stripePayment.SupArticle);
                 }
                 else
                 {

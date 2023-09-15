@@ -1,9 +1,6 @@
 ﻿@model domain.ArticleAdventure.Models.UserLogin
-
 <div class="auth_page_component">
     <div class="form_container">
-        @*<h3>natusvincer77@gmail.com</h3>*@
-
         <form method="post">
             <h1>Login</h1>
          
@@ -35,31 +32,6 @@
                 <a asp-controller="Identity" asp-action="CreateAccount">Sign Up</a>
             </div>
         </form>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-               
-                saveToLocalStorage();
-                var myData = localStorage.getItem("myData");
-                if (myData) {
-                    // Знайдено дані в localStorage, відобразіть їх на сторінці
-                    document.getElementById("dataContainer").innerText = myData;
-                } else {
-                    // Даних в localStorage не знайдено
-                    document.getElementById("dataContainer").innerText = "Дані не знайдено в localStorage.";
-                }
-            });
-            function saveToLocalStorage() {
-                // JavaScript code to save data to localStorage
-                localStorage.setItem("myData", "aboba");
-            }
-           
-        </script>
-        @*<tr>
-        <td>&nbsp;</td>
-        <td>
-        <input asp-page-handler="Submit" type="submit" value="Sign In" onclick="location.href='@Url.Action("SendMail", "Identity")'" />
-        </td>
-        </tr>*@
     </div>
 </div>
 

@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ant-design-blazor/0.4.1/_content/AntDesign/css/ant-design-blazor.css" asp-append-version="true" />
-    @*<link rel="stylesheet" href="~/data.ArticleAdventure.styles.css" asp-append-version="true" />*@
-    @*<link rel="stylesheet" href="_content/AntDesign/css/ant-design-blazor.css" asp-append-version="true" />*@
-
 </head>
 <body>
     @{
@@ -22,8 +19,7 @@
     }
     @{
 
-        //if (User.Identity.IsAuthenticated)
-        //{
+      
         <header>
             <div class="header_container">
                 <ul class="header_menu">
@@ -43,23 +39,6 @@
                             <li>
                                 <a asp-area="" asp-controller="All" asp-action="AllBlogs">Article Adventure</a>
                             </li>
-                            //<li style="min-width: 103em;">
-
-                            //</li>
-                            //<li class="isSelected">
-                            //    <a asp-area="" asp-controller="New" asp-action="SettingMainArticle">New</a>
-                            //</li>
-                            //<li>
-                            //    <a asp-area="" asp-controller="Tags" asp-action="Tags">Tags</a>
-                            //</li>
-                            if (User.IsInRole("User"))
-                            {
-                                <li>
-                                    <a asp-area="" asp-controller="User" asp-action="MyAllArticles">My Articles</a>
-                                </li>
-                            }
-
-
                         }
                     }
                 </ul>
@@ -147,19 +126,11 @@
                 </div>
             }
 
-            @*<div class="account-icon">
-        <img src="account-icon.png" alt="Account Icon">
-        <div class="popup">Ваш аккаунт</div>
-        </div>*@
+            
         </header>
         <div class="body_container">
             @RenderBody()
         </div>
-        //}
-        //else
-        //{
-        //    @RenderBody()
-        //}
     }
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
     {
@@ -174,13 +145,12 @@
         </div>
     }
     <script>
-        // Функция, которая скроет сообщение об ошибке через 5 секунд
         setTimeout(function () {
             var errorMessage = document.getElementById('error-message');
             if (errorMessage) {
                 errorMessage.style.display = 'none';
             }
-        }, 5000); // 5000 миллисекунд (5 секунд)
+        }, 5000); 
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

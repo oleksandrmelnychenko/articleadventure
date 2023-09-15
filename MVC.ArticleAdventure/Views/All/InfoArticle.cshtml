@@ -1,12 +1,4 @@
 ﻿@model domain.ArticleAdventure.Models.InfoArticleModel
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-
-
 <div class="container_content w1260">
     <div class="articles_list_container">
         <div class="list_info_wrapper">
@@ -43,9 +35,6 @@
                             </div>
                         </div>
                     </div>
-                    @*<button style="width: 100px;" onclick="location.href='@Url.Action("GetInformationArticle", "All",new {netUidArticle = Model.MainArticle.NetUid})'">Buy now</button>*@
-
-
                 </div>
 
                 <div class="item_box_title">Materials Articles</div>
@@ -75,17 +64,13 @@
                         }
                     </ul>
                 </div>
-
                 <div class="item_box_title">Article information</div>
                 <div class="archicle_info_item">
                     <div>
                         <div>@Model.MainArticle.InfromationArticle</div>
                     </div>
-
-
                 </div>
             </div>
-
             <div class="list_pay">
                 <div class="archicle_info_item sticky price_item_container">
                     <div class="img">
@@ -113,8 +98,6 @@
                             </button>
                         }
                         <button class="archicle_btn full" onclick="location.href='@Url.Action("BuyNow", "Stripe",new {netUidBuyArticle = Model.MainArticle.NetUid})'">Buy now</button>
-
-                        @*<button class="archicle_btn full" onclick="location.href='@Url.Action("GetInformationArticle", "All",new {netUidArticle = Model.MainArticle.NetUid})'">GetArticle</button>*@
                     </div>
                 </div>
             </div>

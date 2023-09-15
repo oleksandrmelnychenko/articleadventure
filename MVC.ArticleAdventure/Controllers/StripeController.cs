@@ -48,16 +48,6 @@ namespace MVC.ArticleAdventure.Controllers
             var result = await _stripeService.BuyStripeCartArticle(listAutorArticle, email);
             BuyNowModel buyNowModel = new BuyNowModel { orderResponse = result.Data };
             return View("BuyNow", buyNowModel);
-            //var listAutorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(HttpContext.Session, SessionStoragePath.CART_ARTICLE);
-            //BasketModel basketModel = new BasketModel { BasketArticles = listAutorArticle };
-
-            //if (listAutorArticle != null)
-            //{
-            //    var fullPrice = listAutorArticle.Select(x => x.Price).Sum();
-            //    basketModel.FullPrice = fullPrice;
-            //}
-
-            //return View(basketModel);
         }
 
         [HttpGet]
@@ -75,7 +65,6 @@ namespace MVC.ArticleAdventure.Controllers
             else
             {
                 SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CART_ARTICLE, listAuthorArticle);
-
             }
 
             return Redirect("~/Stripe/Basket");
@@ -110,7 +99,6 @@ namespace MVC.ArticleAdventure.Controllers
             
             var email = Request.Cookies[CookiesPath.EMAIL];
 
-
             var orderInfo = await _stripeService.BuyStripeMainArticle(article, email);
             BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo };
             return View(buyNowModel);
@@ -121,7 +109,6 @@ namespace MVC.ArticleAdventure.Controllers
         {
             var article = await _mainArticleService.GeSupArticle(netUidBuyArticle);
             var email = Request.Cookies[CookiesPath.EMAIL];
-
 
             var orderInfo = await _stripeService.BuyStripeSupArticle(article.Data, email);
             BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo.Data };

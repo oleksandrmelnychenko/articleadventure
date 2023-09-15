@@ -84,19 +84,6 @@ namespace MVC.ArticleAdventure.Services
             }
 
             return result.IsSuccess;
-
-
-            
-            //if (!CustomContainErrorResponse(response))
-            //{
-            //    return false;
-            //}
-            //else
-            //{
-            //    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-            //    IdentityResult result = JsonConvert.DeserializeObject<IdentityResult>(successResponse.Body.ToString());
-            //    return result.Succeeded;
-            //}
         }
     }
 }

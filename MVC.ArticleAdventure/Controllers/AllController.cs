@@ -116,7 +116,7 @@ namespace MVC.ArticleAdventure.Controllers
 
             mainArticle.ArticleTags.Clear();
             if (selectSupTags != null)
-            {
+            { 
                 foreach (var item in selectSupTags)
                 {
                     var mainTag = new MainArticleTags
@@ -219,7 +219,6 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> ChangeSupArticle(Guid ChangeNetUidArticle)
         {
-
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
 
             var supArticle = mainArticle.Articles.First(x => x.NetUid == ChangeNetUidArticle);
@@ -234,7 +233,6 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveSupArticle(Guid RemoveNetUidArticle)
         {
-
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
 
             var supArticle = mainArticle.Articles.First(x => x.NetUid == RemoveNetUidArticle);
@@ -274,14 +272,6 @@ namespace MVC.ArticleAdventure.Controllers
 
             var _foo = User.Claims;
 
-            if (UserRoleHelper.IsUserRole(User.Claims, "Admin"))
-            {
-                var s = "boba";
-            }
-            else
-            {
-                var g = User.Identity.Name;
-            }
             List<MainTag> mainTags = await _tagService.GetAllTags();
             List<MainArticleTags> mainArticleTags = new List<MainArticleTags>();
             AllArticlesModel model = new AllArticlesModel { ArticleTags = mainTags };
@@ -315,7 +305,6 @@ namespace MVC.ArticleAdventure.Controllers
                 }
                 var mainArticleFilter = await _mainArticleService.GetAllArticlesFilterSupTags(mainArticleTags);
                 model.mainArticles = mainArticleFilter.Data;
-
             }
             else
             {
@@ -371,7 +360,6 @@ namespace MVC.ArticleAdventure.Controllers
         {
             InfoArticleModel infoArticleModel = new InfoArticleModel();
             var article = await _mainArticleService.GetArticle(NetUidArticle);
-
 
             var userGuidClaim = User.FindFirst("Guid");
             var email = Request.Cookies[CookiesPath.EMAIL];

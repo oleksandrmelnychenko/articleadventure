@@ -11,6 +11,7 @@ namespace domain.ArticleAdventure.Helpers
         private static string _serverPath;
         private static string _serverUrl;
         private static string _clientUrl;
+        public static string stripePublicKey;
 
 
         private static string _staticFolder = "wwwroot\\";

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using service.ArticleAdventure.Services.UserManagement.Contracts;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using common.ArticleAdventure.Helpers;
 
 namespace webApi.ArticleAdventure.Controllers
 {
@@ -26,7 +27,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _userProfileService.Create(userProfile, password), "New user successfully created"));
+                return Ok(SuccessResponseBody(await _userProfileService.Create(userProfile, password), ControllerMessageConstants.UserMessage.CreateUserProfileAsync));
             }
             catch (Exception exc)
             {
@@ -47,7 +48,7 @@ namespace webApi.ArticleAdventure.Controllers
                             userProfile,
                             password
                         ),
-                        "User successfully updated")
+                       ControllerMessageConstants.UserMessage.FullUpdateUserProfileAsync)
                 );
             }
             catch (Exception exc)
@@ -62,7 +63,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _userProfileService.ConforimEmail(token, userId), "New user successfully updated Email"));
+                return Ok(SuccessResponseBody(await _userProfileService.ConforimEmail(token, userId), ControllerMessageConstants.UserMessage.EmailConformation));
             }
             catch (Exception exc)
             {
@@ -76,7 +77,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _userProfileService.GetById(userNetId), "Get user by NetUid"));
+                return Ok(SuccessResponseBody(await _userProfileService.GetById(userNetId), ControllerMessageConstants.UserMessage.GetNetUidUser));
             }
             catch (Exception exc)
             {
@@ -91,7 +92,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _userProfileService.UpdatePassword(userProfileNetUid, newPassword, oldPassword), "New user successfully updated Password"));
+                return Ok(SuccessResponseBody(await _userProfileService.UpdatePassword(userProfileNetUid, newPassword, oldPassword), ControllerMessageConstants.UserMessage.UpdatePassword));
             }
             catch (Exception exc)
             {
@@ -105,7 +106,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _userProfileService.UpdateEmail(userProfileNetUid, newEmail, password), "User successfully updated Email"));
+                return Ok(SuccessResponseBody(await _userProfileService.UpdateEmail(userProfileNetUid, newEmail, password), ControllerMessageConstants.UserMessage.UpdateEmail));
             }
             catch (Exception exc)
             {
@@ -119,7 +120,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _userProfileService.UpdateAccountInformation(userProfile), "user successfully updated Account Information"));
+                return Ok(SuccessResponseBody(await _userProfileService.UpdateAccountInformation(userProfile), ControllerMessageConstants.UserMessage.UpdateAccountInformation));
             }
             catch (Exception exc)
             {
@@ -134,7 +135,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _userProfileService.SetFavoriteArticle(netUidArticle,netUidUser), "user successfully updated Account Information"));
+                return Ok(SuccessResponseBody(await _userProfileService.SetFavoriteArticle(netUidArticle,netUidUser), ControllerMessageConstants.UserMessage.SetFavoriteArticle));
             }
             catch (Exception exc)
             {
@@ -148,7 +149,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _userProfileService.GetAllFavoriteArticle(userProfileNetUid), "user successfully updated Account Information"));
+                return Ok(SuccessResponseBody(await _userProfileService.GetAllFavoriteArticle(userProfileNetUid), ControllerMessageConstants.UserMessage.GetAllFavoriteArticle));
             }
             catch (Exception exc)
             {
@@ -162,7 +163,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _userProfileService.GetFavoriteArticle(netUidArticle, netUidUser), "user successfully updated Account Information"));
+                return Ok(SuccessResponseBody(await _userProfileService.GetFavoriteArticle(netUidArticle, netUidUser), ControllerMessageConstants.UserMessage.GetFavoriteArticle));
             }
             catch (Exception exc)
             {
@@ -176,7 +177,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _userProfileService.RemoveFavoriteArticle(netUidFavoriteArticle), "user successfully updated Account Information"));
+                return Ok(SuccessResponseBody(await _userProfileService.RemoveFavoriteArticle(netUidFavoriteArticle), ControllerMessageConstants.UserMessage.RemoveFavoriteArticle));
             }
             catch (Exception exc)
             {

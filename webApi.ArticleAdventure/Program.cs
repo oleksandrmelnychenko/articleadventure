@@ -43,11 +43,11 @@ builder.Configuration.SetBasePath(builder.Environment.ContentRootPath);
 builder.Configuration.AddJsonFile("appsettings.json");
 builder.Configuration.AddEnvironmentVariables();
 ArticleAdventureFolderManager.InitializeServerFolderManager(builder.Environment.ContentRootPath, builder.Configuration.GetValue<string>("ServerSettings:ServerUrl"), builder.Configuration.GetValue<string>("ServerSettings:ClientUrl"));
-
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppSettingsProperties(builder.Configuration);
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppEnvironmentRootPath(builder.Environment.ContentRootPath);
 StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
-;
+ArticleAdventureFolderManager.stripePublicKey = builder.Configuration.GetValue<string>("StripeSettings:PubKey");
+
 
 builder.Services.AddDbContext<ArticleAdventureDataContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString(ConnectionStringNames.DbConnectionString)));

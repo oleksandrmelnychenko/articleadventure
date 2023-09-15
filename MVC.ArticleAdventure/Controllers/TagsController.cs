@@ -118,7 +118,6 @@ namespace MVC.ArticleAdventure.Controllers
                 }
             }
             return View("Tags", tagsModel);
-
         }
 
         [HttpGet]

@@ -86,7 +86,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 var allMainTag = await _tagService.AllMainTag();
-                return Ok(SuccessResponseBody(allMainTag, "Успешно вытянуты данные."));
+                return Ok(SuccessResponseBody(allMainTag, ControllerMessageConstants.TagMessage.AllMainTag));
             }
             catch (Exception exc)
             {
@@ -102,7 +102,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 var allMainTag = await _tagService.AllTag();
-                return Ok(SuccessResponseBody(allMainTag, ControllerMessageConstants.TagMessage.GetTag));
+                return Ok(SuccessResponseBody(allMainTag, ControllerMessageConstants.TagMessage.AllSupTag));
             }
             catch (Exception exc)
             {
@@ -148,7 +148,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 await _tagService.RemoveMainTag(netUidMainTag);
-                return Ok(SuccessResponseBody(null, "Успешно удаленые данные."));
+                return Ok(SuccessResponseBody(null, ControllerMessageConstants.TagMessage.RemoveTag));
             }
             catch (Exception exc)
             {
@@ -164,7 +164,7 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 await _tagService.RemoveTag(netUidSupTag);
-                return Ok(SuccessResponseBody(null, "Успешно удаленые данные."));
+                return Ok(SuccessResponseBody(null, ControllerMessageConstants.TagMessage.RemoveTag));
             }
             catch (Exception exc)
             {

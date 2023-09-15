@@ -254,7 +254,6 @@ namespace service.ArticleAdventure.Services.UserManagement
 
                        User user = await identityRepository.GetUserByUserNetId(userProfileNetUid);
 
-
                        var isPassword = await identityRepository.CheckPassword(existingProfile, password);
                        if (!isPassword) throw new Exception("The password you entered is incorrect");
 

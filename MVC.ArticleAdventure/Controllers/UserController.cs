@@ -56,8 +56,6 @@ namespace MVC.ArticleAdventure.Controllers
 
             }
 
-
-
             var userName = Request.Cookies[CookiesPath.USER_NAME];
             var surName = Request.Cookies[CookiesPath.SURNAME];
             var informationProfile = Request.Cookies[CookiesPath.INFORMATION_PROFILE];
@@ -170,7 +168,6 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("RemoveFavoriteArticle")]
         public async Task<IActionResult> RemoveFavoriteArticle(Guid netUidFavoriteArticle,Guid netUidArticle)
         {
-            
             var favoriteArticle = await _userService.RemoveFavoriteArticle( netUidFavoriteArticle);
             return Redirect($"~/InfoArticle?NetUidArticle={netUidArticle}");
         }

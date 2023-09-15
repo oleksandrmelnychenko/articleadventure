@@ -3,9 +3,7 @@
     <div class="tags_row tag_group_item">
         <form asp-controller="Tags">
             <input type="hidden" asp-for="AddMainTag.NetUid" />
-           @* <input type="hidden" asp-for="SelectMainTag.NetUid" />
-            <input type="hidden" asp-for="SelectMainTag.Name" />
-            <input type="hidden" asp-for="SelectMainTag.Color" />*@
+          
             @if (Model.SelectMainTag != null)
             {
                 <div>Select Main Tag : @Model.SelectMainTag.Name</div>
@@ -27,7 +25,6 @@
                 }
                 else
                 {
-                    @*<button disabled type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>*@
                     <button type="submit" formaction="AddMainTag" formmethod="post" value="Save">Save</button>
                 }
             </div>
@@ -78,11 +75,9 @@
                 @if (Model.AddSupTag?.NetUid != null)
                 {
                     <button type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
-                    @*<button disabled type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>*@
                 }
                 else
                 {
-                    @*<button disabled type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>*@
                     <button type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
                 }
             </div>
@@ -114,8 +109,6 @@
                                 </button>
                             }
                         </li>
-
-
                     }
                 </ol>
             }

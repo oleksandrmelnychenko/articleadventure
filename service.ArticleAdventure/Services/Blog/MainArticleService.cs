@@ -153,7 +153,7 @@ namespace service.ArticleAdventure.Services.Blog
         });
 
         public Task<List<MainArticle>> GetAllArticlesUser(long idUser) =>
-            Task.Run(async () =>
+            Task.Run(() =>
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
@@ -179,7 +179,7 @@ namespace service.ArticleAdventure.Services.Blog
             });
 
         public Task<List<StripePayment>> GetAllPaymentArticleUser(long idUser) =>
-            Task.Run(async () =>
+            Task.Run(() =>
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
@@ -240,8 +240,6 @@ namespace service.ArticleAdventure.Services.Blog
                     }
 
                     return mainArticles;
-                    //return mainArticles.First();
-
                 }
             });
 

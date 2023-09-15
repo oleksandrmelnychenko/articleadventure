@@ -105,7 +105,7 @@ namespace service.ArticleAdventure.Services.Stripe
                 var service = new SessionService();
                 var session = await service.CreateAsync(options);
 
-                var pubKey = "pk_test_51NdTsYLwAUt6I3BOPOMdxTKOoBPd9UErIyY7J7NY4XwOTDHHfmeFGbcQK18m4KJ6x1g9UZ5TizySV8TxnhamzQbS00cbtKuMRf";
+                var pubKey = ArticleAdventureFolderManager.stripePublicKey;
 
                 var checkoutOrderResponse = new CheckoutOrderResponse()
                 {
@@ -147,10 +147,9 @@ namespace service.ArticleAdventure.Services.Stripe
             {
                 Metadata = metaData,
                 CustomerEmail = userEmail,
-                // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                 SuccessUrl = $"{ArticleAdventureFolderManager.GetClientPath()}/Stripe/{UrlSuccess}/sup?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
                 CancelUrl = $"{ArticleAdventureFolderManager.GetServerPath()}/api/v1/stripe/checkout/failed",  // Checkout cancelled.
-                PaymentMethodTypes = new List<string> // Only card available in test mode?
+                PaymentMethodTypes = new List<string> 
                 {
                     "card"
                 },
@@ -174,7 +173,7 @@ namespace service.ArticleAdventure.Services.Stripe
                     Quantity = 1,
                 },
             },
-                Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
+                Mode = "payment" 
             };
             return options;
         }
@@ -214,7 +213,6 @@ namespace service.ArticleAdventure.Services.Stripe
                 {
                     stripeRepositoryFactory.SetStatusPayment(payment.NetUid);
                 }
-
             }
         }
         public async Task CheckoutSuccessCartArticle(string sessionId)
@@ -226,7 +224,6 @@ namespace service.ArticleAdventure.Services.Stripe
 
                 List<StripePayment> stripePayments = new List<StripePayment>();
                 List<MainArticle> mainArticles = new List<MainArticle>();
-
 
 
                 var sessionService = new SessionService();
@@ -261,17 +258,10 @@ namespace service.ArticleAdventure.Services.Stripe
                     }
                 }
 
-                //foreach (var MainArticleId in metaData.Values.ToList())
-                //{
-                //    StripePayment s = stripeRepositoryFactory.GetPayment(long.Parse(), long.Parse(MainArticleId), userProfile.Id);
-                //    stripePayments.Add(s);
-                //}
-
                 foreach (var payment in stripePayments)
                 {
                     stripeRepositoryFactory.SetStatusPayment(payment.NetUid);
                 }
-
             }
         }
 
@@ -355,7 +345,7 @@ namespace service.ArticleAdventure.Services.Stripe
                 var service = new SessionService();
                 var session = await service.CreateAsync(options);
 
-                var pubKey = "pk_test_51NdTsYLwAUt6I3BOPOMdxTKOoBPd9UErIyY7J7NY4XwOTDHHfmeFGbcQK18m4KJ6x1g9UZ5TizySV8TxnhamzQbS00cbtKuMRf";
+                var pubKey = ArticleAdventureFolderManager.stripePublicKey;
 
                 var checkoutOrderResponse = new CheckoutOrderResponse()
                 {
@@ -450,7 +440,7 @@ namespace service.ArticleAdventure.Services.Stripe
                 var service = new SessionService();
                 var session = await service.CreateAsync(options);
 
-                var pubKey = "pk_test_51NdTsYLwAUt6I3BOPOMdxTKOoBPd9UErIyY7J7NY4XwOTDHHfmeFGbcQK18m4KJ6x1g9UZ5TizySV8TxnhamzQbS00cbtKuMRf";
+                var pubKey = ArticleAdventureFolderManager.stripePublicKey;
 
                 var checkoutOrderResponse = new CheckoutOrderResponse()
                 {

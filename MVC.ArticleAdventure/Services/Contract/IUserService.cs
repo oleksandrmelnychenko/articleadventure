@@ -6,7 +6,6 @@ namespace MVC.ArticleAdventure.Services.Contract
     public interface IUserService
     {
         public Task<ExecutionResult<UserProfile>> ChangeAccountInformation(UserProfile userProfile);
-
         public Task ChangePassword(Guid userProfileNetUid, string newPassword, string oldPassword);
         public Task ChangeEmail(Guid userProfileNetUid, string newEmail, string password);
         public Task<ExecutionResult<long>> SetFavoriteArticle(Guid userProfileNetUid, Guid MainArtilceNetUid);

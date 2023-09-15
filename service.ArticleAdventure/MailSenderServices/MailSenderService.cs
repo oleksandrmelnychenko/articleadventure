@@ -52,7 +52,6 @@ namespace service.ArticleAdventure.MailSenderServices
 
                     var firstParagraph = "<p>" + confirmButton + " </p>";
 
-
                     var bodyMessage = "<div>" + firstParagraph + "</div>";
 
                     mssObj.Body = bodyMessage;

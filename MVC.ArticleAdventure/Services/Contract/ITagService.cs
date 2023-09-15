@@ -9,7 +9,6 @@ namespace MVC.ArticleAdventure.Services.Contract
         Task<MainTag> GetMainTag(Guid NetUidMainTag);
         Task ChangeMainTag(MainTag mainTag);
         Task RemoveMainTag(Guid NetUidMainTag);
-
         Task AddSupTag(SupTag blogs);
         Task<SupTag> GetSupTag(Guid NetUidMainTag);
         Task RemoveSupTag(Guid NetUidMainTag);
