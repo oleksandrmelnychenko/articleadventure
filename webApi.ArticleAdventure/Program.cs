@@ -149,40 +149,6 @@ using (var scope = app.Services.CreateScope())
 
     InitializeDefaultIdentityDataIfNotExists(userManagement, roleManager, connectionFactory, identityRepositoriesFactory);
 }
-// Configure the HTTP request pipeline.
-
-
-
-
-//app.MapRazorPages();
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller}/{action}/{id?}",
-//    new { controller = "Home", action = "Index" });
-
-//app.MapControllerRoute(
-//    name: "all",
-//    pattern: "{controller}/{action}/{id?}",
-//    new { controller = "All", action = "All" });
-
-//app.MapControllerRoute(
-//    name: "images",
-//    pattern: "{controller}/{action}/{id?}",
-//    new { controller = "Images", action = "Images" });
-
-//app.MapControllerRoute(
-//    name: "new",
-//    pattern: "{controller}/{action}/{id?}",
-//    new { controller = "New", action = "New" });
-
-//app.MapControllerRoute(
-//    name: "tags",
-//    pattern: "{controller}/{action}/{id?}",
-//    new { controller = "Tags", action = "Tags" });
-//app.MapControllerRoute(
-//    name: "login",
-//    pattern: "{controller}/{action}/{id?}",
-//    new { controller = "Authentication", action = "Authentication" });
 app.Run();
 
 

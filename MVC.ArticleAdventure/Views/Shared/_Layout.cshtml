@@ -46,12 +46,12 @@
                             //<li style="min-width: 103em;">
 
                             //</li>
-                            <li class="isSelected">
-                                <a asp-area="" asp-controller="New" asp-action="SettingMainArticle">New</a>
-                            </li>
-                            <li>
-                                <a asp-area="" asp-controller="Tags" asp-action="Tags">Tags</a>
-                            </li>
+                            //<li class="isSelected">
+                            //    <a asp-area="" asp-controller="New" asp-action="SettingMainArticle">New</a>
+                            //</li>
+                            //<li>
+                            //    <a asp-area="" asp-controller="Tags" asp-action="Tags">Tags</a>
+                            //</li>
                             if (User.IsInRole("User"))
                             {
                                 <li>
@@ -120,7 +120,22 @@
                                 </li>
                             </ul>
                         </div>
-
+                        @if (UserRoleHelper.IsUserRole(User.Claims, "User"))
+                        {
+                            <div class="line">
+                                <ul>
+                                    <li>
+                                        <div>Admin Panel</div>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="New" asp-action="SettingMainArticle">New Article</a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="Tags" asp-action="Tags">Setting Tags</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
                         <div class="line">
                             <ul>
                                 <li>

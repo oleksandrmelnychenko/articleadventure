@@ -11,6 +11,7 @@ using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MVC.ArticleAdventure.Extensions;
 using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services;
 using MVC.ArticleAdventure.Services.Contract;
@@ -269,6 +270,18 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> AllBlogs()
         {
+           var foo =  User.GetUserToken();
+
+            var _foo = User.Claims;
+
+            if (UserRoleHelper.IsUserRole(User.Claims, "Admin"))
+            {
+                var s = "boba";
+            }
+            else
+            {
+                var g = User.Identity.Name;
+            }
             List<MainTag> mainTags = await _tagService.GetAllTags();
             List<MainArticleTags> mainArticleTags = new List<MainArticleTags>();
             AllArticlesModel model = new AllArticlesModel { ArticleTags = mainTags };
@@ -287,7 +300,7 @@ namespace MVC.ArticleAdventure.Controllers
             }
             var mainArtilces = await _mainArticleService.GetAllArticles();
 
-            if (sessionStorageMainTags!= null && sessionStorageMainTags.Count() != 0)
+            if (sessionStorageMainTags != null && sessionStorageMainTags.Count() != 0)
             {
                 foreach (var mainArticle in mainArtilces)
                 {
@@ -358,7 +371,7 @@ namespace MVC.ArticleAdventure.Controllers
         {
             InfoArticleModel infoArticleModel = new InfoArticleModel();
             var article = await _mainArticleService.GetArticle(NetUidArticle);
-            
+
 
             var userGuidClaim = User.FindFirst("Guid");
             var email = Request.Cookies[CookiesPath.EMAIL];
