@@ -1036,6 +1036,12 @@ body {
 .tags_page .tags_row .mainTags_list ol li button.delete {
   background-color: var(--epcl-main-color);
 }
+    .tags_page .tags_row .mainTags_list ol li button.change {
+        background-color: var(--epcl-blue-bg-color);
+    }
+    .tags_page .tags_row .mainTags_list ol li button.select {
+        background-color: var(--epcl-secondary-color);
+    }
 .tags_page .tags_row .mainTags_list h2 + ol {
   padding-left: 30px;
   margin-left: 10px;

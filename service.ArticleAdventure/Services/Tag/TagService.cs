@@ -96,7 +96,7 @@ namespace service.ArticleAdventure.Services.Tag
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                   return _tagRepositoryFactory.New(connection).GetMainTag(netUidMainTag);
+                    return _tagRepositoryFactory.New(connection).GetMainTag(netUidMainTag);
                 }
             });
         }
@@ -118,7 +118,17 @@ namespace service.ArticleAdventure.Services.Tag
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
-                    _tagRepositoryFactory.New(connection).RemoveMainTag(NetUidMainTag);
+                    var tagRepository = _tagRepositoryFactory.New(connection);
+
+                    var mainTag = tagRepository.GetMainTag(NetUidMainTag);
+
+                    var listSupTags = tagRepository.GetSupTagMainTagId(mainTag.Id);
+                    tagRepository.RemoveMainTag(NetUidMainTag);
+
+                    foreach (var supTag in listSupTags)
+                    {
+                        _tagRepositoryFactory.New(connection).RemoveSupTag(supTag.NetUid);
+                    }
                 }
             });
         }

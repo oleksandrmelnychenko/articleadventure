@@ -94,8 +94,13 @@ namespace domain.ArticleAdventure.Repositories.Tag
                 "WHERE Tags.Deleted = 0 " +
                 "AND Tags.NetUID = @NetUid", new { NetUid = NetUidTag }).Single();
 
+        public List<SupTag> GetSupTagMainTagId(long mainTagId) 
+            => _connection.Query<SupTag>("SELECT * FROM [SubTags] AS Tags " +
+                "WHERE Tags.Deleted = 0 " +
+                "AND Tags.IdMainTag = @IdMainTag", new { IdMainTag = mainTagId }).ToList();
+
         public void RemoveMainTag(Guid NetUidTag) =>
-            _connection.Execute("UPDATE [MainTags] " +
+                _connection.Execute("UPDATE [MainTags] " +
                 "SET [Deleted] = 1 " +
                 "WHERE [MainTags].NetUID = @NetUID",
                 new { NetUID = NetUidTag });

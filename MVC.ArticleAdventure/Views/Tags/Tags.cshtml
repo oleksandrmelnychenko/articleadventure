@@ -3,12 +3,19 @@
     <div class="tags_row tag_group_item">
         <form asp-controller="Tags">
             <input type="hidden" asp-for="AddMainTag.NetUid" />
-
+           @* <input type="hidden" asp-for="SelectMainTag.NetUid" />
+            <input type="hidden" asp-for="SelectMainTag.Name" />
+            <input type="hidden" asp-for="SelectMainTag.Color" />*@
+            @if (Model.SelectMainTag != null)
+            {
+                <div>Select Main Tag : @Model.SelectMainTag.Name</div>
+            }
             <div class="inputs">
                 <div class="input">
                     <input type="text" placeholder="Name Main Tag" asp-for="AddMainTag.Name" />
                     <span asp-validation-for="@Model.AddMainTag.Name" class="text-danger"></span>
                 </div>
+
                 <div class="inputColor">
                     <input type="color" asp-for="AddMainTag.Color" />
                 </div>
@@ -20,9 +27,9 @@
                 }
                 else
                 {
-                    <button disabled type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>
+                    @*<button disabled type="submit" formaction="ChangeMainTag" formmethod="post" value="Change">Change</button>*@
+                    <button type="submit" formaction="AddMainTag" formmethod="post" value="Save">Save</button>
                 }
-                <button type="submit" formaction="AddMainTag" formmethod="post" value="Save">Save</button>
             </div>
         </form>
 
@@ -33,8 +40,13 @@
                     <li>
                         @if (MainTag.IsSelected)
                         {
-                            @*<button style="" onclick="location.href='@Url.Action("RemoveSupTag", "Tags",new {RemoveSupTagsNetUid = subTag.NetUid})'">Delete</button>*@
+                            <button type="submit" value="Save" onclick="location.href='@Url.Action("GetMainTag", "Tags",new {ChangeMainTagsNetUid =MainTag.NetUid})'">
+                                <span style="color:@MainTag.Color">#</span>
+                                <span>@MainTag.Name</span>
+                            </button>
                             <button class="delete" type="submit" value="Save" onclick="location.href='@Url.Action("RemoveMainTag", "Tags",new {RemoveMainTagsNetUid =MainTag.NetUid})'">Delete</button>
+                            <button class="change" type="submit" value="Save" onclick="location.href='@Url.Action("SetChangeMainArticle", "Tags",new {SetChangeMainArticleNetUid =MainTag.NetUid})'">Change</button>
+                            <button class="select" type="submit" value="Save" onclick="location.href='@Url.Action("SelectChangeMainArticle", "Tags",new {SelectChangeMainArticleNetUid =MainTag.NetUid})'">Select</button>
                         }
                         else
                         {
@@ -52,7 +64,7 @@
     <div class="tags_row tag_group_item">
         <form asp-controller="Tags">
             <input type="hidden" asp-for="AddSupTag.NetUid" />
-            <input type="hidden" asp-for="AddMainTag.Id" />
+            <input type="hidden" asp-for="SelectMainTag.Id" />
             <div class="inputs">
                 <div class="input">
                     <input type="text" placeholder="Name Sup Tag" asp-for="AddSupTag.Name" />
@@ -66,11 +78,11 @@
                 @if (Model.AddSupTag?.NetUid != null)
                 {
                     <button type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
-                    <button disabled type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
+                    @*<button disabled type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>*@
                 }
                 else
                 {
-                    <button disabled type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>
+                    @*<button disabled type="submit" formaction="ChangeSupTag" formmethod="post" value="Change">Change</button>*@
                     <button type="submit" formaction="AddSupTag" formmethod="post" value="Save">Save</button>
                 }
             </div>
@@ -87,7 +99,12 @@
                         <li>
                             @if (subTag.IsSelected)
                             {
+                                <button onclick="location.href='@Url.Action("GetSupTag", "Tags",new {ChangeSupTagsNetUid =subTag.NetUid})'">
+                                    <span style="color:@subTag.Color">#</span>
+                                    <span>@subTag.Name</span>
+                                </button>
                                 <button class="delete" onclick="location.href='@Url.Action("RemoveSupTag", "Tags",new {RemoveSupTagsNetUid = subTag.NetUid})'">Delete</button>
+                                <button class="change" onclick="location.href='@Url.Action("SetChangeSupArticle", "Tags",new {SetChangeSupArticleNetUid = subTag.NetUid})'">Change</button>
                             }
                             else
                             {

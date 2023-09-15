@@ -23,7 +23,6 @@ namespace MVC.ArticleAdventure.Controllers
             return View(tagsModel);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> AddMainTag(TagsModel tagsModel)
         {
@@ -35,6 +34,7 @@ namespace MVC.ArticleAdventure.Controllers
             await _tagService.AddMainTag(tagsModel.AddMainTag);
             return Redirect("~/Tags/Tags");
         }
+
         [HttpPost]
         public async Task<IActionResult> ChangeMainTag(TagsModel tagsModel)
         {
@@ -44,20 +44,19 @@ namespace MVC.ArticleAdventure.Controllers
                 return View("Tags", tagsModel);
             }
             await _tagService.ChangeMainTag(tagsModel.AddMainTag);
-            tagsModel = await GetAllMainTags();
 
-            return View("Tags", tagsModel);
+            return Redirect("~/Tags/Tags");
         }
-       
+
         [HttpPost]
         public async Task<IActionResult> AddSupTag(TagsModel tagsModel)
         {
-            if (tagsModel.AddSupTag.Name == null)
+            if (tagsModel.SelectMainTag == null)
             {
                 tagsModel = await GetAllMainTags();
                 return View("Tags",tagsModel);
             }
-            tagsModel.AddSupTag.IdMainTag = tagsModel.AddMainTag.Id;
+            tagsModel.AddSupTag.IdMainTag = tagsModel.SelectMainTag.Id;
             await _tagService.AddSupTag(tagsModel.AddSupTag);
             return Redirect("~/Tags/Tags");
         }
@@ -72,18 +71,16 @@ namespace MVC.ArticleAdventure.Controllers
             }
             tagsModel.AddSupTag.IdMainTag = tagsModel.AddMainTag.Id;
             await _tagService.ChangeSupTag(tagsModel.AddSupTag);
-            tagsModel = await GetAllMainTags();
 
-            return View("Tags", tagsModel);
+            return Redirect("~/Tags/Tags");
         }
+
         [HttpGet]
         public async Task<IActionResult> GetSupTag(Guid ChangeSupTagsNetUid)
         {
             var supTag = await _tagService.GetSupTag(ChangeSupTagsNetUid);
             supTag.IsSelected = true;
             TagsModel tagsModel = await GetAllMainTags();
-            tagsModel.AddSupTag = supTag;
-
             
             foreach (var tag in tagsModel.MainTags)
             {
@@ -95,9 +92,56 @@ namespace MVC.ArticleAdventure.Controllers
                         tag.SubTags.First(x=>x.NetUid == clickedSupTag.NetUid).IsSelected = true;
                     }
                 }
+            } 
+            return View("Tags", tagsModel);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SetChangeSupArticle(Guid SetChangeSupArticleNetUid)
+        {
+            var supTag = await _tagService.GetSupTag(SetChangeSupArticleNetUid);
+            supTag.IsSelected = true;
+            TagsModel tagsModel = await GetAllMainTags();
+            tagsModel.AddSupTag = supTag;
+
+
+            foreach (var tag in tagsModel.MainTags)
+            {
+                if (tag.SubTags.Any())
+                {
+                    var clickedSupTag = tag?.SubTags.FirstOrDefault(x => x.NetUid == supTag.NetUid);
+                    if (clickedSupTag != null)
+                    {
+                        tag.SubTags.First(x => x.NetUid == clickedSupTag.NetUid).IsSelected = true;
+                    }
+                }
             }
             return View("Tags", tagsModel);
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SetChangeMainArticle(Guid SetChangeMainArticleNetUid)
+        {
+            var mainTag = await _tagService.GetMainTag(SetChangeMainArticleNetUid);
+            mainTag.IsSelected = true;
+
+            TagsModel tagsModel = await GetAllMainTags();
+            tagsModel.AddMainTag = mainTag;
+            tagsModel.MainTags.Find(x => x.NetUid == mainTag.NetUid).IsSelected = true;
+            return View("Tags", tagsModel);
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> SelectChangeMainArticle(Guid SelectChangeMainArticleNetUid)
+        {
+            var mainTag = await _tagService.GetMainTag(SelectChangeMainArticleNetUid);
+            mainTag.IsSelected = true;
+
+            TagsModel tagsModel = await GetAllMainTags();
+            tagsModel.SelectMainTag = mainTag;
+            return View("Tags", tagsModel);
         }
 
         [HttpGet]
@@ -107,10 +151,9 @@ namespace MVC.ArticleAdventure.Controllers
             mainTag.IsSelected = true;
 
             TagsModel tagsModel = await GetAllMainTags();
-            tagsModel.AddMainTag = mainTag;
             tagsModel.MainTags.Find(x => x.NetUid == mainTag.NetUid).IsSelected = true;
-            return View("Tags", tagsModel);
 
+            return View("Tags", tagsModel);
         }
 
         [HttpGet]
@@ -118,6 +161,7 @@ namespace MVC.ArticleAdventure.Controllers
         {
             await _tagService.RemoveSupTag(RemoveSupTagsNetUid);
             TagsModel tagsModel = await GetAllMainTags();
+
             return View("Tags", tagsModel);
         }
 
@@ -127,6 +171,7 @@ namespace MVC.ArticleAdventure.Controllers
         {
             await _tagService.RemoveMainTag(RemoveMainTagsNetUid);
             TagsModel tagsModel = await GetAllMainTags();
+
             return View("Tags", tagsModel);
         }
 

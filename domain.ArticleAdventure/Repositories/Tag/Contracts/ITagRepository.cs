@@ -15,6 +15,7 @@ namespace domain.ArticleAdventure.Repositories.Tag.Contracts
         void ChangeMainTag(MainTag tag);
         List<MainTag> AllMainTag();
         SupTag GetSupTag(Guid NetUidTag);
+        List<SupTag> GetSupTagMainTagId(long mainTagId);
         long AddTag(SupTag tag);
         void RemoveSupTag(Guid NetUidTag);
         void ChangeTag(SupTag tag);

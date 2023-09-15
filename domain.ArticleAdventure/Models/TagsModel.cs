@@ -13,6 +13,7 @@ namespace domain.ArticleAdventure.Models
         public List<SupTag> SupTags { get; set; }
 
         public MainTag AddMainTag { get; set; }
+        public MainTag SelectMainTag { get; set; }
 
         public SupTag AddSupTag { get; set; }
         public Guid ChangeMainTagsNetUid{ get; set; }

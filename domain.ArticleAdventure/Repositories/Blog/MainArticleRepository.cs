@@ -44,7 +44,8 @@ namespace domain.ArticleAdventure.Repositories.Blog
             "ON supTags.ID = articleTags.SupTagId " +
             "WHERE mainArticle.Deleted = 0 " +
             "AND authorArticle.Deleted = 0 " +
-            "AND articleTags.Deleted = 0 ",
+            "AND articleTags.Deleted = 0 " +
+			"AND supTags.Deleted = 0",
                 (mainArticle, article, articleMainTag, supTag) =>
                 {
                     if (IdMainArticleTags.Any(x => x.Equals(articleMainTag.MainArticleId)))
@@ -114,7 +115,8 @@ namespace domain.ArticleAdventure.Repositories.Blog
             "ON supTags.ID = articleTags.SupTagId " +
             "WHERE mainArticle.Deleted = 0 " +
             "AND authorArticle.Deleted = 0 " +
-            "AND articleTags.Deleted = 0 ",
+            "AND articleTags.Deleted = 0 " +
+            "AND supTags.Deleted = 0",
                 (mainArticle, article, articleMainTag, supTag) =>
                 {
                     if (mainArticles.Any(c => c.Id.Equals(mainArticle.Id)))
@@ -180,6 +182,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
            "WHERE mainArticle.Deleted = 0 " +
            "AND authorArticle.Deleted = 0 " +
            "AND articleTags.Deleted = 0 " +
+           "AND supTags.Deleted = 0" +
            "AND mainArticle.ID = @ID",
                (mainArticle, article, articleMainTag, supTag) =>
                {
@@ -241,6 +244,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
            "WHERE mainArticle.Deleted = 0 " +
            "AND authorArticle.Deleted = 0 " +
            "AND articleTags.Deleted = 0 " +
+           "AND supTags.Deleted = 0" +
            "AND mainArticle.NetUID = @NetUid",
                (mainArticle, article, articleMainTag, supTag) =>
                {
