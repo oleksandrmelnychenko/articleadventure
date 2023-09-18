@@ -12,6 +12,7 @@ namespace service.ArticleAdventure.Services.Blog.Contracts
     {
         Task<long> AddArticle(MainArticle blog,IFormFile PhotoMainArticle);
         Task<List<MainArticle>> GetAllArticles();
+        Task<List<MainArticle>> GetAllFilterDateTimeArticles();
         Task<List<MainArticle>> GetAllArticlesFilterSupTags(List<MainArticleTags> mainTags);
         Task<long> Update(MainArticle blogs, IFormFile filePhotoMainArticle);
         Task Remove(Guid netUid);

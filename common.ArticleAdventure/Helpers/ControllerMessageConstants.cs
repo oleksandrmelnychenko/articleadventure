@@ -38,6 +38,7 @@ namespace common.ArticleAdventure.Helpers
             public const string RemoveArticle = "Status remove successfully";
             public const string UpdateArticle = "Status update successfully";
             public const string GetAllArticle = "Get All MainArticle successfully";
+            public const string GetAllFilterDateTimeArticles = "Get All Filtered DateTime MainArticle successfully";
             public const string GetUserAllArticle = "Get All User MainArticle successfully";
             public const string GetUserStripePayments = "Get All StripePayments successfully";
             public const string GetMainArticle = "Get MainArticle successfully";

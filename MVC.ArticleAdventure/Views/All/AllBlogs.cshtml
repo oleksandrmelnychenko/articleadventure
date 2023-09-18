@@ -1,13 +1,13 @@
 ﻿@model domain.ArticleAdventure.Models.AllArticlesModel
-<div class="container_content" style="display:flex; width:1200px;">
+<div class="container_content" style="display:flex; width:1450px;">
     <div class="list_pay" style="margin-right: 20px;">
-       
-            <div class="archicle_info_item sticky price_item_container">
+
+        <div class="archicle_info_item sticky price_item_container">
             <div class="controls" style="width: 200px;">
                 @foreach (var MainTag in Model.ArticleTags)
                 {
                     <div>
-                            <h5>@MainTag.Name</h5>
+                        <h5>@MainTag.Name</h5>
                         @foreach (var SubTag in MainTag.SubTags)
                         {
                             <li>
@@ -20,18 +20,18 @@
                                 else
                                 {
                                     <span>
-                                        <input type="checkbox" value="true" onclick="location.href='@Url.Action("IsSelectFilterSupTag", "All",new {IsSelectSupTagsNetUid = SubTag.NetUid})'"  />
+                                        <input type="checkbox" value="true" onclick="location.href='@Url.Action("IsSelectFilterSupTag", "All",new {IsSelectSupTagsNetUid = SubTag.NetUid})'" />
                                     </span>
                                 }
                                 <span style="color:@SubTag.Color">#</span>
                                 <span>@SubTag.Name</span>
                             </li>
                         }
-                    </div>     
+                    </div>
                 }
-                </div>
             </div>
-        
+        </div>
+
     </div>
     <div class="articles_list_container">
         @foreach (var Article in Model.mainArticles)
@@ -82,19 +82,87 @@
                         <span>@Article.Price</span>$
                     </a>
                 </div>
-                
-               @* <div class="item_controls">
-                    <div class="controls_wrapper">
-                        <input formmethod="get"
-                               class="delete"
-                               type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
-                        <input formmethod="get"
-                               class="change"
-                               type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeMainArticle", "All",new {netUidArticle =Article.NetUid})'" />
-                    </div>
-                </div>*@
+
+                @* <div class="item_controls">
+            <div class="controls_wrapper">
+            <input formmethod="get"
+            class="delete"
+            type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
+            <input formmethod="get"
+            class="change"
+            type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeMainArticle", "All",new {netUidArticle =Article.NetUid})'" />
+            </div>
+            </div>*@
             </article>
         }
     </div>
-    
+    <div class="list_pay" style="margin-left: 20px;">
+
+        <div class="archicle_info_item sticky price_item_container">
+            <div class="controls" style="width: 250px;">
+                <div>Recent posts</div>
+                @foreach (var Article in Model.mainArticlesDateTime.Take(4))
+                {
+                    
+                    <div>
+                        <div>
+
+                            <div style="display:flex;">
+                                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
+                                    <img src="@Article.ImageUrl" style="    width: 70px; height: 70px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                                </a>
+                                <div>
+                                    <div>@Article.Title</div>
+                                    <div class="created">
+                                        @Article.Created
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div>
+                                    <ol>
+
+                                        @foreach (var tag in Article.ArticleTags)
+                                        {
+                                            <li style="display:flex">
+                                                <span style="color:@tag.SupTag.Color;">#</span>
+                                                <span>@tag.SupTag.Name</span>
+                                            </li>
+                                        }
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @*@foreach (var MainTag in Model.ArticleTags)
+                {
+                <div>
+                <h5>@MainTag.Name</h5>
+                @foreach (var SubTag in MainTag.SubTags)
+                {
+                <li>
+                @if (SubTag.IsSelected)
+                {
+                <span>
+                <input type="checkbox" value="true" onclick="location.href='@Url.Action("RemoveFilterlSupTag", "All",new {RemoveSupTagsNetUid = SubTag.NetUid})'" checked />
+                </span>
+                }
+                else
+                {
+                <span>
+                <input type="checkbox" value="true" onclick="location.href='@Url.Action("IsSelectFilterSupTag", "All",new {IsSelectSupTagsNetUid = SubTag.NetUid})'" />
+                </span>
+                }
+                <span style="color:@SubTag.Color">#</span>
+                <span>@SubTag.Name</span>
+                </li>
+                }
+                </div>
+                }*@
+            </div>
+        </div>
+
+    </div>
 </div>

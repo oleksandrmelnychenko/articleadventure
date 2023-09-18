@@ -106,6 +106,35 @@ namespace MVC.ArticleAdventure.Services
                 {
                     var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
                     result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode; 
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<ExecutionResult<List<MainArticle>>> GetAllFilterDateTimeArticles()
+        {
+            var result = new ExecutionResult<List<MainArticle>>();
+
+            try
+            {
+                var response = await _httpClient.GetAsync(PathMainArticle.ALL_ARTICLE_FILTERED_DATE_TIME);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<MainArticle>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
                     result.Error.StatusCode = errorResponse.StatusCode;
                     result.Error.Message = errorResponse.Message;
                 }
@@ -117,6 +146,8 @@ namespace MVC.ArticleAdventure.Services
 
             return result;
         }
+
+        
         public async Task<List<MainArticle>> GetAllArticles()
         {
             HttpResponseMessage response = await _httpClient.GetAsync(PathMainArticle.GET_ALL_ARTICLE);

@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace domain.ArticleAdventure.Models
 {
-    public class AllArticlesModel
+    public class LayoutModel
     {
-        public List<AuthorArticle> Articles { get; set; }
-
         public List<MainArticle> mainArticles { get; set; }
-        public List<MainArticle> mainArticlesDateTime { get; set; }
-        public List<MainTag> ArticleTags { get; set; }
-        public Guid NetUid { get; set; }
     }
 }

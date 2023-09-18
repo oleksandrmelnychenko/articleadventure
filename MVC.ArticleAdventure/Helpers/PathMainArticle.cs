@@ -9,6 +9,8 @@
         public const string GET_SUP_ARTICLE = "/api/v1/article/get/suparticle";
         public const string GET_ARTICLE = "/api/v1/article/get";
         public const string GET_ALL_ARTICLE = "/api/v1/article/all";
+        public const string ALL_ARTICLE_FILTERED_DATE_TIME = "/api/v1/article/all/filtered/datetime";
+
         public const string GET_ALL_ARTICLE_FILTER_SUP_TAGS = "/api/v1/article/get/all/suptag";
         public const string REMOVE_ARTICLE = "/api/v1/article/remove";
         public const string UPDATE_ARTICLE = "/api/v1/article/update";

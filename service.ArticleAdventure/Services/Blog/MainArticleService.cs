@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace service.ArticleAdventure.Services.Blog
@@ -103,6 +104,14 @@ namespace service.ArticleAdventure.Services.Blog
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                 {
                     return _mainRepositoryFactory.New(connection).GetAllArticlesFilterSupTag(mainTags);
+                }
+            });
+        public Task<List<MainArticle>> GetAllFilterDateTimeArticles() =>
+            Task.Run(() =>
+            {
+                using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                {
+                    return _mainRepositoryFactory.New(connection).GetAllArticles().OrderByDescending(article => article.Created).ToList();
                 }
             });
         public Task<List<MainArticle>> GetAllArticles() =>
@@ -243,6 +252,6 @@ namespace service.ArticleAdventure.Services.Blog
                 }
             });
 
-       
+        
     }
 } 

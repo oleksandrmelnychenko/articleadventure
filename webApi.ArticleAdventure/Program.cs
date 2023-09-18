@@ -11,8 +11,6 @@ using domain.ArticleAdventure.Repositories;
 using domain.ArticleAdventure.Repositories.Blog;
 using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -227,7 +225,7 @@ IDbConnectionFactory connectionFactory,
         };
 
         using (IDbConnection connection = connectionFactory.NewSqlConnection())
-        {
+        { 
             IUserProfileRepository userProfileRepository =
                 identityRepositoriesFactory
                     .NewUserProfileRepository(connection);

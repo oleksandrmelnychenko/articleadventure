@@ -1,6 +1,8 @@
 ﻿@using MVC.ArticleAdventure.Helpers;
+@using MVC.ArticleAdventure.Services.Contract;
 @using domain.ArticleAdventure.Entities;
 @using domain.ArticleAdventure.Helpers;
+@inject IMainArticleService serviceArticle;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,13 +15,16 @@
 </head>
 <body>
     @{
+
+        var articles = await serviceArticle.GetAllFilterDateTimeArticles();
         var listAuthorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(Context.Session, SessionStoragePath.CART_ARTICLE);
         var userProfile = SessionExtensionsMVC.Get<UserProfile>(Context.Session, SessionStoragePath.USER);
+        //SessionStoragePath.MAIN_ARTICLES_LAYOUT
 
     }
     @{
 
-      
+
         <header>
             <div class="header_container">
                 <ul class="header_menu">
@@ -57,7 +62,8 @@
                         @if (listAuthorArticle != null)
                         {
                             <div class="count">@listAuthorArticle.Count()</div>
-                        } else
+                        }
+                        else
                         {
                             <div class="count">0</div>
                         }
@@ -126,11 +132,59 @@
                 </div>
             }
 
-            
+
         </header>
         <div class="body_container">
             @RenderBody()
         </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <footer style="height: 400px; box-shadow: 0 0 10px -6px #222; background-color: #fff;">
+                <div style="border-left: 0;border-right: 0;">
+                    <div style="display:flex">
+                        <div></div>
+                        <div style="margin-left: 100px; margin-top: 50px;">
+                            <div>Latest Articles</div>
+                            @foreach (var Article in articles.Data.Take(3))
+                            {
+                                <div>
+                                    <div>
+
+                                        <div style="display:flex;">
+                                            <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
+                                                <img src="@Article.ImageUrl" style="    width: 70px; height: 70px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                                            </a>
+                                            <div>
+                                                <div>@Article.Title</div>
+                                                <div class="created">
+                                                    @Article.Created
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <ol>
+
+                                                    @foreach (var tag in Article.ArticleTags)
+                                                    {
+                                                        <li style="display:flex">
+                                                            <span style="color:@tag.SupTag.Color;">#</span>
+                                                            <span>@tag.SupTag.Name</span>
+                                                        </li>
+                                                    }
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div></div>
+                    </div>
+                </div>
+            </footer>
+        }
+
     }
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
     {
@@ -150,7 +204,7 @@
             if (errorMessage) {
                 errorMessage.style.display = 'none';
             }
-        }, 5000); 
+        }, 5000);
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

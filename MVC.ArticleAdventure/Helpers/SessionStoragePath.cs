@@ -11,5 +11,6 @@
         public const string CHOOSE_FILTER_SUP_TAGS = "FiltersupTags";
         public const string CART_ARTICLE = "cartArticle";
         public const string USER = "User";
+        public const string MAIN_ARTICLES_LAYOUT = "MainArticleLayout";
     }
 }

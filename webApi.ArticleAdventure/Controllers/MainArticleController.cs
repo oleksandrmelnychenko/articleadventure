@@ -22,7 +22,7 @@ namespace webApi.ArticleAdventure.Controllers
         [HttpPost]
         [AssignActionRoute(ArticleSegments.UPDATE)]
         public async Task<IActionResult> Update([FromForm] string article, [FromForm] IFormFile filePhotoMainArticle)
-        { 
+        {
             try
             {
                 MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
@@ -43,6 +43,23 @@ namespace webApi.ArticleAdventure.Controllers
             {
                 MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
                 return Ok(SuccessResponseBody(await _mainArticleService.AddArticle(articleDeserialize, filePhotoMainArticle), ControllerMessageConstants.ArticlesMessage.AddMainArticle));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+
+
+
+        [HttpGet]
+        [AssignActionRoute(ArticleSegments.ALL_ARTICLE_FILTERED_DATE_TIME)]
+        public async Task<IActionResult> GetAllFilterDateTimeArticles()
+        {
+            try
+            {
+                return Ok(SuccessResponseBody(await _mainArticleService.GetAllFilterDateTimeArticles(), ControllerMessageConstants.ArticlesMessage.GetAllFilterDateTimeArticles));
             }
             catch (Exception exc)
             {
@@ -83,7 +100,7 @@ namespace webApi.ArticleAdventure.Controllers
 
         [HttpGet]
         [AssignActionRoute(ArticleSegments.REMOVE_ARTICLE)]
-        public async Task<IActionResult> EditArticle (Guid netUidArticle)
+        public async Task<IActionResult> EditArticle(Guid netUidArticle)
         {
             try
             {
@@ -128,7 +145,7 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
 
-        
+
 
         [HttpGet]
         [AssignActionRoute(ArticleSegments.GET_USER_ALL_STRIPE_PAYMENTS)]

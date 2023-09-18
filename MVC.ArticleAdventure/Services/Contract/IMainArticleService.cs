@@ -12,6 +12,7 @@ namespace MVC.ArticleAdventure.Services.Contract
         public Task<MainArticle> GetArticle(Guid netUidArticle);
         public Task<MainArticle> GetArticle(long id);
         public Task<List<MainArticle>> GetAllArticles();
+        Task<ExecutionResult<List<MainArticle>>> GetAllFilterDateTimeArticles();
         public Task<ExecutionResult<List<MainArticle>>> GetAllArticlesFilterSupTags(List<MainArticleTags> mainArticleTags);
         public Task<ExecutionResult<long>> AddArticle(MainArticle article,IFormFile photoMainArticle);
         public Task<ExecutionResult<long>> Update(MainArticle article, IFormFile photoMainArticle);

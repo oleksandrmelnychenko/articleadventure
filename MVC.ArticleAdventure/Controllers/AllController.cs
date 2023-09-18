@@ -289,7 +289,8 @@ namespace MVC.ArticleAdventure.Controllers
                 }
             }
             var mainArtilces = await _mainArticleService.GetAllArticles();
-
+            var mainArtilcesDateTime = await _mainArticleService.GetAllFilterDateTimeArticles();
+            model.mainArticlesDateTime = mainArtilcesDateTime.Data;
             if (sessionStorageMainTags != null && sessionStorageMainTags.Count() != 0)
             {
                 foreach (var mainArticle in mainArtilces)
