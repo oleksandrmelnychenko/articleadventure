@@ -2,6 +2,7 @@
 using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Mvc;
 using MVC.ArticleAdventure.Helpers;
@@ -40,6 +41,7 @@ namespace MVC.ArticleAdventure.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Basket(BasketModel basketModel)
         {
             var email = Request.Cookies[CookiesPath.EMAIL];
@@ -51,6 +53,8 @@ namespace MVC.ArticleAdventure.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+
         public async Task<IActionResult> RemoveFavoriteArticle(Guid netUidArticle)
         {
             var listAuthorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(HttpContext.Session, SessionStoragePath.CART_ARTICLE);
@@ -71,6 +75,7 @@ namespace MVC.ArticleAdventure.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> SetСartArticle(Guid netUidArticle)
         {
             var article = await _mainArticleService.GetArticle(netUidArticle);
@@ -93,6 +98,8 @@ namespace MVC.ArticleAdventure.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+
         public async Task<IActionResult> BuyNow(Guid netUidBuyArticle)
         {
             var article = await _mainArticleService.GetArticle(netUidBuyArticle);
@@ -105,6 +112,7 @@ namespace MVC.ArticleAdventure.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> BuySup(Guid netUidBuyArticle)
         {
             var article = await _mainArticleService.GeSupArticle(netUidBuyArticle);

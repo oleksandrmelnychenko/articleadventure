@@ -1,30 +1,144 @@
-﻿@model domain.ArticleAdventure.Models.IndexModel
+﻿@model domain.ArticleAdventure.Models.AllArticlesModel
+<div class="container_content" style="display:flex; width:1450px;">
+    <div class="list_pay" style="margin-right: 20px;">
 
-@{
-    ViewData["Title"] = "Home Page";
-}
+        <div class="archicle_info_item sticky price_item_container" style="padding: 50px 0px;">
+            <div class="controls" style="width: 320px;">
+                @foreach (var MainTag in Model.ArticleTags)
+                {
+                    <div>
+                        <div style="display:flex;">
+                            <div style="background:@MainTag.Color; width: 5px; height: auto;"></div>
+                            <h5 style="font-size: 24px; margin-left: 20px;">@MainTag.Name</h5>
+                        </div>
+                        @foreach (var SubTag in MainTag.SubTags)
+                        {
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+                            <li style="list-style: none; display:flex; margin-left: 40px;padding: 5px 0px;">
+                                @if (SubTag.IsSelected)
+                                {
+                                    <span style="margin-left: 5px;">
+                                        <input type="checkbox" value="true" onclick="location.href='@Url.Action("RemoveFilterlSupTag", "All",new {RemoveSupTagsNetUid = SubTag.NetUid})'" checked />
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="margin-left: 5px;">
+                                        <input type="checkbox" value="true" onclick="location.href='@Url.Action("IsSelectFilterSupTag", "All",new {IsSelectSupTagsNetUid = SubTag.NetUid})'" />
+                                    </span>
+                                }
+                                <span style="color:@SubTag.Color;padding-left: 8px;font-size: 14px;">#</span>
+                                <span style="padding-right: 8px;font-size: 14px;">@SubTag.Name</span>
+                            </li>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="articles_list_container">
+        @foreach (var Article in Model.mainArticles)
+        {
+
+            <article class="article_item">
+                <div class="item_container">
+
+                    <div class="item_header">
+                        <div class="img">
+                            <img src="@Article.ImageUrl" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                        </div>
+                        <div class="title_container">
+                            <div class="title">@Article.Title</div>
+                            <div class="created">
+                                @Article.Created
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item_body">
+                        <p>
+                            @Article.Description
+                        </p>
+
+
+                        <div class="item_tags">
+                            <ol>
+
+                                @foreach (var tag in Article.ArticleTags)
+                                {
+                                    <li>
+                                        <span style="color:@tag.SupTag.Color;">#</span>
+                                        <span>@tag.SupTag.Name</span>
+                                    </li>
+                                }
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_btn">
+                    Continue Reading
+                </a>
+
+                <div class="priceBox_style">
+                    <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_price">
+                        <span>@Article.Price</span>$
+                    </a>
+                </div>
+
+                @* <div class="item_controls">
+            <div class="controls_wrapper">
+            <input formmethod="get"
+            class="delete"
+            type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
+            <input formmethod="get"
+            class="change"
+            type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeMainArticle", "All",new {netUidArticle =Article.NetUid})'" />
+            </div>
+            </div>*@
+            </article>
+        }
+    </div>
+    <div class="list_pay" style="margin-left: 20px;">
+
+        <div class="archicle_info_item sticky price_item_container">
+            <div class="controls" style="width: 250px;">
+                <h4 style="display:flex;font-size: 21px;">
+                    <span>Recent posts</span>
+                    <div style=" height: 2px;
+                         width: 100px;
+                         background:  var(--epcl-black-color);
+                         content: '';
+                         -webkit-box-flex: 1;
+                         flex: 1 1 auto;
+                         margin-left: 15px;
+                         min-width: 30px;
+                         align-self: center;"></div>
+                </h4>
+                @foreach (var Article in Model.mainArticlesDateTime.Take(4))
+                {
+
+                    <div style="margin-bottom: 20px;">
+                        <div>
+                            <div style="display:flex;">
+                                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
+                                    <img src="@Article.ImageUrl" style="    width: 70px; height: 70px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                                </a>
+                                <div>
+                                    <h4 style="font-size:15px;">@Article.Title</h4>
+                                    <div style="font-size:12px;" class="created">
+                                        @Article.Created
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+
 </div>
-
-
-<script>
-    //document.addEventListener("Loaded", function () {
-    //    saveToLocalStorage();
-    //    //var myData = localStorage.getItem("Payments");
-    //    //if (myData) {
-    //    //    // Знайдено дані в localStorage, відобразіть їх на сторінці
-    //    //    document.getElementById("PaymentsContainer").innerText = myData;
-    //    //} else {
-    //    //    // Даних в localStorage не знайдено
-    //    //    document.getElementById("PaymentsContainer").innerText = "Дані не знайдено в localStorage.";
-    //    //}
-    //});
-    //function saveToLocalStorage() {
-    //    // JavaScript code to save data to localStorage
-    //    localStorage.setItem("Payments", "");
-    //}
-
-</script>
+@Html.Partial("_FooterPanel")

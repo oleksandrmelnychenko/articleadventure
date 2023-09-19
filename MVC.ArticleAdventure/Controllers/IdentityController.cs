@@ -40,7 +40,11 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login()
         {
-
+           
+            if (UserRoleHelper.IsUserRole(User.Claims, "User"))
+            {
+                return Redirect("~/");
+            }
             return View();
         }
         [HttpPost]
@@ -56,7 +60,7 @@ namespace MVC.ArticleAdventure.Controllers
             if (response.IsSuccess)
             {
                 var user = await _authenticationService.GetProfile(response.Data.UserNetUid);
-                
+
                 if (user.IsSuccess)
                 {
                     Response.Cookies.Append(CookiesPath.USER_NAME, user.Data.UserName);
@@ -71,7 +75,7 @@ namespace MVC.ArticleAdventure.Controllers
                         Response.Cookies.Append(CookiesPath.INFORMATION_PROFILE, user.Data.InformationAccount);
                 }
                 await SignIn(response.Data);
-                
+
                 return Redirect("/");
             }
             else
@@ -79,6 +83,63 @@ namespace MVC.ArticleAdventure.Controllers
                 await SetErrorMessage(response.Error.Message);
                 return View(userLogin);
             }
+        }
+
+        [HttpGet]
+        [Route("CreateAccount")]
+        public async Task<IActionResult> CreateAccount()
+        {
+            if (UserRoleHelper.IsUserRole(User.Claims, "User"))
+            {
+                return Redirect("~/");
+            }
+            RegisterModel registerModel = new RegisterModel { IsEmailConfirmed = false };
+            return View(registerModel);
+        }
+        [HttpPost]
+        [Route("CreateAccount")]
+        public async Task<IActionResult> CreateAccount(RegisterModel registerModel)
+        {
+            if (UserRoleHelper.IsUserRole(User.Claims, "User"))
+            {
+                return Redirect("~/");
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(registerModel);
+            }
+            var result = await _userProfileService.CreateAccount(registerModel);
+            if (result.IsSuccess)
+            {
+                registerModel.IsEmailConfirmed = true;
+                return View(registerModel);
+            }
+            else
+            {
+                await SetErrorMessage(result.Error.Message);
+                return View(registerModel);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("EmailConfirmation")]
+        public async Task<IActionResult> EmailConfirmation(string access_token, string userId)
+        {
+            if (UserRoleHelper.IsUserRole(User.Claims, "User"))
+            {
+                return Redirect("~/");
+            }
+            var resultSucceeded = await _userProfileService.EmailConformation(access_token, userId);
+            if (resultSucceeded)
+            {
+                return View();
+            }
+            else
+            {
+                return View();
+            }
+
         }
         [NonAction]
         private async Task SignIn(CompleteAccessToken response)
@@ -107,50 +168,6 @@ namespace MVC.ArticleAdventure.Controllers
         private static JwtSecurityToken GetTokenFormat(string jwtToken)
         {
             return new JwtSecurityTokenHandler().ReadToken(jwtToken) as JwtSecurityToken;
-        }
-        [HttpGet]
-        [Route("CreateAccount")]
-        public async Task<IActionResult> CreateAccount()
-        {
-            RegisterModel registerModel = new RegisterModel { IsEmailConfirmed = false };
-            return View(registerModel);
-        }
-        [HttpPost]
-        [Route("CreateAccount")]
-        public async Task<IActionResult> CreateAccount(RegisterModel registerModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(registerModel);
-            }
-            var result = await _userProfileService.CreateAccount(registerModel);
-            if (result.IsSuccess)
-            {
-                registerModel.IsEmailConfirmed = true;
-                return View(registerModel);
-            }
-            else
-            {
-                await SetErrorMessage(result.Error.Message);
-                return View(registerModel);
-            }
-        }
-
-
-        [HttpGet]
-        [Route("EmailConfirmation")]
-        public async Task<IActionResult> EmailConfirmation(string access_token, string userId)
-        {
-            var resultSucceeded = await _userProfileService.EmailConformation(access_token, userId);
-            if (resultSucceeded)
-            {
-                return View();
-            }
-            else
-            {
-                return View();
-            }
-
         }
     }
 }

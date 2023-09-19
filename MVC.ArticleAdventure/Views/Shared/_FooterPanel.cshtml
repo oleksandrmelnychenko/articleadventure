@@ -1,0 +1,50 @@
+﻿@using MVC.ArticleAdventure.Services.Contract;
+@inject IMainArticleService serviceArticle;
+
+@{
+
+    var articles = await serviceArticle.GetAllFilterDateTimeArticles();
+}
+
+    <footer style="height: 360px; box-shadow: 0 0 10px -6px #222; background-color: #fff;">
+        <div style="border-left: 0;border-right: 0;">
+            <div style="display:flex">
+                <div></div>
+                <div style="margin-left: 100px; margin-top: 50px;">
+                    <h4 style="display:flex">
+                    <span >Latest Articles</span>
+                    <div style=" height: 2px;
+                         width: 100px;
+                         background:  var(--epcl-black-color);
+                         content: '';
+                         -webkit-box-flex: 1;
+                         flex: 1 1 auto;
+                         margin-left: 15px;
+                         min-width: 30px;
+                         align-self: center;"></div>
+                    </h4> 
+                    @foreach (var Article in articles.Data.Take(3))
+                    {
+                    <div style="margin-bottom: 20px;">
+                            <div>
+
+                                <div style="display:flex;">
+                                    <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
+                                        <img src="@Article.ImageUrl" style="    width: 70px; height: 70px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                                    </a>
+                                    <div>
+                                        <h4 style="font-size:15px;">@Article.Title</h4>
+                                    <div style="font-size:12px;" class="created">
+                                            @Article.Created
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div></div>
+            </div>
+        </div>
+    </footer>

@@ -135,7 +135,7 @@ namespace MVC.ArticleAdventure.Controllers
                 HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_ARTICLE);
                 HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_TAGS);
                 await SetSuccessMessage(SuccessMessages.UpdateArticle);
-                return Redirect("~/All/AllBlogs");
+                return Redirect("~/");
             }
             else
             {
@@ -265,54 +265,6 @@ namespace MVC.ArticleAdventure.Controllers
             return Redirect($"~/ChangeMainArticle?netUidArticle={mainArticle.NetUid}");
         }
 
-        [Authorize]
-        public async Task<IActionResult> AllBlogs()
-        {
-           var foo =  User.GetUserToken();
-
-            var _foo = User.Claims;
-
-            List<MainTag> mainTags = await _tagService.GetAllTags();
-            List<MainArticleTags> mainArticleTags = new List<MainArticleTags>();
-            AllArticlesModel model = new AllArticlesModel { ArticleTags = mainTags };
-
-            var sessionStorageMainTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHOOSE_FILTER_SUP_TAGS);
-
-            if (sessionStorageMainTags != null && sessionStorageMainTags.Count() != 0)
-            {
-
-                foreach (var supTag in sessionStorageMainTags)
-                {
-                    mainTags
-                    .SelectMany(mainTag => mainTag.SubTags)
-                    .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
-                }
-            }
-            var mainArtilces = await _mainArticleService.GetAllArticles();
-            var mainArtilcesDateTime = await _mainArticleService.GetAllFilterDateTimeArticles();
-            model.mainArticlesDateTime = mainArtilcesDateTime.Data;
-            if (sessionStorageMainTags != null && sessionStorageMainTags.Count() != 0)
-            {
-                foreach (var mainArticle in mainArtilces)
-                {
-                    foreach (var tag in mainArticle.ArticleTags)
-                    {
-                        if (sessionStorageMainTags.Any(x => x.Id == tag.SupTagId))
-                        {
-                            mainArticleTags.Add(tag);
-                        }
-
-                    }
-                }
-                var mainArticleFilter = await _mainArticleService.GetAllArticlesFilterSupTags(mainArticleTags);
-                model.mainArticles = mainArticleFilter.Data;
-            }
-            else
-            {
-                model.mainArticles = mainArtilces;
-            }
-            return View(model);
-        }
 
         [HttpGet]
         [Route("IsSelectFilterSupTag")]
@@ -330,7 +282,7 @@ namespace MVC.ArticleAdventure.Controllers
             }
             filterSupTags.Add(findSupTag);
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHOOSE_FILTER_SUP_TAGS, filterSupTags);
-            return Redirect("~/All/AllBlogs");
+            return Redirect("~/");
         }
 
         [HttpGet]
@@ -345,14 +297,14 @@ namespace MVC.ArticleAdventure.Controllers
             filterSupTags.Remove(findSupTag);
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHOOSE_FILTER_SUP_TAGS, filterSupTags);
 
-            return Redirect("~/All/AllBlogs");
+            return Redirect("~/");
         }
 
         [Authorize]
         public async Task<IActionResult> Remove(Guid netUidArticle)
         {
             await _mainArticleService.Remove(netUidArticle);
-            return Redirect("~/All/AllBlogs");
+            return Redirect("~/");
         }
 
         [HttpGet]
@@ -364,26 +316,30 @@ namespace MVC.ArticleAdventure.Controllers
 
             var userGuidClaim = User.FindFirst("Guid");
             var email = Request.Cookies[CookiesPath.EMAIL];
-            var favoriteArticle = await _userService.GetFavoriteArticle(Guid.Parse(userGuidClaim.Value), NetUidArticle);
-
-            if (favoriteArticle.IsSuccess)
+            if (UserRoleHelper.IsUserRole(User.Claims,"User"))
             {
-                if (favoriteArticle.Data != null)
+                var favoriteArticle = await _userService.GetFavoriteArticle(Guid.Parse(userGuidClaim.Value), NetUidArticle);
+
+                if (favoriteArticle.IsSuccess)
                 {
-                    infoArticleModel.netUidFavoriteArticle = favoriteArticle.Data.NetUid;
-                    infoArticleModel.IsFavoriteArticle = true;
+                    if (favoriteArticle.Data != null)
+                    {
+                        infoArticleModel.netUidFavoriteArticle = favoriteArticle.Data.NetUid;
+                        infoArticleModel.IsFavoriteArticle = true;
+                    }
+                }
+                var payments = await _stripeService.CheckPaymentsHaveUser(email);
+
+                var articles = ConvertPaymentsIntoArticles.Convert(payments.Data);
+                var checkArticle = payments.Data.Where(x => x.MainArticleId == article.Id).ToList();
+
+                if (checkArticle.Count() != 0)
+                {
+                    return Redirect($"~/GetInformationArticle/?NetUidArticle={article.NetUid}");
                 }
             }
 
-            var payments = await _stripeService.CheckPaymentsHaveUser(email);
-
-            var articles = ConvertPaymentsIntoArticles.Convert(payments.Data);
-            var checkArticle = payments.Data.Where(x => x.MainArticleId == article.Id).ToList();
-
-            if (checkArticle.Count() != 0)
-            {
-                return Redirect($"~/GetInformationArticle/?NetUidArticle={article.NetUid}");
-            }
+            
             infoArticleModel.MainArticle = article;
             return View(infoArticleModel);
         }

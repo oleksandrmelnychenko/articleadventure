@@ -5,6 +5,7 @@ using common.ArticleAdventure.WebApi.RoutingConfiguration;
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
@@ -40,12 +41,14 @@ namespace MVC.ArticleAdventure.Controllers
 
         [HttpGet]
         [Route("MyLists")]
+        [Authorize]
         public async Task<IActionResult> MyLists()
         {
             return View();
         }
         [HttpGet]
         [Route("Profile")]
+        [Authorize]
         public async Task<IActionResult> Profile(Guid netUidProfile)
         {
             if (netUidProfile != Guid.Empty)
@@ -64,6 +67,7 @@ namespace MVC.ArticleAdventure.Controllers
         }
         [HttpGet]
         [Route("EditProfile")]
+        [Authorize]
         public async Task<IActionResult> EditProfile()
         {
             var userName = Request.Cookies[CookiesPath.USER_NAME];
@@ -76,6 +80,7 @@ namespace MVC.ArticleAdventure.Controllers
         }
         [HttpPost]
         [Route("EditProfile")]
+        [Authorize]
         public async Task<IActionResult> EditProfile(EditProfileModel editProfileModel)
         {
             var guidUser = User.FindFirst("Guid");
@@ -91,6 +96,7 @@ namespace MVC.ArticleAdventure.Controllers
 
         [HttpGet]
         [Route("MyFavoriteArticle")]
+        [Authorize]
         public async Task<IActionResult> MyFavoriteArticle()
         {
             MyFavoriteArticleModel myFavoriteArticleModel = new MyFavoriteArticleModel();
@@ -105,6 +111,7 @@ namespace MVC.ArticleAdventure.Controllers
 
         [HttpGet]
         [Route("HistoryBuy")]
+        [Authorize]
         public async Task<IActionResult> HistoryBuy()
         {
             HistoryBuyModel historyBuyModel = new HistoryBuyModel();
@@ -116,6 +123,7 @@ namespace MVC.ArticleAdventure.Controllers
 
         [HttpGet]
         [Route("AccountSecurity")]
+        [Authorize]
         public async Task<IActionResult> AccountSecurity()
         {
             var user = SessionExtensionsMVC.Get<UserProfile>(HttpContext.Session, SessionStoragePath.USER);
@@ -147,6 +155,7 @@ namespace MVC.ArticleAdventure.Controllers
         }
         [HttpGet]
         [Route("SetFavoriteArticle")]
+        [Authorize]
         public async Task<IActionResult> SetFavoriteArticle(Guid netUidArticle)
         {
             var userGuidClaim = User.FindFirst("Guid");
@@ -166,6 +175,7 @@ namespace MVC.ArticleAdventure.Controllers
 
         [HttpGet]
         [Route("RemoveFavoriteArticle")]
+        [Authorize]
         public async Task<IActionResult> RemoveFavoriteArticle(Guid netUidFavoriteArticle,Guid netUidArticle)
         {
             var favoriteArticle = await _userService.RemoveFavoriteArticle( netUidFavoriteArticle);

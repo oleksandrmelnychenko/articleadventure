@@ -2,7 +2,6 @@
 @using MVC.ArticleAdventure.Services.Contract;
 @using domain.ArticleAdventure.Entities;
 @using domain.ArticleAdventure.Helpers;
-@inject IMainArticleService serviceArticle;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,44 +15,35 @@
 <body>
     @{
 
-        var articles = await serviceArticle.GetAllFilterDateTimeArticles();
         var listAuthorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(Context.Session, SessionStoragePath.CART_ARTICLE);
         var userProfile = SessionExtensionsMVC.Get<UserProfile>(Context.Session, SessionStoragePath.USER);
-        //SessionStoragePath.MAIN_ARTICLES_LAYOUT
-
     }
     @{
 
 
         <header>
             <div class="header_container">
-                <ul class="header_menu">
-
-                    @{
-                        if (!User.Identity.IsAuthenticated)
-                        {
+                <ul class="header_menu" style="margin-right: auto;">
                             <li>
-                                <a asp-area="" asp-controller="Identity" asp-action="Login">Login</a>
+                                <a asp-area="" asp-controller="Home" asp-action="Index">Article Adventure</a>
                             </li>
-                            <li>
-                                <a asp-area="" asp-controller="Identity" asp-action="CreateAccount">Create Account</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li>
-                                <a asp-area="" asp-controller="All" asp-action="AllBlogs">Article Adventure</a>
-                            </li>
-                        }
-                    }
                 </ul>
             </div>
             @if (User.Identity.IsAuthenticated)
             {
-
-
                 <div class="user_menu_wrapper">
                     <div class="basket">
+                        <a asp-area="" asp-controller="User" asp-action="MyFavoriteArticle">
+                            <svg viewBox="0 0 1024 1024" focusable="false" data-icon="shopping-cart" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="    font-size: 50px; transform: translate(15px, 15px);">
+                            <path d="M326.632,10.346c-38.733,0-74.991,17.537-99.132,46.92c-24.141-29.383-60.399-46.92-99.132-46.92
+                                    C57.586,10.346,0,67.931,0,138.714c0,55.426,33.049,119.535,98.23,190.546c50.162,54.649,104.729,96.96,120.257,108.626l9.01,6.769
+                                    l9.009-6.768c15.53-11.667,70.099-53.979,120.26-108.625C421.95,258.251,455,194.141,455,138.714
+                                    C455,67.931,397.414,10.346,326.632,10.346z" />
+                                                </svg>
+                        </a>
+                    </div>
+                    <div class="basket">
+                       
                         <a asp-area="" asp-controller="Stripe" asp-action="Basket">
                             <svg viewBox="0 0 1024 1024" focusable="false" data-icon="shopping-cart" width="1em" height="1em" fill="currentColor" aria-hidden="true">
                                 <path d="M922.9 701.9H327.4l29.9-60.9 496.8-.9c16.8 0 31.2-12 34.2-28.6l68.8-385.1c1.8-10.1-.9-20.5-7.5-28.4a34.99 34.99 0 00-26.6-12.5l-632-2.1-5.4-25.4c-3.4-16.2-18-28-34.6-28H96.5a35.3 35.3 0 100 70.6h125.9L246 312.8l58.1 281.3-74.8 122.1a34.96 34.96 0 00-3 36.8c6 11.9 18.1 19.4 31.5 19.4h62.8a102.43 102.43 0 00-20.6 61.7c0 56.6 46 102.6 102.6 102.6s102.6-46 102.6-102.6c0-22.3-7.4-44-20.6-61.7h161.1a102.43 102.43 0 00-20.6 61.7c0 56.6 46 102.6 102.6 102.6s102.6-46 102.6-102.6c0-22.3-7.4-44-20.6-61.7H923c19.4 0 35.3-15.8 35.3-35.3a35.42 35.42 0 00-35.4-35.2zM305.7 253l575.8 1.9-56.4 315.8-452.3.8L305.7 253zm96.9 612.7c-17.4 0-31.6-14.2-31.6-31.6 0-17.4 14.2-31.6 31.6-31.6s31.6 14.2 31.6 31.6a31.6 31.6 0 01-31.6 31.6zm325.1 0c-17.4 0-31.6-14.2-31.6-31.6 0-17.4 14.2-31.6 31.6-31.6s31.6 14.2 31.6 31.6a31.6 31.6 0 01-31.6 31.6z"></path>
@@ -105,7 +95,7 @@
                                 </li>
                             </ul>
                         </div>
-                        @if (UserRoleHelper.IsUserRole(User.Claims, "User"))
+                        @if (UserRoleHelper.IsUserRole(User.Claims, "User"))//need set Administrator
                         {
                             <div class="line">
                                 <ul>
@@ -131,60 +121,49 @@
                     </div>
                 </div>
             }
+            else
+            {
+                <div class="user_menu_wrapper">
+                    <div class="basket">
+                        <a asp-area="" asp-controller="Stripe" asp-action="Basket">
+                            <svg viewBox="0 0 1024 1024" focusable="false" data-icon="shopping-cart" width="1em" height="1em" fill="currentCol or" aria-hidden="true">
+                                <path d="M922.9 701.9H327.4l29.9-60.9 496.8-.9c16.8 0 31.2-12 34.2-28.6l68.8-385.1c1.8-10.1-.9-20.5-7.5-28.4a34.99 34.99 0 00-26.6-12.5l-632-2.1-5.4-25.4c-3.4-16.2-18-28-34.6-28H96.5a35.3 35.3 0 100 70.6h125.9L246 312.8l58.1 281.3-74.8 122.1a34.96 34.96 0 00-3 36.8c6 11.9 18.1 19.4 31.5 19.4h62.8a102.43 102.43 0 00-20.6 61.7c0 56.6 46 102.6 102.6 102.6s102.6-46 102.6-102.6c0-22.3-7.4-44-20.6-61.7h161.1a102.43 102.43 0 00-20.6 61.7c0 56.6 46 102.6 102.6 102.6s102.6-46 102.6-102.6c0-22.3-7.4-44-20.6-61.7H923c19.4 0 35.3-15.8 35.3-35.3a35.42 35.42 0 00-35.4-35.2zM305.7 253l575.8 1.9-56.4 315.8-452.3.8L305.7 253zm96.9 612.7c-17.4 0-31.6-14.2-31.6-31.6 0-17.4 14.2-31.6 31.6-31.6s31.6 14.2 31.6 31.6a31.6 31.6 0 01-31.6 31.6zm325.1 0c-17.4 0-31.6-14.2-31.6-31.6 0-17.4 14.2-31.6 31.6-31.6s31.6 14.2 31.6 31.6a31.6 31.6 0 01-31.6 31.6z"></path>
+                            </svg>
+                        </a>
+                        @if (listAuthorArticle != null)
+                        {
+                            <div class="count">@listAuthorArticle.Count()</div>
+                        }
+                        else
+                        {
+                            <div class="count">0</div>
+                        }
+                    </div>
+
+                    <div class="user_menu_icon">
+                        <div></div>
+                    </div>
+
+                    <div class="user_menu_container">
+                            <div class="line">
+                                <ul>
+                                <li>
+                                    <a asp-area="" asp-controller="Identity" asp-action="Login">Login</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="Identity" asp-action="CreateAccount">Create Account</a>
+                                </li>
+                                </ul>
+                            </div>
+                    </div>
+                </div>
+            }
 
 
         </header>
         <div class="body_container">
             @RenderBody()
         </div>
-        @if (User.Identity.IsAuthenticated)
-        {
-            <footer style="height: 400px; box-shadow: 0 0 10px -6px #222; background-color: #fff;">
-                <div style="border-left: 0;border-right: 0;">
-                    <div style="display:flex">
-                        <div></div>
-                        <div style="margin-left: 100px; margin-top: 50px;">
-                            <div>Latest Articles</div>
-                            @foreach (var Article in articles.Data.Take(3))
-                            {
-                                <div>
-                                    <div>
-
-                                        <div style="display:flex;">
-                                            <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
-                                                <img src="@Article.ImageUrl" style="    width: 70px; height: 70px; box-shadow: 0 0 1px red; margin-right: 20px;" />
-                                            </a>
-                                            <div>
-                                                <div>@Article.Title</div>
-                                                <div class="created">
-                                                    @Article.Created
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div>
-                                                <ol>
-
-                                                    @foreach (var tag in Article.ArticleTags)
-                                                    {
-                                                        <li style="display:flex">
-                                                            <span style="color:@tag.SupTag.Color;">#</span>
-                                                            <span>@tag.SupTag.Name</span>
-                                                        </li>
-                                                    }
-                                                </ol>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                        <div></div>
-                    </div>
-                </div>
-            </footer>
-        }
-
     }
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
     {

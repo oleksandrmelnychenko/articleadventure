@@ -6,6 +6,11 @@ namespace MVC.ArticleAdventure.Helpers
     {
         public static bool IsUserRole(IEnumerable<Claim> claims, string role)
         {
+            if (claims == null || !claims.Any())
+            {
+                return false;
+            }
+
             string value = claims.FirstOrDefault(x => x.Type == "role").Value;
 
             if (value == null)
