@@ -5,8 +5,12 @@
         @if (!Model.IsEmailConfirmed)
         {
             <form method="post">
-                <h1>Create Account</h1>
-
+                <h1 class="displayFlexAuth">
+                    <div class="leftBorderLogin"></div>
+                    <span>Create Account</span>
+                    <div class="rightBorderLogin"></div>
+                </h1>
+                
                 <div class="form_control">
                     <div class="control_title">Name:</div>
                     <div class="control_data">
@@ -31,7 +35,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="submit_btn">
+                <button type="submit" class="continueReading_btn">
                     Create
                 </button>
 

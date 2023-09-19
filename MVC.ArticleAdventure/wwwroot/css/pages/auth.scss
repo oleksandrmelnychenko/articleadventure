@@ -1,5 +1,13 @@
 @import '../components/_mixins.scss';
 
+
+
+
+
+
+
+
+
 .auth_page_component {
     background-color: white;
     position: relative;
@@ -25,6 +33,40 @@
         border: {
             radius: 4px;
             width: 1px;
+        }
+
+        .continueReading_btn {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            -moz-transform: translate(-50%, 0);
+            -ms-transform: translate(-50%, 0);
+            -o-transform: translate(-50%, 0);
+            -webkit-transform: translate(0%, 0);
+            transform: translate(0%, 0);
+            color: #fff;
+            font-size: 15px;
+            padding: 8px 25px;
+            letter-spacing: 0.5px;
+            font-family: "Josefin Sans", sans-serif;
+            border: 2px solid var(--epcl-black-color);
+            background-color: var(--epcl-black-color);
+        }
+
+        .continueReading_btn:before {
+            content: "";
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            z-index: 1;
+            position: absolute;
+            transition: all 0.3s ease;
+            border: 1px solid var(--epcl-black-color);
+        }
+
+        .continueReading_btn:hover:before {
+            border-color: #fff;
         }
 
         form {
@@ -63,6 +105,30 @@
 
             .auth {
                 margin-bottom: 0;
+            }
+        }
+
+        .displayFlexAuth {
+            display: flex;
+
+            .rightBorderLogin {
+                height: 2px;
+                background: var(--epcl-black-color);
+                -webkit-box-flex: 1;
+                flex: 1 1 auto;
+                min-width: 30px;
+                align-self: center;
+                margin-left: 5px;
+            }
+
+            .leftBorderLogin {
+                height: 2px;
+                background: var(--epcl-black-color);
+                -webkit-box-flex: 1;
+                flex: 1 1 auto;
+                min-width: 30px;
+                align-self: center;
+                margin-right: 5px;
             }
         }
 
