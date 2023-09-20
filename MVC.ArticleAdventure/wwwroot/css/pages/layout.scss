@@ -219,6 +219,7 @@ header {
     .container_content {
         width: 960px;
         margin: 0 auto;
+        min-height: calc(100vh - 60px);
 
         &.w1260 {
             width: 1260px;
