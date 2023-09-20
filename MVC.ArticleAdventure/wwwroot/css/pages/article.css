@@ -35,7 +35,8 @@ body {
 .archicle_info_item,
 .tag_group_item,
 .basket_page,
-.success_buy_page {
+.success_buy_page,
+.history_page {
   background-color: #fff;
   margin: 0 auto 50px;
   padding: 50px 60px;
@@ -827,7 +828,8 @@ body {
 .sideProfile .line,
 .profile_page .line,
 article.article_item .line,
-.basket_page .line {
+.basket_page .line,
+.history_page .line {
   width: 100%;
   height: 1px;
   border-bottom: 1px dashed #e0e0e0;
@@ -836,7 +838,8 @@ article.article_item .line,
 .sideProfile .line.nLinePrice,
 .profile_page .line.nLinePrice,
 article.article_item .line.nLinePrice,
-.basket_page .line.nLinePrice {
+.basket_page .line.nLinePrice,
+.history_page .line.nLinePrice {
   width: calc(100% - 140px);
 }
 

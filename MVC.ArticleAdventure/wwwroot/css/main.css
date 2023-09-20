@@ -480,7 +480,8 @@ body {
 .archicle_info_item,
 .tag_group_item,
 .basket_page,
-.success_buy_page {
+.success_buy_page,
+.history_page {
   background-color: #fff;
   margin: 0 auto 50px;
   padding: 50px 60px;
@@ -1272,7 +1273,8 @@ body {
 .sideProfile .line,
 .profile_page .line,
 article.article_item .line,
-.basket_page .line {
+.basket_page .line,
+.history_page .line {
   width: 100%;
   height: 1px;
   border-bottom: 1px dashed #e0e0e0;
@@ -1281,7 +1283,8 @@ article.article_item .line,
 .sideProfile .line.nLinePrice,
 .profile_page .line.nLinePrice,
 article.article_item .line.nLinePrice,
-.basket_page .line.nLinePrice {
+.basket_page .line.nLinePrice,
+.history_page .line.nLinePrice {
   width: calc(100% - 140px);
 }
 
@@ -1344,11 +1347,13 @@ body {
 }
 
 .basket_page,
-.success_buy_page {
+.success_buy_page,
+.history_page {
   margin: 40px 0;
 }
 .basket_page h1,
-.success_buy_page h1 {
+.success_buy_page h1,
+.history_page h1 {
   font-family: "Josefin Sans", sans-serif;
   font-weight: 700;
   font-size: 30px;
@@ -1358,38 +1363,126 @@ body {
   color: var(--epcl-titles-color);
 }
 .basket_page .basket_list_container,
-.success_buy_page .basket_list_container {
+.basket_page .history_list_container,
+.success_buy_page .basket_list_container,
+.success_buy_page .history_list_container,
+.history_page .basket_list_container,
+.history_page .history_list_container {
   display: flex;
 }
 .basket_page .basket_list_container .basket_list,
-.success_buy_page .basket_list_container .basket_list {
+.basket_page .basket_list_container .history_list,
+.basket_page .history_list_container .basket_list,
+.basket_page .history_list_container .history_list,
+.success_buy_page .basket_list_container .basket_list,
+.success_buy_page .basket_list_container .history_list,
+.success_buy_page .history_list_container .basket_list,
+.success_buy_page .history_list_container .history_list,
+.history_page .basket_list_container .basket_list,
+.history_page .basket_list_container .history_list,
+.history_page .history_list_container .basket_list,
+.history_page .history_list_container .history_list {
   width: calc(100% - 300px);
 }
 .basket_page .basket_list_container .basket_list > div,
-.success_buy_page .basket_list_container .basket_list > div {
+.basket_page .basket_list_container .history_list > div,
+.basket_page .history_list_container .basket_list > div,
+.basket_page .history_list_container .history_list > div,
+.success_buy_page .basket_list_container .basket_list > div,
+.success_buy_page .basket_list_container .history_list > div,
+.success_buy_page .history_list_container .basket_list > div,
+.success_buy_page .history_list_container .history_list > div,
+.history_page .basket_list_container .basket_list > div,
+.history_page .basket_list_container .history_list > div,
+.history_page .history_list_container .basket_list > div,
+.history_page .history_list_container .history_list > div {
   color: var(--epcl-text-color);
   letter-spacing: 0.5px;
   font-size: 16px;
   margin-bottom: 10px;
 }
 .basket_page .basket_list_container .basket_list ul,
-.success_buy_page .basket_list_container .basket_list ul {
+.basket_page .basket_list_container .history_list ul,
+.basket_page .history_list_container .basket_list ul,
+.basket_page .history_list_container .history_list ul,
+.success_buy_page .basket_list_container .basket_list ul,
+.success_buy_page .basket_list_container .history_list ul,
+.success_buy_page .history_list_container .basket_list ul,
+.success_buy_page .history_list_container .history_list ul,
+.history_page .basket_list_container .basket_list ul,
+.history_page .basket_list_container .history_list ul,
+.history_page .history_list_container .basket_list ul,
+.history_page .history_list_container .history_list ul {
   border: 1px solid rgba(224, 224, 224, 0.4);
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 .basket_page .basket_list_container .basket_list ul li:not(:last-child),
-.success_buy_page .basket_list_container .basket_list ul li:not(:last-child) {
+.basket_page .basket_list_container .history_list ul li:not(:last-child),
+.basket_page .history_list_container .basket_list ul li:not(:last-child),
+.basket_page .history_list_container .history_list ul li:not(:last-child),
+.success_buy_page .basket_list_container .basket_list ul li:not(:last-child),
+.success_buy_page .basket_list_container .history_list ul li:not(:last-child),
+.success_buy_page .history_list_container .basket_list ul li:not(:last-child),
+.success_buy_page .history_list_container .history_list ul li:not(:last-child),
+.history_page .basket_list_container .basket_list ul li:not(:last-child),
+.history_page .basket_list_container .history_list ul li:not(:last-child),
+.history_page .history_list_container .basket_list ul li:not(:last-child),
+.history_page .history_list_container .history_list ul li:not(:last-child) {
   border-bottom: 1px solid rgba(224, 224, 224, 0.4);
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item {
+.basket_page .basket_list_container .basket_list ul .history_list_item,
+.basket_page .basket_list_container .history_list ul .basket_article_item,
+.basket_page .basket_list_container .history_list ul .history_list_item,
+.basket_page .history_list_container .basket_list ul .basket_article_item,
+.basket_page .history_list_container .basket_list ul .history_list_item,
+.basket_page .history_list_container .history_list ul .basket_article_item,
+.basket_page .history_list_container .history_list ul .history_list_item,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item,
+.success_buy_page .basket_list_container .history_list ul .history_list_item,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item,
+.success_buy_page .history_list_container .basket_list ul .history_list_item,
+.success_buy_page .history_list_container .history_list ul .basket_article_item,
+.success_buy_page .history_list_container .history_list ul .history_list_item,
+.history_page .basket_list_container .basket_list ul .basket_article_item,
+.history_page .basket_list_container .basket_list ul .history_list_item,
+.history_page .basket_list_container .history_list ul .basket_article_item,
+.history_page .basket_list_container .history_list ul .history_list_item,
+.history_page .history_list_container .basket_list ul .basket_article_item,
+.history_page .history_list_container .basket_list ul .history_list_item,
+.history_page .history_list_container .history_list ul .basket_article_item,
+.history_page .history_list_container .history_list ul .history_list_item {
   display: flex;
   padding: 20px;
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item .img,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item .img {
+.basket_page .basket_list_container .basket_list ul .history_list_item .img,
+.basket_page .basket_list_container .history_list ul .basket_article_item .img,
+.basket_page .basket_list_container .history_list ul .history_list_item .img,
+.basket_page .history_list_container .basket_list ul .basket_article_item .img,
+.basket_page .history_list_container .basket_list ul .history_list_item .img,
+.basket_page .history_list_container .history_list ul .basket_article_item .img,
+.basket_page .history_list_container .history_list ul .history_list_item .img,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .img,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .img,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .img,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .img,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .img,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .img,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .img,
+.success_buy_page .history_list_container .history_list ul .history_list_item .img,
+.history_page .basket_list_container .basket_list ul .basket_article_item .img,
+.history_page .basket_list_container .basket_list ul .history_list_item .img,
+.history_page .basket_list_container .history_list ul .basket_article_item .img,
+.history_page .basket_list_container .history_list ul .history_list_item .img,
+.history_page .history_list_container .basket_list ul .basket_article_item .img,
+.history_page .history_list_container .basket_list ul .history_list_item .img,
+.history_page .history_list_container .history_list ul .basket_article_item .img,
+.history_page .history_list_container .history_list ul .history_list_item .img {
   width: 60px;
   height: 60px;
   overflow: hidden;
@@ -1398,64 +1491,355 @@ body {
   align-items: center;
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item .img img,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item .img img {
+.basket_page .basket_list_container .basket_list ul .history_list_item .img img,
+.basket_page .basket_list_container .history_list ul .basket_article_item .img img,
+.basket_page .basket_list_container .history_list ul .history_list_item .img img,
+.basket_page .history_list_container .basket_list ul .basket_article_item .img img,
+.basket_page .history_list_container .basket_list ul .history_list_item .img img,
+.basket_page .history_list_container .history_list ul .basket_article_item .img img,
+.basket_page .history_list_container .history_list ul .history_list_item .img img,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .img img,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .img img,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .img img,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .img img,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .img img,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .img img,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .img img,
+.success_buy_page .history_list_container .history_list ul .history_list_item .img img,
+.history_page .basket_list_container .basket_list ul .basket_article_item .img img,
+.history_page .basket_list_container .basket_list ul .history_list_item .img img,
+.history_page .basket_list_container .history_list ul .basket_article_item .img img,
+.history_page .basket_list_container .history_list ul .history_list_item .img img,
+.history_page .history_list_container .basket_list ul .basket_article_item .img img,
+.history_page .history_list_container .basket_list ul .history_list_item .img img,
+.history_page .history_list_container .history_list ul .basket_article_item .img img,
+.history_page .history_list_container .history_list ul .history_list_item .img img {
   max-height: 60px;
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper {
+.basket_page .basket_list_container .basket_list ul .history_list_item .text_wrapper,
+.basket_page .basket_list_container .history_list ul .basket_article_item .text_wrapper,
+.basket_page .basket_list_container .history_list ul .history_list_item .text_wrapper,
+.basket_page .history_list_container .basket_list ul .basket_article_item .text_wrapper,
+.basket_page .history_list_container .basket_list ul .history_list_item .text_wrapper,
+.basket_page .history_list_container .history_list ul .basket_article_item .text_wrapper,
+.basket_page .history_list_container .history_list ul .history_list_item .text_wrapper,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .text_wrapper,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .text_wrapper,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .text_wrapper,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .text_wrapper,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .text_wrapper,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .text_wrapper,
+.success_buy_page .history_list_container .history_list ul .history_list_item .text_wrapper,
+.history_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper,
+.history_page .basket_list_container .basket_list ul .history_list_item .text_wrapper,
+.history_page .basket_list_container .history_list ul .basket_article_item .text_wrapper,
+.history_page .basket_list_container .history_list ul .history_list_item .text_wrapper,
+.history_page .history_list_container .basket_list ul .basket_article_item .text_wrapper,
+.history_page .history_list_container .basket_list ul .history_list_item .text_wrapper,
+.history_page .history_list_container .history_list ul .basket_article_item .text_wrapper,
+.history_page .history_list_container .history_list ul .history_list_item .text_wrapper {
   padding: 0 20px;
   width: calc(100% - 120px);
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .title,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .title {
+.basket_page .basket_list_container .basket_list ul .history_list_item .text_wrapper .title,
+.basket_page .basket_list_container .history_list ul .basket_article_item .text_wrapper .title,
+.basket_page .basket_list_container .history_list ul .history_list_item .text_wrapper .title,
+.basket_page .history_list_container .basket_list ul .basket_article_item .text_wrapper .title,
+.basket_page .history_list_container .basket_list ul .history_list_item .text_wrapper .title,
+.basket_page .history_list_container .history_list ul .basket_article_item .text_wrapper .title,
+.basket_page .history_list_container .history_list ul .history_list_item .text_wrapper .title,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .title,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .text_wrapper .title,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .text_wrapper .title,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .text_wrapper .title,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .text_wrapper .title,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .text_wrapper .title,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .text_wrapper .title,
+.success_buy_page .history_list_container .history_list ul .history_list_item .text_wrapper .title,
+.history_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .title,
+.history_page .basket_list_container .basket_list ul .history_list_item .text_wrapper .title,
+.history_page .basket_list_container .history_list ul .basket_article_item .text_wrapper .title,
+.history_page .basket_list_container .history_list ul .history_list_item .text_wrapper .title,
+.history_page .history_list_container .basket_list ul .basket_article_item .text_wrapper .title,
+.history_page .history_list_container .basket_list ul .history_list_item .text_wrapper .title,
+.history_page .history_list_container .history_list ul .basket_article_item .text_wrapper .title,
+.history_page .history_list_container .history_list ul .history_list_item .text_wrapper .title {
   color: #222;
   font-weight: 600;
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .line,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .line {
+.basket_page .basket_list_container .basket_list ul .history_list_item .text_wrapper .line,
+.basket_page .basket_list_container .history_list ul .basket_article_item .text_wrapper .line,
+.basket_page .basket_list_container .history_list ul .history_list_item .text_wrapper .line,
+.basket_page .history_list_container .basket_list ul .basket_article_item .text_wrapper .line,
+.basket_page .history_list_container .basket_list ul .history_list_item .text_wrapper .line,
+.basket_page .history_list_container .history_list ul .basket_article_item .text_wrapper .line,
+.basket_page .history_list_container .history_list ul .history_list_item .text_wrapper .line,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .line,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .text_wrapper .line,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .text_wrapper .line,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .text_wrapper .line,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .text_wrapper .line,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .text_wrapper .line,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .text_wrapper .line,
+.success_buy_page .history_list_container .history_list ul .history_list_item .text_wrapper .line,
+.history_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .line,
+.history_page .basket_list_container .basket_list ul .history_list_item .text_wrapper .line,
+.history_page .basket_list_container .history_list ul .basket_article_item .text_wrapper .line,
+.history_page .basket_list_container .history_list ul .history_list_item .text_wrapper .line,
+.history_page .history_list_container .basket_list ul .basket_article_item .text_wrapper .line,
+.history_page .history_list_container .basket_list ul .history_list_item .text_wrapper .line,
+.history_page .history_list_container .history_list ul .basket_article_item .text_wrapper .line,
+.history_page .history_list_container .history_list ul .history_list_item .text_wrapper .line {
   margin: 14px 0 6px;
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .price,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .price {
+.basket_page .basket_list_container .basket_list ul .history_list_item .text_wrapper .price,
+.basket_page .basket_list_container .history_list ul .basket_article_item .text_wrapper .price,
+.basket_page .basket_list_container .history_list ul .history_list_item .text_wrapper .price,
+.basket_page .history_list_container .basket_list ul .basket_article_item .text_wrapper .price,
+.basket_page .history_list_container .basket_list ul .history_list_item .text_wrapper .price,
+.basket_page .history_list_container .history_list ul .basket_article_item .text_wrapper .price,
+.basket_page .history_list_container .history_list ul .history_list_item .text_wrapper .price,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .price,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .text_wrapper .price,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .text_wrapper .price,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .text_wrapper .price,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .text_wrapper .price,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .text_wrapper .price,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .text_wrapper .price,
+.success_buy_page .history_list_container .history_list ul .history_list_item .text_wrapper .price,
+.history_page .basket_list_container .basket_list ul .basket_article_item .text_wrapper .price,
+.history_page .basket_list_container .basket_list ul .history_list_item .text_wrapper .price,
+.history_page .basket_list_container .history_list ul .basket_article_item .text_wrapper .price,
+.history_page .basket_list_container .history_list ul .history_list_item .text_wrapper .price,
+.history_page .history_list_container .basket_list ul .basket_article_item .text_wrapper .price,
+.history_page .history_list_container .basket_list ul .history_list_item .text_wrapper .price,
+.history_page .history_list_container .history_list ul .basket_article_item .text_wrapper .price,
+.history_page .history_list_container .history_list ul .history_list_item .text_wrapper .price {
   font-weight: 600;
   font-size: 16px;
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item .button,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item .button {
+.basket_page .basket_list_container .basket_list ul .history_list_item .button,
+.basket_page .basket_list_container .history_list ul .basket_article_item .button,
+.basket_page .basket_list_container .history_list ul .history_list_item .button,
+.basket_page .history_list_container .basket_list ul .basket_article_item .button,
+.basket_page .history_list_container .basket_list ul .history_list_item .button,
+.basket_page .history_list_container .history_list ul .basket_article_item .button,
+.basket_page .history_list_container .history_list ul .history_list_item .button,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .button,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .button,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .button,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .button,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .button,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .button,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .button,
+.success_buy_page .history_list_container .history_list ul .history_list_item .button,
+.history_page .basket_list_container .basket_list ul .basket_article_item .button,
+.history_page .basket_list_container .basket_list ul .history_list_item .button,
+.history_page .basket_list_container .history_list ul .basket_article_item .button,
+.history_page .basket_list_container .history_list ul .history_list_item .button,
+.history_page .history_list_container .basket_list ul .basket_article_item .button,
+.history_page .history_list_container .basket_list ul .history_list_item .button,
+.history_page .history_list_container .history_list ul .basket_article_item .button,
+.history_page .history_list_container .history_list ul .history_list_item .button {
   width: 60px;
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item .button .remove,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item .button .remove {
+.basket_page .basket_list_container .basket_list ul .history_list_item .button .remove,
+.basket_page .basket_list_container .history_list ul .basket_article_item .button .remove,
+.basket_page .basket_list_container .history_list ul .history_list_item .button .remove,
+.basket_page .history_list_container .basket_list ul .basket_article_item .button .remove,
+.basket_page .history_list_container .basket_list ul .history_list_item .button .remove,
+.basket_page .history_list_container .history_list ul .basket_article_item .button .remove,
+.basket_page .history_list_container .history_list ul .history_list_item .button .remove,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .button .remove,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .button .remove,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .button .remove,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .button .remove,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .button .remove,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .button .remove,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .button .remove,
+.success_buy_page .history_list_container .history_list ul .history_list_item .button .remove,
+.history_page .basket_list_container .basket_list ul .basket_article_item .button .remove,
+.history_page .basket_list_container .basket_list ul .history_list_item .button .remove,
+.history_page .basket_list_container .history_list ul .basket_article_item .button .remove,
+.history_page .basket_list_container .history_list ul .history_list_item .button .remove,
+.history_page .history_list_container .basket_list ul .basket_article_item .button .remove,
+.history_page .history_list_container .basket_list ul .history_list_item .button .remove,
+.history_page .history_list_container .history_list ul .basket_article_item .button .remove,
+.history_page .history_list_container .history_list ul .history_list_item .button .remove {
   float: right;
   border: none;
   background-color: transparent;
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item .button .remove svg,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item .button .remove svg {
+.basket_page .basket_list_container .basket_list ul .history_list_item .button .remove svg,
+.basket_page .basket_list_container .history_list ul .basket_article_item .button .remove svg,
+.basket_page .basket_list_container .history_list ul .history_list_item .button .remove svg,
+.basket_page .history_list_container .basket_list ul .basket_article_item .button .remove svg,
+.basket_page .history_list_container .basket_list ul .history_list_item .button .remove svg,
+.basket_page .history_list_container .history_list ul .basket_article_item .button .remove svg,
+.basket_page .history_list_container .history_list ul .history_list_item .button .remove svg,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .button .remove svg,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .button .remove svg,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .button .remove svg,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .button .remove svg,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .button .remove svg,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .button .remove svg,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .button .remove svg,
+.success_buy_page .history_list_container .history_list ul .history_list_item .button .remove svg,
+.history_page .basket_list_container .basket_list ul .basket_article_item .button .remove svg,
+.history_page .basket_list_container .basket_list ul .history_list_item .button .remove svg,
+.history_page .basket_list_container .history_list ul .basket_article_item .button .remove svg,
+.history_page .basket_list_container .history_list ul .history_list_item .button .remove svg,
+.history_page .history_list_container .basket_list ul .basket_article_item .button .remove svg,
+.history_page .history_list_container .basket_list ul .history_list_item .button .remove svg,
+.history_page .history_list_container .history_list ul .basket_article_item .button .remove svg,
+.history_page .history_list_container .history_list ul .history_list_item .button .remove svg {
   width: 26px;
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item .button .remove:hover,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item .button .remove:hover {
+.basket_page .basket_list_container .basket_list ul .history_list_item .button .remove:hover,
+.basket_page .basket_list_container .history_list ul .basket_article_item .button .remove:hover,
+.basket_page .basket_list_container .history_list ul .history_list_item .button .remove:hover,
+.basket_page .history_list_container .basket_list ul .basket_article_item .button .remove:hover,
+.basket_page .history_list_container .basket_list ul .history_list_item .button .remove:hover,
+.basket_page .history_list_container .history_list ul .basket_article_item .button .remove:hover,
+.basket_page .history_list_container .history_list ul .history_list_item .button .remove:hover,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .button .remove:hover,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .button .remove:hover,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .button .remove:hover,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .button .remove:hover,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .button .remove:hover,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .button .remove:hover,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .button .remove:hover,
+.success_buy_page .history_list_container .history_list ul .history_list_item .button .remove:hover,
+.history_page .basket_list_container .basket_list ul .basket_article_item .button .remove:hover,
+.history_page .basket_list_container .basket_list ul .history_list_item .button .remove:hover,
+.history_page .basket_list_container .history_list ul .basket_article_item .button .remove:hover,
+.history_page .basket_list_container .history_list ul .history_list_item .button .remove:hover,
+.history_page .history_list_container .basket_list ul .basket_article_item .button .remove:hover,
+.history_page .history_list_container .basket_list ul .history_list_item .button .remove:hover,
+.history_page .history_list_container .history_list ul .basket_article_item .button .remove:hover,
+.history_page .history_list_container .history_list ul .history_list_item .button .remove:hover {
   cursor: pointer;
 }
 .basket_page .basket_list_container .basket_list ul .basket_article_item .button .remove:hover svg,
-.success_buy_page .basket_list_container .basket_list ul .basket_article_item .button .remove:hover svg {
+.basket_page .basket_list_container .basket_list ul .history_list_item .button .remove:hover svg,
+.basket_page .basket_list_container .history_list ul .basket_article_item .button .remove:hover svg,
+.basket_page .basket_list_container .history_list ul .history_list_item .button .remove:hover svg,
+.basket_page .history_list_container .basket_list ul .basket_article_item .button .remove:hover svg,
+.basket_page .history_list_container .basket_list ul .history_list_item .button .remove:hover svg,
+.basket_page .history_list_container .history_list ul .basket_article_item .button .remove:hover svg,
+.basket_page .history_list_container .history_list ul .history_list_item .button .remove:hover svg,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .button .remove:hover svg,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .button .remove:hover svg,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .button .remove:hover svg,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .button .remove:hover svg,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .button .remove:hover svg,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .button .remove:hover svg,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .button .remove:hover svg,
+.success_buy_page .history_list_container .history_list ul .history_list_item .button .remove:hover svg,
+.history_page .basket_list_container .basket_list ul .basket_article_item .button .remove:hover svg,
+.history_page .basket_list_container .basket_list ul .history_list_item .button .remove:hover svg,
+.history_page .basket_list_container .history_list ul .basket_article_item .button .remove:hover svg,
+.history_page .basket_list_container .history_list ul .history_list_item .button .remove:hover svg,
+.history_page .history_list_container .basket_list ul .basket_article_item .button .remove:hover svg,
+.history_page .history_list_container .basket_list ul .history_list_item .button .remove:hover svg,
+.history_page .history_list_container .history_list ul .basket_article_item .button .remove:hover svg,
+.history_page .history_list_container .history_list ul .history_list_item .button .remove:hover svg {
   fill: var(--epcl-text-color);
 }
+.basket_page .basket_list_container .basket_list ul .basket_article_item .item_list_price,
+.basket_page .basket_list_container .basket_list ul .history_list_item .item_list_price,
+.basket_page .basket_list_container .history_list ul .basket_article_item .item_list_price,
+.basket_page .basket_list_container .history_list ul .history_list_item .item_list_price,
+.basket_page .history_list_container .basket_list ul .basket_article_item .item_list_price,
+.basket_page .history_list_container .basket_list ul .history_list_item .item_list_price,
+.basket_page .history_list_container .history_list ul .basket_article_item .item_list_price,
+.basket_page .history_list_container .history_list ul .history_list_item .item_list_price,
+.success_buy_page .basket_list_container .basket_list ul .basket_article_item .item_list_price,
+.success_buy_page .basket_list_container .basket_list ul .history_list_item .item_list_price,
+.success_buy_page .basket_list_container .history_list ul .basket_article_item .item_list_price,
+.success_buy_page .basket_list_container .history_list ul .history_list_item .item_list_price,
+.success_buy_page .history_list_container .basket_list ul .basket_article_item .item_list_price,
+.success_buy_page .history_list_container .basket_list ul .history_list_item .item_list_price,
+.success_buy_page .history_list_container .history_list ul .basket_article_item .item_list_price,
+.success_buy_page .history_list_container .history_list ul .history_list_item .item_list_price,
+.history_page .basket_list_container .basket_list ul .basket_article_item .item_list_price,
+.history_page .basket_list_container .basket_list ul .history_list_item .item_list_price,
+.history_page .basket_list_container .history_list ul .basket_article_item .item_list_price,
+.history_page .basket_list_container .history_list ul .history_list_item .item_list_price,
+.history_page .history_list_container .basket_list ul .basket_article_item .item_list_price,
+.history_page .history_list_container .basket_list ul .history_list_item .item_list_price,
+.history_page .history_list_container .history_list ul .basket_article_item .item_list_price,
+.history_page .history_list_container .history_list ul .history_list_item .item_list_price {
+  width: 160px;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: right;
+  line-height: 1;
+}
+.basket_page .basket_list_container .history_list,
+.basket_page .history_list_container .history_list,
+.success_buy_page .basket_list_container .history_list,
+.success_buy_page .history_list_container .history_list,
+.history_page .basket_list_container .history_list,
+.history_page .history_list_container .history_list {
+  width: 100%;
+}
+.basket_page .basket_list_container .history_list .text_wrapper,
+.basket_page .history_list_container .history_list .text_wrapper,
+.success_buy_page .basket_list_container .history_list .text_wrapper,
+.success_buy_page .history_list_container .history_list .text_wrapper,
+.history_page .basket_list_container .history_list .text_wrapper,
+.history_page .history_list_container .history_list .text_wrapper {
+  width: calc(100% - 160px) !important;
+}
+.basket_page .basket_list_container .history_list ul, .basket_page .basket_list_container .history_list ul li,
+.basket_page .history_list_container .history_list ul,
+.basket_page .history_list_container .history_list ul li,
+.success_buy_page .basket_list_container .history_list ul,
+.success_buy_page .basket_list_container .history_list ul li,
+.success_buy_page .history_list_container .history_list ul,
+.success_buy_page .history_list_container .history_list ul li,
+.history_page .basket_list_container .history_list ul,
+.history_page .basket_list_container .history_list ul li,
+.history_page .history_list_container .history_list ul,
+.history_page .history_list_container .history_list ul li {
+  border: none !important;
+}
 .basket_page .basket_list_container .basket_price,
-.success_buy_page .basket_list_container .basket_price {
+.basket_page .history_list_container .basket_price,
+.success_buy_page .basket_list_container .basket_price,
+.success_buy_page .history_list_container .basket_price,
+.history_page .basket_list_container .basket_price,
+.history_page .history_list_container .basket_price {
   width: 300px;
   padding: 0 20px;
 }
 .basket_page .basket_list_container .basket_price .hh3,
-.success_buy_page .basket_list_container .basket_price .hh3 {
+.basket_page .history_list_container .basket_price .hh3,
+.success_buy_page .basket_list_container .basket_price .hh3,
+.success_buy_page .history_list_container .basket_price .hh3,
+.history_page .basket_list_container .basket_price .hh3,
+.history_page .history_list_container .basket_price .hh3 {
   color: var(--epcl-text-color);
   letter-spacing: 0.5px;
   font-size: 16px;
   margin-bottom: 10px;
 }
 .basket_page .basket_list_container .basket_price .fullPrice,
-.success_buy_page .basket_list_container .basket_price .fullPrice {
+.basket_page .history_list_container .basket_price .fullPrice,
+.success_buy_page .basket_list_container .basket_price .fullPrice,
+.success_buy_page .history_list_container .basket_price .fullPrice,
+.history_page .basket_list_container .basket_price .fullPrice,
+.history_page .history_list_container .basket_price .fullPrice {
   font-size: 38px;
   line-height: 1.2;
   margin-bottom: 17.6px;
@@ -1463,10 +1847,17 @@ body {
   font-family: "Josefin Sans", sans-serif;
   color: var(--epcl-titles-color);
 }
-.basket_page .basket_cleared,
-.basket_page .success_cleared,
+.basket_page .history_list_container,
+.success_buy_page .history_list_container,
+.history_page .history_list_container {
+  display: block;
+  border: 1px dashed #e0e0e0;
+}
+.basket_page .basket_cleared, .basket_page .success_cleared,
 .success_buy_page .basket_cleared,
-.success_buy_page .success_cleared {
+.success_buy_page .success_cleared,
+.history_page .basket_cleared,
+.history_page .success_cleared {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1476,28 +1867,31 @@ body {
   padding: 100px 0;
   text-align: center;
 }
-.basket_page .basket_cleared svg,
-.basket_page .success_cleared svg,
+.basket_page .basket_cleared svg, .basket_page .success_cleared svg,
 .success_buy_page .basket_cleared svg,
-.success_buy_page .success_cleared svg {
+.success_buy_page .success_cleared svg,
+.history_page .basket_cleared svg,
+.history_page .success_cleared svg {
   margin: 0 auto;
   width: 120px;
   display: block;
 }
-.basket_page .basket_cleared .bask_text,
-.basket_page .success_cleared .bask_text,
+.basket_page .basket_cleared .bask_text, .basket_page .success_cleared .bask_text,
 .success_buy_page .basket_cleared .bask_text,
-.success_buy_page .success_cleared .bask_text {
+.success_buy_page .success_cleared .bask_text,
+.history_page .basket_cleared .bask_text,
+.history_page .success_cleared .bask_text {
   text-align: center;
   padding: 40px 0 20px;
   color: var(--epcl-text-color);
   letter-spacing: 0.5px;
   font-size: 16px;
 }
-.basket_page .basket_cleared a,
-.basket_page .success_cleared a,
+.basket_page .basket_cleared a, .basket_page .success_cleared a,
 .success_buy_page .basket_cleared a,
-.success_buy_page .success_cleared a {
+.success_buy_page .success_cleared a,
+.history_page .basket_cleared a,
+.history_page .success_cleared a {
   color: #fff;
   font-size: 15px;
   padding: 8px 25px;
@@ -1508,16 +1902,18 @@ body {
   position: relative;
   min-height: 44px;
 }
-.basket_page .basket_cleared a.full,
-.basket_page .success_cleared a.full,
+.basket_page .basket_cleared a.full, .basket_page .success_cleared a.full,
 .success_buy_page .basket_cleared a.full,
-.success_buy_page .success_cleared a.full {
+.success_buy_page .success_cleared a.full,
+.history_page .basket_cleared a.full,
+.history_page .success_cleared a.full {
   width: 100%;
 }
-.basket_page .basket_cleared a:before,
-.basket_page .success_cleared a:before,
+.basket_page .basket_cleared a:before, .basket_page .success_cleared a:before,
 .success_buy_page .basket_cleared a:before,
-.success_buy_page .success_cleared a:before {
+.success_buy_page .success_cleared a:before,
+.history_page .basket_cleared a:before,
+.history_page .success_cleared a:before {
   content: "";
   top: 2px;
   left: 2px;
@@ -1528,11 +1924,26 @@ body {
   transition: all 0.3s ease;
   border: 1px solid var(--epcl-black-color);
 }
-.basket_page .basket_cleared a:hover:before,
-.basket_page .success_cleared a:hover:before,
+.basket_page .basket_cleared a:hover:before, .basket_page .success_cleared a:hover:before,
 .success_buy_page .basket_cleared a:hover:before,
-.success_buy_page .success_cleared a:hover:before {
+.success_buy_page .success_cleared a:hover:before,
+.history_page .basket_cleared a:hover:before,
+.history_page .success_cleared a:hover:before {
   border-color: #fff;
+}
+
+.history_page .sub_list_item {
+  padding: 0 20px !important;
+  margin-bottom: 20px;
+}
+.history_page .sub_list_item .img {
+  height: 2px !important;
+}
+.history_page .sub_list_item .text_wrapper p {
+  margin-bottom: 0;
+}
+.history_page .sub_list_item:last-child {
+  padding-bottom: 20px !important;
 }
 
 html {

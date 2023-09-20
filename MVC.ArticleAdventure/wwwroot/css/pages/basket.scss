@@ -1,9 +1,10 @@
 @import '../components/_mixins.scss';
 
 .basket_page,
-.success_buy_page {
+.success_buy_page,
+.history_page {
     margin: 40px 0;
-   // min-height: 60vh;
+    // min-height: 60vh;
 
     h1 {
         font-family: "Josefin Sans",sans-serif;
@@ -15,10 +16,12 @@
         color: var(--epcl-titles-color);
     }
 
-    .basket_list_container {
+    .basket_list_container,
+    .history_list_container {
         display: flex;
 
-        .basket_list {
+        .basket_list,
+        .history_list {
             width: calc(100% - 300px);
 
             > div {
@@ -38,7 +41,8 @@
                     border-bottom: 1px solid rgba(#e0e0e0,0.4);
                 }
 
-                .basket_article_item {
+                .basket_article_item,
+                .history_list_item {
                     display: flex;
                     padding: 20px;
 
@@ -96,7 +100,27 @@
                             }
                         }
                     }
+
+                    .item_list_price {
+                        width: 160px;
+                        font-weight: 600;
+                        font-size: 16px;
+                        text-align: right;
+                        line-height: 1;
+                    }
                 }
+            }
+        }
+
+        .history_list {
+            width: 100%;
+
+            .text_wrapper {
+                width: calc(100% - 160px) !important;
+            }
+
+            ul, ul li {
+                border: none !important;
             }
         }
 
@@ -122,8 +146,12 @@
         }
     }
 
-    .basket_cleared,
-    .success_cleared {
+    .history_list_container {
+        display: block;
+        border: 1px dashed #e0e0e0;
+    }
+
+    .basket_cleared, .success_cleared {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -174,6 +202,28 @@
                     border-color: #fff;
                 }
             }
+        }
+    }
+}
+
+.history_page {
+    .sub_list_item {
+        padding: 0 20px !important;
+        //border-left: 1px dashed #e0e0e0!important;
+        margin-bottom: 20px;
+
+        .img {
+            height: 2px !important;
+        }
+
+        .text_wrapper {
+            p {
+                margin-bottom: 0;
+            }
+        }
+
+        &:last-child {
+            padding-bottom: 20px !important;
         }
     }
 }
