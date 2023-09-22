@@ -4,6 +4,7 @@ using common.ArticleAdventure.WebApi;
 using common.ArticleAdventure.WebApi.RoutingConfiguration;
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.Helpers;
+using domain.ArticleAdventure.IdentityEntities;
 using domain.ArticleAdventure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,16 +55,23 @@ namespace MVC.ArticleAdventure.Controllers
             if (netUidProfile != Guid.Empty)
             {
                 var user = await _authenticationService.GetProfile(netUidProfile);
-                ProfileModel model = new ProfileModel { InformationAccount = user.Data.InformationAccount, UserName = user.Data.UserName, SurName = user.Data.SurName };
+                ProfileModel model = new ProfileModel { Profile= user.Data, InformationAccount = user.Data.InformationAccount, UserName = user.Data.UserName, SurName = user.Data.SurName };
                 return View(model);
 
             }
+            else
+            {
+                var guidUser = User.FindFirst("Guid");
+                ExecutionResult<UserProfile> user = await _authenticationService.GetProfile(Guid.Parse(guidUser.Value));
+                ProfileModel model = new ProfileModel { Profile = user.Data, InformationAccount = user.Data.InformationAccount, UserName = user.Data.UserName, SurName = user.Data.SurName };
+                return View(model);
+            }
 
-            var userName = Request.Cookies[CookiesPath.USER_NAME];
-            var surName = Request.Cookies[CookiesPath.SURNAME];
-            var informationProfile = Request.Cookies[CookiesPath.INFORMATION_PROFILE];
-            ProfileModel profileModel = new ProfileModel { InformationAccount = informationProfile, UserName = userName, SurName = surName };
-            return View(profileModel);
+            //var userName = Request.Cookies[CookiesPath.USER_NAME];
+            //var surName = Request.Cookies[CookiesPath.SURNAME];
+            //var informationProfile = Request.Cookies[CookiesPath.INFORMATION_PROFILE];
+            //ProfileModel profileModel = new ProfileModel { InformationAccount = informationProfile, UserName = userName, SurName = surName };
+            //return View(profileModel);
         }
         [HttpGet]
         [Route("EditProfile")]
@@ -86,9 +94,22 @@ namespace MVC.ArticleAdventure.Controllers
             var guidUser = User.FindFirst("Guid");
 
             editProfileModel.UserProfile.NetUid = Guid.Parse(guidUser.Value);
-            var result = await _userService.ChangeAccountInformation(editProfileModel.UserProfile);
+            var result = await _userService.ChangeAccountInformation(editProfileModel.UserProfile,editProfileModel.PhotoMainArticle);
             if (result.IsSuccess)
             {
+                if (editProfileModel.UserProfile.UserName != null)
+                {
+                    Response.Cookies.Append(CookiesPath.USER_NAME, editProfileModel.UserProfile.UserName);
+
+                }
+                if (editProfileModel.UserProfile.InformationAccount != null)
+                {
+                    Response.Cookies.Append(CookiesPath.INFORMATION_PROFILE, editProfileModel.UserProfile.InformationAccount);
+                }
+                if (editProfileModel.UserProfile.SurName != null)
+                {
+                    Response.Cookies.Append(CookiesPath.SURNAME, editProfileModel.UserProfile.SurName);
+                }
                 await SetSuccessMessage(SuccessMessages.UpdateProfile);
             }
             return View(editProfileModel);

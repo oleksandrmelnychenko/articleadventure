@@ -95,7 +95,7 @@
                                 </li>
                             </ul>
                         </div>
-                        @if (UserRoleHelper.IsUserRole(User.Claims, "User"))//need set Administrator
+                        @if (UserRoleHelper.IsUserRole(User.Claims, Roles.Admin))//need set Administrator
                         {
                             <div class="line">
                                 <ul>

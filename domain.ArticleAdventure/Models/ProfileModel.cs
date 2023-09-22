@@ -1,4 +1,5 @@
-﻿using System;
+﻿using domain.ArticleAdventure.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace domain.ArticleAdventure.Models
 {
     public class ProfileModel
     {
+        public UserProfile Profile {  get; set; }
         public string UserName { get; set; }
         public string SurName { get; set; }
         public string InformationAccount { get; set; }

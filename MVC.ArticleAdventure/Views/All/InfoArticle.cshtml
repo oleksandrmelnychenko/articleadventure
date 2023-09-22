@@ -70,6 +70,15 @@
                         <div>@Model.MainArticle.InfromationArticle</div>
                     </div>
                 </div>
+                <div class="item_box_title">The article has been created:</div>
+                <div class="archicle_info_item">
+                    <a href="~/Profile?netUidProfile={@Model.MainArticle.UserProfile.NetUid}">
+                        <div>@Model.MainArticle.UserProfile.UserName</div>
+                        <div>@Model.MainArticle.UserProfile.SurName</div>
+                        <img src="@Model.MainArticle.UserProfile.LinkPictureUser" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                        <div>@Model.MainArticle.UserProfile.InformationAccount</div>
+                    </a>
+                </div>
             </div>
             <div class="list_pay">
                 <div class="archicle_info_item sticky price_item_container">

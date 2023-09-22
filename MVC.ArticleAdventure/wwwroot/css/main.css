@@ -421,12 +421,16 @@ header .user_menu_wrapper:hover .user_menu_container {
   padding: 60px 0 0 0;
 }
 .body_container .container_content {
-  width: 960px;
+  /*width: 960px;*/
+  width: 82%;
   margin: 0 auto;
   min-height: calc(100vh - 60px);
 }
 .body_container .container_content.w1260 {
   width: 1260px;
+}
+.body_container .container_content.w960 {
+  width: 960px;
 }
 
 body {

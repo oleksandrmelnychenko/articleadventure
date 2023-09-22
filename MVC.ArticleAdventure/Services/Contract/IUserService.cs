@@ -1,11 +1,12 @@
 ﻿using common.ArticleAdventure.ResponceBuilder;
 using domain.ArticleAdventure.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace MVC.ArticleAdventure.Services.Contract
 {
     public interface IUserService
     {
-        public Task<ExecutionResult<UserProfile>> ChangeAccountInformation(UserProfile userProfile);
+        public Task<ExecutionResult<UserProfile>> ChangeAccountInformation(UserProfile userProfile,IFormFile formFile);
         public Task ChangePassword(Guid userProfileNetUid, string newPassword, string oldPassword);
         public Task ChangeEmail(Guid userProfileNetUid, string newEmail, string password);
         public Task<ExecutionResult<long>> SetFavoriteArticle(Guid userProfileNetUid, Guid MainArtilceNetUid);

@@ -1,10 +1,8 @@
 ﻿@model domain.ArticleAdventure.Models.ProfileModel;
 <div class="profile_page">
-    <div class="sideBar_container">
-        @Html.Partial("_RightSideProfileEdit")
-    </div>
     <div class="content_container">
         <div>
+            <img src="@Model.Profile.LinkPictureUser" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
             <h2>@Model.UserName</h2>
             <h2>@Model.SurName</h2>
         </div>

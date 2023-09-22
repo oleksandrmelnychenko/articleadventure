@@ -1,11 +1,13 @@
 ﻿using Azure.Core;
 using domain.ArticleAdventure.DbConnectionFactory.Contracts;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.IdentityEntities;
 using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using domain.ArticleAdventure.Repositories.Identity;
 using domain.ArticleAdventure.Repositories.Identity.Contracts;
 using domain.ArticleAdventure.Repositories.Stripe.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using service.ArticleAdventure.MailSenderServices;
 using service.ArticleAdventure.MailSenderServices.Contracts;
@@ -202,17 +204,27 @@ namespace service.ArticleAdventure.Services.UserManagement
                    return identityRepository.SetFavoriteArticle(article.Id, user.Id);
                });
 
-        public Task<UserProfile> UpdateAccountInformation(UserProfile userProfile) =>
+        public Task<UserProfile> UpdateAccountInformation(UserProfile userProfile, IFormFile photoUserProfile) =>
                Task.Run(async () =>
                {
                    using (IDbConnection connection = _connectionFactory.NewSqlConnection())
                    {
                        IUserProfileRepository userProfileRepository =
                             _identityRepositoriesFactory.NewUserProfileRepository(connection);
+                       string exention = ".png";
 
                        UserProfile existingProfile =
                            userProfileRepository.Get(userProfile.NetUid);
+                       if (photoUserProfile != null)
+                       {
+                           string pathLogo = Path.Combine(ArticleAdventureFolderManager.GetFilesFolderPath(), ArticleAdventureFolderManager.GetStaticImageFolder(), photoUserProfile.FileName + exention);
+                           existingProfile.LinkPictureUser = Path.Combine(ArticleAdventureFolderManager.GetStaticServerUrlImageFolder(), photoUserProfile.FileName + exention);
 
+                           using (var stream = new FileStream(pathLogo, FileMode.Create))
+                           {
+                               await photoUserProfile.CopyToAsync(stream);
+                           }
+                       }
                        if (existingProfile == null) throw new Exception("Dev exception. Such user does not exists");
 
                        IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository();

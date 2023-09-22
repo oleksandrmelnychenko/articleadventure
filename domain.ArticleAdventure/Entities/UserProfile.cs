@@ -13,6 +13,10 @@ namespace domain.ArticleAdventure.Entities
         public string InformationAccount { get; set; }
         public string Email { get; set; }
         public string LinkPictureUser { get; set; }
+        public string LinkInstagram { get; set; }
+        public string LinkTwitter { get; set; }
+        public string LinkFacebook { get; set; }
+        public string LinkTelegram { get; set; }
         public bool GrantAdministrativePermissions { get; set; }
     }
 }

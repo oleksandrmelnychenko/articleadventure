@@ -1,5 +1,6 @@
 ﻿using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.IdentityEntities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace service.ArticleAdventure.Services.UserManagement.Contracts
 
         Task<UserProfile> UpdatePassword(Guid userProfileNetUid, string password,string oldPassword);
         Task<UserProfile> UpdateEmail(Guid userProfileNetUid, string Email,string password);
-        Task<UserProfile> UpdateAccountInformation(UserProfile userProfile);
+        Task<UserProfile> UpdateAccountInformation(UserProfile userProfile, IFormFile photoUserProfile);
         Task<long> SetFavoriteArticle(Guid netUidArticle , Guid netUidUser);
         Task<FavoriteArticle> GetFavoriteArticle(Guid netUidArticle, Guid netUidUser);
         Task<List<FavoriteArticle>> GetAllFavoriteArticle( Guid userProfileNetUid);

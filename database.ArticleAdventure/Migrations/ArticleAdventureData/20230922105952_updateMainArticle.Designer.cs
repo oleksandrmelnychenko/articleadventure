@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using database.ArticleAdventure;
 
@@ -11,9 +12,10 @@ using database.ArticleAdventure;
 namespace database.ArticleAdventure.Migrations.ArticleAdventureData
 {
     [DbContext(typeof(ArticleAdventureDataContext))]
-    partial class ArticleAdventureDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230922105952_updateMainArticle")]
+    partial class updateMainArticle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

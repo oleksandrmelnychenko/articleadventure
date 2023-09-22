@@ -101,7 +101,10 @@ namespace domain.ArticleAdventure.Repositories.Identity
         public void UpdateAccountInformation(UserProfile userProfile) =>
            _connection.Execute(
                "UPDATE [UserProfile] " +
-               "SET [UserName] = @UserName, [InformationAccount] = @InformationAccount, [SurName] = @SurName, " +
+               "SET [UserName] = @UserName, [LinkFacebook] = @LinkFacebook," +
+               " [LinkInstagram] = @LinkInstagram, [LinkTelegram] = @LinkTelegram," +
+               " [LinkTwitter] = @LinkTwitter, [InformationAccount] = @InformationAccount," +
+               " [SurName] = @SurName, [LinkPictureUser] = @LinkPictureUser, " +
                "[Updated] = GETUTCDATE() " +
                "WHERE ID = @Id",
                userProfile

@@ -217,12 +217,17 @@ header {
     padding: $header_height 0 0 0;
 
     .container_content {
-        width: 960px;
+        /*width: 960px;*/
+        width: 82%;
         margin: 0 auto;
         min-height: calc(100vh - 60px);
 
         &.w1260 {
             width: 1260px;
+        }
+
+        &.w960 {
+            width: 960px;
         }
     }
 }

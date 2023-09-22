@@ -19,10 +19,10 @@ namespace domain.ArticleAdventure.Repositories.Blog
         }
         public long AddMainArticle(MainArticle blog)
             => _connection.Query<long>("INSERT INTO [MainArticle] " +
-            "([Title], [Description] ,[InfromationArticle] ,[Price] ,[ImageUrl] ,[Updated] ) " +
+            "([Title], [Description] ,[InfromationArticle] ,[Price] ,[ImageUrl] ,[UserId] ,[Updated] ) " +
             "VALUES " +
             "(@Title, @Description" +
-            ", @InfromationArticle , @Price, @ImageUrl, GETUTCDATE());" +
+            ", @InfromationArticle , @Price, @ImageUrl, UserId, GETUTCDATE());" +
             "SELECT SCOPE_IDENTITY()", blog
             ).Single();
 
@@ -31,10 +31,11 @@ namespace domain.ArticleAdventure.Repositories.Blog
             List<MainArticle> mainArticles = new List<MainArticle>();
 
             List<long> IdMainArticleTags = supTags.Select(x => x.MainArticleId).ToList();
-            _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag, MainArticle>("SELECT mainArticle.*, " +
+            _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag, UserProfile, MainArticle>("SELECT mainArticle.*, " +
             "authorArticle.*, " +
             "articleTags.*, " +
-            "supTags.* " +
+            "supTags.*, " +
+            "userProfile.* " +
             "FROM [ArticleAdventure].[dbo].[MainArticle] AS mainArticle " +
             "LEFT JOIN [ArticleAdventure].[dbo].[AuthorArticle] AS authorArticle " +
             "ON mainArticle.ID = authorArticle.MainArticleId " +
@@ -42,11 +43,13 @@ namespace domain.ArticleAdventure.Repositories.Blog
             "ON mainArticle.ID = articleTags.MainArticleId " +
             "LEFT JOIN [ArticleAdventure].[dbo].[SubTags] AS supTags " +
             "ON supTags.ID = articleTags.SupTagId " +
+            "LEFT JOIN [ArticleAdventure].[dbo].[UserProfile] as userProfile " +
+            "ON userProfile.ID = mainArticle.UserId " +
             "WHERE mainArticle.Deleted = 0 " +
             "AND authorArticle.Deleted = 0 " +
             "AND articleTags.Deleted = 0 " +
-			"AND supTags.Deleted = 0",
-                (mainArticle, article, articleMainTag, supTag) =>
+            "AND supTags.Deleted = 0",
+                (mainArticle, article, articleMainTag, supTag, userProfile) =>
                 {
                     if (IdMainArticleTags.Any(x => x.Equals(articleMainTag.MainArticleId)))
                     {
@@ -56,6 +59,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
                         }
                         else
                         {
+                            mainArticle.UserProfile = userProfile;
                             mainArticles.Add(mainArticle);
                         }
 
@@ -91,7 +95,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
                             }
                         }
                     }
-                    
+
                     return mainArticle;
                 }).ToList();
             return mainArticles;
@@ -102,10 +106,11 @@ namespace domain.ArticleAdventure.Repositories.Blog
         {
             List<MainArticle> mainArticles = new List<MainArticle>();
 
-            _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag, MainArticle>("SELECT mainArticle.*, " +
+            _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag, UserProfile, MainArticle>("SELECT mainArticle.*, " +
             "authorArticle.*, " +
             "articleTags.*, " +
-            "supTags.* " +
+            "supTags.*," +
+            "userProfile.* " +
             "FROM [ArticleAdventure].[dbo].[MainArticle] AS mainArticle " +
             "LEFT JOIN [ArticleAdventure].[dbo].[AuthorArticle] AS authorArticle " +
             "ON mainArticle.ID = authorArticle.MainArticleId " +
@@ -113,11 +118,13 @@ namespace domain.ArticleAdventure.Repositories.Blog
             "ON mainArticle.ID = articleTags.MainArticleId " +
             "LEFT JOIN [ArticleAdventure].[dbo].[SubTags] AS supTags " +
             "ON supTags.ID = articleTags.SupTagId " +
+            "LEFT JOIN [ArticleAdventure].[dbo].[UserProfile] as userProfile " +
+            "ON userProfile.ID = mainArticle.UserId " +
             "WHERE mainArticle.Deleted = 0 " +
             "AND authorArticle.Deleted = 0 " +
             "AND articleTags.Deleted = 0 " +
             "AND supTags.Deleted = 0",
-                (mainArticle, article, articleMainTag, supTag) =>
+                (mainArticle, article, articleMainTag, supTag, userProfile) =>
                 {
                     if (mainArticles.Any(c => c.Id.Equals(mainArticle.Id)))
                     {
@@ -125,6 +132,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
                     }
                     else
                     {
+                        mainArticle.UserProfile = userProfile;
                         mainArticles.Add(mainArticle);
                     }
 
@@ -168,10 +176,11 @@ namespace domain.ArticleAdventure.Repositories.Blog
         {
             MainArticle articleMain = new MainArticle();
 
-            _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag, MainArticle>("SELECT mainArticle.*, " +
+            _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag, UserProfile, MainArticle>("SELECT mainArticle.*, " +
            "authorArticle.*, " +
            "articleTags.*, " +
-           "supTags.* " +
+           "supTags.*, " +
+           "userProfile.* " +
            "FROM [ArticleAdventure].[dbo].[MainArticle] AS mainArticle " +
            "LEFT JOIN [ArticleAdventure].[dbo].[AuthorArticle] AS authorArticle " +
            "ON mainArticle.ID = authorArticle.MainArticleId " +
@@ -179,12 +188,14 @@ namespace domain.ArticleAdventure.Repositories.Blog
            "ON mainArticle.ID = articleTags.MainArticleId " +
            "LEFT JOIN [ArticleAdventure].[dbo].[SubTags] AS supTags " +
            "ON supTags.ID = articleTags.SupTagId " +
+           "LEFT JOIN [ArticleAdventure].[dbo].[UserProfile] as userProfile " +
+           "ON userProfile.ID = mainArticle.UserId " +
            "WHERE mainArticle.Deleted = 0 " +
            "AND authorArticle.Deleted = 0 " +
            "AND articleTags.Deleted = 0 " +
            "AND supTags.Deleted = 0" +
            "AND mainArticle.ID = @ID",
-               (mainArticle, article, articleMainTag, supTag) =>
+               (mainArticle, article, articleMainTag, supTag, userProfile) =>
                {
                    if (articleMain.Id.Equals(mainArticle.Id))
                    {
@@ -192,6 +203,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
                    }
                    else
                    {
+                       mainArticle.UserProfile = userProfile;
                        articleMain = mainArticle;
                    }
 
@@ -230,10 +242,11 @@ namespace domain.ArticleAdventure.Repositories.Blog
         {
             MainArticle articleMain = new MainArticle();
 
-            _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag, MainArticle>("SELECT mainArticle.*, " +
+            _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag,UserProfile, MainArticle>("SELECT mainArticle.*, " +
            "authorArticle.*, " +
            "articleTags.*, " +
-           "supTags.* " +
+           "supTags.*, " +
+           "userProfile.* " +
            "FROM [ArticleAdventure].[dbo].[MainArticle] AS mainArticle " +
            "LEFT JOIN [ArticleAdventure].[dbo].[AuthorArticle] AS authorArticle " +
            "ON mainArticle.ID = authorArticle.MainArticleId " +
@@ -241,12 +254,14 @@ namespace domain.ArticleAdventure.Repositories.Blog
            "ON mainArticle.ID = articleTags.MainArticleId " +
            "LEFT JOIN [ArticleAdventure].[dbo].[SubTags] AS supTags " +
            "ON supTags.ID = articleTags.SupTagId " +
+           "LEFT JOIN [ArticleAdventure].[dbo].[UserProfile] as userProfile " +
+           "ON userProfile.ID = mainArticle.UserId " +
            "WHERE mainArticle.Deleted = 0 " +
            "AND authorArticle.Deleted = 0 " +
            "AND articleTags.Deleted = 0 " +
            "AND supTags.Deleted = 0" +
            "AND mainArticle.NetUID = @NetUid",
-               (mainArticle, article, articleMainTag, supTag) =>
+               (mainArticle, article, articleMainTag, supTag, userProfile) =>
                {
                    if (articleMain.Id.Equals(mainArticle.Id))
                    {
@@ -254,6 +269,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
                    }
                    else
                    {
+                       mainArticle.UserProfile = userProfile;
                        articleMain = mainArticle;
                    }
 

@@ -40,8 +40,6 @@ namespace database.ArticleAdventure
             
             builder.AddConfiguration(new MainArticleMap());
 
-            builder.AddConfiguration(new AuthorArticleMap());
-
             builder.AddConfiguration(new FavoriteArticleMap());
         }
     }

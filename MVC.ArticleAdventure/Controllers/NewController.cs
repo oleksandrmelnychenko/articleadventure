@@ -236,7 +236,7 @@ namespace MVC.ArticleAdventure.Controllers
             MainArticle.InfromationArticle = settingMainArticleModel.MainArticle.InfromationArticle;
             MainArticle.Price = settingMainArticleModel.MainArticle.Price;
             MainArticle.ArticleTags = new List<MainArticleTags>();
-
+            MainArticle.UserId = long.Parse(Request.Cookies[CookiesPath.USER_ID]);
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE, MainArticle);
             if (supTagsSelect?.Count() > 0)
             {

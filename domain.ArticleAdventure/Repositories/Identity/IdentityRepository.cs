@@ -18,20 +18,31 @@ namespace domain.ArticleAdventure.Repositories.Identity
 {
     public sealed class IdentityRepository : IIdentityRepository
     {
+        private RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<User> _userManager;
         private readonly IDbConnectionFactory _connectionFactory;
 
         public IdentityRepository(
             IDbConnectionFactory connectionFactory,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _connectionFactory = connectionFactory;
+            _roleManager = roleManager;
         }
 
         public async Task<Tuple<ClaimsIdentity, User>> AuthAndGetClaimsIdentity(string email, string password)
         {
+            //List<string> strings = new List<string>();
+
             User user = await _userManager.FindByEmailAsync(email);
+            //var userRoles = await _userManager.GetRolesAsync(user);
+            //// получаем все роли
+            //List<IdentityRole> allRoles = _roleManager.Roles.ToList();
+            //strings.Add(allRoles.Last().Name);
+            // получаем список ролей, которые были добавлены
+            //await _userManager.AddToRolesAsync(user, strings);
             if (user == null) throw new Exception("There is no account for the email you entered");
 
             var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -155,6 +166,23 @@ namespace domain.ArticleAdventure.Repositories.Identity
 
         public async Task<User> GetUserByEmail(string email)
         {
+            User user = await _userManager.FindByIdAsync("2");
+            //if (user != null)
+            //{
+            //    // получем список ролей пользователя
+            //    var userRoles = await _userManager.GetRolesAsync(user);
+            //    var allRoles = _roleManager.Roles.ToList();
+            //    ChangeRoleViewModel model = new ChangeRoleViewModel
+            //    {
+            //        UserId = user.Id,
+            //        UserEmail = user.Email,
+            //        UserRoles = userRoles,
+            //        AllRoles = allRoles
+            //    };
+            //    return View(model);
+            //}
+
+
             return await _userManager.FindByEmailAsync(email);
         }
 

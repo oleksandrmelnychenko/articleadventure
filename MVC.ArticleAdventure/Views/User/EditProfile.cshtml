@@ -1,4 +1,5 @@
-﻿@model domain.ArticleAdventure.Models.EditProfileModel
+﻿@using MVC.ArticleAdventure.Helpers;
+@model domain.ArticleAdventure.Models.EditProfileModel
 
 <div class="profile_page">
     <div class="sideBar_container">
@@ -14,10 +15,20 @@
             </p>
         </div>
         <div class="content_body">
-            <form>
+            <form enctype="multipart/form-data">
                 <input type="text" placeholder="Name" asp-for="UserProfile.UserName" />
                 <input type="text" placeholder="SurName" asp-for="UserProfile.SurName" />
                 <input type="text" placeholder="InformationAccount" asp-for="UserProfile.InformationAccount" />
+                @if (UserRoleHelper.IsUserRole(User.Claims, Roles.Admin))
+                {
+                    <div>Admin Setting</div>
+                    <input type="file" asp-for="@Model.PhotoMainArticle"
+                           enctype="multipart/form-data" multiple accept=".jpg,.jpeg,.png" />
+                    <input type="text" placeholder="LinkFacebook" asp-for="UserProfile.LinkFacebook" />
+                    <input type="text" placeholder="LinkInstagram" asp-for="UserProfile.LinkInstagram" />
+                    <input type="text" placeholder="LinkTelegram" asp-for="UserProfile.LinkTelegram" />
+                    <input type="text" placeholder="LinkTwitter" asp-for="UserProfile.LinkTwitter" />
+                }
 
                 <div class="button_float_wrapper">
                     <button formmethod="post">Change</button>

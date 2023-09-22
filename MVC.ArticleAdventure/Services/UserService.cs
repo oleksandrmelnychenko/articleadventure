@@ -2,6 +2,7 @@
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.EntityHelpers.Identity;
 using domain.ArticleAdventure.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MVC.ArticleAdventure.Extensions;
 using MVC.ArticleAdventure.Helpers;
@@ -9,6 +10,7 @@ using MVC.ArticleAdventure.Services.Contract;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 
 namespace MVC.ArticleAdventure.Services
 {
@@ -22,12 +24,23 @@ namespace MVC.ArticleAdventure.Services
 
             _httpClient = httpClient;
         }
-        public async Task<ExecutionResult<UserProfile>> ChangeAccountInformation(UserProfile userProfile)
+        public async Task<ExecutionResult<UserProfile>> ChangeAccountInformation(UserProfile userProfile, IFormFile photoUserProfile)
         {
             var result = new ExecutionResult<UserProfile>();
+
             try
             {
-                var response = await _httpClient.PostAsJsonAsync(PathUser.UPDATE_ACCOUNT_INFORMATION, userProfile);
+                using var form = new MultipartFormDataContent();
+
+                var jsonArticle = JsonConvert.SerializeObject(userProfile);
+                var stringContentUserProfile = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
+                form.Add(stringContentUserProfile, "userProfile");
+
+                using var streamContent = new StreamContent(photoUserProfile.OpenReadStream());
+                form.Add(streamContent, "photoUserProfile", photoUserProfile.FileName);
+                var response = await _httpClient.PostAsync(PathUser.UPDATE_ACCOUNT_INFORMATION, form);
+
+
                 if (response.IsSuccessStatusCode)
                 {
                     var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
@@ -48,9 +61,10 @@ namespace MVC.ArticleAdventure.Services
 
             return result;
 
+
         }
 
-        public async Task ChangeEmail(Guid userProfileNetUid,string newEmail,string password) 
+        public async Task ChangeEmail(Guid userProfileNetUid, string newEmail, string password)
         {
             var response = await _httpClient.GetAsync($"{PathUser.UPDATE_EMAIL}?userProfileNetUid={userProfileNetUid}&newEmail={newEmail}&password={password}");
 
@@ -58,7 +72,7 @@ namespace MVC.ArticleAdventure.Services
             UserProfile userResponseLogin = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
         }
 
-        public async Task ChangePassword(Guid userProfileNetUid, string newPassword,string oldPassword)
+        public async Task ChangePassword(Guid userProfileNetUid, string newPassword, string oldPassword)
         {
             var response = await _httpClient.GetAsync($"{PathUser.UPDATE_PASSWORD}?userProfileNetUid={userProfileNetUid}&newPassword={newPassword}&oldPassword={oldPassword}");
 
@@ -174,4 +188,4 @@ namespace MVC.ArticleAdventure.Services
             return result;
         }
     }
-} 
+}

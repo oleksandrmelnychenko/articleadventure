@@ -24,7 +24,8 @@ namespace database.ArticleAdventure.EntityMaps
                .IsRequired(false)
                .HasForeignKey(e => e.MainArticleId)
                .IsRequired(false);
-
+            entity.Property(p => p.UserId)
+               .IsRequired();
             entity.Property(p => p.Title)
                 .IsRequired()
                 .HasMaxLength(250);

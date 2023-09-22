@@ -4,7 +4,7 @@
 @{
 }
 <div class="sideProfile">
-    <div class="avatar">B</div>
+    <div class="avatar">@Context.Request.Cookies[CookiesPath.USER_NAME]?.Substring(0, 1)</div>
     <div class="user_name">@Context.Request.Cookies[CookiesPath.USER_NAME]</div>
 
     <div class="line"></div>

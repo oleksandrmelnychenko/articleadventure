@@ -240,7 +240,8 @@ IDbConnectionFactory connectionFactory,
             DisplayName = "Administrator",
             UserName = "admin@mail.com",
             Email = "admin@mail.com",
-            NetId = profile.NetUid
+            NetId = profile.NetUid,
+            EmailConfirmed = true,
         };
 
         IdentityResult identityResult = userManager.CreateAsync(user, "Grimm_jow92").Result;

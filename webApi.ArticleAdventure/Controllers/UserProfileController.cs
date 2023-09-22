@@ -7,6 +7,9 @@ using service.ArticleAdventure.Services.UserManagement.Contracts;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using common.ArticleAdventure.Helpers;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace webApi.ArticleAdventure.Controllers
 {
@@ -116,11 +119,13 @@ namespace webApi.ArticleAdventure.Controllers
         }
         [HttpPost]
         [AssignActionRoute(UserManagementSegments.UPDATE_ACCOUNT_INFORMATION)]
-        public async Task<IActionResult> UpdateAccountInformation([FromBody] UserProfile userProfile)
+        public async Task<IActionResult> UpdateAccountInformation( [FromForm] string userProfile, [FromForm] IFormFile photoUserProfile)
         {
             try
             {
-                return Ok(SuccessResponseBody(await _userProfileService.UpdateAccountInformation(userProfile), ControllerMessageConstants.UserMessage.UpdateAccountInformation));
+                UserProfile? userProfileDeserialize = JsonConvert.DeserializeObject<UserProfile>(userProfile);
+
+                return Ok(SuccessResponseBody(await _userProfileService.UpdateAccountInformation(userProfileDeserialize,photoUserProfile), ControllerMessageConstants.UserMessage.UpdateAccountInformation));
             }
             catch (Exception exc)
             {
