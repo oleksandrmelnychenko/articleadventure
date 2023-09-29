@@ -27,6 +27,8 @@ namespace domain.ArticleAdventure.Repositories.Identity.Contracts
         Task<string> GetUserIdByUserNetId(Guid userNetId);
         Task<User> FindByIdAsync(string userid);
         Task<User> GetUserByEmail(string email);
+        Task<List<User>> GetAllUsers();
+        Task<IList<string>> GetRolesUser(User user);
         Task<string> GenerateEmailConfirmationToken(User user);
         Task<IdentityResult> ConfirmEmailAsync(User user, string token);
         Task<User> GetUserByUserName(string username);

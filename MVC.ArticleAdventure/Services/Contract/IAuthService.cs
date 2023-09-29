@@ -9,5 +9,7 @@ namespace MVC.ArticleAdventure.Services.Contract
     {
         Task<ExecutionResult<CompleteAccessToken>> Login(UserLogin userLogin);
         Task<ExecutionResult<UserProfile>> GetProfile(Guid guid);
+        Task<ExecutionResult<List<UserProfile>>> GetAllProfile();
+        Task<ExecutionResult<UserProfile>> GetProfileArticles(Guid guid);
     }
 }

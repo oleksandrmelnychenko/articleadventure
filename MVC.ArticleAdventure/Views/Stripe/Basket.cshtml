@@ -44,7 +44,7 @@
                     </svg>
 
                     <div class="bask_text">Shopping cart is empty. Continue searching to find the article you are looking for.</div>
-                    <a asp-action="AllBlogs" asp-controller="All" type="button">Continue searching</a>
+                    <a asp-controller="Home" asp-action="Index" type="button" type="button">Continue searching</a>
                 </div>
             </div>
         }
@@ -80,7 +80,7 @@
                 </div>
                 <div class="basket_price">
                     <div class="hh3">Total:</div>
-                    <div class="fullPrice">@Model.FullPrice $</div>
+                    <div class="fullPrice"> @Math.Round(Model.FullPrice, 2)$</div>
                     <button asp-action="Basket" type="submit" class="archicle_btn">Order Processing</button>
                 </div>
             </div>

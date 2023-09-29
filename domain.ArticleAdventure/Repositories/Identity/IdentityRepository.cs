@@ -185,7 +185,15 @@ namespace domain.ArticleAdventure.Repositories.Identity
 
             return await _userManager.FindByEmailAsync(email);
         }
+        public async Task<List<User>> GetAllUsers()
+        {
+           return _userManager.Users.ToList();
+        }
 
+        public async Task<IList<string>> GetRolesUser(User user)
+        {
+            return await _userManager.GetRolesAsync(user);
+        }
         public async Task<string> GenerateEmailConfirmationToken(User user)
         {
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);

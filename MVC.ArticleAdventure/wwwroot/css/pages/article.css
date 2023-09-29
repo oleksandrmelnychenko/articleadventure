@@ -1,4 +1,5 @@
-﻿@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap");
+﻿@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap");
 @font-face {
   font-family: "Source Sans Pro";
   src: url("fonts/SourceSans3-Regular.ttf");
@@ -19,6 +20,13 @@ body {
 
 .articles_list_container {
   padding: 20px 0;
+}
+.articles_list_container h3 {
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.05rem;
+  max-width: 36em;
+  color: #6a6f73;
 }
 
 .item_box_title {
@@ -45,7 +53,95 @@ body {
   position: relative;
   z-index: 2;
 }
-
+.article_item .profile_container,
+.archicle_info_item .profile_container,
+.tag_group_item .profile_container,
+.basket_page .profile_container,
+.success_buy_page .profile_container,
+.history_page .profile_container {
+  display: flex;
+  /* width: 100%;
+  background-color: white;
+  box-shadow: 0 3px 12px -1px rgba(7, 10, 25, 0.1), 0 22px 27px -30px rgba(7, 10, 25, 0.1);
+  border: 1px solid #e0e0e0;
+  padding: 40px 50px;*/
+}
+.article_item .profile_container .info_author_sur_name,
+.archicle_info_item .profile_container .info_author_sur_name,
+.tag_group_item .profile_container .info_author_sur_name,
+.basket_page .profile_container .info_author_sur_name,
+.success_buy_page .profile_container .info_author_sur_name,
+.history_page .profile_container .info_author_sur_name {
+  font-family: var(--font-stack-text);
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 1rem;
+  color: #6a6f73;
+  margin-bottom: 45px;
+}
+.article_item .profile_container img,
+.archicle_info_item .profile_container img,
+.tag_group_item .profile_container img,
+.basket_page .profile_container img,
+.success_buy_page .profile_container img,
+.history_page .profile_container img {
+  border-radius: 50%;
+}
+.article_item .profile_container span,
+.archicle_info_item .profile_container span,
+.tag_group_item .profile_container span,
+.basket_page .profile_container span,
+.success_buy_page .profile_container span,
+.history_page .profile_container span {
+  text-decoration: underline;
+  color: var(--epcl-black-color);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02rem;
+  font-size: 1.4rem;
+  max-width: 36em;
+}
+.article_item .profile_container .list_pay,
+.archicle_info_item .profile_container .list_pay,
+.tag_group_item .profile_container .list_pay,
+.basket_page .profile_container .list_pay,
+.success_buy_page .profile_container .list_pay,
+.history_page .profile_container .list_pay {
+  width: 340px;
+  margin-left: 20px;
+}
+.article_item .profile_container h6,
+.archicle_info_item .profile_container h6,
+.tag_group_item .profile_container h6,
+.basket_page .profile_container h6,
+.success_buy_page .profile_container h6,
+.history_page .profile_container h6 {
+  color: #6a6f73;
+  text-transform: uppercase;
+}
+.article_item .profile_container h2,
+.archicle_info_item .profile_container h2,
+.tag_group_item .profile_container h2,
+.basket_page .profile_container h2,
+.success_buy_page .profile_container h2,
+.history_page .profile_container h2 {
+  font-family: var(--font-stack-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02rem;
+  font-size: 1.1rem;
+}
+.article_item .profile_container h1,
+.archicle_info_item .profile_container h1,
+.tag_group_item .profile_container h1,
+.basket_page .profile_container h1,
+.success_buy_page .profile_container h1,
+.history_page .profile_container h1 {
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.05rem;
+  max-width: 36em;
+}
 .archicle_btn {
   color: #fff;
   font-size: 15px;
@@ -475,6 +571,25 @@ body {
   color: var(--epcl-titles-color);
   margin-top: 150px;
 }
+.archicle_info_item.price_item_container .controls .image_block {
+  width: 250px;
+  height: 250px;
+  box-shadow: 0 0 1px red;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+.archicle_info_item.price_item_container .controls h4 {
+  display: flex;
+  font-size: 21px;
+}
+.archicle_info_item.price_item_container .controls h4 .tape {
+  height: 2px;
+  background: var(--epcl-black-color);
+  flex: 1 1 auto;
+  margin-left: 15px;
+  min-width: 30px;
+  align-self: center;
+}
 .archicle_info_item.price_item_container .controls .archicle_btn {
   margin-bottom: 10px;
 }
@@ -654,6 +769,95 @@ body {
   padding-top: 10px;
 }
 
+.profile_info_page {
+  width: 1140px;
+  margin: 40px auto 0;
+  display: flex;
+  min-height: calc(100vh - 80px);
+  position: relative;
+}
+.profile_info_page .list_pay {
+  width: 340px;
+  margin-left: 20px;
+}
+.profile_info_page h6 {
+  color: #6a6f73;
+  text-transform: uppercase;
+}
+.profile_info_page h2 {
+  font-family: var(--font-stack-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02rem;
+  font-size: 1.1rem;
+}
+.profile_info_page h1 {
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.05rem;
+  max-width: 36em;
+}
+.profile_info_page .profile_container {
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 3px 12px -1px rgba(7, 10, 25, 0.1), 0 22px 27px -30px rgba(7, 10, 25, 0.1);
+  border: 1px solid #e0e0e0;
+  padding: 40px 50px;
+}
+
+.table_user_manager {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px 20px;
+  background-color: #fff;
+}
+.table_user_manager table {
+  width: 100%;
+}
+.table_user_manager table .uppercase_panel {
+  background-color: #7f7d99;
+}
+.table_user_manager table tr th {
+  width: 10%;
+  color: #fff;
+  border: 1px solid white;
+  color: white; /* Цвет текста на кнопке */
+  text-align: center; /* Выравнивание текста по центру */
+  text-decoration: none; /* Убрать подчеркивание у ссылки, если это ссылка */
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+.table_user_manager table tr td {
+  width: 10%;
+}
+.table_user_manager table tr td button {
+  color: #fff;
+  font-size: 15px;
+  padding: 8px 25px;
+  letter-spacing: 0.5px;
+  font-family: "Josefin Sans", sans-serif;
+  border: 2px solid var(--epcl-black-color);
+  background-color: var(--epcl-black-color);
+  /*&:before {
+      content: '';*/
+  /*@include position_absolute(2px,2px,2px,2px,1);*/
+  /*position: center;
+      top:2px;
+      right:2px;
+      bottom:2px;
+      left:2px;
+      z-index:1;
+      transition: all .3s ease;
+      border: 1px solid var(--epcl-black-color);
+  }*/
+  /*
+                      &:hover {
+                          &:before {
+                              border-color: #fff;
+                          }
+                      }*/
+  width: 100%;
+}
+
 .profile_page {
   width: 1140px;
   margin: 40px auto 0;
@@ -673,6 +877,12 @@ body {
   z-index: 1;
   position: absolute;
   border-right: 1px solid #e0e0e0;
+}
+.profile_page .profile_container {
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 3px 12px -1px rgba(7, 10, 25, 0.1), 0 22px 27px -30px rgba(7, 10, 25, 0.1);
+  border: 1px solid #e0e0e0;
 }
 .profile_page .content_container {
   width: 100%;
@@ -736,7 +946,7 @@ body {
   outline: 0;
   transition: all 0.3s ease;
 }
-.profile_page .content_container button {
+.profile_page .content_container button:not(.tox-mbtn, .tox-tbtn, .tox-statusbar__wordcount) {
   color: #fff;
   font-size: 15px;
   padding: 8px 25px;
@@ -747,10 +957,10 @@ body {
   position: relative;
   min-height: 44px;
 }
-.profile_page .content_container button.full {
+.profile_page .content_container button:not(.tox-mbtn, .tox-tbtn, .tox-statusbar__wordcount).full {
   width: 100%;
 }
-.profile_page .content_container button:before {
+.profile_page .content_container button:not(.tox-mbtn, .tox-tbtn, .tox-statusbar__wordcount):before {
   content: "";
   top: 2px;
   left: 2px;
@@ -761,7 +971,7 @@ body {
   transition: all 0.3s ease;
   border: 1px solid var(--epcl-black-color);
 }
-.profile_page .content_container button:hover:before {
+.profile_page .content_container button:not(.tox-mbtn, .tox-tbtn, .tox-statusbar__wordcount):hover:before {
   border-color: #fff;
 }
 .profile_page .content_container .button_float_wrapper {
@@ -841,6 +1051,26 @@ article.article_item .line.nLinePrice,
 .basket_page .line.nLinePrice,
 .history_page .line.nLinePrice {
   width: calc(100% - 140px);
+}
+
+.user_panel .user_info {
+  display: flex;
+  width: 80%;
+}
+.user_panel .user_info .avatar {
+  width: 220px;
+  height: 120px;
+  background-color: var(--epcl-black-color);
+  border-radius: 50%;
+  margin-left: auto;
+  /*margin-top: auto;*/
+  margin-bottom: auto;
+  overflow: hidden;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 44px;
 }
 
 .sideProfile {

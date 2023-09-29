@@ -17,8 +17,14 @@
         <div class="content_body">
             <form enctype="multipart/form-data">
                 <input type="text" placeholder="Name" asp-for="UserProfile.UserName" />
-                <input type="text" placeholder="SurName" asp-for="UserProfile.SurName" />
-                <input type="text" placeholder="InformationAccount" asp-for="UserProfile.InformationAccount" />
+                @if (UserRoleHelper.IsUserRole(User.Claims, Roles.Admin))
+                {
+                    <input type="text" placeholder="SurName" asp-for="UserProfile.SurName" />
+                }
+                <div class="aboba">
+                    <div>Information Article</div>
+                    <textarea cols="20" rows="3" asp-for="UserProfile.InformationAccount"></textarea>
+                </div>
                 @if (UserRoleHelper.IsUserRole(User.Claims, Roles.Admin))
                 {
                     <div>Admin Setting</div>

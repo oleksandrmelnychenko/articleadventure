@@ -36,8 +36,12 @@ namespace MVC.ArticleAdventure.Services
                 var stringContentUserProfile = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
                 form.Add(stringContentUserProfile, "userProfile");
 
-                using var streamContent = new StreamContent(photoUserProfile.OpenReadStream());
-                form.Add(streamContent, "photoUserProfile", photoUserProfile.FileName);
+                if (photoUserProfile != null)
+                {
+                    using var streamContent = new StreamContent(photoUserProfile.OpenReadStream());
+                    form.Add(streamContent, "photoUserProfile", photoUserProfile.FileName);
+                }
+                
                 var response = await _httpClient.PostAsync(PathUser.UPDATE_ACCOUNT_INFORMATION, form);
 
 

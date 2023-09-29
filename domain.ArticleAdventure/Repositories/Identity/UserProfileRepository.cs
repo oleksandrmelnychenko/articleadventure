@@ -37,14 +37,55 @@ namespace domain.ArticleAdventure.Repositories.Identity
                 "WHERE [UserProfile].ID = @Id",
                 new { Id = id }
             ).SingleOrDefault();
+        public UserProfile GetAuthorInfo(Guid netId)
+        {
+            var user = new UserProfile();
+            _connection.Query<UserProfile, MainArticle, UserProfile>(
+                "SELECT userProfile.*, " +
+                "mainArticle.* " +
+                "FROM [ArticleAdventure].[dbo].[MainArticle] AS mainArticle " +
+                "LEFT JOIN [ArticleAdventure].[dbo].[UserProfile] AS userProfile " +
+                "ON mainArticle.UserId = userProfile.ID " +
+                "WHERE userProfile.NetUid = @NetId " +
+                "AND mainArticle.Deleted = 0 ",
+                (userProfile, mainArticle) => {
+                    if (user.Id.Equals(userProfile.Id))
+                    {
+                        userProfile = user;
+                    }
+                    else
+                    {
+                        user = userProfile;
+                        user.mainArticles = new List<MainArticle>();
+                    }
 
-        public UserProfile Get(Guid netId) =>
-            _connection.Query<UserProfile>(
+                    if (user.mainArticles.Any(x => x.NetUid.Equals(mainArticle.NetUid)))
+                    {
+                        mainArticle = userProfile.mainArticles.First(x => x.NetUid.Equals(mainArticle.NetUid));
+                    }
+                    else
+                    {
+                        userProfile.mainArticles.Add(mainArticle);
+                    }
+
+                    return userProfile;
+                },
+                new { NetId = netId }
+            ).ToList();
+
+            return user;
+
+        }
+        public UserProfile Get(Guid netId)
+        {
+            
+            return _connection.Query<UserProfile>(
                 "SELECT * " +
                 "FROM [UserProfile] " +
                 "WHERE [UserProfile].NetUID = @NetId",
                 new { NetId = netId }
             ).SingleOrDefault();
+        }
 
         public UserProfile Get(string userName, string email) =>
             _connection.Query<UserProfile>(
@@ -65,7 +106,11 @@ namespace domain.ArticleAdventure.Repositories.Identity
                 "AND [UserProfile].Deleted = 0",
                 new { Email = email }
             ).SingleOrDefault();
-
+        public List<UserProfile> GetAll() =>
+            _connection.Query<UserProfile>(
+                "SELECT * " +
+                "FROM [UserProfile] "
+            ).ToList();
         public IEnumerable<UserProfile> GetAllFiltered(string value, int limit, int offset)
             => _connection.Query<UserProfile>(
                         ";WITH [Filter_CTE] " +
@@ -195,6 +240,6 @@ namespace domain.ArticleAdventure.Repositories.Identity
                 "WHERE FavoriteArticles.NetUID = @NetUID",
                 new { NetUID = netUidFavoriteArticle });
 
-
+       
     }
 }

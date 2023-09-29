@@ -289,7 +289,7 @@ namespace MVC.ArticleAdventure.Controllers
             HttpContext.Session.Remove(SessionStoragePath.CHOOSE_NEW_SUP_TAGS);
             
             await _mainArticleService.AddArticle(MainArticle,settingMainArticleModel.PhotoMainArticle);
-            return Redirect("~/All/AllBlogs");
+            return Redirect("~/");
         }
     }
 }

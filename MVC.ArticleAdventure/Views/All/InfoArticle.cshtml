@@ -72,12 +72,23 @@
                 </div>
                 <div class="item_box_title">The article has been created:</div>
                 <div class="archicle_info_item">
-                    <a href="~/Profile?netUidProfile={@Model.MainArticle.UserProfile.NetUid}">
-                        <div>@Model.MainArticle.UserProfile.UserName</div>
-                        <div>@Model.MainArticle.UserProfile.SurName</div>
-                        <img src="@Model.MainArticle.UserProfile.LinkPictureUser" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
-                        <div>@Model.MainArticle.UserProfile.InformationAccount</div>
-                    </a>
+                    <div class="profile_container">
+                        <div>
+                            <h6>Article creator</h6>
+                            <a href="~/Profile?netUidProfile={@Model.MainArticle.UserProfile.NetUid}">
+                                <span>
+                                    @Model.MainArticle.UserProfile.UserName
+                                </span>
+                            </a>
+                            <div class="info_author_sur_name">@Model.MainArticle.UserProfile.SurName</div>
+                            @Html.Raw(Model.MainArticle.UserProfile.InformationAccount)
+
+                        </div>
+                        <div>
+                            <img src="@Model.MainArticle.UserProfile.LinkPictureUser" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
             <div class="list_pay">

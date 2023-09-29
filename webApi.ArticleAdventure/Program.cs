@@ -218,7 +218,7 @@ IDbConnectionFactory connectionFactory,
         if (userManager.Users.Any(u => u.DisplayName == "Administrator")) return;
 
         UserProfile profile = new UserProfile
-        {
+        { 
             GrantAdministrativePermissions = true,
             Email = "admin@mail.com",
             UserName = "Administrator"

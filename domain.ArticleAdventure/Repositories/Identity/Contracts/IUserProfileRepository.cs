@@ -12,11 +12,13 @@ namespace domain.ArticleAdventure.Repositories.Identity.Contracts
         long Add(UserProfile userProfile);
 
         UserProfile Get(long id);
+        List<UserProfile> GetAll();
 
         UserProfile Get(string userName, string email);
 
         UserProfile Get(string email);
-
+        
+        UserProfile GetAuthorInfo(Guid netId);
         UserProfile Get(Guid netId);
 
         IEnumerable<UserProfile> GetAllFiltered(string value, int limit, int offset);

@@ -86,7 +86,7 @@ namespace MVC.ArticleAdventure.Controllers
                 authorArticle.Add(article);
                 SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CART_ARTICLE, authorArticle);
 
-                return Redirect("~/All/AllBlogs");
+                return Redirect("~/");
             }
             else
             {
@@ -94,7 +94,7 @@ namespace MVC.ArticleAdventure.Controllers
                 SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CART_ARTICLE, listAuthorArticle);
             }
 
-            return Redirect("~/All/AllBlogs");
+            return Redirect("~/");
         }
 
         [HttpGet]

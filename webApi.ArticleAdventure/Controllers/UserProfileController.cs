@@ -74,6 +74,22 @@ namespace webApi.ArticleAdventure.Controllers
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
             }
         }
+
+        [HttpGet]
+        [AssignActionRoute(UserManagementSegments.GET_ALL_USERS)]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                return Ok(SuccessResponseBody(await _userProfileService.GetAll(), ControllerMessageConstants.UserMessage.GetNetUidUser));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+
         [HttpGet]
         [AssignActionRoute(UserManagementSegments.GET_USER_NETUID)]
         public async Task<IActionResult> GetNetUidUser(Guid userNetId)
@@ -88,7 +104,22 @@ namespace webApi.ArticleAdventure.Controllers
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
             }
         }
-        
+
+        [HttpGet]
+        [AssignActionRoute(UserManagementSegments.GET_USER_AUTHOR_NETUID)]
+        public async Task<IActionResult> GetAuthorNetUidUser(Guid userNetId)
+        {
+            try
+            {
+                return Ok(SuccessResponseBody(await _userProfileService.GetAuthorById(userNetId), ControllerMessageConstants.UserMessage.GetNetUidUser));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+
         [HttpGet]
         [AssignActionRoute(UserManagementSegments.UPDATE_PASSWORD)]
         public async Task<IActionResult> UpdatePassword(Guid userProfileNetUid, string newPassword,string oldPassword)

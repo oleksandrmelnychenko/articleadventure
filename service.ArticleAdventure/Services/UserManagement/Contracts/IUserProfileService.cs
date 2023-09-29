@@ -15,6 +15,8 @@ namespace service.ArticleAdventure.Services.UserManagement.Contracts
         Task<UserProfile> Create(UserProfile userProfile, string password);
         Task<UserProfile> FullUpdate(UserProfile userProfile, string password);
         Task<UserProfile> GetById(Guid userNetId);
+        Task<List<UserProfile>> GetAll();
+        Task<UserProfile> GetAuthorById(Guid userNetId);
         Task<IdentityResult> ConforimEmail(string token, string userId);
 
         Task<UserProfile> UpdatePassword(Guid userProfileNetUid, string password,string oldPassword);

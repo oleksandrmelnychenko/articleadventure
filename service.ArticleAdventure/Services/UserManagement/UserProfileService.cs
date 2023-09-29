@@ -156,9 +156,44 @@ namespace service.ArticleAdventure.Services.UserManagement
                Task.Run(() =>
                {
                    using IDbConnection connection = _connectionFactory.NewSqlConnection();
+                  
                    return _identityRepositoriesFactory.NewUserProfileRepository(connection).Get(userNetId);
 
                });
+        public Task<List<UserProfile>> GetAll() =>
+               Task.Run(async () =>
+               {
+                   using IDbConnection connection = _connectionFactory.NewSqlConnection();
+                   IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository();
+
+                   List<UserProfile> userProfiles = new List<UserProfile>();
+
+                   List<User> users = await identityRepository.GetAllUsers();
+                   var userProfileList = _identityRepositoriesFactory.NewUserProfileRepository(connection).GetAll();
+                   foreach (var user in users)
+                   {
+                       var s =await identityRepository.GetRolesUser(user);
+                       userProfileList.First(x => x.Email == user.Email).Role = s.First();
+                   }
+
+
+                   return userProfileList;
+
+               });
+        public  Task<UserProfile> GetAuthorById(Guid userNetId) =>
+              Task.Run(async () =>
+              {
+                  using IDbConnection connection = _connectionFactory.NewSqlConnection();
+                  IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository();
+
+                  UserProfile user = _identityRepositoriesFactory.NewUserProfileRepository(connection).GetAuthorInfo(userNetId);
+                  User userByEmail = await identityRepository.GetUserByEmail(user.Email);
+
+                  var s = await identityRepository.GetRolesUser(userByEmail);
+                  user.Role = s.First();
+                  return user;
+
+              });
 
         public Task<List<FavoriteArticle>> GetAllFavoriteArticle(Guid userProfileNetUid) =>
                Task.Run(() =>
@@ -231,10 +266,6 @@ namespace service.ArticleAdventure.Services.UserManagement
 
                        User user = await identityRepository.GetUserByUserNetId(userProfile.NetUid);
 
-                       if (!existingProfile.UserName.Equals(userProfile.UserName))
-                       {
-                           identityRepository.UpdateUsersDisplayName(user, userProfile.UserName);
-                       }
 
                        existingProfile.SurName = userProfile.SurName;
                        existingProfile.InformationAccount = userProfile.InformationAccount;
@@ -314,6 +345,8 @@ namespace service.ArticleAdventure.Services.UserManagement
                    }
 
                });
+
+      
     }
 
 }

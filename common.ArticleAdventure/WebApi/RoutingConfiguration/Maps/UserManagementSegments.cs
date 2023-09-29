@@ -22,6 +22,10 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
 
         public const string GET_USER_NETUID = "get/netuid";
 
+        public const string GET_ALL_USERS = "get/all";
+
+        public const string GET_USER_AUTHOR_NETUID = "get/articles/netuid";
+
         public const string UPDATE_PASSWORD = "update/password";
 
         public const string UPDATE_EMAIL = "update/email";

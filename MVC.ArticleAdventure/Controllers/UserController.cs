@@ -39,6 +39,26 @@ namespace MVC.ArticleAdventure.Controllers
             MyArticlesModel myArticlesModel = new MyArticlesModel { mainArticles = paymentArticles.Data };
             return View(myArticlesModel);
         }
+        [HttpGet]
+        [Route("SelectUser")]
+        public async Task<IActionResult> SelectUser(int selectUser)
+        {
+            UserManagerModel myArticlesModel = new UserManagerModel();
+
+            var paymentArticles = await _authenticationService.GetAllProfile();
+            myArticlesModel.SelectedRow = selectUser;
+            myArticlesModel.UserProfiles = paymentArticles.Data;
+            return View("UserManager", myArticlesModel);
+        }
+        
+        [HttpGet]
+        [Route("UserManager")]
+        public async Task<IActionResult> UserManager()
+        {
+            var paymentArticles = await _authenticationService.GetAllProfile();
+            UserManagerModel myArticlesModel = new UserManagerModel {  UserProfiles = paymentArticles.Data };
+            return View(myArticlesModel);
+        }
 
         [HttpGet]
         [Route("MyLists")]
@@ -49,29 +69,43 @@ namespace MVC.ArticleAdventure.Controllers
         }
         [HttpGet]
         [Route("Profile")]
-        [Authorize]
         public async Task<IActionResult> Profile(Guid netUidProfile)
         {
             if (netUidProfile != Guid.Empty)
             {
-                var user = await _authenticationService.GetProfile(netUidProfile);
+                
+                var user = await _authenticationService.GetProfileArticles(netUidProfile);
                 ProfileModel model = new ProfileModel { Profile= user.Data, InformationAccount = user.Data.InformationAccount, UserName = user.Data.UserName, SurName = user.Data.SurName };
                 return View(model);
 
             }
             else
-            {
-                var guidUser = User.FindFirst("Guid");
-                ExecutionResult<UserProfile> user = await _authenticationService.GetProfile(Guid.Parse(guidUser.Value));
-                ProfileModel model = new ProfileModel { Profile = user.Data, InformationAccount = user.Data.InformationAccount, UserName = user.Data.UserName, SurName = user.Data.SurName };
-                return View(model);
-            }
+            { 
+                if (UserRoleHelper.IsUserRole(User.Claims, "User"))
+                {
+                    var guidUser = User.FindFirst("Guid");
+                    ExecutionResult<UserProfile> user = await _authenticationService.GetProfile(Guid.Parse(guidUser.Value));
+                    var paymentArticles = await _mainArticleService.GetAllStripePaymentsUser(user.Data.Id);
 
-            //var userName = Request.Cookies[CookiesPath.USER_NAME];
-            //var surName = Request.Cookies[CookiesPath.SURNAME];
-            //var informationProfile = Request.Cookies[CookiesPath.INFORMATION_PROFILE];
-            //ProfileModel profileModel = new ProfileModel { InformationAccount = informationProfile, UserName = userName, SurName = surName };
-            //return View(profileModel);
+                    ProfileModel model = new ProfileModel 
+                    {   
+                        Profile = user.Data,
+                        InformationAccount = user.Data.InformationAccount,
+                        UserName = user.Data.UserName,
+                        SurName = user.Data.SurName,
+                        historyArticleBuy = paymentArticles.Data
+                    };
+                    return View(model);
+                }
+                else
+                {
+                    var guidUser = User.FindFirst("Guid");
+                    ExecutionResult<UserProfile> user = await _authenticationService.GetProfileArticles(Guid.Parse(guidUser.Value));
+                    ProfileModel model = new ProfileModel { Profile = user.Data, InformationAccount = user.Data.InformationAccount, UserName = user.Data.UserName, SurName = user.Data.SurName };
+                    return View(model);
+                }
+                
+            }
         }
         [HttpGet]
         [Route("EditProfile")]

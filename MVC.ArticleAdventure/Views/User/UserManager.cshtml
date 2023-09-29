@@ -1,0 +1,61 @@
+﻿@model domain.ArticleAdventure.Models.UserManagerModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="table_user_manager">
+    <table >
+        <tr class="uppercase_panel">
+            <th>Create Date</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Select Profile</th>
+        </tr>
+        @for (int i = 0; i < Model.UserProfiles.Count; i++)
+        {
+            <tr>
+                <td>@Model.UserProfiles[i].Created</td>
+                <td>@Model.UserProfiles[i].UserName</td>
+                <td>@Model.UserProfiles[i].Email</td>
+                <td>@Model.UserProfiles[i].Role</td>
+                @if (Model.SelectedRow == i)
+                {
+                    <td><button onclick="location.href='@Url.Action("SelectUser", "User",new {selectUser = i})'">Selected</button></td>
+                }
+                else
+                {
+                    <td><button onclick ="location.href='@Url.Action("SelectUser", "User",new {selectUser = i})'">Select</button></td>
+                }
+
+            </tr>
+        }
+        @*@foreach (var profile in Model.UserProfiles)
+        {
+            <tr>
+                <!-- Создаем вторую строку (данные) -->
+                <td>@profile.Created</td>
+                <td>@profile.UserName</td>
+                <td>@profile.Email</td>
+                <td>@profile.Role</td>
+                <td><button>Select</button></td>
+                <td><button>Selected</button></td>
+
+            </tr>
+        }*@
+    </table>
+    <div>
+        <button>Create</button>
+        @if (Model.SelectedRow == -1)
+        {
+            <button disabled>Edit</button>
+            <button disabled>Delete</button>
+        }
+        else
+        {
+            <button>Edit</button>
+            <button>Delete</button>
+        }
+    </div>
+</div>

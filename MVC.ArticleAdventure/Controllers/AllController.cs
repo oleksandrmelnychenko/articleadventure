@@ -316,7 +316,7 @@ namespace MVC.ArticleAdventure.Controllers
 
             var userGuidClaim = User.FindFirst("Guid");
             var email = Request.Cookies[CookiesPath.EMAIL];
-            if (UserRoleHelper.IsUserRole(User.Claims,"User"))
+            if (UserRoleHelper.IsUserRole(User.Claims,"User")|| UserRoleHelper.IsUserRole(User.Claims, Roles.Admin))
             {
                 var favoriteArticle = await _userService.GetFavoriteArticle(Guid.Parse(userGuidClaim.Value), NetUidArticle);
 

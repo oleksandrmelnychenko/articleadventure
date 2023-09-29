@@ -18,5 +18,7 @@ namespace domain.ArticleAdventure.Entities
         public string LinkFacebook { get; set; }
         public string LinkTelegram { get; set; }
         public bool GrantAdministrativePermissions { get; set; }
+        public List<MainArticle> mainArticles { get; set; }
+        public string Role { get;set; }
     }
 }

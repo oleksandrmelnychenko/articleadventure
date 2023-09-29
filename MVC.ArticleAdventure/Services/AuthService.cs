@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using MVC.ArticleAdventure.Extensions;
 using MVC.ArticleAdventure.Services.Contract;
 using Newtonsoft.Json;
+using System;
 using System.Net;
 
 namespace MVC.ArticleAdventure.Services
@@ -51,6 +52,35 @@ namespace MVC.ArticleAdventure.Services
             return result;
         }
 
+        public async Task<ExecutionResult<UserProfile>> GetProfileArticles(Guid guid)
+        {
+            var result = new ExecutionResult<UserProfile>();
+
+            var response = await _httpClient.GetAsync($"/api/v1/usermanagement/get/articles/netuid?userNetId={guid}");
+
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
+        }
+
         public async Task<ExecutionResult<UserProfile>> GetProfile(Guid guid)
         {
             var result = new ExecutionResult<UserProfile>();
@@ -63,6 +93,35 @@ namespace MVC.ArticleAdventure.Services
                 {
                     var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
                     result.Data = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
+        }
+
+        public async Task<ExecutionResult<List<UserProfile>>> GetAllProfile()
+        {
+            var result = new ExecutionResult<List<UserProfile>>();
+
+            var response = await _httpClient.GetAsync($"/api/v1/usermanagement/get/all");
+
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<UserProfile>>(successResponse.Body.ToString());
                 }
                 else
                 {
