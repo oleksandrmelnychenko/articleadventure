@@ -11,9 +11,9 @@ namespace service.ArticleAdventure.Services.Blog.Contracts
     public interface IMainArticleService
     {
         Task<long> AddArticle(MainArticle blog,IFormFile PhotoMainArticle);
-        Task<List<MainArticle>> GetAllArticles();
+        Task<List<MainArticle>> GetAllArticles(int page = 1, int count = 25);
         Task<List<MainArticle>> GetAllFilterDateTimeArticles();
-        Task<List<MainArticle>> GetAllArticlesFilterSupTags(List<MainArticleTags> mainTags);
+        Task<List<MainArticle>> GetAllArticlesFilterSupTags(List<MainArticleTags> mainTags, int page = 1, int count = 25);
         Task<long> Update(MainArticle blogs, IFormFile filePhotoMainArticle);
         Task Remove(Guid netUid);
         Task<AuthorArticle> GetSupArticle(Guid netUid);

@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using common.ArticleAdventure.IdentityConfiguration;
 using common.ArticleAdventure.ResponceBuilder;
 using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.EntityHelpers.Identity;
@@ -25,6 +26,51 @@ namespace MVC.ArticleAdventure.Services
 
             _httpClient = httpClient;
         }
+
+        public async Task<ExecutionResult<UserProfile>> FullUpdate(RegisterModel registerModel)
+        {
+
+            var result = new ExecutionResult<UserProfile>();
+
+            try
+            {
+                UserProfile userProfile = new UserProfile();
+
+                if (registerModel?.Role == IdentityRoles.Administrator)
+                {
+                    userProfile.NetUid = registerModel.NetUidPriofile;
+                    userProfile.Email = registerModel.Email;
+                    userProfile.UserName = registerModel.UserName;
+                    userProfile.GrantAdministrativePermissions = true;
+                }
+                else
+                {
+                    userProfile.Email = registerModel.Email;
+                    userProfile.UserName = registerModel.UserName;
+                }
+                var response = await _httpClient.PostAsJsonAsync($"{PathUserProfile.FULL_UPDATE}/?password={registerModel.Password}", userProfile);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
+
         public async Task<ExecutionResult<UserProfile>> CreateAccount(RegisterModel registerModel)
         {
 
@@ -32,7 +78,19 @@ namespace MVC.ArticleAdventure.Services
 
             try
             {
-                UserProfile userProfile = new UserProfile { Email = registerModel.Email, UserName = registerModel.UserName };
+                UserProfile userProfile = new UserProfile ();
+
+                if (registerModel?.Role == IdentityRoles.Administrator)
+                {
+                    userProfile.Email = registerModel.Email;
+                    userProfile.UserName = registerModel.UserName;
+                    userProfile.GrantAdministrativePermissions = true;
+                }
+                else
+                {
+                    userProfile.Email = registerModel.Email;
+                    userProfile.UserName = registerModel.UserName;
+                }
                 var response = await _httpClient.PostAsJsonAsync($"{PathUserProfile.CREATE_USER}/?password={registerModel.Password}", userProfile);
 
                 if (response.IsSuccessStatusCode)

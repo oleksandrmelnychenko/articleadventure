@@ -7,10 +7,6 @@ using System.Threading.Tasks;
 
 namespace domain.ArticleAdventure.Models
 {
-    public class RegisterEmailModel
-    {
-        public string Email { get; set; }
-    }
     public class RegisterModel
     {
         [Required(ErrorMessage = "This field is required.")]
@@ -24,5 +20,8 @@ namespace domain.ArticleAdventure.Models
         [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "password does not match")]
         public string Password { get; set; }
         public bool IsEmailConfirmed { get; set; } = false;
+
+        public string Role { get; set; }
+        public Guid NetUidPriofile { get; set; }
     }
 }

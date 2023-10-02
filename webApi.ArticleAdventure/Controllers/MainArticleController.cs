@@ -70,11 +70,11 @@ namespace webApi.ArticleAdventure.Controllers
 
         [HttpGet]
         [AssignActionRoute(ArticleSegments.ALL_ARTICLE)]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int page = 1, int count = 25)
         {
             try
             {
-                return Ok(SuccessResponseBody(await _mainArticleService.GetAllArticles(), ControllerMessageConstants.ArticlesMessage.GetAllArticle));
+                return Ok(SuccessResponseBody(await _mainArticleService.GetAllArticles(page,count), ControllerMessageConstants.ArticlesMessage.GetAllArticle));
             }
             catch (Exception exc)
             {
@@ -85,11 +85,11 @@ namespace webApi.ArticleAdventure.Controllers
 
         [HttpPost]
         [AssignActionRoute(ArticleSegments.GET_ALL_ARTICLE_FILTER_SUP_TAGS)]
-        public async Task<IActionResult> GetAllArticleFilterSupTags([FromBody] List<MainArticleTags> mainArticleTags)
+        public async Task<IActionResult> GetAllArticleFilterSupTags([FromBody] List<MainArticleTags> mainArticleTags, int page = 1, int count = 25)
         {
             try
             {
-                return Ok(SuccessResponseBody(await _mainArticleService.GetAllArticlesFilterSupTags(mainArticleTags), ControllerMessageConstants.ArticlesMessage.AllArticleFilterSupTags));
+                return Ok(SuccessResponseBody(await _mainArticleService.GetAllArticlesFilterSupTags(mainArticleTags,page,count), ControllerMessageConstants.ArticlesMessage.AllArticleFilterSupTags));
             }
             catch (Exception exc)
             {

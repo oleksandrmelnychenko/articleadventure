@@ -143,22 +143,23 @@
                         }
                     </div>
 
-                    <div class="user_menu_icon">
+                    @*<div class="user_menu_icon">
                         <div></div>
-                    </div>
-
-                    <div class="user_menu_container">
+            </div>*@
+                    <ul class="header_menu">
+                        <li>
+                            <a asp-area="" asp-controller="Identity" asp-action="Login">Login</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Identity" asp-action="CreateAccount">Create Account</a>
+                        </li>
+                    </ul>
+                    @*<div class="user_menu_container">
+                        
                             <div class="line">
-                                <ul>
-                                <li>
-                                    <a asp-area="" asp-controller="Identity" asp-action="Login">Login</a>
-                                </li>
-                                <li>
-                                    <a asp-area="" asp-controller="Identity" asp-action="CreateAccount">Create Account</a>
-                                </li>
-                                </ul>
+                                
                             </div>
-                    </div>
+            </div>*@
                 </div>
             }
 

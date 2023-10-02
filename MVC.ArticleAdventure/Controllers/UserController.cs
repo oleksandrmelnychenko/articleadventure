@@ -1,4 +1,5 @@
 ﻿using Azure;
+using common.ArticleAdventure.IdentityConfiguration;
 using common.ArticleAdventure.ResponceBuilder;
 using common.ArticleAdventure.WebApi;
 using common.ArticleAdventure.WebApi.RoutingConfiguration;
@@ -20,14 +21,16 @@ namespace MVC.ArticleAdventure.Controllers
         private readonly IArticleService _articleService;
         private readonly IAuthService _authenticationService;
         private readonly IMainArticleService _mainArticleService;
+        private readonly IUserProfileService _userProfileService;
         private readonly IUserService _userService;
-        public UserController(ILogger<UserController> logger, IArticleService articleService, IUserService userService, IAuthService authService, IMainArticleService mainArticleService)
+        public UserController(ILogger<UserController> logger, IArticleService articleService, IUserService userService, IAuthService authService, IMainArticleService mainArticleService, IUserProfileService userProfileService)
         {
             _logger = logger;
             _articleService = articleService;
             _userService = userService;
             _authenticationService = authService;
             _mainArticleService = mainArticleService;
+            _userProfileService = userProfileService;
         }
 
         [HttpGet]
@@ -56,9 +59,72 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> UserManager()
         {
             var paymentArticles = await _authenticationService.GetAllProfile();
-            UserManagerModel myArticlesModel = new UserManagerModel {  UserProfiles = paymentArticles.Data };
-            return View(myArticlesModel);
+            UserManagerModel userModel = new UserManagerModel {  UserProfiles = paymentArticles.Data };
+            return View(userModel);
         }
+        [HttpGet]
+        [Route("EditUserManager")]
+        public async Task<IActionResult> EditUserManager(int selectedRow)
+        {
+            var paymentArticles = await _authenticationService.GetAllProfile();
+            UserManagerModel userModel = new UserManagerModel { UserProfiles = paymentArticles.Data, EditUserProfile = paymentArticles.Data[selectedRow] };
+            userModel.SelectedRow = selectedRow;
+            userModel.EditUser = true;
+            userModel.IdentityRoles.Add(IdentityRoles.User);
+            userModel.IdentityRoles.Add(IdentityRoles.Administrator);
+            return View("UserManager", userModel);
+        }
+        [HttpGet]
+        [Route("CreateUserManager")]
+        public async Task<IActionResult> CreateUserManager(int selectedRow)
+        {
+            var paymentArticles = await _authenticationService.GetAllProfile();
+            UserManagerModel userModel = new UserManagerModel { UserProfiles = paymentArticles.Data };
+            userModel.SelectedRow = selectedRow;
+            userModel.CreateUser = true;
+            userModel.IdentityRoles.Add(IdentityRoles.User);
+            userModel.IdentityRoles.Add(IdentityRoles.Administrator );
+
+            return View("UserManager", userModel);
+        }
+        [HttpPost]
+        [Route("CreateUser")]
+        public async Task<IActionResult> CreateUser(UserManagerModel userModel)
+        {
+
+            if (userModel.Password != userModel.ConfirmPassword)
+            {
+                return View("UserManager", userModel);
+            }
+
+            RegisterModel registerModel = new RegisterModel { Email = userModel.UserEmail, Password = userModel.Password ,UserName = userModel.UserName };
+
+            registerModel.Role = userModel.selectedRole == IdentityRoles.Administrator ? IdentityRoles.Administrator : IdentityRoles.User;
+
+            var result = await _userProfileService.CreateAccount(registerModel);
+
+            return View("UserManager", userModel);
+        }
+        [HttpPost]
+        [Route("EditUser")]
+        public async Task<IActionResult> EditUser(UserManagerModel userModel)
+        {
+
+            if (userModel.Password != userModel.ConfirmPassword)
+            {
+                return View("UserManager", userModel);
+            }
+
+            RegisterModel registerModel = new RegisterModel { Email = userModel.EditUserProfile.Email, Password = userModel.Password,
+                UserName = userModel.EditUserProfile.UserName , NetUidPriofile = userModel.EditUserProfile.NetUid};
+
+            registerModel.Role = userModel.selectedRole == IdentityRoles.Administrator ? IdentityRoles.Administrator : IdentityRoles.User;
+
+            var result = await _userProfileService.FullUpdate(registerModel);
+
+            return View("UserManager", userModel);
+        }
+
 
         [HttpGet]
         [Route("MyLists")]
