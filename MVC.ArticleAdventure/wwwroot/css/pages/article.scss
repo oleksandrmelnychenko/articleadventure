@@ -817,6 +817,7 @@
 }
 
 .table_user_manager {
+    min-height: calc(100vh - 60px);
     width: 80%;
     margin: 0 auto;
     padding: 20px 20px;
@@ -826,7 +827,7 @@
         width: 100%;
 
         .uppercase_panel {
-            background-color: #7f7d99;
+            background-color: var(--epcl-black-color);
         }
 
         tr {
@@ -852,11 +853,10 @@
                     font-family: "Josefin Sans",sans-serif;
                     border: 2px solid var(--epcl-black-color);
                     background-color: var(--epcl-black-color);
-
                     /*&:before {
                         content: '';*/
-                        /*@include position_absolute(2px,2px,2px,2px,1);*/
-                        /*position: center;
+                    /*@include position_absolute(2px,2px,2px,2px,1);*/
+                    /*position: center;
                         top:2px;
                         right:2px;
                         bottom:2px;
@@ -865,7 +865,7 @@
                         transition: all .3s ease;
                         border: 1px solid var(--epcl-black-color);
                     }*/
-/*
+                    /*
                     &:hover {
                         &:before {
                             border-color: #fff;

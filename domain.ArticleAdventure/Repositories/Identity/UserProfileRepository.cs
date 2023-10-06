@@ -109,7 +109,8 @@ namespace domain.ArticleAdventure.Repositories.Identity
         public List<UserProfile> GetAll() =>
             _connection.Query<UserProfile>(
                 "SELECT * " +
-                "FROM [UserProfile] "
+                "FROM [UserProfile] "+
+                "WHERE [UserProfile].Deleted = 0"
             ).ToList();
         public IEnumerable<UserProfile> GetAllFiltered(string value, int limit, int offset)
             => _connection.Query<UserProfile>(

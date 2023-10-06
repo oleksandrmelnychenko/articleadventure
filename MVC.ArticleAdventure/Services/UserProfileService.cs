@@ -45,6 +45,7 @@ namespace MVC.ArticleAdventure.Services
                 }
                 else
                 {
+                    userProfile.NetUid = registerModel.NetUidPriofile;
                     userProfile.Email = registerModel.Email;
                     userProfile.UserName = registerModel.UserName;
                 }
@@ -113,6 +114,36 @@ namespace MVC.ArticleAdventure.Services
 
             return result;
         }
+
+        public async Task<ExecutionResult<UserProfile>> RemoveAccount(Guid netUidAccount)
+        {
+            var result = new ExecutionResult<UserProfile>();
+
+            try
+            {
+                var response = await _httpClient.GetAsync($"{PathUserProfile.REMOVE_USER}/?netUid={netUidAccount}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
+
         public async Task<bool> EmailConformation(string token,string userId)
         {
 
@@ -143,5 +174,7 @@ namespace MVC.ArticleAdventure.Services
 
             return result.IsSuccess;
         }
+
+        
     }
 }

@@ -166,23 +166,6 @@ namespace domain.ArticleAdventure.Repositories.Identity
 
         public async Task<User> GetUserByEmail(string email)
         {
-            User user = await _userManager.FindByIdAsync("2");
-            //if (user != null)
-            //{
-            //    // получем список ролей пользователя
-            //    var userRoles = await _userManager.GetRolesAsync(user);
-            //    var allRoles = _roleManager.Roles.ToList();
-            //    ChangeRoleViewModel model = new ChangeRoleViewModel
-            //    {
-            //        UserId = user.Id,
-            //        UserEmail = user.Email,
-            //        UserRoles = userRoles,
-            //        AllRoles = allRoles
-            //    };
-            //    return View(model);
-            //}
-
-
             return await _userManager.FindByEmailAsync(email);
         }
         public async Task<List<User>> GetAllUsers()

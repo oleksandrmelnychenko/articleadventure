@@ -346,7 +346,30 @@ namespace service.ArticleAdventure.Services.UserManagement
 
                });
 
-      
+        public Task RemoveUser(Guid netUiduserProfile) =>
+            Task.Run(async () =>
+            {
+                if (netUiduserProfile == null) throw new Exception("Dev exception. Entity can nit be empty");
+
+                using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                {
+                    IUserProfileRepository userProfileRepository =
+                          _identityRepositoriesFactory.NewUserProfileRepository(connection);
+
+                    UserProfile existingProfile =
+                        userProfileRepository.Get(netUiduserProfile);
+
+                    if (existingProfile == null) throw new Exception("Dev exception. Such user does not exists");
+                    IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository();
+
+                    userProfileRepository.Remove(existingProfile.NetUid);
+
+                    User user = await identityRepository.GetUserByUserNetId(netUiduserProfile);
+                    await identityRepository.Delete(user.NetId);
+                }
+
+            });
     }
 
 }
+ 

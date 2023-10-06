@@ -61,6 +61,21 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpGet]
+        [AssignActionRoute(UserManagementSegments.REMOVE_USER)]
+        public async Task<IActionResult> RemoveUser(Guid netUid)
+        {
+            try
+            {
+                await _userProfileService.RemoveUser(netUid);
+                return Ok(SuccessResponseBody(null, ControllerMessageConstants.UserMessage.REMOVE_USER));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+        [HttpGet]
         [AssignActionRoute(UserManagementSegments.EMAIL_CONFORMATION)]
         public async Task<IActionResult> EmailConformation(string token, string userId)
         {

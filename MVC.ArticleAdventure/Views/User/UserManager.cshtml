@@ -34,55 +34,66 @@
     </table>
 
 
-    <div>
-        <button onclick="location.href='@Url.Action("CreateUserManager", "User",new {selectedRow = Model.SelectedRow})'">Create</button>
-        @if (Model.SelectedRow == -1)
-        {
-            <button disabled>Edit</button>
-            <button disabled>Delete</button>
-        }
-        else
-        {
-            <button onclick="location.href='@Url.Action("EditUserManager", "User",new {selectedRow = Model.SelectedRow})'">Edit</button>
-            <button >Delete</button>
-        }
-    </div>
-    <div>
-        @if (Model.EditUser)
-        {
-            <form asp-action="EditUser" style="display: inline-grid;">
-                <input type="hidden" asp-for="EditUserProfile.NetUid">
-                <input type="text" placeholder="CurrentPassword" asp-for="EditUserProfile.UserName" />
-                <input type="email" placeholder="NewPassword" asp-for="EditUserProfile.Email" />
-                <input type="password" placeholder="ConfirmNewPassword" asp-for="Password" />
-                <input type="password" placeholder="ConfirmNewPassword" asp-for="ConfirmPassword" />
-                <select id="cars" name="selectedRole">
-                    @foreach (var role in Model.IdentityRoles)
-                    {
-                        <option value="@role">@role</option>
-                    }
-                </select>
-                <button>SaveEditUser</button>
-            </form>
-            
-        }
-    </div>
-    <div>
-        @if (Model.CreateUser)
-        {
-            <form asp-action="CreateUser" style="display: inline-grid;">
-                <input type="text" placeholder="UserName" asp-for="UserName" />
-                <input type="email" placeholder="UserEmail" asp-for="UserEmail" />
-                <input type="password" placeholder="Password" asp-for="Password" />
-                <input type="password" placeholder="ConfirmNewPassword" asp-for="ConfirmPassword" />
-                <select id="cars" name="cars">
-                    @foreach (var role in Model.IdentityRoles)
-                    {
-                        <option value="@role">@role</option>
-                    }
-                </select>
-                <button>SaveCreateUser</button>
-            </form>
-        }
-    </div>
+   
 </div>
+<footer style="box-shadow: 0 0 10px -6px #222; background-color: #fff;">
+    <div style="border-left: 0;border-right: 0;">
+        <div style="display:flex;justify-content: center;">
+            <div></div>
+            <div>
+                <div>
+                    <button onclick="location.href='@Url.Action("CreateUserManager", "User",new {selectedRow = Model.SelectedRow})'">Create</button>
+                    @if (Model.SelectedRow == -1)
+                    {
+                        <button disabled>Edit</button>
+                        <button disabled>Delete</button>
+                    }
+                    else
+                    {
+                        <button onclick="location.href='@Url.Action("EditUserManager", "User",new {selectedRow = Model.SelectedRow})'">Edit</button>
+                        <button onclick="location.href='@Url.Action("RemoveAccount", "User",new {selectedRow = Model.SelectedRow})'">Delete</button>
+                    }
+                </div>
+                <div>
+                    @if (Model.EditUser)
+                    {
+                        <form asp-action="EditUser" style="display: inline-grid;">
+                            <input type="hidden" asp-for="EditUserProfile.NetUid">
+                            <input type="text" placeholder="CurrentPassword" asp-for="EditUserProfile.UserName" />
+                            <input type="email" placeholder="NewPassword" asp-for="EditUserProfile.Email" />
+                            <input type="password" placeholder="ConfirmNewPassword" asp-for="Password" />
+                            <input type="password" placeholder="ConfirmNewPassword" asp-for="ConfirmPassword" />
+                            <select id="cars" name="selectedRole">
+                                @foreach (var role in Model.IdentityRoles)
+                                {
+                                    <option value="@role">@role</option>
+                                }
+                            </select>
+                            <button>SaveEditUser</button>
+                        </form>
+
+                    }
+                </div>
+                <div>
+                    @if (Model.CreateUser)
+                    {
+                        <form asp-action="CreateUser" style="display: inline-grid;">
+                            <input type="text" placeholder="UserName" asp-for="UserName" />
+                            <input type="email" placeholder="UserEmail" asp-for="UserEmail" />
+                            <input type="password" placeholder="Password" asp-for="Password" />
+                            <input type="password" placeholder="ConfirmNewPassword" asp-for="ConfirmPassword" />
+                            <select id="cars" name="cars">
+                                @foreach (var role in Model.IdentityRoles)
+                                {
+                                    <option value="@role">@role</option>
+                                }
+                            </select>
+                            <button>SaveCreateUser</button>
+                        </form>
+                    }
+                </div>
+            </div>
+            <div></div>
+        </div>
+    </div>
+</footer>

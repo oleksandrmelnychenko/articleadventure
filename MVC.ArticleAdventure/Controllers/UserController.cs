@@ -87,6 +87,15 @@ namespace MVC.ArticleAdventure.Controllers
 
             return View("UserManager", userModel);
         }
+        [HttpGet]
+        [Route("RemoveAccount")]
+        public async Task<IActionResult> RemoveAccount(int selectedRow)
+        {
+            var paymentArticles = await _authenticationService.GetAllProfile();
+            var result = await _userProfileService.RemoveAccount(paymentArticles.Data[selectedRow].NetUid);
+
+            return Redirect("~/UserManager");
+        }
         [HttpPost]
         [Route("CreateUser")]
         public async Task<IActionResult> CreateUser(UserManagerModel userModel)
@@ -94,7 +103,7 @@ namespace MVC.ArticleAdventure.Controllers
 
             if (userModel.Password != userModel.ConfirmPassword)
             {
-                return View("UserManager", userModel);
+                return Redirect("~/UserManager");
             }
 
             RegisterModel registerModel = new RegisterModel { Email = userModel.UserEmail, Password = userModel.Password ,UserName = userModel.UserName };
@@ -103,7 +112,7 @@ namespace MVC.ArticleAdventure.Controllers
 
             var result = await _userProfileService.CreateAccount(registerModel);
 
-            return View("UserManager", userModel);
+            return Redirect("~/UserManager");
         }
         [HttpPost]
         [Route("EditUser")]
@@ -112,7 +121,7 @@ namespace MVC.ArticleAdventure.Controllers
 
             if (userModel.Password != userModel.ConfirmPassword)
             {
-                return View("UserManager", userModel);
+                return Redirect("~/UserManager");
             }
 
             RegisterModel registerModel = new RegisterModel { Email = userModel.EditUserProfile.Email, Password = userModel.Password,
@@ -122,7 +131,7 @@ namespace MVC.ArticleAdventure.Controllers
 
             var result = await _userProfileService.FullUpdate(registerModel);
 
-            return View("UserManager", userModel);
+            return Redirect("~/UserManager");
         }
 
 

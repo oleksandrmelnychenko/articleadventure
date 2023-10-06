@@ -21,6 +21,7 @@ namespace common.ArticleAdventure.Helpers
         {
             public const string FullUpdateUserProfileAsync = "User successfully updated";
             public const string EmailConformation = "New user successfully updated Email";
+            public const string REMOVE_USER = "remove user successfully";
             public const string GetNetUidUser = "Get user successfully";
             public const string UpdatePassword = "User successfully updated Password";
             public const string UpdateAccountInformation = "User successfully updated Account Information";

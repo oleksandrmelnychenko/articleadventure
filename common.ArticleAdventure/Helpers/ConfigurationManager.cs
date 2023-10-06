@@ -17,7 +17,5 @@ namespace common.ArticleAdventure.Helpers
         public static string EnvironmentRootPath { get; private set; }
 
         public static string DatabaseConnectionString { get; private set; }
-
-
     }
 }

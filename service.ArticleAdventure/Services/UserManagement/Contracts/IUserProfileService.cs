@@ -14,6 +14,7 @@ namespace service.ArticleAdventure.Services.UserManagement.Contracts
     {
         Task<UserProfile> Create(UserProfile userProfile, string password);
         Task<UserProfile> FullUpdate(UserProfile userProfile, string password);
+        Task RemoveUser(Guid userNetId);
         Task<UserProfile> GetById(Guid userNetId);
         Task<List<UserProfile>> GetAll();
         Task<UserProfile> GetAuthorById(Guid userNetId);
