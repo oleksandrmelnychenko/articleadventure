@@ -73,7 +73,7 @@ header ul.header_menu li.isSelected:before, header ul.header_menu li:hover:befor
   bottom: 0;
   z-index: 1;
   position: absolute;
-  border-bottom: 2px solid #87af44;
+  border-bottom: 2px solid #4b4870;
 }
 header .user_menu_wrapper {
   min-width: 60px;

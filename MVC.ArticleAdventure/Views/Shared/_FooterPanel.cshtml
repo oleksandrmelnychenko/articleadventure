@@ -6,16 +6,15 @@
     var articles = await serviceArticle.GetAllFilterDateTimeArticles();
 }
 
-    <footer style="height: 360px; box-shadow: 0 0 10px -6px #222; background-color: #fff;">
+<footer style="box-shadow: 0 0 10px -6px #222; background-color: #333;color: #d1d7dc;">
         <div style="border-left: 0;border-right: 0;">
             <div style="display:flex">
                 <div></div>
                 <div style="margin-left: 100px; margin-top: 50px;">
-                    <h4 style="display:flex">
+                <h4 style="display:flex;color: #d1d7dc;">
                     <span >Latest Articles</span>
                     <div style=" height: 2px;
-                         background:  var(--epcl-black-color);
-                         content: '';
+                         background: #d1d7dc;
                          -webkit-box-flex: 1;
                          flex: 1 1 auto;
                          margin-left: 15px;
@@ -32,7 +31,7 @@
                                         <img src="@Article.ImageUrl" style="    width: 70px; height: 70px; box-shadow: 0 0 1px red; margin-right: 20px;" />
                                     </a>
                                     <div>
-                                        <h4 style="font-size:15px;">@Article.Title</h4>
+                                    <h4 style="font-size:15px;color: #d1d7dc;">@Article.Title</h4>
                                     <div style="font-size:12px;" class="created">
                                             @Article.Created
                                         </div>

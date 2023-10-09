@@ -21,15 +21,18 @@
                 {
                     <input type="text" placeholder="SurName" asp-for="UserProfile.SurName" />
                 }
-                <div class="aboba">
-                    <div>Information Article</div>
+                <div>
+                    <h1>Information Account</h1>
                     <textarea cols="20" rows="3" asp-for="UserProfile.InformationAccount"></textarea>
                 </div>
                 @if (UserRoleHelper.IsUserRole(User.Claims, Roles.Admin))
                 {
-                    <div>Admin Setting</div>
-                    <input type="file" asp-for="@Model.PhotoMainArticle"
-                           enctype="multipart/form-data" multiple accept=".jpg,.jpeg,.png" />
+                    <h1>Admin Setting</h1>
+                    <div class="custom-file-upload">
+                        <label for="file-upload" class="custom-file-label">Choose File</label>
+                        <input type="file" id="file-upload" class="input-file" asp-for="@Model.PhotoMainArticle" enctype="multipart/form-data" multiple accept=".jpg,.jpeg,.png" />
+                    </div>
+                  
                     <input type="text" placeholder="LinkFacebook" asp-for="UserProfile.LinkFacebook" />
                     <input type="text" placeholder="LinkInstagram" asp-for="UserProfile.LinkInstagram" />
                     <input type="text" placeholder="LinkTelegram" asp-for="UserProfile.LinkTelegram" />

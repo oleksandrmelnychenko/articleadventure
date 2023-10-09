@@ -270,6 +270,10 @@ namespace service.ArticleAdventure.Services.UserManagement
                        existingProfile.SurName = userProfile.SurName;
                        existingProfile.InformationAccount = userProfile.InformationAccount;
                        existingProfile.UserName = userProfile.UserName;
+                       existingProfile.LinkFacebook = userProfile.LinkFacebook;
+                       existingProfile.LinkTelegram = userProfile.LinkTelegram;
+                       existingProfile.LinkInstagram = userProfile.LinkInstagram;
+                       existingProfile.LinkTwitter = userProfile.LinkTwitter;
 
                        userProfileRepository.UpdateAccountInformation(existingProfile);
 

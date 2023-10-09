@@ -1,5 +1,4 @@
-﻿@charset "UTF-8";
-/*@import './components/_mixins.scss';*/
+﻿/*@import './components/_mixins.scss';*/
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap");
@@ -100,7 +99,7 @@ body {
 }
 .auth_page_component .form_container .success_container h1 {
   text-align: center;
-  color: #87af44;
+  color: var(--epcl-black-color);
 }
 .auth_page_component .form_container .success_container p {
   color: #000;
@@ -278,7 +277,7 @@ header ul.header_menu li.isSelected:before, header ul.header_menu li:hover:befor
   bottom: 0;
   z-index: 1;
   position: absolute;
-  border-bottom: 2px solid #87af44;
+  border-bottom: 2px solid #4b4870;
 }
 header .user_menu_wrapper {
   min-width: 60px;
@@ -1254,6 +1253,44 @@ body {
   padding: 40px 50px;
 }
 
+.uppercase_panel_user {
+  background-color: #333;
+  padding-top: 2.8rem;
+}
+.uppercase_panel_user .panel_content {
+  width: 960px;
+  margin: 0 auto;
+}
+.uppercase_panel_user .panel_content button {
+  padding: 5px 13px 10px 0px;
+  border: none;
+  text-decoration: none;
+  color: #000;
+  font-size: 16px;
+  background-color: #333;
+  position: relative;
+  color: #d1d7dc;
+  font-weight: bold;
+}
+.uppercase_panel_user .panel_content button:hover {
+  cursor: pointer;
+  color: #fff;
+}
+.uppercase_panel_user .panel_content button:hover:before {
+  content: "";
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  position: absolute;
+  border-bottom: 2px solid #fff;
+}
+.uppercase_panel_user .panel_content h1 {
+  color: #fff;
+  padding-bottom: 0.8rem;
+}
+
 .table_user_manager {
   min-height: calc(100vh - 60px);
   width: 80%;
@@ -1271,9 +1308,9 @@ body {
   width: 10%;
   color: #fff;
   border: 1px solid white;
-  color: white; /* Цвет текста на кнопке */
-  text-align: center; /* Выравнивание текста по центру */
-  text-decoration: none; /* Убрать подчеркивание у ссылки, если это ссылка */
+  color: white;
+  text-align: center;
+  text-decoration: none;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
 }
 .table_user_manager table tr td {
@@ -1351,6 +1388,63 @@ body {
 }
 .profile_page .content_container .content_body {
   padding: 50px;
+}
+.profile_page .content_container .content_body h1 {
+  margin-top: 25px;
+  color: var(--epcl-text-color);
+  font-size: 24px;
+}
+.profile_page .content_container .content_body .custom-file-upload {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  /*margin: 10px;*/
+  display: block;
+  background: #f9f9fe;
+  border: 1px solid #f0f0fd;
+  color: var(--epcl-text-color);
+  font-size: 14px;
+  font-family: "Source Serif Pro", "Source Sans Pro", serif;
+  line-height: 1.8;
+  letter-spacing: 0.25px;
+  padding: 12px 20px;
+  height: 45px;
+  width: 100%;
+  margin-bottom: 15px;
+  outline: 0;
+  transition: all 0.3s ease;
+}
+.profile_page .content_container .content_body .input-file {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+.profile_page .content_container .content_body .custom-file-label {
+  /* background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;*/
+  cursor: pointer;
+  display: block;
+  /*background: #f9f9fe;*/
+  /*border: 1px solid #f0f0fd;*/
+  color: var(--epcl-text-color);
+  font-size: 14px;
+  font-family: "Source Serif Pro", "Source Sans Pro", serif;
+  line-height: 1.8;
+  letter-spacing: 0.25px;
+  /*padding: 15px 20px;*/
+  height: 45px;
+  width: 100%;
+  /*margin-bottom: 15px;*/
+  outline: 0;
+  transition: all 0.3s ease;
+}
+.profile_page .content_container .content_body .custom-file-upload:hover {
+  background-color: #e2e2f1;
+  color: #fff;
 }
 .profile_page .content_container .content_body .input_email_wrapper {
   position: relative;

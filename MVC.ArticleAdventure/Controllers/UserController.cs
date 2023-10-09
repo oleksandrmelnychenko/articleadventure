@@ -187,12 +187,10 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> EditProfile()
         {
-            var userName = Request.Cookies[CookiesPath.USER_NAME];
-            var surName = Request.Cookies[CookiesPath.SURNAME];
-            var informationProfile = Request.Cookies[CookiesPath.INFORMATION_PROFILE];
+            var guidUser = User.FindFirst("Guid");
+            ExecutionResult<UserProfile> user = await _authenticationService.GetProfile(Guid.Parse(guidUser.Value));
 
-            UserProfile user = new UserProfile { UserName = userName, InformationAccount = informationProfile, SurName = surName };
-            EditProfileModel editProfileModel = new EditProfileModel { UserProfile = user };
+            EditProfileModel editProfileModel = new EditProfileModel { UserProfile = user.Data };
             return View(editProfileModel);
         }
         [HttpPost]
@@ -310,6 +308,15 @@ namespace MVC.ArticleAdventure.Controllers
         {
             var favoriteArticle = await _userService.RemoveFavoriteArticle( netUidFavoriteArticle);
             return Redirect($"~/InfoArticle?NetUidArticle={netUidArticle}");
+        }
+
+        [HttpGet]
+        [Route("RemoveFavoriteArticleFromPage")]
+        [Authorize]
+        public async Task<IActionResult> RemoveFavoriteArticleFromPage(Guid netUidFavoriteArticle, Guid netUidArticle)
+        {
+            var favoriteArticle = await _userService.RemoveFavoriteArticle(netUidFavoriteArticle);
+            return Redirect($"~/MyFavoriteArticle");
         }
 
     }

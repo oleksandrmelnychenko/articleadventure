@@ -1,0 +1,19 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="uppercase_panel_user">
+   <div class="panel_content">
+        <div>
+            <h1>My learning</h1>
+        </div>
+        <div>
+
+            <button onclick="location.href='@Url.Action("MyArticles", "User")'">My Articles</button>
+            <button onclick="location.href='@Url.Action("MyFavoriteArticle", "User")'">Like Articles</button>
+            <button onclick="location.href='@Url.Action("HistoryBuy", "User")'">History buy</button>
+        </div>
+   </div>
+</div>

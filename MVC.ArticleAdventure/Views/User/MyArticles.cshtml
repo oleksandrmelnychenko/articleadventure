@@ -1,4 +1,5 @@
 ﻿@model domain.ArticleAdventure.Models.MyArticlesModel
+    @Html.Partial("_UpperInfoPanelUser")
 <div class="container_content w960">
     <div class="articles_list_container">
         @foreach (var Article in Model.mainArticles)
@@ -44,11 +45,7 @@
                     Continue Reading
                 </a>
 
-                <div class="priceBox_style">
-                    <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_price">
-                        <span>@Article.Price</span>$
-                    </a>
-                </div>
+               
             </article>
         }
     </div>

@@ -95,7 +95,7 @@ body {
 }
 .auth_page_component .form_container .success_container h1 {
   text-align: center;
-  color: #87af44;
+  color: var(--epcl-black-color);
 }
 .auth_page_component .form_container .success_container p {
   color: #000;

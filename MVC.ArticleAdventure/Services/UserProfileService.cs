@@ -126,7 +126,10 @@ namespace MVC.ArticleAdventure.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-                    result.Data = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+                    if (successResponse.Body!= null)
+                    {
+                        result.Data = JsonConvert.DeserializeObject<UserProfile>(successResponse.Body.ToString());
+                    }
                 }
                 else
                 {

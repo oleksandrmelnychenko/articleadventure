@@ -100,10 +100,10 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("CreateAccount")]
         public async Task<IActionResult> CreateAccount(RegisterModel registerModel)
         {
-            if (UserRoleHelper.IsUserRole(User.Claims, "User"))
-            {
-                return Redirect("~/");
-            }
+            //if (UserRoleHelper.IsUserRole(User.Claims, "User"))
+            //{
+            //    return Redirect("~/");
+            //}
             if (!ModelState.IsValid)
             {
                 return View(registerModel);

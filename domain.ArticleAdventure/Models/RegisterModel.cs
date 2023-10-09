@@ -9,6 +9,7 @@ namespace domain.ArticleAdventure.Models
 {
     public class RegisterModel
     {
+        public string Role { get; set; } = "";
         [Required(ErrorMessage = "This field is required.")]
         [StringLength(60, MinimumLength = 3)]
         public string UserName { get; set; }
@@ -21,7 +22,6 @@ namespace domain.ArticleAdventure.Models
         public string Password { get; set; }
         public bool IsEmailConfirmed { get; set; } = false;
 
-        public string Role { get; set; }
         public Guid NetUidPriofile { get; set; }
     }
 }

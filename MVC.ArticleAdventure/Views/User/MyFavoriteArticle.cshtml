@@ -1,4 +1,5 @@
 ﻿@model domain.ArticleAdventure.Models.MyFavoriteArticleModel
+@Html.Partial("_UpperInfoPanelUser")
 
 <div class="container_content w960">
     <div class="articles_list_container">
@@ -18,6 +19,9 @@
                                 @Article.Created
                             </div>
                         </div>
+                        <button style="width: 50px; height: 50px;" type="button" class="like_box" onclick="location.href='@Url.Action("RemoveFavoriteArticleFromPage", "User",new {netUidFavoriteArticle = Article.NetUid , netUidArticle = Article.MainArticle.NetUid})'">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Filled"  viewBox="0 0 24 24"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z" /></svg>
+                        </button> 
                     </div>
 
                     <div class="item_body">
@@ -27,7 +31,7 @@
                     </div>
                 </div>
 
-                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_btn">
+                <a href="~/InfoArticle?NetUidArticle={@Article.MainArticle.NetUid}" class="continueReading_btn">
                     Continue Reading
                 </a>
 
