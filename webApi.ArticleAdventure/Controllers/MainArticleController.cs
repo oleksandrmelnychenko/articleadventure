@@ -3,6 +3,7 @@ using common.ArticleAdventure.ResponceBuilder.Contracts;
 using common.ArticleAdventure.WebApi;
 using common.ArticleAdventure.WebApi.RoutingConfiguration.Maps;
 using domain.ArticleAdventure.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using service.ArticleAdventure.Services.Blog.Contracts;
@@ -20,6 +21,7 @@ namespace webApi.ArticleAdventure.Controllers
             _mainArticleService = mainArticleService;
         }
         [HttpPost]
+        [Authorize]
         [AssignActionRoute(ArticleSegments.UPDATE)]
         public async Task<IActionResult> Update([FromForm] string article, [FromForm] IFormFile filePhotoMainArticle)
         {
@@ -36,6 +38,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [AssignActionRoute(ArticleSegments.ADD)]
         public async Task<IActionResult> AddArticle([FromForm] string article, [FromForm] IFormFile filePhotoMainArticle)
         {
@@ -69,6 +72,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpGet]
+
         [AssignActionRoute(ArticleSegments.ALL_ARTICLE)]
         public async Task<IActionResult> All(int page = 1, int count = 25)
         {

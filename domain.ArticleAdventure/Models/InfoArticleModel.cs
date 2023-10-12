@@ -11,6 +11,7 @@ namespace domain.ArticleAdventure.Models
     {
         public MainArticle MainArticle { get; set; }
         public bool IsFavoriteArticle { get; set; }
+        public bool IsSetBasket { get; set; }
         public Guid netUidFavoriteArticle { get; set; }
     }
 }

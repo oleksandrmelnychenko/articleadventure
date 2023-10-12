@@ -9,7 +9,6 @@ namespace domain.ArticleAdventure.Helpers
     public static class ArticleAdventureFolderManager
     {
         private static string _serverPath;
-        private static string _serverUrl;
         private static string _clientUrl;
         public static string stripePublicKey;
 
@@ -18,10 +17,9 @@ namespace domain.ArticleAdventure.Helpers
 
         private static string _imagelFiles = "images";
 
-        public static void InitializeServerFolderManager(string serverPath,string serverUrl,string clientUrl)
+        public static void InitializeServerFolderManager(string serverPath,string clientUrl)
         {
             _serverPath = serverPath;
-            _serverUrl = serverUrl;
             _clientUrl = clientUrl;
             CreateImageFilesFolderIfNotExists();
         }
@@ -33,12 +31,12 @@ namespace domain.ArticleAdventure.Helpers
                 Directory.CreateDirectory(Path.Combine(_serverPath, _imagelFiles));
             }
         }
-        public static string GetServerPath() => _serverUrl;
+        public static string GetServerPath() => _serverPath;
         public static string GetClientPath() => _clientUrl;
         public static string GetFilesFolderPath() => Path.Combine(_serverPath, _staticFolder);
 
         //public static string GetStaticFolder() => _staticFolder;
-        public static string GetStaticServerUrlImageFolder() => Path.Combine(_serverUrl, _imagelFiles);
+        public static string GetStaticServerUrlImageFolder() => Path.Combine(_serverPath, _imagelFiles);
 
         public static string GetStaticImageFolder() => _imagelFiles;
     }

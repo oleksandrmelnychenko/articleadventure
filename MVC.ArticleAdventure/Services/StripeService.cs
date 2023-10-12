@@ -38,7 +38,7 @@ namespace MVC.ArticleAdventure.Services
             var response = await _httpClient.PostAsJsonAsync($"{PathStripe.BUY_NOW_STRIPE_SUP_ARTICLE}?emailUser={Email}", mainArticle);
             try
             {
-                if (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode) 
                 {
                     var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
                     result.Data = JsonConvert.DeserializeObject<CheckoutOrderResponse>(successResponse.Body.ToString());

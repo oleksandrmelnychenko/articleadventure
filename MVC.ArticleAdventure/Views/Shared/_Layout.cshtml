@@ -1,7 +1,15 @@
 ﻿@using MVC.ArticleAdventure.Helpers;
 @using MVC.ArticleAdventure.Services.Contract;
+@using System.Security.Claims;
+@using System.IdentityModel.Tokens.Jwt;
+@using Microsoft.AspNetCore.Authentication.Cookies;
+@using Microsoft.AspNetCore.Authentication;
+@using MVC.ArticleAdventure.Controllers;
+@using common.ArticleAdventure.ResponceBuilder;
 @using domain.ArticleAdventure.Entities;
+@using domain.ArticleAdventure.EntityHelpers.Identity;
 @using domain.ArticleAdventure.Helpers;
+@inject MVC.ArticleAdventure.Services.Contract.IAuthService AuthService;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +35,7 @@
                             <li>
                                 <a asp-area="" asp-controller="Home" asp-action="Index">Article Adventure</a>
                             </li>
+                    @*<input type="hidden" id="refreshToken" value="@YourRefreshTokenValue" />*@
                 </ul>
             </div>
             @if (User.Identity.IsAuthenticated)
@@ -187,6 +196,29 @@
             @ViewBag.SuccessMessage
         </div>
     }
+    <script>
+        var refreshToken = document.getElementById('refreshToken').value;
+
+        // Функция для обновления токена
+        function refreshAccessToken() {
+            $.ajax({
+                type: 'POST',
+                url: '/Account/RefreshToken', // Укажите путь к методу обновления токена на сервере
+                data: { refreshToken: refreshToken },
+                success: function (response) {
+                    // Обработка успешного ответа от сервера, например, обновление токена в localStorage или cookie
+                    console.log('Токен успешно обновлен: ' + response.accessToken);
+                },
+                error: function () {
+                    // Обработка ошибок при обновлении токена
+                    console.log('Произошла ошибка при обновлении токена.');
+                }
+            });
+        }
+
+        // Вызов функции обновления токена
+        refreshAccessToken();
+    </script>
     <script>
         setTimeout(function () {
             var errorMessage = document.getElementById('error-message');

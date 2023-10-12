@@ -69,6 +69,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<RefreshTokenMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

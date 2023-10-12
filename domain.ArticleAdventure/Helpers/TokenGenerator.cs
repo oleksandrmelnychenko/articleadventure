@@ -114,7 +114,8 @@ namespace domain.ArticleAdventure.Helpers
             return new CompleteAccessToken
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(jwt),
-                RefreshToken = encryptedRefreshToken
+                RefreshToken = encryptedRefreshToken,
+                UserNetUid= user.NetId
             };
         }
     }

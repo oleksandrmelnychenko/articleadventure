@@ -37,9 +37,9 @@ namespace MVC.ArticleAdventure.Controllers
 
             var _foo = User.Claims;
 
-            List<MainTag> mainTags = await _tagService.GetAllTags();
+            var mainTags = await _tagService.GetAllTags();
             List<MainArticleTags> mainArticleTags = new List<MainArticleTags>();
-            AllArticlesModel model = new AllArticlesModel { ArticleTags = mainTags };
+            AllArticlesModel model = new AllArticlesModel { ArticleTags = mainTags.Data };
 
             var sessionStorageMainTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHOOSE_FILTER_SUP_TAGS);
 
@@ -48,7 +48,7 @@ namespace MVC.ArticleAdventure.Controllers
 
                 foreach (var supTag in sessionStorageMainTags)
                 {
-                    mainTags
+                    mainTags.Data
                     .SelectMany(mainTag => mainTag.SubTags)
                     .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
                 }

@@ -48,7 +48,7 @@ namespace MVC.ArticleAdventure.Controllers
         {
             var mainArticle = await _mainArticleService.GetArticle(netUidArticle);
             var mainTags = await _tagService.GetAllTags();
-            ChangeMainArticleModel changeArticleModel = new ChangeMainArticleModel { MainArticle = mainArticle, MainTags = mainTags };
+            ChangeMainArticleModel changeArticleModel = new ChangeMainArticleModel { MainArticle = mainArticle, MainTags = mainTags.Data };
 
             var sessionStorageMainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
             var sessionStorageMainTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS);
@@ -58,7 +58,7 @@ namespace MVC.ArticleAdventure.Controllers
 
                 foreach (var supTag in sessionStorageMainTags)
                 {
-                    mainTags
+                    mainTags.Data
                     .SelectMany(mainTag => mainTag.SubTags)
                     .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
                 }
@@ -66,18 +66,18 @@ namespace MVC.ArticleAdventure.Controllers
             if (sessionStorageMainTags == null)
             {
                 var selectSupTags = new List<SupTag>();
-                foreach (var item in mainTags)
+                foreach (var item in mainTags.Data)
                 {
                     selectSupTags = mainArticle.ArticleTags.Select(x => x.SupTag).ToList();
 
                 }
                 foreach (var supTag in selectSupTags)
                 {
-                    mainTags
+                    mainTags.Data
                     .SelectMany(mainTag => mainTag.SubTags)
                     .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
                 }
-                changeArticleModel.MainTags = mainTags;
+                changeArticleModel.MainTags = mainTags.Data;
                 SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS, selectSupTags);
             }
 
@@ -150,7 +150,7 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> IsSelectChangeLocalSupTag(Guid IsSelectSupTagsNetUid)
         {
             var mainTags = await _tagService.GetAllTags();
-            var findSupTag = mainTags
+            var findSupTag = mainTags.Data
             .SelectMany(mainTag => mainTag.SubTags)
             .FirstOrDefault(subTag => subTag.NetUid == IsSelectSupTagsNetUid);
 
@@ -271,7 +271,7 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> IsSelectFilterSupTag(Guid IsSelectSupTagsNetUid)
         {
             var mainTags = await _tagService.GetAllTags();
-            var findSupTag = mainTags
+            var findSupTag = mainTags.Data
             .SelectMany(mainTag => mainTag.SubTags)
             .FirstOrDefault(subTag => subTag.NetUid == IsSelectSupTagsNetUid);
 
@@ -313,6 +313,12 @@ namespace MVC.ArticleAdventure.Controllers
         {
             InfoArticleModel infoArticleModel = new InfoArticleModel();
             var article = await _mainArticleService.GetArticle(NetUidArticle);
+            var listAutorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(HttpContext.Session, SessionStoragePath.CART_ARTICLE);
+
+            if (listAutorArticle != null && listAutorArticle.Count != 0)
+            {
+                infoArticleModel.IsSetBasket = listAutorArticle.Any(x => x.Id == article.Id);
+            }
 
             var userGuidClaim = User.FindFirst("Guid");
             var email = Request.Cookies[CookiesPath.EMAIL];

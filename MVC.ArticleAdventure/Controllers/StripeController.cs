@@ -127,6 +127,7 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> SuccessBuy(string sessionId)
         {
              await _stripeService.CheckoutSuccess(sessionId);
+            HttpContext.Session.Remove(SessionStoragePath.CART_ARTICLE);
 
             return View();
         }
@@ -134,6 +135,7 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> SuccessBuySup(string sessionId)
         {
             await _stripeService.CheckoutSuccessSup(sessionId);
+            HttpContext.Session.Remove(SessionStoragePath.CART_ARTICLE);
 
             return View();
         }

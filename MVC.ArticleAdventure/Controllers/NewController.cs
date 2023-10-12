@@ -10,6 +10,7 @@ using domain.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Helpers;
 using common.ArticleAdventure.WebApi;
 using common.ArticleAdventure.WebApi.RoutingConfiguration;
+using Azure;
 
 namespace MVC.ArticleAdventure.Controllers
 {
@@ -33,11 +34,11 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> IsSelect(NewArticleModel newBlogModel)
         {
             var mainTags = await _tagService.GetAllTags();
-            var findSupTag = mainTags
+            var findSupTag = mainTags.Data
             .SelectMany(mainTag => mainTag.SubTags)
             .FirstOrDefault(subTag => subTag.NetUid == newBlogModel.NetUidTags);
             newBlogModel.SelectSupTags.Add(findSupTag);
-            newBlogModel.MainTags = mainTags;
+            newBlogModel.MainTags = mainTags.Data;
 
             return View("NewBlog", newBlogModel);
         }
@@ -47,7 +48,7 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> IsSelectLocalSupTag(Guid IsSelectSupTagsNetUid)
         {
             var mainTags = await _tagService.GetAllTags();
-            var findSupTag = mainTags
+            var findSupTag = mainTags.Data
             .SelectMany(mainTag => mainTag.SubTags)
             .FirstOrDefault(subTag => subTag.NetUid == IsSelectSupTagsNetUid);
 
@@ -90,7 +91,16 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> LogOutAccount()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var userGuidClaim = User.FindFirst("Guid");
+          
+            Response.Cookies.Append(CookiesPath.ACCESS_TOKEN, "", new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(-1) 
+            });
+
+            Response.Cookies.Append(CookiesPath.REFRESH_TOKEN, "", new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(-1) 
+            });
             return Redirect("~/Login");
         }
 
@@ -211,14 +221,14 @@ namespace MVC.ArticleAdventure.Controllers
             {
                 foreach (var supTag in supTagsSelect)
                 {
-                    mainTags
+                    mainTags.Data
                     .SelectMany(mainTag => mainTag.SubTags)
                     .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
                 }
             }
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE, mainArticle);
 
-            SettingMainArticleModel settingMainArticleModel = new SettingMainArticleModel { MainTags = mainTags, MainArticle = mainArticle };
+            SettingMainArticleModel settingMainArticleModel = new SettingMainArticleModel { MainTags = mainTags.Data, MainArticle = mainArticle };
             return View(settingMainArticleModel);
         }
 
@@ -257,12 +267,12 @@ namespace MVC.ArticleAdventure.Controllers
                 {
                     foreach (var supTag in supTagsSelect)
                     {
-                        mainTags
+                        mainTags.Data
                         .SelectMany(mainTag => mainTag.SubTags)
                         .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
                     }
                 }
-                settingMainArticleModel.MainTags = mainTags;
+                settingMainArticleModel.MainTags = mainTags.Data;
                 settingMainArticleModel.MainArticle = MainArticle;
                 await SetErrorMessage(ErrorMessages.ChooseTags);
                 return View(settingMainArticleModel);
@@ -274,12 +284,12 @@ namespace MVC.ArticleAdventure.Controllers
                 {
                     foreach (var supTag in supTagsSelect)
                     {
-                        mainTags
+                        mainTags.Data
                         .SelectMany(mainTag => mainTag.SubTags)
                         .First(subTag => subTag.NetUid == supTag.NetUid).IsSelected = true;
                     }
                 }
-                settingMainArticleModel.MainTags = mainTags;
+                settingMainArticleModel.MainTags = mainTags.Data;
                 settingMainArticleModel.MainArticle = MainArticle;
                 await SetErrorMessage(ErrorMessages.ChoosePhoto);
                 return View(settingMainArticleModel);

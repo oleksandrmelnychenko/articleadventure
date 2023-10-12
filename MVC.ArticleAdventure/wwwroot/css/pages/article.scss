@@ -853,13 +853,183 @@
         }
     }
 }
+.footer_user_manager_panel {
+    box-shadow: 0 0 10px -6px #222;
+    background-color: #333;
+    color: #d1d7dc;
+    /*top: 0;*/
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    position: fixed;
+    box-shadow: 10px -6px 10px -6px #222;
+    /*position:fixed;*/
+    .center_panel {
+        border-left: 0;
+        border-right: 0;
+        display: flex;
+        justify-content: center;
 
+        .label_panel {
+            padding: 5px;
+            margin: 5px;
+            background-color: #fff;
+            color: #333;
+            border-radius: 2px;
+            transition: all .3s ease;
+
+            &:hover {
+                color: #fff;
+                background-color: #333;
+            }
+        }
+
+        .label_panel_select {
+            padding: 5px;
+            margin: 5px;
+            background-color: #333;
+            color: #fff;
+            border-radius: 2px;
+            transition: all .3s ease;
+
+            &:hover {
+                color: #333;
+                background-color: #fff;
+            }
+        }
+    }
+}
 .table_user_manager {
     min-height: calc(100vh - 60px);
     width: 80%;
     margin: 0 auto;
     padding: 20px 20px;
     background-color: #fff;
+
+    .button_float_wrapper {
+        height: 44px;
+        width: 100%;
+
+        button {
+            float: right;
+        }
+    }
+
+    input {
+        display: block;
+        background: #f9f9fe;
+        border: 1px solid #f0f0fd;
+        color: var(--epcl-text-color);
+        font-size: 14px;
+        font-family: "Source Serif Pro","Source Sans Pro",serif;
+        line-height: 1.8;
+        letter-spacing: .25px;
+        padding: 15px 20px;
+        height: 45px;
+        width: 100%;
+        margin-bottom: 15px;
+        outline: 0;
+        transition: all .3s ease;
+    }
+
+    button:not(.tox-mbtn,.tox-tbtn,.tox-statusbar__wordcount) {
+        color: #fff;
+        font-size: 15px;
+        padding: 8px 25px;
+        letter-spacing: .5px;
+        font-family: "Josefin Sans",sans-serif;
+        border: 2px solid var(--epcl-black-color);
+        background-color: var(--epcl-black-color);
+        position: relative;
+        min-height: 44px;
+
+        &.full {
+            width: 100%;
+        }
+
+        &:before {
+            content: '';
+            @include position_absolute(2px,2px,2px,2px,1);
+            transition: all .3s ease;
+            border: 1px solid var(--epcl-black-color);
+        }
+
+        &:hover {
+            &:before {
+                border-color: #fff;
+            }
+        }
+    }
+
+    .modal_wrapper {
+        input {
+
+            &#isOpenEditModal {
+                display: none;
+
+                &:checked + .modal_container {
+                    opacity: 1;
+                    pointer-events: all;
+
+                    &:before {
+                        content: '';
+                    }
+                }
+            }
+
+            &#isOpenModal {
+                display: none;
+
+                &:checked + .modal_container {
+                    opacity: 1;
+                    pointer-events: all;
+
+                    &:before {
+                        content: '';
+                    }
+                }
+            }
+        }
+
+        .modal_container {
+            opacity: 0;
+            pointer-events: none;
+            @include position_fixed(0,0,0,0,100);
+            background-color: rgba(#222,.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .modal_form {
+                width: 600px;
+                padding: 20px;
+                background-color: #fff;
+                box-shadow: 0 3px 12px -1px rgba(7,10,25,.1), 0 22px 27px -30px rgba(7,10,25,.1);
+                position: relative;
+
+                .close_modal {
+                    width: 40px;
+                    height: 40px;
+                    @include position_absolute(0,0,auto,auto,10);
+                    text-align: center;
+                    overflow: hidden;
+                    line-height: 31px;
+                    font-size: 26px;
+                    cursor: pointer;
+                }
+
+                h4 {
+                    margin-bottom: 20px;
+                }
+
+                form label {
+                    color: #222;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
 
     table {
         width: 100%;
@@ -868,15 +1038,16 @@
             background-color: var(--epcl-black-color);
         }
 
+
+
         tr {
             th {
                 width: 10%;
                 color: #fff;
                 border: 1px solid white;
-                color: white; 
-                text-align: center; 
-                text-decoration: none; 
-
+                color: white;
+                text-align: center;
+                text-decoration: none;
                 box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
             }
 

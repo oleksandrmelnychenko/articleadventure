@@ -40,7 +40,7 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login()
         {
-           
+
             if (UserRoleHelper.IsUserRole(User.Claims, "User"))
             {
                 return Redirect("~/");
@@ -63,6 +63,8 @@ namespace MVC.ArticleAdventure.Controllers
 
                 if (user.IsSuccess)
                 {
+                    Response.Cookies.Append(CookiesPath.ACCESS_TOKEN, response.Data.AccessToken);
+                    Response.Cookies.Append(CookiesPath.REFRESH_TOKEN, response.Data.RefreshToken);
                     Response.Cookies.Append(CookiesPath.USER_NAME, user.Data.UserName);
                     Response.Cookies.Append(CookiesPath.USER_ID, user.Data.Id.ToString());
                     Response.Cookies.Append(CookiesPath.EMAIL, user.Data.Email);
@@ -121,6 +123,33 @@ namespace MVC.ArticleAdventure.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("RefreshToken")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            var accessToken = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            var response = await _authenticationService.RefreshToken(accessToken);
+
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(registerModel);
+            //}
+            //var result = await _userProfileService.CreateAccount(registerModel);
+            //if (result.IsSuccess)
+            //{
+            //    registerModel.IsEmailConfirmed = true;
+            //    return View(registerModel);
+            //}
+            //else
+            //{
+            //    await SetErrorMessage(result.Error.Message);
+            //    return View(registerModel);
+            //}
+            return View();
+
+        }
+
 
         [HttpGet]
         [Route("EmailConfirmation")]
@@ -142,13 +171,15 @@ namespace MVC.ArticleAdventure.Controllers
 
         }
         [NonAction]
-        private async Task SignIn(CompleteAccessToken response)
+        public async Task SignIn(CompleteAccessToken response)
         {
             var token = GetTokenFormat(response.AccessToken);
 
             var claims = new List<Claim>();
             claims.Add(new Claim("JWT", response.AccessToken));
             claims.Add(new Claim("Guid", response.UserNetUid.ToString()));
+            claims.Add(new Claim("AccessToken", response.AccessToken.ToString()));
+            claims.Add(new Claim("RefreshToken", response.RefreshToken.ToString()));
             claims.AddRange(token.Claims);
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -158,6 +189,7 @@ namespace MVC.ArticleAdventure.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(60),
                 IsPersistent = true
             };
+
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,

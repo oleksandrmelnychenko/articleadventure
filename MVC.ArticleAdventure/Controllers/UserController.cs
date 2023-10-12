@@ -134,14 +134,6 @@ namespace MVC.ArticleAdventure.Controllers
             return Redirect("~/UserManager");
         }
 
-
-        [HttpGet]
-        [Route("MyLists")]
-        [Authorize]
-        public async Task<IActionResult> MyLists()
-        {
-            return View();
-        }
         [HttpGet]
         [Route("Profile")]
         public async Task<IActionResult> Profile(Guid netUidProfile)

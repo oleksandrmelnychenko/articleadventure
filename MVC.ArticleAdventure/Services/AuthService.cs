@@ -110,6 +110,35 @@ namespace MVC.ArticleAdventure.Services
             return result;
         }
 
+        public async Task<ExecutionResult<CompleteAccessToken>> RefreshToken(string refreshToken)
+        {
+            var result = new ExecutionResult<CompleteAccessToken>();
+
+            var response = await _httpClient.GetAsync($"/api/v1/usermanagement/token/refresh?refreshToken={refreshToken}");
+
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<CompleteAccessToken>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
+        }
+
         public async Task<ExecutionResult<List<UserProfile>>> GetAllProfile()
         {
             var result = new ExecutionResult<List<UserProfile>>();

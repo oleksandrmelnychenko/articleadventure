@@ -178,7 +178,7 @@ namespace MVC.ArticleAdventure.Controllers
         private async Task<TagsModel> GetAllMainTags()
         {
             var AllTags = await _tagService.GetAllTags();
-            TagsModel tagsModel = new TagsModel { MainTags = AllTags };
+            TagsModel tagsModel = new TagsModel { MainTags = AllTags.Data };
             return tagsModel;
         }
     }

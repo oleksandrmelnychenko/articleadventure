@@ -98,7 +98,14 @@
                     </div>
                     <div class="price">@Model.MainArticle.Price $</div>
                     <div class="controls">
-                        <button class="archicle_btn withLike" onclick="location.href='@Url.Action("SetСartArticle", "Stripe",new {netUidArticle = Model.MainArticle.NetUid})'"> Go to the Cart</button>
+                        @if (Model.IsSetBasket)
+                        {
+                            <button disabled style="background-color: #b5b4c1;font-size: 13px;" class="archicle_btn withLike" onclick="location.href='@Url.Action("SetСartArticle", "Stripe",new {netUidArticle = Model.MainArticle.NetUid})'"> Already in the cart</button>
+                        }
+                        else
+                        {
+                            <button class="archicle_btn withLike" onclick="location.href='@Url.Action("SetСartArticle", "Stripe",new {netUidArticle = Model.MainArticle.NetUid})'"> Go to the Cart</button>
+                        }
 
                         @if (Model.IsFavoriteArticle)
                         {

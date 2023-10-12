@@ -38,13 +38,36 @@ namespace MVC.ArticleAdventure.Services
             await _httpClient.PostAsJsonAsync(PathTag.CHANGE_SUP_TAG, supTag);
         }
 
-        public async Task<List<MainTag>> GetAllTags()
+        public async Task<ExecutionResult<List<MainTag>>> GetAllTags()
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(PathTag.GET_ALL_MAIN_TAG);
+          
 
-            var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-            List<MainTag> allMainTags = JsonConvert.DeserializeObject<List<MainTag>>(successResponse.Body.ToString());
-            return allMainTags;
+            //var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+            //List<MainTag> allMainTags = JsonConvert.DeserializeObject<List<MainTag>>(successResponse.Body.ToString());
+            var result = new ExecutionResult<List<MainTag>>();
+
+            HttpResponseMessage response = await _httpClient.GetAsync(PathTag.GET_ALL_MAIN_TAG);
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<MainTag>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
         }
 
         public async Task<MainTag> GetMainTag(Guid NetUidMainTag)
