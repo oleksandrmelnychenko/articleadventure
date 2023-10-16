@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
 
@@ -224,7 +225,7 @@ namespace MVC.ArticleAdventure.Services
             var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
         }
 
-        public async Task<ExecutionResult<long>> Update(MainArticle article, IFormFile photoMainArticle)
+        public async Task<ExecutionResult<long>> Update(MainArticle article, IFormFile photoMainArticle,string token)
         {
             var result = new ExecutionResult<long>();
             HttpResponseMessage response;
@@ -234,6 +235,8 @@ namespace MVC.ArticleAdventure.Services
                 var jsonArticle = JsonConvert.SerializeObject(article);
                 var stringContentArticle = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
                 form.Add(stringContentArticle, "article");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
                 if (photoMainArticle != null)
                 {
                     using (var streamContent = new StreamContent(photoMainArticle.OpenReadStream()))

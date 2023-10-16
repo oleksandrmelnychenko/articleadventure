@@ -108,6 +108,7 @@ namespace MVC.ArticleAdventure.Controllers
         {
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
             var selectSupTags = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_TAGS);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
 
             mainArticle.Title = changeArticleModel.MainArticle.Title;
             mainArticle.InfromationArticle = changeArticleModel.MainArticle.InfromationArticle;
@@ -129,7 +130,7 @@ namespace MVC.ArticleAdventure.Controllers
                 }
             }
 
-            var response = await _mainArticleService.Update(mainArticle, changeArticleModel.PhotoMainArticle);
+            var response = await _mainArticleService.Update(mainArticle, changeArticleModel.PhotoMainArticle, token);
             if (response.IsSuccess)
             {
                 HttpContext.Session.Remove(SessionStoragePath.CHANGE_MAIN_ARTICLE);
@@ -249,11 +250,11 @@ namespace MVC.ArticleAdventure.Controllers
 
         [HttpPost]
         [Route("ChangeSupArticle")]
-        [Authorize]
+        [Authorize/*(Roles = IdentityRoles.Administrator)*/]
         public async Task<IActionResult> ChangeSupArticle(ChangeArticleModel changeBlogModel)
         {
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
-
+            UserRoleHelper.IsUserRole(User.Claims, IdentityRoles.Administrator);
             var article = mainArticle.Articles.FirstOrDefault(article => article.NetUid == changeBlogModel.Article.NetUid);
             article.Title = changeBlogModel.Article.Title;
             article.Description = changeBlogModel.Article.Description;

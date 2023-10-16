@@ -12,6 +12,8 @@ using domain.ArticleAdventure.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<AppSettings>(builder.Configuration);
+ArticleAdventureFolderManager.InitializeServerFolderManager(builder);
+
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {

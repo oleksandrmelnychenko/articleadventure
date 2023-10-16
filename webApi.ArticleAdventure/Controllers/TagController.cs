@@ -7,6 +7,8 @@ using domain.ArticleAdventure.Entities;
 using System.Net;
 using common.ArticleAdventure.Helpers;
 using Azure;
+using Microsoft.AspNetCore.Authorization;
+using common.ArticleAdventure.IdentityConfiguration;
 
 namespace webApi.ArticleAdventure.Controllers
 {
@@ -20,6 +22,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles =IdentityRoles.Administrator)]
         [AssignActionRoute(TagSegments.CHANGE_MAIN_TAG)]
         public async Task<IActionResult> UpdateMainTag([FromBody] MainTag mainTag)
         {
@@ -35,6 +38,7 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles =IdentityRoles.Administrator)]
         [AssignActionRoute(TagSegments.CHANGE_SUP_TAG)]
         public async Task<IActionResult> UpdateSubTag([FromBody] SupTag subTag)
         {
@@ -142,6 +146,7 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles =IdentityRoles.Administrator)]
         [AssignActionRoute(TagSegments.REMOVE_MAIN_TAG)]
         public async Task<IActionResult> RemoveMainTag(Guid netUidMainTag)
         {
@@ -158,6 +163,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles =IdentityRoles.Administrator)]
         [AssignActionRoute(TagSegments.REMOVE_SUP_TAG)]
         public async Task<IActionResult> RemoveSubTag(Guid netUidSupTag)
         {

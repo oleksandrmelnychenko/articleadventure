@@ -1,4 +1,6 @@
-﻿using System;
+﻿using domain.ArticleAdventure.Helpers;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +14,9 @@ namespace domain.ArticleAdventure.Entities
         public string SurName { get; set; }
         public string InformationAccount { get; set; }
         public string Email { get; set; }
+        public string GetLinkPictureUser() => Path.Combine(ArticleAdventureFolderManager.GetServerUrl(), LinkPictureUser);
+
+        //public string GetLinkPictureUser => PathHepler.Url + LinkInstagram;
         public string LinkPictureUser { get; set; }
         public string LinkInstagram { get; set; }
         public string LinkTwitter { get; set; }

@@ -7,6 +7,7 @@ using domain.ArticleAdventure.Entities;
 using System.Net;
 using domain.ArticleAdventure.Helpers;
 using common.ArticleAdventure.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace webApi.ArticleAdventure.Controllers
 {
@@ -24,6 +25,7 @@ namespace webApi.ArticleAdventure.Controllers
             return View();
         }
         [HttpPost]
+        [Authorize]
         [AssignActionRoute(StripeSegments.CHECKOUT_BUY_NOW_MAIN_ARTICLE)]
         public async Task<IActionResult> CheckoutOrderBuyNowMainArticle( string emailUser,[FromBody] MainArticle mainArticle)
         {
@@ -38,6 +40,7 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpPost]
+        [Authorize]
         [AssignActionRoute(StripeSegments.CHECKOUT_BUY_NOW_SUP_ARTICLE)]
         public async Task<IActionResult> CheckoutOrderBuyNowSupArticle(string emailUser, [FromBody] AuthorArticle supArticle)
         {
@@ -54,6 +57,7 @@ namespace webApi.ArticleAdventure.Controllers
 
 
         [HttpPost]
+        [Authorize]
         [AssignActionRoute(StripeSegments.CHECKOUT_BUY_CART)]
         public async Task<IActionResult> CheckoutOrderBuyCartMain(string emailUser, [FromBody] List<MainArticle> mainArticle)
         {

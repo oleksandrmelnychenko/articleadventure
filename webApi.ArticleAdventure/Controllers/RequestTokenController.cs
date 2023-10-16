@@ -9,6 +9,7 @@ using System.Net;
 using System.Security.Claims;
 using domain.ArticleAdventure.Models;
 using domain.ArticleAdventure.EntityHelpers.Identity;
+using common.ArticleAdventure.IdentityConfiguration;
 
 namespace webApi.ArticleAdventure.Controllers
 {
@@ -58,7 +59,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles =IdentityRoles.Administrator)]
         [AssignActionRoute(UserManagementSegments.DELETE_TOKEN)]
         public async Task<IActionResult> DeleteRefreshTokenOnLogoutAsync()
         {

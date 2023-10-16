@@ -253,8 +253,8 @@ namespace service.ArticleAdventure.Services.UserManagement
                        if (photoUserProfile != null)
                        {
                            string pathLogo = Path.Combine(ArticleAdventureFolderManager.GetFilesFolderPath(), ArticleAdventureFolderManager.GetStaticImageFolder(), photoUserProfile.FileName + exention);
-                           existingProfile.LinkPictureUser = Path.Combine(ArticleAdventureFolderManager.GetStaticServerUrlImageFolder(), photoUserProfile.FileName + exention);
-
+                           existingProfile.LinkPictureUser = Path.Combine(ArticleAdventureFolderManager.GetStaticImageFolder(), photoUserProfile.FileName + exention);
+                           
                            using (var stream = new FileStream(pathLogo, FileMode.Create))
                            {
                                await photoUserProfile.CopyToAsync(stream);

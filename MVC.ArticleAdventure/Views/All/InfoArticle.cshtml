@@ -85,7 +85,7 @@
 
                         </div>
                         <div>
-                            <img src="@Model.MainArticle.UserProfile.LinkPictureUser" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                            <img src="@Model.MainArticle.UserProfile.GetLinkPictureUser()" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
                         </div>
                         
                     </div>
@@ -94,7 +94,7 @@
             <div class="list_pay">
                 <div class="archicle_info_item sticky price_item_container">
                     <div class="img">
-                        <img src="@Model.MainArticle.ImageUrl" />
+                        <img src="@Model.MainArticle.GetImageUrl()" />
                     </div>
                     <div class="price">@Model.MainArticle.Price $</div>
                     <div class="controls">

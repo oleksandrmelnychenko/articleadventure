@@ -36,11 +36,12 @@ using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.Repositories.Stripe;
 using domain.ArticleAdventure.Repositories.Stripe.Contracts;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath); 
 builder.Configuration.AddJsonFile("appsettings.json");
 builder.Configuration.AddEnvironmentVariables();
-ArticleAdventureFolderManager.InitializeServerFolderManager(builder.Environment.ContentRootPath, builder.Configuration.GetValue<string>("ServerSettings:ClientUrl"));
+//ArticleAdventureFolderManager.InitializeServerFolderManager(builder.Environment.ContentRootPath, builder.Configuration.GetValue<string>("ServerSettings:ClientUrl"));
+ArticleAdventureFolderManager.InitializeServerFolderManager(builder);
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppSettingsProperties(builder.Configuration);
 common.ArticleAdventure.Helpers.ConfigurationManager.SetAppEnvironmentRootPath(builder.Environment.ContentRootPath);
 StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
@@ -75,7 +76,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Allowed", builder =>
     {
         builder
-            .WithOrigins(ArticleAdventureFolderManager.GetServerPath())
+            .WithOrigins(ArticleAdventureFolderManager.GetServerPathFolder())
             .AllowAnyHeader()
             .AllowCredentials()
             .AllowAnyMethod();

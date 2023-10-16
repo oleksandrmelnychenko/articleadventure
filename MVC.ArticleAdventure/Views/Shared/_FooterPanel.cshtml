@@ -7,12 +7,12 @@
 }
 
 <footer style="box-shadow: 0 0 10px -6px #222; background-color: #333;color: #d1d7dc;">
-        <div style="border-left: 0;border-right: 0;">
-            <div style="display:flex">
-                <div></div>
-                <div style="margin-left: 100px; margin-top: 50px;">
+    <div style="border-left: 0;border-right: 0;">
+        <div style="display:flex">
+            <div></div>
+            <div style="margin-left: 100px; margin-top: 50px;">
                 <h4 style="display:flex;color: #d1d7dc;">
-                    <span >Latest Articles</span>
+                    <span>Latest Articles</span>
                     <div style=" height: 2px;
                          background: #d1d7dc;
                          -webkit-box-flex: 1;
@@ -20,29 +20,29 @@
                          margin-left: 15px;
                          min-width: 30px;
                          align-self: center;"></div>
-                    </h4> 
-                    @foreach (var Article in articles.Data.Take(3))
-                    {
+                </h4>
+                @foreach (var Article in articles.Data.Take(3))
+                {
                     <div style="margin-bottom: 20px;">
-                            <div>
+                        <div>
 
-                                <div style="display:flex;">
-                                    <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
-                                        <img src="@Article.ImageUrl" style="    width: 70px; height: 70px; box-shadow: 0 0 1px red; margin-right: 20px;" />
-                                    </a>
-                                    <div>
+                            <div style="display:flex;">
+                                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
+                                    <img src="@Article.GetImageUrl()" style="    width: 70px; height: 70px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                                </a>
+                                <div>
                                     <h4 style="font-size:15px;color: #d1d7dc;">@Article.Title</h4>
                                     <div style="font-size:12px;" class="created">
-                                            @Article.Created
-                                        </div>
+                                        @Article.Created
                                     </div>
                                 </div>
-                               
                             </div>
+
                         </div>
-                    }
-                </div>
-                <div></div>
+                    </div>
+                }
             </div>
+            <div></div>
         </div>
-    </footer>
+    </div>
+</footer>

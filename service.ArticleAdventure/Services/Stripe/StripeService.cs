@@ -148,7 +148,7 @@ namespace service.ArticleAdventure.Services.Stripe
                 Metadata = metaData,
                 CustomerEmail = userEmail,
                 SuccessUrl = $"{ArticleAdventureFolderManager.GetClientPath()}/Stripe/{UrlSuccess}/sup?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                CancelUrl = $"{ArticleAdventureFolderManager.GetServerPath()}/api/v1/stripe/checkout/failed",  // Checkout cancelled.
+                CancelUrl = $"{ArticleAdventureFolderManager.GetServerUrl()}/api/v1/stripe/checkout/failed",  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> 
                 {
                     "card"
@@ -333,7 +333,7 @@ namespace service.ArticleAdventure.Services.Stripe
                     CustomerEmail = userEmail,
                     // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                     SuccessUrl = $"{ArticleAdventureFolderManager.GetClientPath()}/Stripe/SuccessBuyCart?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                    CancelUrl = $"{ArticleAdventureFolderManager.GetServerPath()}/api/v1/stripe/checkout/failed",  // Checkout cancelled.
+                    CancelUrl = $"{ArticleAdventureFolderManager.GetServerPathFolder()}/api/v1/stripe/checkout/failed",  // Checkout cancelled.
                     PaymentMethodTypes = new List<string> // Only card available in test mode?
                 {
                     "card"
@@ -391,7 +391,7 @@ namespace service.ArticleAdventure.Services.Stripe
                 CustomerEmail = userEmail,
                 // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                 SuccessUrl = $"{ArticleAdventureFolderManager.GetClientPath()}/Stripe/SuccessBuyСart?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                CancelUrl = $"{ArticleAdventureFolderManager.GetServerPath()}/api/v1/stripe/checkout/failed",  // Checkout cancelled.
+                CancelUrl = $"{ArticleAdventureFolderManager.GetServerPathFolder()}/api/v1/stripe/checkout/failed",  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> // Only card available in test mode?
                 {
                     "card"

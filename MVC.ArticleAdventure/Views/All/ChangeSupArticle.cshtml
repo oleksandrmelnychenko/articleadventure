@@ -1,7 +1,8 @@
-﻿@model domain.ArticleAdventure.Models.ChangeArticleModel
+﻿@using common.ArticleAdventure.IdentityConfiguration;
+@model domain.ArticleAdventure.Models.ChangeArticleModel
 
 <div class="article_change">
-    <form  asp-action="ChangeSupArticle">
+    <form  asp-action="ChangeSupArticle" role="@IdentityRoles.Administrator">
         <input type="hidden" asp-for="Article.NetUid" />
         <div class="meta_row">
             <div class="inputs">

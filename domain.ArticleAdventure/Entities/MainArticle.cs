@@ -1,4 +1,5 @@
 ﻿using common.ArticleAdventure.WebApi.RoutingConfiguration;
+using domain.ArticleAdventure.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +15,7 @@ namespace domain.ArticleAdventure.Entities
         public string Description { get; set; }
         public string Image { get; set; }
         public string ImageUrl { get; set; }
+        public string GetImageUrl() => Path.Combine(ArticleAdventureFolderManager.GetServerUrl(), ImageUrl);
         public string WebImageUrl { get; set; }
         public List<AuthorArticle> Articles { get; set; }
         public string InfromationArticle { get; set; }

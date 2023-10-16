@@ -47,7 +47,7 @@ namespace service.ArticleAdventure.Services.Blog
                     if (filePhotoMainArticle != null)
                     {
                         string pathLogo = Path.Combine(ArticleAdventureFolderManager.GetFilesFolderPath(), ArticleAdventureFolderManager.GetStaticImageFolder(), filePhotoMainArticle.FileName + exention);
-                        article.ImageUrl = Path.Combine(ArticleAdventureFolderManager.GetStaticServerUrlImageFolder(), filePhotoMainArticle.FileName + exention);
+                        article.ImageUrl = Path.Combine(ArticleAdventureFolderManager.GetStaticImageFolder(), filePhotoMainArticle.FileName + exention);
 
                         using (var stream = new FileStream(pathLogo, FileMode.Create))
                         {
@@ -142,7 +142,7 @@ namespace service.ArticleAdventure.Services.Blog
                 if (filePhotoMainArticle != null)
                 {
                     string pathLogo = Path.Combine(ArticleAdventureFolderManager.GetFilesFolderPath(), ArticleAdventureFolderManager.GetStaticImageFolder(), filePhotoMainArticle.FileName + exention);
-                    article.ImageUrl = Path.Combine(ArticleAdventureFolderManager.GetStaticServerUrlImageFolder(), filePhotoMainArticle.FileName + exention);
+                    article.ImageUrl = Path.Combine(ArticleAdventureFolderManager.GetStaticImageFolder(), filePhotoMainArticle.FileName + exention);
 
                     using (var stream = new FileStream(pathLogo, FileMode.Create))
                     {

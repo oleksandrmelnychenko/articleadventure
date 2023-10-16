@@ -1,4 +1,5 @@
 ﻿using common.ArticleAdventure.Helpers;
+using common.ArticleAdventure.IdentityConfiguration;
 using common.ArticleAdventure.ResponceBuilder.Contracts;
 using common.ArticleAdventure.WebApi;
 using common.ArticleAdventure.WebApi.RoutingConfiguration.Maps;
@@ -21,13 +22,13 @@ namespace webApi.ArticleAdventure.Controllers
             _mainArticleService = mainArticleService;
         }
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles =IdentityRoles.Administrator)]
         [AssignActionRoute(ArticleSegments.UPDATE)]
         public async Task<IActionResult> Update([FromForm] string article, [FromForm] IFormFile filePhotoMainArticle)
         {
             try
             {
-                MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
+                  MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
                 return Ok(SuccessResponseBody(await _mainArticleService.Update(articleDeserialize, filePhotoMainArticle), ControllerMessageConstants.ArticlesMessage.UpdateArticle));
             }
             catch (Exception exc)
@@ -38,7 +39,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = IdentityRoles.Administrator)]
         [AssignActionRoute(ArticleSegments.ADD)]
         public async Task<IActionResult> AddArticle([FromForm] string article, [FromForm] IFormFile filePhotoMainArticle)
         {
@@ -72,7 +73,6 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpGet]
-
         [AssignActionRoute(ArticleSegments.ALL_ARTICLE)]
         public async Task<IActionResult> All(int page = 1, int count = 25)
         {
@@ -103,6 +103,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = IdentityRoles.Administrator)]
         [AssignActionRoute(ArticleSegments.REMOVE_ARTICLE)]
         public async Task<IActionResult> EditArticle(Guid netUidArticle)
         {
@@ -152,6 +153,7 @@ namespace webApi.ArticleAdventure.Controllers
 
 
         [HttpGet]
+        [Authorize]
         [AssignActionRoute(ArticleSegments.GET_USER_ALL_STRIPE_PAYMENTS)]
         public async Task<IActionResult> GetAllPaymentArticleUser(long idUser)
         {
@@ -167,6 +169,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [AssignActionRoute(ArticleSegments.GET_USER_ALL_ARTICLES)]
         public async Task<IActionResult> GetAllUserArticle(long idUser)
         {
@@ -182,6 +185,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [AssignActionRoute(ArticleSegments.GET_USER_ARTICLE)]
         public async Task<IActionResult> GetUserArticle(Guid netUidArticle, long idUser)
         {

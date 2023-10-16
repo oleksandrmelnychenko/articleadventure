@@ -1,6 +1,28 @@
 ﻿@using MVC.ArticleAdventure.Helpers;
 @model domain.ArticleAdventure.Models.ProfileModel;
 
+ @if (Model.Profile.Role != Roles.Admin)
+{
+    <div class="uppercase_panel_user">
+        <div class="panel_content w1140">
+            <div>
+                <h1>User: @Model.UserName</h1>
+            </div>
+
+        </div>
+        <div class="information_account w1140">
+            <div class="avatar">@Context.Request.Cookies[CookiesPath.USER_NAME]?.Substring(0, 1)</div>
+           <div class="style_display">
+                <h6>A little about myself</h6>
+                <div class="item_body">
+                    <p>
+                        @Html.Raw(Model.InformationAccount)
+                    </p>
+                </div>
+           </div>
+        </div>
+    </div>
+}
 <div class="profile_info_page">
 
     <div class="profile_container">
@@ -31,7 +53,7 @@
 
                                 <div class="item_header">
                                     <div class="img">
-                                        <img src="@Article.ImageUrl" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                                        <img src="@Article.GetImageUrl()" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
                                     </div>
                                     <div class="title_container">
                                         <div class="title">@Article.Title</div>
@@ -81,20 +103,6 @@
         else
         {
             <div class="user_panel">
-
-                <div class="user_info">
-                    <div>
-                        <h6>User</h6>
-                        <h1>@Model.UserName</h1>
-                        <h6>A little about myself</h6>
-                        <div class="item_body">
-                            <p>
-                                @Html.Raw(Model.InformationAccount)
-                            </p>
-                        </div>
-                    </div>
-                    <div class="avatar">@Context.Request.Cookies[CookiesPath.USER_NAME]?.Substring(0, 1)</div>
-                </div>
                 <div class="articles_list_container">
                     <h3>Buy Articles (@Model.historyArticleBuy.Count())</h3>
                     @foreach (var StripePayment in Model.historyArticleBuy)
@@ -105,7 +113,7 @@
                                     <ul>
                                         <li class="history_list_item">
                                             <div class="img">
-                                                <img src="@StripePayment.MainArticle.ImageUrl" />
+                                                <img src="@StripePayment.MainArticle.GetImageUrl()" />
                                             </div>
 
                                             <div class="text_wrapper">
@@ -157,7 +165,7 @@
             <div class="archicle_info_item sticky price_item_container">
                 <div class="controls">
 
-                    <img src="@Model.Profile.LinkPictureUser" class="image_block" />
+                    <img src="@Model.Profile.GetLinkPictureUser()" class="image_block" />
                     <h4>
                         <span> Follow Me!</span>
                         <div class="tape"></div>

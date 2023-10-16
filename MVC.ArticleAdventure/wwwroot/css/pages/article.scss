@@ -820,9 +820,59 @@
     background-color: #333;
     padding-top: 2.8rem;
 
-    .panel_content {
-        width: 960px;
+    .information_account {
         margin: 0 auto;
+        display: flex;
+
+        .item_body {
+            color: #fff;
+            padding-bottom: 0.8rem;
+        }
+
+        h6 {
+            color: #fff;
+            padding-bottom: 0.8rem;
+        }
+
+        &.w1140 {
+            width: 1140px;
+        }
+
+        .style_display {
+            padding:25px;
+        }
+
+        .avatar {
+            width:15%;
+            /*width: 120px;*/
+            height: 120px;
+            background-color: var(--epcl-black-color);
+
+            border: {
+                radius: 50%;
+            }
+
+            margin: 0 auto;
+            overflow: hidden;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 44px;
+        }
+    }
+
+    .panel_content {
+        /*width: 960px;*/
+        margin: 0 auto;
+
+        &.w1140 {
+            width: 1140px;
+        }
+
+        &.w960 {
+            width: 960px;
+        }
 
         button {
             padding: 5px 13px 10px 0px;

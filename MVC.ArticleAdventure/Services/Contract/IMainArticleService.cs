@@ -15,7 +15,7 @@ namespace MVC.ArticleAdventure.Services.Contract
         Task<ExecutionResult<List<MainArticle>>> GetAllFilterDateTimeArticles();
         public Task<ExecutionResult<List<MainArticle>>> GetAllArticlesFilterSupTags(List<MainArticleTags> mainArticleTags);
         public Task<ExecutionResult<long>> AddArticle(MainArticle article,IFormFile photoMainArticle);
-        public Task<ExecutionResult<long>> Update(MainArticle article, IFormFile photoMainArticle);
+        public Task<ExecutionResult<long>> Update(MainArticle article, IFormFile photoMainArticle,string token);
         public Task Remove(Guid netUidArticle);
     }
 }

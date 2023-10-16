@@ -10,6 +10,7 @@ using common.ArticleAdventure.Helpers;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using common.ArticleAdventure.IdentityConfiguration;
 
 namespace webApi.ArticleAdventure.Controllers
 {
@@ -61,6 +62,7 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles=IdentityRoles.Administrator)]
         [AssignActionRoute(UserManagementSegments.REMOVE_USER)]
         public async Task<IActionResult> RemoveUser(Guid netUid)
         {
@@ -136,6 +138,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [AssignActionRoute(UserManagementSegments.UPDATE_PASSWORD)]
         public async Task<IActionResult> UpdatePassword(Guid userProfileNetUid, string newPassword,string oldPassword)
         {
@@ -150,6 +153,7 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpGet]
+        [Authorize]
         [AssignActionRoute(UserManagementSegments.UPDATE_EMAIL)]
         public async Task<IActionResult> UpdateEmail(Guid userProfileNetUid, string newEmail, string password)
         {
@@ -164,6 +168,7 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpPost]
+        [Authorize]
         [AssignActionRoute(UserManagementSegments.UPDATE_ACCOUNT_INFORMATION)]
         public async Task<IActionResult> UpdateAccountInformation( [FromForm] string userProfile, [FromForm] IFormFile photoUserProfile)
         {
@@ -223,6 +228,7 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpGet]
+        [Authorize]
         [AssignActionRoute(UserManagementSegments.REMOVE_FAVORITE_ARTICLE)]
         public async Task<IActionResult> RemoveFavoriteArticle(Guid netUidFavoriteArticle)
         {
