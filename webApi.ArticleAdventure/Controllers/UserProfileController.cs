@@ -186,6 +186,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [AssignActionRoute(UserManagementSegments.SET_FAVORITE_ARTICLE)]
         public async Task<IActionResult> SetFavoriteArticle(Guid netUidArticle,Guid netUidUser)
         {
@@ -200,6 +201,7 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpGet]
+        [Authorize]
         [AssignActionRoute(UserManagementSegments.GET_All_FAVORITE_ARTICLE)]
         public async Task<IActionResult> GetAllFavoriteArticle(Guid userProfileNetUid)
         {
@@ -214,6 +216,7 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpGet]
+        [Authorize]
         [AssignActionRoute(UserManagementSegments.GET_FAVORITE_ARTICLE)]
         public async Task<IActionResult> GetFavoriteArticle(Guid netUidArticle, Guid netUidUser)
         {

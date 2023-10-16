@@ -3,6 +3,9 @@ using domain.ArticleAdventure.Models;
 using Microsoft.AspNetCore.Mvc;
 using MVC.ArticleAdventure.Services.Contract;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using MVC.ArticleAdventure.Helpers;
 
 namespace MVC.ArticleAdventure.Controllers
 {
@@ -26,24 +29,28 @@ namespace MVC.ArticleAdventure.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMainTag(TagsModel tagsModel)
         {
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
             if (tagsModel.AddMainTag.Name == null)
             {
                 tagsModel = await GetAllMainTags();
                 return View("Tags", tagsModel);
             }
-            await _tagService.AddMainTag(tagsModel.AddMainTag);
+            await _tagService.AddMainTag(tagsModel.AddMainTag, token);
             return Redirect("~/Tags/Tags");
         }
 
         [HttpPost]
         public async Task<IActionResult> ChangeMainTag(TagsModel tagsModel)
         {
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
             if (tagsModel.AddMainTag.Name == null)
             {
                 tagsModel = await GetAllMainTags();
                 return View("Tags", tagsModel);
             }
-            await _tagService.ChangeMainTag(tagsModel.AddMainTag);
+            await _tagService.ChangeMainTag(tagsModel.AddMainTag, token);
 
             return Redirect("~/Tags/Tags");
         }
@@ -51,26 +58,30 @@ namespace MVC.ArticleAdventure.Controllers
         [HttpPost]
         public async Task<IActionResult> AddSupTag(TagsModel tagsModel)
         {
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
             if (tagsModel.SelectMainTag == null)
             {
                 tagsModel = await GetAllMainTags();
                 return View("Tags",tagsModel);
             }
             tagsModel.AddSupTag.IdMainTag = tagsModel.SelectMainTag.Id;
-            await _tagService.AddSupTag(tagsModel.AddSupTag);
+            await _tagService.AddSupTag(tagsModel.AddSupTag, token);
             return Redirect("~/Tags/Tags");
         }
 
         [HttpPost]
         public async Task<IActionResult> ChangeSupTag(TagsModel tagsModel)
         {
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
             if (tagsModel.AddSupTag.Name == null)
             {
                 tagsModel = await GetAllMainTags();
                 return View("Tags", tagsModel);
             }
             tagsModel.AddSupTag.IdMainTag = tagsModel.AddMainTag.Id;
-            await _tagService.ChangeSupTag(tagsModel.AddSupTag);
+            await _tagService.ChangeSupTag(tagsModel.AddSupTag, token);
 
             return Redirect("~/Tags/Tags");
         }
@@ -158,7 +169,9 @@ namespace MVC.ArticleAdventure.Controllers
         [HttpGet]
         public async Task<IActionResult> RemoveSupTag(Guid RemoveSupTagsNetUid)
         {
-            await _tagService.RemoveSupTag(RemoveSupTagsNetUid);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            await _tagService.RemoveSupTag(RemoveSupTagsNetUid, token);
             TagsModel tagsModel = await GetAllMainTags();
 
             return View("Tags", tagsModel);
@@ -168,7 +181,9 @@ namespace MVC.ArticleAdventure.Controllers
         [HttpGet]
         public async Task<IActionResult> RemoveMainTag(Guid RemoveMainTagsNetUid)
         {
-            await _tagService.RemoveMainTag(RemoveMainTagsNetUid);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            await _tagService.RemoveMainTag(RemoveMainTagsNetUid, token);
             TagsModel tagsModel = await GetAllMainTags();
 
             return View("Tags", tagsModel);

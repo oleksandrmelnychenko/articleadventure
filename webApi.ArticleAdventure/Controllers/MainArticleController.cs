@@ -40,7 +40,7 @@ namespace webApi.ArticleAdventure.Controllers
 
         [HttpPost]
         [Authorize(Roles = IdentityRoles.Administrator)]
-        [AssignActionRoute(ArticleSegments.ADD)]
+        [AssignActionRoute(ArticleSegments.ADD_ARTICLE)]
         public async Task<IActionResult> AddArticle([FromForm] string article, [FromForm] IFormFile filePhotoMainArticle)
         {
             try
@@ -153,7 +153,6 @@ namespace webApi.ArticleAdventure.Controllers
 
 
         [HttpGet]
-        [Authorize]
         [AssignActionRoute(ArticleSegments.GET_USER_ALL_STRIPE_PAYMENTS)]
         public async Task<IActionResult> GetAllPaymentArticleUser(long idUser)
         {
@@ -169,8 +168,9 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        [AssignActionRoute(ArticleSegments.GET_USER_ALL_ARTICLES)]
+        [Authorize(Roles = $"{IdentityRoles.Administrator},{IdentityRoles.User}")]
+        //[Authorize(Roles = IdentityRoles.User)]
+        [AssignActionRoute(ArticleSegments.GET_ALL_ARTICLE_USER)]
         public async Task<IActionResult> GetAllUserArticle(long idUser)
         {
             try
@@ -185,7 +185,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = $"{IdentityRoles.Administrator},{IdentityRoles.User}")]
         [AssignActionRoute(ArticleSegments.GET_USER_ARTICLE)]
         public async Task<IActionResult> GetUserArticle(Guid netUidArticle, long idUser)
         {

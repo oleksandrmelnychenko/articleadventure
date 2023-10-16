@@ -54,6 +54,7 @@ namespace webApi.ArticleAdventure.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = IdentityRoles.Administrator)]
         [AssignActionRoute(TagSegments.ADD_MAIN_TAG)]
         public async Task<IActionResult> AddMainTag([FromBody] MainTag mainTag)
         {
@@ -69,6 +70,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = IdentityRoles.Administrator)]
         [AssignActionRoute(TagSegments.ADD_SUP_TAG)]
         public async Task<IActionResult> AddSubTag([FromBody] SupTag supTag)
         {

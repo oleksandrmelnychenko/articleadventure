@@ -139,7 +139,7 @@ namespace MVC.ArticleAdventure.Services
             return result;
         }
 
-        public async Task<ExecutionResult<List<UserProfile>>> GetAllProfile()
+        public async Task<ExecutionResult<List<UserProfile>>> GetAllProfile(string tokenAdmin)
         {
             var result = new ExecutionResult<List<UserProfile>>();
 

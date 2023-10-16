@@ -102,10 +102,6 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("CreateAccount")]
         public async Task<IActionResult> CreateAccount(RegisterModel registerModel)
         {
-            //if (UserRoleHelper.IsUserRole(User.Claims, "User"))
-            //{
-            //    return Redirect("~/");
-            //}
             if (!ModelState.IsValid)
             {
                 return View(registerModel);
@@ -122,34 +118,6 @@ namespace MVC.ArticleAdventure.Controllers
                 return View(registerModel);
             }
         }
-
-        [HttpPost]
-        [Route("RefreshToken")]
-        public async Task<IActionResult> RefreshToken()
-        {
-            var accessToken = Request.Cookies[CookiesPath.ACCESS_TOKEN];
-
-            var response = await _authenticationService.RefreshToken(accessToken);
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(registerModel);
-            //}
-            //var result = await _userProfileService.CreateAccount(registerModel);
-            //if (result.IsSuccess)
-            //{
-            //    registerModel.IsEmailConfirmed = true;
-            //    return View(registerModel);
-            //}
-            //else
-            //{
-            //    await SetErrorMessage(result.Error.Message);
-            //    return View(registerModel);
-            //}
-            return View();
-
-        }
-
 
         [HttpGet]
         [Route("EmailConfirmation")]

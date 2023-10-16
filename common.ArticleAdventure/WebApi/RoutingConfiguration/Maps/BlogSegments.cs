@@ -9,7 +9,7 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
 {
     public static class ArticleSegments
     {
-        public const string ADD = "add";
+        public const string ADD_ARTICLE = "add";
         public const string REMOVE_ARTICLE = "remove";
         public const string EDIT = "edit";
         public const string ALL_ARTICLE = "all";
@@ -19,7 +19,7 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
         public const string GET_SUP_ARTICLE = "get/suparticle";
         public const string GET_ALL_BLOGS = "get/all";
         public const string GET_ARTICLE = "get";
-        public const string GET_USER_ALL_ARTICLES = "get/user/articles";
+        public const string GET_ALL_ARTICLE_USER = "get/user/articles";
         public const string GET_USER_ALL_STRIPE_PAYMENTS = "get/user/stripepayments";
         public const string GET_USER_ARTICLE = "get/user/article";
     }

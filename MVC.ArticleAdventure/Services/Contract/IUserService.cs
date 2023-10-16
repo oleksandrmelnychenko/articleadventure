@@ -6,12 +6,12 @@ namespace MVC.ArticleAdventure.Services.Contract
 {
     public interface IUserService
     {
-        public Task<ExecutionResult<UserProfile>> ChangeAccountInformation(UserProfile userProfile,IFormFile formFile);
-        public Task ChangePassword(Guid userProfileNetUid, string newPassword, string oldPassword);
-        public Task ChangeEmail(Guid userProfileNetUid, string newEmail, string password);
-        public Task<ExecutionResult<long>> SetFavoriteArticle(Guid userProfileNetUid, Guid MainArtilceNetUid);
-        public Task<ExecutionResult<List<FavoriteArticle>>> GetAllFavoriteArticle(Guid userProfileNetUid);
-        Task<ExecutionResult<FavoriteArticle>> GetFavoriteArticle(Guid userProfileNetUid, Guid MainArtilceNetUid);
-        public Task<ExecutionResult<long>> RemoveFavoriteArticle(Guid netUidFavoriteArticle);
+        public Task<ExecutionResult<UserProfile>> ChangeAccountInformation(UserProfile userProfile,IFormFile formFile, string tokenUser);
+        public Task<ExecutionResult<UserProfile>> ChangePassword(Guid userProfileNetUid, string newPassword, string oldPassword, string tokenUser);
+        public Task<ExecutionResult<UserProfile>> ChangeEmail(Guid userProfileNetUid, string newEmail, string password, string tokenUser);
+        public Task<ExecutionResult<long>> SetFavoriteArticle(Guid userProfileNetUid, Guid MainArtilceNetUid, string tokenUser);
+        public Task<ExecutionResult<List<FavoriteArticle>>> GetAllFavoriteArticle(Guid userProfileNetUid, string tokenUser);
+        Task<ExecutionResult<FavoriteArticle>> GetFavoriteArticle(Guid userProfileNetUid, Guid MainArtilceNetUid, string tokenUser);
+        public Task<ExecutionResult<long>> RemoveFavoriteArticle(Guid netUidFavoriteArticle,string tokenUser);
     }
 }

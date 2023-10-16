@@ -5,6 +5,7 @@ using MVC.ArticleAdventure.Extensions;
 using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace MVC.ArticleAdventure.Services
 {
@@ -18,32 +19,32 @@ namespace MVC.ArticleAdventure.Services
 
             _httpClient = httpClient;
         }
-        public async Task AddMainTag(MainTag mainTag)
+        public async Task AddMainTag(MainTag mainTag, string tokenAdmin)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
             await _httpClient.PostAsJsonAsync(PathTag.ADD_MAIN_TAG, mainTag);
         }
 
-        public async Task AddSupTag(SupTag supTag)
+        public async Task AddSupTag(SupTag supTag, string tokenAdmin)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
             await _httpClient.PostAsJsonAsync(PathTag.ADD_SUP_TAG, supTag);
         }
 
-        public async Task ChangeMainTag(MainTag mainTag)
+        public async Task ChangeMainTag(MainTag mainTag, string tokenAdmin)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
             await _httpClient.PostAsJsonAsync(PathTag.CHANGE_MAIN_TAG, mainTag);
         }
 
-        public async Task ChangeSupTag(SupTag supTag)
+        public async Task ChangeSupTag(SupTag supTag, string tokenAdmin)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
             await _httpClient.PostAsJsonAsync(PathTag.CHANGE_SUP_TAG, supTag);
         }
 
         public async Task<ExecutionResult<List<MainTag>>> GetAllTags()
         {
-          
-
-            //var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-            //List<MainTag> allMainTags = JsonConvert.DeserializeObject<List<MainTag>>(successResponse.Body.ToString());
             var result = new ExecutionResult<List<MainTag>>();
 
             HttpResponseMessage response = await _httpClient.GetAsync(PathTag.GET_ALL_MAIN_TAG);
@@ -88,14 +89,16 @@ namespace MVC.ArticleAdventure.Services
             return mainTag;
         }
 
-        public async Task RemoveMainTag(Guid NetUidMainTag)
+        public async Task RemoveMainTag(Guid NetUidMainTag, string tokenAdmin)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
             await _httpClient.GetAsync($"{PathTag.REMOVE_MAIN_TAG}?netUidMainTag={NetUidMainTag}");
         }
 
-        public async Task RemoveSupTag(Guid NetUidSupTag)
+        public async Task RemoveSupTag(Guid NetUidSupTag, string tokenAdmin)
         {
-           await _httpClient.GetAsync($"{PathTag.REMOVE_SUP_TAG}?netUidSupTag={NetUidSupTag}");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
+            await _httpClient.GetAsync($"{PathTag.REMOVE_SUP_TAG}?netUidSupTag={NetUidSupTag}");
         }
     }
 }

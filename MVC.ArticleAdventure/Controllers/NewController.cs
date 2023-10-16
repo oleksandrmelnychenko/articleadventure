@@ -240,6 +240,7 @@ namespace MVC.ArticleAdventure.Controllers
             MainArticle MainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CREATE_MAIN_ARTICLE);
             var supTagsSelect = SessionExtensionsMVC.Get<List<SupTag>>(HttpContext.Session, SessionStoragePath.CHOOSE_NEW_SUP_TAGS);
             var mainTags = await _tagService.GetAllTags();
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
 
             MainArticle.Title = settingMainArticleModel.MainArticle.Title;
             MainArticle.Description = settingMainArticleModel.MainArticle.Description;
@@ -298,7 +299,7 @@ namespace MVC.ArticleAdventure.Controllers
             HttpContext.Session.Remove(SessionStoragePath.CREATE_MAIN_ARTICLE);
             HttpContext.Session.Remove(SessionStoragePath.CHOOSE_NEW_SUP_TAGS);
             
-            await _mainArticleService.AddArticle(MainArticle,settingMainArticleModel.PhotoMainArticle);
+            await _mainArticleService.AddArticle(MainArticle,settingMainArticleModel.PhotoMainArticle, token);
             return Redirect("~/");
         }
     }

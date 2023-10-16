@@ -37,7 +37,7 @@ namespace webApi.ArticleAdventure.Controllers
         }
 
         [HttpPost]
-        [AssignActionRoute(ArticleSegments.ADD)]
+        [AssignActionRoute(ArticleSegments.ADD_ARTICLE)]
         public async Task<IActionResult> AddBLog([FromBody] AuthorArticle Blogs)
         {
             try

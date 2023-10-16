@@ -191,8 +191,10 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> GetInformationArticle(Guid netUidArticle)
         {
             var userId = long.Parse(Request.Cookies[CookiesPath.USER_ID]);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
             GetInformationArticleModel changeArticleModel = new GetInformationArticleModel();
-            var responseMainArticle = await _mainArticleService.GetArticleUser(netUidArticle, userId);
+            var responseMainArticle = await _mainArticleService.GetArticleUser(netUidArticle, userId,token);
             var mainArtilce = await _mainArticleService.GetArticle(netUidArticle);
 
             foreach (var SupArticle in mainArtilce.Articles)
@@ -235,12 +237,13 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> RemoveSupArticle(Guid RemoveNetUidArticle)
         {
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
 
             var supArticle = mainArticle.Articles.First(x => x.NetUid == RemoveNetUidArticle);
 
             mainArticle.Articles.Remove(supArticle);
 
-            await _supArticleService.Remove(RemoveNetUidArticle);
+            await _supArticleService.Remove(RemoveNetUidArticle, token);
 
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE, mainArticle);
 
@@ -254,13 +257,14 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> ChangeSupArticle(ChangeArticleModel changeBlogModel)
         {
             var mainArticle = SessionExtensionsMVC.Get<MainArticle>(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE);
-            UserRoleHelper.IsUserRole(User.Claims, IdentityRoles.Administrator);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
             var article = mainArticle.Articles.FirstOrDefault(article => article.NetUid == changeBlogModel.Article.NetUid);
             article.Title = changeBlogModel.Article.Title;
             article.Description = changeBlogModel.Article.Description;
             article.Body = changeBlogModel.Article.Body;
             article.Price = changeBlogModel.Article.Price;
-            await _supArticleService.Update(article);
+            await _supArticleService.Update(article,token);
             SessionExtensionsMVC.Set(HttpContext.Session, SessionStoragePath.CHANGE_MAIN_ARTICLE, mainArticle);
 
             return Redirect($"~/ChangeMainArticle?netUidArticle={mainArticle.NetUid}");
@@ -301,10 +305,13 @@ namespace MVC.ArticleAdventure.Controllers
             return Redirect("~/");
         }
 
+        [Route("Remove")]
         [Authorize]
         public async Task<IActionResult> Remove(Guid netUidArticle)
         {
-            await _mainArticleService.Remove(netUidArticle);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            await _mainArticleService.Remove(netUidArticle,token);
             return Redirect("~/");
         }
 
@@ -315,6 +322,7 @@ namespace MVC.ArticleAdventure.Controllers
             InfoArticleModel infoArticleModel = new InfoArticleModel();
             var article = await _mainArticleService.GetArticle(NetUidArticle);
             var listAutorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(HttpContext.Session, SessionStoragePath.CART_ARTICLE);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
 
             if (listAutorArticle != null && listAutorArticle.Count != 0)
             {
@@ -325,7 +333,7 @@ namespace MVC.ArticleAdventure.Controllers
             var email = Request.Cookies[CookiesPath.EMAIL];
             if (UserRoleHelper.IsUserRole(User.Claims,"User")|| UserRoleHelper.IsUserRole(User.Claims, Roles.Admin))
             {
-                var favoriteArticle = await _userService.GetFavoriteArticle(Guid.Parse(userGuidClaim.Value), NetUidArticle);
+                var favoriteArticle = await _userService.GetFavoriteArticle(Guid.Parse(userGuidClaim.Value), NetUidArticle,token);
 
                 if (favoriteArticle.IsSuccess)
                 {

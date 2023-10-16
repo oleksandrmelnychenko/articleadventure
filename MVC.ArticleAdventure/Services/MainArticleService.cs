@@ -26,22 +26,32 @@ namespace MVC.ArticleAdventure.Services
 
             _httpClient = httpClient;
         }
-        public async Task<ExecutionResult<long>> AddArticle(MainArticle article, IFormFile photoMainArticle)
+
+        public async Task<ExecutionResult<long>> Update(MainArticle article, IFormFile photoMainArticle, string tokenAdmin)
         {
             var result = new ExecutionResult<long>();
-
+            HttpResponseMessage response;
             try
             {
                 using var form = new MultipartFormDataContent();
-
                 var jsonArticle = JsonConvert.SerializeObject(article);
                 var stringContentArticle = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
                 form.Add(stringContentArticle, "article");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
 
-                using var streamContent = new StreamContent(photoMainArticle.OpenReadStream());
-                form.Add(streamContent, "filePhotoMainArticle", photoMainArticle.FileName);
-                var response = await _httpClient.PostAsync(PathMainArticle.ADD_ARTICLE, form);
+                if (photoMainArticle != null)
+                {
+                    using (var streamContent = new StreamContent(photoMainArticle.OpenReadStream()))
+                    {
+                        form.Add(streamContent, "filePhotoMainArticle", photoMainArticle.FileName);
+                        response = await _httpClient.PostAsync(PathMainArticle.UPDATE_ARTICLE, form);
 
+                    }
+                }
+                else
+                {
+                    response = await _httpClient.PostAsync(PathMainArticle.UPDATE_ARTICLE, form);
+                }
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -63,6 +73,162 @@ namespace MVC.ArticleAdventure.Services
 
             return result;
         }
+
+        public async Task<ExecutionResult<long>> Remove(Guid netUidArticle,string tokenAdmin)
+        {
+            var result = new ExecutionResult<long>();
+
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
+                var response = await _httpClient.GetAsync($"{PathMainArticle.REMOVE_ARTICLE}?netUidArticle={netUidArticle}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<ExecutionResult<long>> AddArticle(MainArticle article, IFormFile photoMainArticle, string tokenAdmin)
+        {
+            var result = new ExecutionResult<long>();
+
+            try
+            {
+                using var form = new MultipartFormDataContent();
+
+                var jsonArticle = JsonConvert.SerializeObject(article);
+                var stringContentArticle = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
+                form.Add(stringContentArticle, "article");
+
+                using var streamContent = new StreamContent(photoMainArticle.OpenReadStream());
+                form.Add(streamContent, "filePhotoMainArticle", photoMainArticle.FileName);
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
+
+                var response = await _httpClient.PostAsync(PathMainArticle.ADD_ARTICLE, form);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<long>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
+        public async Task<ExecutionResult<MainArticle>> GetArticleUser(Guid netUidArticle, long idUser, string tokenUser)
+        {
+            var result = new ExecutionResult<MainArticle>();
+
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenUser);
+                var response = await _httpClient.GetAsync($"{PathMainArticle.GET_ARTICLE_USER}?netUidArticle={netUidArticle}&idUser={idUser}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<MainArticle>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<ExecutionResult<List<MainArticle>>> GetAllArticlesUser(long idUser, string tokenUser)
+        {
+            var result = new ExecutionResult<List<MainArticle>>();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenUser);
+
+            HttpResponseMessage response = await _httpClient.GetAsync($"{PathMainArticle.GET_ALL_ARTICLE_USER}?idUser={idUser}");
+
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<MainArticle>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
+        }
+
+        public async Task<ExecutionResult<List<StripePayment>>> GetAllStripePaymentsUser(long idUser)
+        {
+            var result = new ExecutionResult<List<StripePayment>>();
+
+            HttpResponseMessage response = await _httpClient.GetAsync($"{PathMainArticle.GET_USER_ALL_STRIPE_PAYMENTS}?idUser={idUser}");
+
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<StripePayment>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+            return result;
+        }
+
         public async Task<ExecutionResult<AuthorArticle>> GeSupArticle(Guid netUidArticle){
             var result = new ExecutionResult<AuthorArticle>();
 
@@ -90,6 +256,7 @@ namespace MVC.ArticleAdventure.Services
 
             return result;
         }
+
         public async Task<ExecutionResult<List<MainArticle>>> GetAllArticlesFilterSupTags(List<MainArticleTags> mainArticleTags)
         {
             var result = new ExecutionResult<List<MainArticle>>();
@@ -148,7 +315,6 @@ namespace MVC.ArticleAdventure.Services
             return result;
         }
 
-        
         public async Task<List<MainArticle>> GetAllArticles()
         {
             HttpResponseMessage response = await _httpClient.GetAsync(PathMainArticle.GET_ALL_ARTICLE);
@@ -174,34 +340,7 @@ namespace MVC.ArticleAdventure.Services
             }
         }
 
-        public async Task<ExecutionResult<MainArticle>> GetArticleUser(Guid netUidArticle,long idUser)
-        {
-            var result = new ExecutionResult<MainArticle>();
-
-            try
-            {
-                var response = await _httpClient.GetAsync($"{PathMainArticle.GET_ARTICLE_USER}?netUidArticle={netUidArticle}&idUser={idUser}");
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-                    result.Data = JsonConvert.DeserializeObject<MainArticle>(successResponse.Body.ToString());
-                }
-                else
-                {
-                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-                    result.Error = new ErrorMVC();
-                    result.Error.StatusCode = errorResponse.StatusCode;
-                    result.Error.Message = errorResponse.Message;
-                }
-            }
-            catch (Exception e)
-            {
-                result.Error.Message = e.Message;
-            }
-
-            return result;
-        }
+       
 
         public async Task<MainArticle> GetArticle(long id)
         {
@@ -219,122 +358,10 @@ namespace MVC.ArticleAdventure.Services
             }
         }
 
-        public async Task Remove(Guid netUidArticle)
-        {
-            var response = await _httpClient.GetAsync($"{PathMainArticle.REMOVE_ARTICLE}?netUidArticle={netUidArticle}");
-            var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-        }
+       
 
-        public async Task<ExecutionResult<long>> Update(MainArticle article, IFormFile photoMainArticle,string token)
-        {
-            var result = new ExecutionResult<long>();
-            HttpResponseMessage response;
-            try
-            {
-                using var form = new MultipartFormDataContent();
-                var jsonArticle = JsonConvert.SerializeObject(article);
-                var stringContentArticle = new StringContent(jsonArticle, Encoding.UTF8, "application/json");
-                form.Add(stringContentArticle, "article");
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+       
 
-                if (photoMainArticle != null)
-                {
-                    using (var streamContent = new StreamContent(photoMainArticle.OpenReadStream()))
-                    {
-                        form.Add(streamContent, "filePhotoMainArticle", photoMainArticle.FileName);
-                        response = await _httpClient.PostAsync(PathMainArticle.UPDATE_ARTICLE, form);
-                        
-                    }
-
-                }
-                else
-                {
-                     response = await _httpClient.PostAsync(PathMainArticle.UPDATE_ARTICLE, form);
-                }
-
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-                    result.Data = JsonConvert.DeserializeObject<long>(successResponse.Body.ToString());
-                }
-                else
-                {
-                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-                    result.Error = new ErrorMVC();
-                    result.Error.StatusCode = errorResponse.StatusCode;
-                    result.Error.Message = errorResponse.Message;
-                }
-            }
-            catch (Exception e)
-            {
-                result.Error.Message = e.Message;
-            }
-
-            return result;
-
-
-            
-        }
-
-        public async Task<ExecutionResult<List<MainArticle>>> GetAllArticlesUser(long idUser)
-        {
-            var result = new ExecutionResult<List<MainArticle>>();
-
-            HttpResponseMessage response = await _httpClient.GetAsync($"{PathMainArticle.GET_ALL_ARTICLE_USER}?idUser={idUser}");
-
-            try
-            {
-                if (response.IsSuccessStatusCode)
-                {
-                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-                    result.Data = JsonConvert.DeserializeObject<List<MainArticle>>(successResponse.Body.ToString());
-                }
-                else
-                {
-                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-                    result.Error = new ErrorMVC();
-                    result.Error.StatusCode = errorResponse.StatusCode;
-                    result.Error.Message = errorResponse.Message;
-                }
-            }
-            catch (Exception e)
-            {
-
-                result.Error.Message = e.Message;
-            }
-            return result;
-
-            
-        }
-
-        public async Task<ExecutionResult<List<StripePayment>>> GetAllStripePaymentsUser(long idUser)
-        {
-            var result = new ExecutionResult<List<StripePayment>>();
-
-            HttpResponseMessage response = await _httpClient.GetAsync($"{PathMainArticle.GET_USER_ALL_STRIPE_PAYMENTS}?idUser={idUser}");
-
-            try
-            {
-                if (response.IsSuccessStatusCode)
-                {
-                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
-                    result.Data = JsonConvert.DeserializeObject<List<StripePayment>>(successResponse.Body.ToString());
-                }
-                else
-                {
-                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-                    result.Error = new ErrorMVC();
-                    result.Error.StatusCode = errorResponse.StatusCode;
-                    result.Error.Message = errorResponse.Message;
-                }
-            }
-            catch (Exception e)
-            {
-
-                result.Error.Message = e.Message;
-            }
-            return result;
-        }
+        
     }
 }

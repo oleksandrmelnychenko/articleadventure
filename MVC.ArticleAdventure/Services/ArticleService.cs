@@ -50,13 +50,13 @@ namespace MVC.ArticleAdventure.Services
             }
         }
 
-        public async Task Remove(Guid netUidArticle)
+        public async Task Remove(Guid netUidArticle, string tokenAdmin)
         {
             var response = await _httpClient.GetAsync($"{PathArticle.REMOVE_ARTICLE}?netUidArticle={netUidArticle}");
             var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
         }
 
-        public async Task Update(AuthorArticle article)
+        public async Task Update(AuthorArticle article, string tokenAdmin)
         {
             var response = await _httpClient.PostAsJsonAsync(PathArticle.UPDATE_ARTICLE, article);
         }

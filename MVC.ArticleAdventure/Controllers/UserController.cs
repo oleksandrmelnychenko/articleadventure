@@ -38,7 +38,8 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> MyArticles()
         {
             var StringuserID = Request.Cookies[CookiesPath.USER_ID];
-            var paymentArticles = await _mainArticleService.GetAllArticlesUser(long.Parse(StringuserID));
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+            var paymentArticles = await _mainArticleService.GetAllArticlesUser(long.Parse(StringuserID),token);
             MyArticlesModel myArticlesModel = new MyArticlesModel { mainArticles = paymentArticles.Data };
             return View(myArticlesModel);
         }
@@ -47,18 +48,22 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> SelectUser(int selectUser)
         {
             UserManagerModel myArticlesModel = new UserManagerModel();
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
 
-            var paymentArticles = await _authenticationService.GetAllProfile();
+            var paymentArticles = await _authenticationService.GetAllProfile(token);
             myArticlesModel.SelectedRow = selectUser;
             myArticlesModel.UserProfiles = paymentArticles.Data;
             return View("UserManager", myArticlesModel);
         }
         
         [HttpGet]
+        [Authorize]
         [Route("UserManager")]
         public async Task<IActionResult> UserManager()
         {
-            var paymentArticles = await _authenticationService.GetAllProfile();
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            var paymentArticles = await _authenticationService.GetAllProfile(token);
             UserManagerModel userModel = new UserManagerModel {  UserProfiles = paymentArticles.Data };
             return View(userModel);
         }
@@ -66,7 +71,9 @@ namespace MVC.ArticleAdventure.Controllers
         [Route("EditUserManager")]
         public async Task<IActionResult> EditUserManager(int selectedRow)
         {
-            var paymentArticles = await _authenticationService.GetAllProfile();
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            var paymentArticles = await _authenticationService.GetAllProfile(token);
             UserManagerModel userModel = new UserManagerModel { UserProfiles = paymentArticles.Data, EditUserProfile = paymentArticles.Data[selectedRow] };
             userModel.SelectedRow = selectedRow;
             userModel.EditUser = true;
@@ -75,10 +82,13 @@ namespace MVC.ArticleAdventure.Controllers
             return View("UserManager", userModel);
         }
         [HttpGet]
+        [Authorize]
         [Route("CreateUserManager")]
         public async Task<IActionResult> CreateUserManager(int selectedRow)
         {
-            var paymentArticles = await _authenticationService.GetAllProfile();
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            var paymentArticles = await _authenticationService.GetAllProfile(token);
             UserManagerModel userModel = new UserManagerModel { UserProfiles = paymentArticles.Data };
             userModel.SelectedRow = selectedRow;
             userModel.CreateUser = true;
@@ -88,10 +98,13 @@ namespace MVC.ArticleAdventure.Controllers
             return View("UserManager", userModel);
         }
         [HttpGet]
+        [Authorize]
         [Route("RemoveAccount")]
         public async Task<IActionResult> RemoveAccount(int selectedRow)
         {
-            var paymentArticles = await _authenticationService.GetAllProfile();
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            var paymentArticles = await _authenticationService.GetAllProfile(token);
             var result = await _userProfileService.RemoveAccount(paymentArticles.Data[selectedRow].NetUid);
 
             return Redirect("~/UserManager");
@@ -191,9 +204,10 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> EditProfile(EditProfileModel editProfileModel)
         {
             var guidUser = User.FindFirst("Guid");
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
 
             editProfileModel.UserProfile.NetUid = Guid.Parse(guidUser.Value);
-            var result = await _userService.ChangeAccountInformation(editProfileModel.UserProfile,editProfileModel.PhotoMainArticle);
+            var result = await _userService.ChangeAccountInformation(editProfileModel.UserProfile,editProfileModel.PhotoMainArticle, token);
             if (result.IsSuccess)
             {
                 if (editProfileModel.UserProfile.UserName != null)
@@ -221,7 +235,9 @@ namespace MVC.ArticleAdventure.Controllers
         {
             MyFavoriteArticleModel myFavoriteArticleModel = new MyFavoriteArticleModel();
             var guidUser = User.FindFirst("Guid");
-            var result = await _userService.GetAllFavoriteArticle(Guid.Parse(guidUser.Value));
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            var result = await _userService.GetAllFavoriteArticle(Guid.Parse(guidUser.Value), token);
             if (result.IsSuccess)
             {
                 myFavoriteArticleModel.favoriteArticles = result.Data;
@@ -260,7 +276,9 @@ namespace MVC.ArticleAdventure.Controllers
                 return View(accountSecurityModel);
             }
             var userGuidClaim = User.FindFirst("Guid");
-            await _userService.ChangePassword(Guid.Parse(userGuidClaim.Value), accountSecurityModel.NewPassword, accountSecurityModel.CurrentPassword);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            await _userService.ChangePassword(Guid.Parse(userGuidClaim.Value), accountSecurityModel.NewPassword, accountSecurityModel.CurrentPassword, token);
             return View(accountSecurityModel);
         }
 
@@ -269,8 +287,9 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> AccountSecurityEmail(AccountSecurityModel accountSecurityModel)
         {
             var userGuidClaim = User.FindFirst("Guid");
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
 
-            await _userService.ChangeEmail(Guid.Parse(userGuidClaim.Value), accountSecurityModel.NewEmail, accountSecurityModel.ConfirmPasswordUpdateEmail);
+            await _userService.ChangeEmail(Guid.Parse(userGuidClaim.Value), accountSecurityModel.NewEmail, accountSecurityModel.ConfirmPasswordUpdateEmail, token);
             return View("AccountSecurity");
         }
         [HttpGet]
@@ -279,10 +298,12 @@ namespace MVC.ArticleAdventure.Controllers
         public async Task<IActionResult> SetFavoriteArticle(Guid netUidArticle)
         {
             var userGuidClaim = User.FindFirst("Guid");
-            var favoriteArticle = await _userService.GetFavoriteArticle(Guid.Parse(userGuidClaim.Value), netUidArticle);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            var favoriteArticle = await _userService.GetFavoriteArticle(Guid.Parse(userGuidClaim.Value), netUidArticle, token);
             if (favoriteArticle.Data == null)
             {
-                var result = await _userService.SetFavoriteArticle(Guid.Parse(userGuidClaim.Value), netUidArticle);
+                var result = await _userService.SetFavoriteArticle(Guid.Parse(userGuidClaim.Value), netUidArticle, token);
                 if (result.IsSuccess)
                 {
                     await SetSuccessMessage(SuccessMessages.SetArticle);
@@ -298,7 +319,9 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveFavoriteArticle(Guid netUidFavoriteArticle,Guid netUidArticle)
         {
-            var favoriteArticle = await _userService.RemoveFavoriteArticle( netUidFavoriteArticle);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            var favoriteArticle = await _userService.RemoveFavoriteArticle( netUidFavoriteArticle, token);
             return Redirect($"~/InfoArticle?NetUidArticle={netUidArticle}");
         }
 
@@ -307,7 +330,9 @@ namespace MVC.ArticleAdventure.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveFavoriteArticleFromPage(Guid netUidFavoriteArticle, Guid netUidArticle)
         {
-            var favoriteArticle = await _userService.RemoveFavoriteArticle(netUidFavoriteArticle);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            var favoriteArticle = await _userService.RemoveFavoriteArticle(netUidFavoriteArticle, token);
             return Redirect($"~/MyFavoriteArticle");
         }
 

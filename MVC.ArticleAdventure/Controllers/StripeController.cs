@@ -46,8 +46,9 @@ namespace MVC.ArticleAdventure.Controllers
         {
             var email = Request.Cookies[CookiesPath.EMAIL];
             var listAutorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(HttpContext.Session, SessionStoragePath.CART_ARTICLE);
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
 
-            var result = await _stripeService.BuyStripeCartArticle(listAutorArticle, email);
+            var result = await _stripeService.BuyStripeCartArticle(listAutorArticle, email, token);
             BuyNowModel buyNowModel = new BuyNowModel { orderResponse = result.Data };
             return View("BuyNow", buyNowModel);
         }
@@ -99,14 +100,14 @@ namespace MVC.ArticleAdventure.Controllers
 
         [HttpGet]
         [Authorize]
-
         public async Task<IActionResult> BuyNow(Guid netUidBuyArticle)
         {
             var article = await _mainArticleService.GetArticle(netUidBuyArticle);
-            
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
             var email = Request.Cookies[CookiesPath.EMAIL];
 
-            var orderInfo = await _stripeService.BuyStripeMainArticle(article, email);
+            var orderInfo = await _stripeService.BuyStripeMainArticle(article, email, token);
             BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo };
             return View(buyNowModel);
         }
@@ -117,8 +118,9 @@ namespace MVC.ArticleAdventure.Controllers
         {
             var article = await _mainArticleService.GeSupArticle(netUidBuyArticle);
             var email = Request.Cookies[CookiesPath.EMAIL];
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
 
-            var orderInfo = await _stripeService.BuyStripeSupArticle(article.Data, email);
+            var orderInfo = await _stripeService.BuyStripeSupArticle(article.Data, email, token);
             BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo.Data };
             return View("BuyNow",buyNowModel);
         }
