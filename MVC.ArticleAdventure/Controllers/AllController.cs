@@ -305,9 +305,9 @@ namespace MVC.ArticleAdventure.Controllers
             return Redirect("~/");
         }
 
-        [Route("Remove")]
+        [Route("RemoveMainArticle")]
         [Authorize]
-        public async Task<IActionResult> Remove(Guid netUidArticle)
+        public async Task<IActionResult> RemoveMainArticle(Guid netUidArticle)
         {
             var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
 

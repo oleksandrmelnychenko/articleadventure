@@ -1,4 +1,5 @@
-﻿@model domain.ArticleAdventure.Models.AllArticlesModel
+﻿@using MVC.ArticleAdventure.Helpers;
+@model domain.ArticleAdventure.Models.AllArticlesModel
 <div class="container_content" style="display:flex;">
     <div class="list_pay" style="margin-right: 20px;">
         <div class="archicle_info_item sticky price_item_container" style="padding: 50px 0px;">
@@ -47,7 +48,10 @@
                             <img src="@Article.GetImageUrl()" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
                         </div>
                         <div class="title_container">
-                            <div class="title">@Article.Title</div>
+                            <div class="title">
+                                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}"> @Article.Title</a>
+
+                            </div>
                             <div class="created">
                                 @Article.Created
                             </div>
@@ -74,27 +78,27 @@
                         </div>
                     </div>
                 </div>
-
+                @if (UserRoleHelper.IsUserRole(User.Claims, Roles.Admin))
+                {
+                    <a href="~/ChangeMainArticle?netUidArticle={@Article.NetUid}" class="change_btn">
+                        Change Article
+                    </a>
+                }
                 <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_btn">
                     Continue Reading
                 </a>
-
+                @if (UserRoleHelper.IsUserRole(User.Claims, Roles.Admin))
+                {
+                    <a href="~/RemoveMainArticle?netUidArticle={@Article.NetUid}" class="delete_btn">
+                        Delete Article
+                    </a>
+                }
                 <div class="priceBox_style">
                     <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_price">
-                        <span>@Article.Price</span>$
+                        $<span>@Article.Price</span>
                     </a>
                 </div>
 
-                @* <div class="item_controls">
-            <div class="controls_wrapper">
-            <input formmethod="get"
-            class="delete"
-            type="submit" value="Delete" asp-page-handler="Submit" onclick="location.href='@Url.Action("Remove", "All",new {netUidArticle =Article.NetUid})'" />
-            <input formmethod="get"
-            class="change"
-            type="submit" value="Change" asp-page-handler="Submit" onclick="location.href='@Url.Action("ChangeMainArticle", "All",new {netUidArticle =Article.NetUid})'" />
-            </div>
-            </div>*@
             </article>
         }
     </div>

@@ -128,6 +128,12 @@ namespace service.ArticleAdventure.Services.Blog
         {
             using (IDbConnection connection = _connectionFactory.NewSqlConnection())
             {
+                var mainArticle = _mainRepositoryFactory.New(connection).GetArticle(netUid);
+                foreach (var article in mainArticle.Articles)
+                {
+                    _articleRepositoryFactory.New(connection).Remove(article.NetUid);
+                }
+
                 _mainRepositoryFactory.New(connection).RemoveMainArticle(netUid);
             }
         });

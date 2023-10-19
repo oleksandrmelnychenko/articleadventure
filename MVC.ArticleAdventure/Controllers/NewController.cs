@@ -233,7 +233,8 @@ namespace MVC.ArticleAdventure.Controllers
         }
 
 
-        [HttpPost]
+
+        [HttpPost] 
         [Route("SettingMainArticle")]
         public async Task<IActionResult> SettingMainArticle(SettingMainArticleModel settingMainArticleModel)
         {
@@ -299,7 +300,7 @@ namespace MVC.ArticleAdventure.Controllers
             HttpContext.Session.Remove(SessionStoragePath.CREATE_MAIN_ARTICLE);
             HttpContext.Session.Remove(SessionStoragePath.CHOOSE_NEW_SUP_TAGS);
             
-            await _mainArticleService.AddArticle(MainArticle,settingMainArticleModel.PhotoMainArticle, token);
+             await _mainArticleService.AddArticle(MainArticle,settingMainArticleModel.PhotoMainArticle, token);
             return Redirect("~/");
         }
     }

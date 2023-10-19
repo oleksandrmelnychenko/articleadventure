@@ -55,7 +55,7 @@
                                     <div class="d">@article.Description</div>
                                 </div>
                                 <div class="price_cell">
-                                    @article.Price $
+                                    $  @article.Price
 
                                     <button type="button" onclick="location.href='@Url.Action("BuySup", "Stripe",new {netUidBuyArticle = article.NetUid})'">buy part of the article</button>
                                 </div>
@@ -96,7 +96,7 @@
                     <div class="img">
                         <img src="@Model.MainArticle.GetImageUrl()" />
                     </div>
-                    <div class="price">@Model.MainArticle.Price $</div>
+                    <div class="price">$ @Model.MainArticle.Price </div>
                     <div class="controls">
                         @if (Model.IsSetBasket)
                         {

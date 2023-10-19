@@ -82,7 +82,7 @@ namespace service.ArticleAdventure.Services.UserManagement
 
                        var emailConfirmationToken = await identityRepository.GenerateEmailConfirmationToken(user);
                        var mailService = _mailSenderFactory.NewMailSenderService();
-                       mailService.SendTokenToEmail(userProfile.Email, emailConfirmationToken, "https://localhost:7197/", user.Id);
+                       mailService.SendTokenToEmail(userProfile.Email, emailConfirmationToken, ArticleAdventureFolderManager.GetClientPath()+"/", user.Id);
 
                        return userProfile;
                    }

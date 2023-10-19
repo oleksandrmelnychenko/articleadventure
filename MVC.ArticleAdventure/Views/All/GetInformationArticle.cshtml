@@ -30,7 +30,7 @@
                                     </li>
                                 }
                             </ol>
-                        </div> 
+                        </div>
                     </div>
 
                 </div>
@@ -58,7 +58,6 @@
                                 <div class="line"></div>
                                 <div class="btns_row">
                                     <button type="button" onclick="location.href='@Url.Action("BuySup", "Stripe",new {netUidBuyArticle = article.NetUid})'">Buy a piece</button>
-                                    @*<button  class="fullPrice">Buy Full Article @Model.MainArticle.Price $</button>*@
                                 </div>
                             </div>
                         </div>
@@ -67,10 +66,12 @@
 
                 <div class="priceBox_style">
                     <a href="/" style="pointer-events:none" class="continueReading_price">
-                        <span>@article.Price</span>$
+                        $ <span>@article.Price</span>
                     </a>
                 </div>
             </article>
         }
     </div>
 </div>
+@Html.Partial("_FooterPanel")
+

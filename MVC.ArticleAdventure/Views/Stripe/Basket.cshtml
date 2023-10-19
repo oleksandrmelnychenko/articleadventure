@@ -67,7 +67,7 @@
                                     </div>
                                     <p>@article.Description</p>
                                     <div class="line"></div>
-                                    <div class="price">@article.Price $</div>
+                                    <div class="price">$ @article.Price</div>
                                 </div>
                                 <div class="button">
                                     <button class="remove" type="button" onclick="location.href='@Url.Action("RemoveFavoriteArticle", "Stripe",new {netUidArticle = article.NetUid})'">
@@ -80,7 +80,7 @@
                 </div>
                 <div class="basket_price">
                     <div class="hh3">Total:</div>
-                    <div class="fullPrice"> @Math.Round(Model.FullPrice, 2)$</div>
+                    <div class="fullPrice">$ @Math.Round(Model.FullPrice, 2)</div>
                     <button asp-action="Basket" type="submit" class="archicle_btn">Order Processing</button>
                 </div>
             </div>

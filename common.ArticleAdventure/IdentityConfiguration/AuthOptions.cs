@@ -13,6 +13,8 @@ namespace common.ArticleAdventure.IdentityConfiguration
 
         public const string AUDIENCE_LOCAL = "https://localhost:7192/";
         public const string AUDIENCE_REMOTE = "https://localhost:7192/";
+        //public const string AUDIENCE_LOCAL = "http://192.168.1.13:15034/";
+        //public const string AUDIENCE_REMOTE = "http://192.168.1.13:15034/";
 
         public const string DEFAULT_PASSWORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 

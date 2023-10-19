@@ -21,8 +21,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
             => _connection.Query<long>("INSERT INTO [MainArticle] " +
             "([Title], [Description] ,[InfromationArticle] ,[Price] ,[ImageUrl] ,[UserId] ,[Updated] ) " +
             "VALUES " +
-            "(@Title, @Description" +
-            ", @InfromationArticle , @Price, @ImageUrl, UserId, GETUTCDATE());" +
+            "(@Title, @Description, @InfromationArticle , @Price, @ImageUrl, @UserId, GETUTCDATE());" +
             "SELECT SCOPE_IDENTITY()", blog
             ).Single();
 
@@ -304,8 +303,9 @@ namespace domain.ArticleAdventure.Repositories.Blog
 
 
         public void RemoveMainArticle(Guid netUid)
-            => _connection.Execute("DELETE FROM [ArticleAdventure].[dbo].[MainArticle] " +
-                "WHERE MainArticle.NetUID = @NetUID",
+            => _connection.Execute("UPDATE [ArticleAdventure].[dbo].[MainArticle] " +
+                "SET [Deleted] = 1 " +
+                "WHERE [ArticleAdventure].[dbo].[MainArticle].NetUID = @NetUID",
                 new { NetUID = netUid });
 
         public void UpdateMainArticle(MainArticle blog)

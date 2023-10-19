@@ -90,7 +90,7 @@
 
                             <div class="priceBox_style">
                                 <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_price">
-                                    <span>@Article.Price</span>$
+                                    $<span>@Article.Price</span>
                                 </a>
                             </div>
 
@@ -126,7 +126,7 @@
                                             </div>
 
                                             <div class="item_list_price">
-                                                @StripePayment.MainArticle.Price $
+                                                $ @StripePayment.MainArticle.Price
                                             </div>
                                         </li>
                                     </ul>
@@ -145,7 +145,7 @@
                                                     <p>@article.Description</p>
                                                 </div>
                                                 <div class="item_list_price">
-                                                    @article.Price $
+                                                    $ @article.Price
                                                 </div>
                                             </li>
                                         }

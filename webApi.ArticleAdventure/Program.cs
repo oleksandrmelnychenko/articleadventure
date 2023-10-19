@@ -47,7 +47,6 @@ common.ArticleAdventure.Helpers.ConfigurationManager.SetAppEnvironmentRootPath(b
 StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
 ArticleAdventureFolderManager.stripePublicKey = builder.Configuration.GetValue<string>("StripeSettings:PubKey");
 
-
 builder.Services.AddDbContext<ArticleAdventureDataContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString(ConnectionStringNames.DbConnectionString)));
 

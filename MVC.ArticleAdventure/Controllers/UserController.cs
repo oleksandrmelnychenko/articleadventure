@@ -105,7 +105,7 @@ namespace MVC.ArticleAdventure.Controllers
             var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
 
             var paymentArticles = await _authenticationService.GetAllProfile(token);
-            var result = await _userProfileService.RemoveAccount(paymentArticles.Data[selectedRow].NetUid);
+            var result = await _userProfileService.RemoveAccount(paymentArticles.Data[selectedRow].NetUid, token);
 
             return Redirect("~/UserManager");
         }

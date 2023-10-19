@@ -11,6 +11,7 @@ using MVC.ArticleAdventure.Extensions;
 using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Web;
 
@@ -115,12 +116,13 @@ namespace MVC.ArticleAdventure.Services
             return result;
         }
 
-        public async Task<ExecutionResult<UserProfile>> RemoveAccount(Guid netUidAccount)
+        public async Task<ExecutionResult<UserProfile>> RemoveAccount(Guid netUidAccount, string tokenAdmin)
         {
             var result = new ExecutionResult<UserProfile>();
 
             try
             {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
                 var response = await _httpClient.GetAsync($"{PathUserProfile.REMOVE_USER}/?netUid={netUidAccount}");
 
                 if (response.IsSuccessStatusCode)

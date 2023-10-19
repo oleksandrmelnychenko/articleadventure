@@ -27,11 +27,11 @@ namespace MVC.ArticleAdventure.Extensions
             if (TokenIsExpired(context))
             {
                
-                var refreshToken = context.User.FindFirst("RefreshToken");
+                var refreshToken = context.Request.Cookies[CookiesPath.REFRESH_TOKEN];
 
                 if (refreshToken != null)
                 {
-                    ExecutionResult<CompleteAccessToken> response = await _authenticationService.RefreshToken(refreshToken.Value);
+                    ExecutionResult<CompleteAccessToken> response = await _authenticationService.RefreshToken(refreshToken);
                     if (response.IsSuccess)
                     {
                         var user = await _authenticationService.GetProfile(response.Data.UserNetUid);

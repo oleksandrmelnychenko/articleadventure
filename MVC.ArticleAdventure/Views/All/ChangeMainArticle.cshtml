@@ -1,5 +1,5 @@
 ﻿@model domain.ArticleAdventure.Models.ChangeMainArticleModel
-<div class="article_change">
+@*<div class="article_change">
     <div class="meta_row_all_buttons">
         @foreach (var mainTag in Model.MainTags)
         {
@@ -7,11 +7,11 @@
             {
                 if (subTags.IsSelected)
                 {
-                    <button style="background-color:#af4444" onclick="location.href='@Url.Action("CancelChangeLocalSupTag", "All",new {RemoveSupTagsNetUid = subTags.NetUid})'">@subTags.Name</button>
+                    <button style="background-color:#af4444">@subTags.Name</button>
                 }
                 else
                 {
-                    <button onclick="location.href='@Url.Action("IsSelectChangeLocalSupTag", "All",new {IsSelectSupTagsNetUid = subTags.NetUid})'">@subTags.Name</button>
+                    <button >@subTags.Name</button>
                 }
             }
         }
@@ -54,14 +54,13 @@
                     </div>
                     <div style="text-align: center;">
                         <div>
-                            <button value="Change" type="button" onclick="location.href='@Url.Action("ChangeSupArticle",new {ChangeNetUidArticle =article.NetUid})'">Change</button>
-                            <button value="Delete " type="button" onclick="location.href='@Url.Action("RemoveSupArticle", "All",new {RemoveNetUidArticle =article.NetUid})'">Delete</button>
+                           
                         </div>
                     </div>
                 </div>
             }
             <div>
-                <button type="button" onclick="location.href='@Url.Action("AddSupArticle","New",new {netUidMainArticle = Model.MainArticle.NetUid})'">Add Sup Article</button>
+                <button type="button" >Add Sup Article</button>
 
             </div>
 
@@ -94,5 +93,106 @@
         <button asp-controller="All" asp-action="ChangeMainArticle" formmethod="post" type="submit" value="Save">Save Changes</button>
     </form>
 
+</div>*@
+
+<div class="main_article_change">
+    <div class="buttons_tags">
+        <div class="item_tags">
+            <ol>
+                @foreach (var mainTag in Model.MainTags)
+                {
+                    @foreach (var tag in mainTag.SubTags)
+                    {
+
+                        @if (tag.IsSelected)
+                        {
+                            <li class="liCansel" onclick="location.href='@Url.Action("CancelChangeLocalSupTag", "All",new {RemoveSupTagsNetUid = tag.NetUid})'">
+                                <span>#</span>
+                                <span>@tag.Name</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li onclick="location.href='@Url.Action("IsSelectChangeLocalSupTag", "All",new {IsSelectSupTagsNetUid = tag.NetUid})'">
+                                <span style="color:@tag.Color;">#</span>
+                                <span>@tag.Name</span>
+                            </li>
+                        }
+
+                    }
+                }
+            </ol>
+        </div>
+    </div>
+    <form asp-controller="New" enctype="multipart/form-data" class="main_panel">
+        <div class="meta_row">
+            <div class="inputs">
+                <div class="input">
+                    <input type="text" placeholder="Title" asp-for="MainArticle.Title" />
+                    <span asp-validation-for="@Model.MainArticle.Title" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="meta_row">
+            <div class="inputs">
+                <div class="input">
+                    <input type="text" placeholder="Description" asp-for="MainArticle.Description" />
+                </div>
+            </div>
+        </div>
+        <div class="articles_panel">
+            <div class="archicle_info_item">
+                <div class="sectionsCount">
+                    <div>@Model.MainArticle.Articles.Count() sections</div>
+                </div>
+                <ul class="articles_list">
+                    @foreach (var article in Model.MainArticle.Articles)
+                    {
+                        <input type="hidden" asp-for="@article.Body" />
+                        <li>
+                            <div>
+                                <div class="t">
+                                    @article.Title
+                                </div>
+                                <div class="d">@article.Description</div>
+                            </div>
+                            <div class="price_cell">
+                                $  @article.Price
+                                <div>
+                                    <div>
+                                        <button value="Change" type="button" onclick="location.href='@Url.Action("ChangeSupArticle",new {ChangeNetUidArticle =article.NetUid})'">Change</button>
+                                        <button value="Delete " type="button" onclick="location.href='@Url.Action("RemoveSupArticle", "All",new {RemoveNetUidArticle =article.NetUid})'">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                    }
+                </ul>
+            </div>
+            <div>
+                <button class="continueReading_btn" type="button" onclick="location.href='@Url.Action("AddSupArticle","New",new {netUidMainArticle = Model.MainArticle.NetUid})'">Add Sup Article</button>
+            </div>
+            <div class="custom-file-upload">
+                <label for="file-upload" class="custom-file-label">Choose File</label>
+                <input type="file" id="file-upload" class="input-file" asp-for="@Model.PhotoMainArticle" enctype="multipart/form-data" multiple accept=".jpg,.jpeg,.png" />
+            </div>
+            <div class="meta_row">
+                <div class="inputs">
+                    <div class="input">
+                        <input type="text" placeholder="Infromation Article" asp-for="MainArticle.InfromationArticle" />
+                    </div>
+                </div>
+            </div>
+            <div class="meta_row">
+                <div class="inputs">
+                    <div class="input">
+                        <input type="text" placeholder="$ Price " asp-for="MainArticle.Price" />
+                    </div>
+                </div>
+            </div>
+            <button asp-controller="All" asp-action="ChangeMainArticle" class="continueReading_btn" formmethod="post" type="submit" value="Save">Save Changes</button>
+
+    </form>
 </div>
 
