@@ -8,7 +8,6 @@
             <div>
                 <h1>User: @Model.UserName</h1>
             </div>
-
         </div>
         <div class="information_account w1140">
             <div class="avatar">@Context.Request.Cookies[CookiesPath.USER_NAME]?.Substring(0, 1)</div>
@@ -24,7 +23,6 @@
     </div>
 }
 <div class="profile_info_page">
-
     <div class="profile_container">
         @if (Model.Profile.Role == Roles.Admin)
         {
@@ -37,12 +35,9 @@
                     <div class="item_body">
                         <p>
                             @Html.Raw(Model.InformationAccount)
-
                         </p>
                     </div>
-
                 </div>
-
                 <div class="articles_list_container">
                     <h3>My Courses (@Model.Profile.mainArticles.Count())</h3>
                     @foreach (var Article in Model.Profile.mainArticles)
@@ -50,7 +45,6 @@
 
                         <article class="article_item">
                             <div class="item_container">
-
                                 <div class="item_header">
                                     <div class="img">
                                         <img src="@Article.GetImageUrl()" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
@@ -62,13 +56,10 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="item_body">
                                     <p>
                                         @Article.Description
                                     </p>
-
-
                                     <div class="item_tags">
                                         <ol>
 
@@ -93,11 +84,9 @@
                                     $<span>@Article.Price</span>
                                 </a>
                             </div>
-
                         </article>
                     }
                 </div>
-
             </div>
         }
         else
@@ -164,7 +153,6 @@
         <div class="list_pay">
             <div class="archicle_info_item sticky price_item_container">
                 <div class="controls">
-
                     <img src="@Model.Profile.GetLinkPictureUser()" class="image_block" />
                     <h4>
                         <span> Follow Me!</span>
@@ -211,11 +199,8 @@
                                         </svg>
                             </a>
                         }
-                        
                     </div>
-
                 </div>
-
             </div>
         </div>
     }

@@ -4,8 +4,6 @@
 {
     <div class="container_content w1260">
         <form asp-controller="Stripe" class="basket_page">
-            @*<h1>Basket</h1>*@
-
             <div class="basket_cleared">
                 <div class="basket_box">
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -43,7 +41,6 @@
 	C230.4,177.493,228.693,179.2,226.133,179.2z M243.2,128H140.8c-2.56,0-4.267-1.707-4.267-4.267c0-2.56,1.707-4.267,4.267-4.267
 	h102.4c2.56,0,4.267,1.707,4.267,4.267C247.467,126.293,245.76,128,243.2,128z" />
                             </svg>
-
                     <div class="bask_text">Favorite Article is empty. Con tinue searching to find the article you are looking for.</div>
                     <a asp-controller="Home" asp-action="Index" type="button" type="button">Continue searching</a>
                 </div>
@@ -57,10 +54,8 @@ else
         <div class="articles_list_container">
             @foreach (var Article in Model.favoriteArticles)
             {
-
                 <article class="article_item">
                     <div class="item_container">
-
                         <div class="item_header">
                             <div class="img">
                                 <img src="@Article.MainArticle.GetImageUrl()" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
@@ -75,18 +70,15 @@ else
                                 <svg xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24"><path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z" /></svg>
                             </button>
                         </div>
-
                         <div class="item_body">
                             <p>
                                 @Article.MainArticle.Description
                             </p>
                         </div>
                     </div>
-
                     <a href="~/InfoArticle?NetUidArticle={@Article.MainArticle.NetUid}" class="continueReading_btn">
                         Continue Reading
                     </a>
-
                     <div class="priceBox_style">
                         <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_price">
                             $ <span>@Article.MainArticle.Price</span>

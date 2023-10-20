@@ -2,10 +2,8 @@
 @inject IMainArticleService serviceArticle;
 
 @{
-
     var articles = await serviceArticle.GetAllFilterDateTimeArticles();
 }
-
 <footer style="box-shadow: 0 0 10px -6px #222; background-color: #333;color: #d1d7dc;">
     <div style="border-left: 0;border-right: 0;">
         <div style="display:flex">
@@ -25,7 +23,6 @@
                 {
                     <div style="margin-bottom: 20px;">
                         <div>
-
                             <div style="display:flex;">
                                 <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
                                     <img src="@Article.GetImageUrl()" style="    width: 70px; height: 70px; box-shadow: 0 0 1px red; margin-right: 20px;" />
@@ -42,7 +39,6 @@
                     </div>
                 }
             </div>
-            <div></div>
         </div>
     </div>
 </footer>

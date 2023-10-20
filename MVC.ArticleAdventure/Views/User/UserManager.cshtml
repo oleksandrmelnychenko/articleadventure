@@ -24,12 +24,9 @@
                 {
                     <td><button onclick="location.href='@Url.Action("SelectUser", "User",new {selectUser = i})'">Select</button></td>
                 }
-
             </tr>
         }
     </table>
-
-
     <div class="modal_wrapper">
         <input type="checkbox" id="isOpenModal" />
         <div class="modal_container">
@@ -46,11 +43,9 @@
                         <input type="password" placeholder="Password" asp-for="Password" />
                         <label for="password">ConfirmPassword:</label>
                         <input type="password" placeholder="ConfirmNewPassword" asp-for="ConfirmPassword" />
-
                         <div class="button_float_wrapper">
                             <button formmethod="post" type="submit">Save changes</button>
                         </div>
-
                     </div>
                 </form>
             </div>
@@ -75,30 +70,25 @@
                             <input type="password" placeholder="Password" asp-for="Password" />
                             <label for="password">ConfirmPassword:</label>
                             <input type="password" placeholder="ConfirmNewPassword" asp-for="ConfirmPassword" />
-
                             <div class="button_float_wrapper">
                                 <button formmethod="post" type="submit">Save changes</button>
                             </div>
-
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     }
-
 </div>
 <footer class="footer_user_manager_panel">
     <div class="center_panel">
         <div class="label_panel">
             <label for="isOpenModal">Create</label>
         </div>
-
         @if (Model.SelectedRow == -1)
         {
             <div class="label_panel_select">
                 <label disabled>Edit</label>
-
             </div>
             <div class="label_panel_select">
                 <label disabled>Delete</label>

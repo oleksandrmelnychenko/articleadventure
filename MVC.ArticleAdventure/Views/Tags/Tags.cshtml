@@ -3,7 +3,6 @@
     <div class="tags_row tag_group_item">
         <form asp-controller="Tags">
             <input type="hidden" asp-for="AddMainTag.NetUid" />
-          
             @if (Model.SelectMainTag != null)
             {
                 <div>Select Main Tag : @Model.SelectMainTag.Name</div>
@@ -13,7 +12,6 @@
                     <input type="text" placeholder="Name Main Tag" asp-for="AddMainTag.Name" />
                     <span asp-validation-for="@Model.AddMainTag.Name" class="text-danger"></span>
                 </div>
-
                 <div class="inputColor">
                     <input type="color" asp-for="AddMainTag.Color" />
                 </div>
@@ -29,7 +27,6 @@
                 }
             </div>
         </form>
-
         <div class="item_tags mainTags_list">
             <ol>
                 @foreach (var MainTag in Model.MainTags)
@@ -57,7 +54,6 @@
             </ol>
         </div>
     </div>
-
     <div class="tags_row tag_group_item">
         <form asp-controller="Tags">
             <input type="hidden" asp-for="AddSupTag.NetUid" />
@@ -85,9 +81,7 @@
         <div class="item_tags mainTags_list">
             @foreach (var MainTag in Model.MainTags)
             {
-
                 <h2>@MainTag.Name</h2>
-
                 <ol>
                     @foreach (var subTag in MainTag.SubTags)
                     {

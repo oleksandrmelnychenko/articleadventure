@@ -13,15 +13,12 @@
                 Here you can change your account settings and password.
             </p>
         </div>
-
         <div class="content_body">
             <div class="t">Email:</div>
             <div class="input_email_wrapper">
                 <input type="text" disabled placeholder="Your email: @Context.Request.Cookies[CookiesPath.EMAIL] " />
                 <label for="isOpenModal">Edit</label>
             </div>
-
-
             <div class="line"></div>
             <div class="t">Password:</div>
             <form asp-action="AccountSecurity" style="display: grid;">

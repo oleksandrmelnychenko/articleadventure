@@ -1,6 +1,5 @@
 ﻿@model domain.ArticleAdventure.Models.GetInformationArticleModel
 
-
 <div class="container_content w960">
     <div class="articles_list_container">
         @foreach (var Article in Model.MainArticle.Articles)
@@ -36,7 +35,6 @@
                 </div>
             </article>
         }
-
         @foreach (var article in Model.NotBuyArticle)
         {
             <article class="article_item">
@@ -63,7 +61,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="priceBox_style">
                     <a href="/" style="pointer-events:none" class="continueReading_price">
                         $ <span>@article.Price</span>

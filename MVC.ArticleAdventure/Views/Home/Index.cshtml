@@ -39,10 +39,8 @@
     <div class="articles_list_container">
         @foreach (var Article in Model.mainArticles)
         {
-
             <article class="article_item">
                 <div class="item_container">
-
                     <div class="item_header">
                         <div class="img">
                             <img src="@Article.GetImageUrl()" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
@@ -57,13 +55,10 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="item_body">
                         <p>
                             @Article.Description
                         </p>
-
-
                         <div class="item_tags">
                             <ol>
 
@@ -98,12 +93,10 @@
                         $<span>@Article.Price</span>
                     </a>
                 </div>
-
             </article>
         }
     </div>
     <div class="list_pay" style="margin-left: 20px;">
-
         <div class="archicle_info_item sticky price_item_container">
             <div class="controls">
                 <h4 style="display:flex;font-size: 21px;">
@@ -119,7 +112,6 @@
                 </h4>
                 @foreach (var Article in Model.mainArticlesDateTime.Take(4))
                 {
-
                     <div style="margin-bottom: 20px;">
                         <div>
                             <div style="display:flex;">

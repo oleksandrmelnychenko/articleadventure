@@ -1,99 +1,5 @@
 ﻿@model domain.ArticleAdventure.Models.ChangeMainArticleModel
-@*<div class="article_change">
-    <div class="meta_row_all_buttons">
-        @foreach (var mainTag in Model.MainTags)
-        {
-            foreach (var subTags in mainTag.SubTags)
-            {
-                if (subTags.IsSelected)
-                {
-                    <button style="background-color:#af4444">@subTags.Name</button>
-                }
-                else
-                {
-                    <button >@subTags.Name</button>
-                }
-            }
-        }
-    </div>
-    <form asp-controller="New" enctype="multipart/form-data">
-        <div class="meta_row">
-            <div class="inputs" style="width:100%">
-                <div class="input" style="width:100%">
-                    <input type="text" placeholder="Title" asp-for="MainArticle.Title" />
-                </div>
-            </div>
 
-
-        </div>
-        <div class="meta_row">
-            <div class="inputs" style="width:100%">
-                <div class="input" style="width:100%">
-                    <input type="text" placeholder="Description" asp-for="MainArticle.Description" />
-                </div>
-            </div>
-        </div>
-
-        <div>
-            @foreach (var article in Model.MainArticle.Articles)
-            {
-                <input type="hidden" asp-for="@article.Body" />
-                <div style="width: calc(100% - 320px); height: 150px;background-color: #fff;margin: 10px 0px 10px 0px;">
-                    <div style=" display:flex;height: 75%;">
-                        <div style="width:100%;">
-                            <div style="font-size:23px">@article.Title</div>
-                            <div style="font-size:18px">@article.Description</div>
-                        </div>
-                        <div class="meta_row" style="align-self: center; width:20%">
-                            <div class="inputs" style="width: 90%;">
-                                <div class="input" style="width:100%">
-                                    <div style="font-size:18px">@article.Price $</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div>
-                           
-                        </div>
-                    </div>
-                </div>
-            }
-            <div>
-                <button type="button" >Add Sup Article</button>
-
-            </div>
-
-        </div>
-        <div style="display:flex">
-            <input type="file" asp-for="PhotoMainArticle"
-                   enctype="multipart/form-data" multiple accept=".jpg,.jpeg,.png" />
-        </div>
-        @if (Model.MainArticle.ImageUrl!= null)
-        {
-            <div>
-                <img src="@Model.MainArticle.GetImageUrl()" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
-            </div>
-        }
-        
-        <div class="meta_row">
-            <div class="inputs" style="width:100%">
-                <div class="input" style="width:100%;">
-                    <input type="text" placeholder="Infromation Article" asp-for="MainArticle.InfromationArticle" />
-                </div>
-            </div>
-        </div>
-        <div class="meta_row">
-            <div class="inputs" style="width:100%">
-                <div class="input" style="width:100%">
-                    <input type="text" placeholder="Price $" asp-for="MainArticle.Price" />
-                </div>
-            </div>
-        </div>
-        <button asp-controller="All" asp-action="ChangeMainArticle" formmethod="post" type="submit" value="Save">Save Changes</button>
-    </form>
-
-</div>*@
 
 <div class="main_article_change">
     <div class="buttons_tags">
@@ -103,7 +9,6 @@
                 {
                     @foreach (var tag in mainTag.SubTags)
                     {
-
                         @if (tag.IsSelected)
                         {
                             <li class="liCansel" onclick="location.href='@Url.Action("CancelChangeLocalSupTag", "All",new {RemoveSupTagsNetUid = tag.NetUid})'">
@@ -118,7 +23,6 @@
                                 <span>@tag.Name</span>
                             </li>
                         }
-
                     }
                 }
             </ol>
@@ -166,7 +70,6 @@
                                 </div>
                             </div>
                         </li>
-
                     }
                 </ul>
             </div>

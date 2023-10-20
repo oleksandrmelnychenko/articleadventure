@@ -6,15 +6,12 @@
 <div class="sideProfile">
     <div class="avatar">@Context.Request.Cookies[CookiesPath.USER_NAME]?.Substring(0, 1)</div>
     <div class="user_name">@Context.Request.Cookies[CookiesPath.USER_NAME]</div>
-
     <div class="line"></div>
-
     <ul>
         <li><a asp-controller="User" asp-action="Profile">View Profile</a></li>
         <li> <a asp-controller="User" asp-action="EditProfile">Edit Profile</a></li>
         <li><a asp-controller="User" asp-action="AccountSecurity">AccountSecurity</a></li>
     </ul>
-
     <div class="line"></div>
     <ul>
         <li> <a asp-controller="New" asp-action="LogOutAccount">Log Out</a></li>
