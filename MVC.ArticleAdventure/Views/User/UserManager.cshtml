@@ -1,32 +1,40 @@
 ﻿@model domain.ArticleAdventure.Models.UserManagerModel
 
+<div class="user_manager_page">
+@Html.Partial("_SideBarAdminPanel")
+
 <div class="table_user_manager">
-    <table>
-        <tr class="uppercase_panel">
-            <th>Create Date</th>
-            <th>User Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Select Profile</th>
-        </tr>
-        @for (int i = 0; i < Model.UserProfiles.Count; i++)
-        {
-            <tr>
-                <td>@Model.UserProfiles[i].Created</td>
-                <td>@Model.UserProfiles[i].UserName</td>
-                <td>@Model.UserProfiles[i].Email</td>
-                <td>@Model.UserProfiles[i].Role</td>
-                @if (Model.SelectedRow == i)
+    <div class="table_user">
+        <h4>User Manager</h4>
+            <table>
+                <tr class="uppercase_panel">
+                    <th>#</th>
+                    <th>Create Date</th>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Select Profile</th>
+                </tr>
+                @for (int i = 0; i < Model.UserProfiles.Count; i++)
                 {
-                    <td><button onclick="location.href='@Url.Action("SelectUser", "User",new {selectUser = i})'">Selected</button></td>
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@Model.UserProfiles[i].Created</td>
+                        <td>@Model.UserProfiles[i].UserName</td>
+                        <td>@Model.UserProfiles[i].Email</td>
+                        <td>@Model.UserProfiles[i].Role</td>
+                        @if (Model.SelectedRow == i)
+                        {
+                            <td class="td_button"><button onclick="location.href='@Url.Action("SelectUser", "User",new {selectUser = i})'">Selected</button></td>
+                        }
+                        else
+                        {
+                            <td class="td_button"><button onclick="location.href='@Url.Action("SelectUser", "User",new {selectUser = i})'">Select</button></td>
+                        }
+                    </tr>
                 }
-                else
-                {
-                    <td><button onclick="location.href='@Url.Action("SelectUser", "User",new {selectUser = i})'">Select</button></td>
-                }
-            </tr>
-        }
-    </table>
+            </table>
+    </div>
     <div class="modal_wrapper">
         <input type="checkbox" id="isOpenModal" />
         <div class="modal_container">
@@ -80,6 +88,8 @@
         </div>
     }
 </div>
+</div>
+
 <footer class="footer_user_manager_panel">
     <div class="center_panel">
         <div class="label_panel">
@@ -105,5 +115,4 @@
         }
     </div>
 </footer>
-
 

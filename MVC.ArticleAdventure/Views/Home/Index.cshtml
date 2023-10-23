@@ -1,107 +1,109 @@
 ﻿@using MVC.ArticleAdventure.Helpers;
 @model domain.ArticleAdventure.Models.AllArticlesModel
 <div class="container_content" style="display:flex;">
-    <div class="list_pay" style="margin-right: 20px;">
-        <div class="archicle_info_item sticky price_item_container" style="padding: 50px 0px;">
-            <div class="controls" style="width: 320px;">
-                @foreach (var MainTag in Model.ArticleTags)
-                {
-                    <div>
-                        <div style="display:flex;">
-                            <div style="background:@MainTag.Color; width: 5px; height: auto;"></div>
-                            <h5 style="font-size: 24px; margin-left: 20px;">@MainTag.Name</h5>
-                        </div>
-                        @foreach (var SubTag in MainTag.SubTags)
-                        {
+    <div class="list_pay_tags">
+        <div class="archicle_info">
+            <div class="controls" >
+                <ul>
 
-                            <li style="list-style: none; display:flex; margin-left: 40px;padding: 5px 0px;">
-                                @if (SubTag.IsSelected)
-                                {
-                                    <span style="margin-left: 5px;">
+                    @foreach (var MainTag in Model.ArticleTags)
+                    {
+                        <li class="control">
+                            <div class="main_tag">
+                                <div class="border_left" style="background:@MainTag.Color;"></div>
+                                <h5>@MainTag.Name</h5>
+                            </div>
+                            @foreach (var SubTag in MainTag.SubTags)
+                            {
+
+                            <li class="sup_controls">
+                                    @if (SubTag.IsSelected)
+                                    {
+                                    
                                         <input type="checkbox" value="true" onclick="location.href='@Url.Action("RemoveFilterlSupTag", "All",new {RemoveSupTagsNetUid = SubTag.NetUid})'" checked />
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span style="margin-left: 5px;">
+                                    }
+                                    else
+                                    {
                                         <input type="checkbox" value="true" onclick="location.href='@Url.Action("IsSelectFilterSupTag", "All",new {IsSelectSupTagsNetUid = SubTag.NetUid})'" />
-                                    </span>
-                                }
-                                <span style="color:@SubTag.Color;padding-left: 8px;font-size: 14px;">#</span>
-                                <span style="padding-right: 8px;font-size: 14px;">@SubTag.Name</span>
+                                    }
+                                <span style="color:@SubTag.Color;">#</span>
+                                <span>@SubTag.Name</span>
                             </li>
-                        }
-                    </div>
-                }
-            </div>
+                            }
+                        </li>
+
+                    }
+            </ul>
+
         </div>
     </div>
-    <div class="articles_list_container">
+</div>
+<div class="articles_list_container">
         @foreach (var Article in Model.mainArticles)
         {
-            <article class="article_item">
-                <div class="item_container">
-                    <div class="item_header">
-                        <div class="img">
-                            <img src="@Article.GetImageUrl()" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
-                        </div>
-                        <div class="title_container">
-                            <div class="title">
-                                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}"> @Article.Title</a>
+        <article class="article_item">
+            <div class="item_container">
+                <div class="item_header">
+                    <div class="img">
+                        <img src="@Article.GetImageUrl()" style="    width: 120px; height: 120px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                    </div>
+                    <div class="title_container">
+                        <div class="title">
+                            <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}"> @Article.Title</a>
 
-                            </div>
-                            <div class="created">
+                        </div>
+                        <div class="created">
                                 @Article.Created
-                            </div>
                         </div>
                     </div>
-                    <div class="item_body">
-                        <p>
+                </div>
+                <div class="item_body">
+                    <p>
                             @Article.Description
-                        </p>
-                        <div class="item_tags">
-                            <ol>
+                    </p>
+                    <div class="item_tags">
+                        <ol>
 
                                 @foreach (var tag in Article.ArticleTags)
                                 {
-                                    <li>
-                                        <span style="color:@tag.SupTag.Color;">#</span>
-                                        <span>@tag.SupTag.Name</span>
-                                    </li>
+                                <li>
+                                    <span style="color:@tag.SupTag.Color;">#</span>
+                                    <span>@tag.SupTag.Name</span>
+                                </li>
                                 }
-                            </ol>
-                        </div>
+                        </ol>
                     </div>
                 </div>
+            </div>
                 @if (UserRoleHelper.IsUserRole(User.Claims, Roles.Admin))
                 {
-                    <a href="~/ChangeMainArticle?netUidArticle={@Article.NetUid}" class="change_btn">
-                        Change Article
-                    </a>
-                }
-                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_btn">
-                    Continue Reading
+                <a href="~/ChangeMainArticle?netUidArticle={@Article.NetUid}" class="change_btn">
+                    Change Article
                 </a>
+                }
+            <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_btn">
+                Continue Reading
+            </a>
                 @if (UserRoleHelper.IsUserRole(User.Claims, Roles.Admin))
                 {
-                    <a href="~/RemoveMainArticle?netUidArticle={@Article.NetUid}" class="delete_btn">
-                        Delete Article
-                    </a>
+                <a href="~/RemoveMainArticle?netUidArticle={@Article.NetUid}" class="delete_btn">
+                    Delete Article
+                </a>
                 }
-                <div class="priceBox_style">
-                    <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_price">
-                        $<span>@Article.Price</span>
-                    </a>
-                </div>
-            </article>
+            <div class="priceBox_style">
+                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}" class="continueReading_price">
+                    $<span>@Article.Price</span>
+                </a>
+            </div>
+        </article>
         }
-    </div>
-    <div class="list_pay" style="margin-left: 20px;">
-        <div class="archicle_info_item sticky price_item_container">
-            <div class="controls">
-                <h4 style="display:flex;font-size: 21px;">
-                    <span>Recent posts</span>
-                    <div style=" height: 2px;
+</div>
+<div class="list_pay" style="margin-left: 20px;">
+    <div class="archicle_info_item sticky price_item_container">
+        <div class="controls">
+            <h4 style="display:flex;font-size: 21px;">
+                <span>Recent posts</span>
+                <div style=" height: 2px;
                          background:  var(--epcl-black-color);
                          content: '';
                          -webkit-box-flex: 1;
@@ -109,29 +111,29 @@
                          margin-left: 15px;
                          min-width: 30px;
                          align-self: center;"></div>
-                </h4>
+            </h4>
                 @foreach (var Article in Model.mainArticlesDateTime.Take(4))
                 {
-                    <div style="margin-bottom: 20px;">
-                        <div>
-                            <div style="display:flex;">
-                                <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
-                                    <img src="@Article.GetImageUrl()" style="    width: 70px; height: 70px; box-shadow: 0 0 1px red; margin-right: 20px;" />
-                                </a>
-                                <div>
-                                    <h4 style="font-size:15px;">@Article.Title</h4>
-                                    <div style="font-size:12px;" class="created">
+                <div style="margin-bottom: 20px;">
+                    <div>
+                        <div style="display:flex;">
+                            <a href="~/InfoArticle?NetUidArticle={@Article.NetUid}">
+                                <img src="@Article.GetImageUrl()" style="    width: 70px; height: 70px; box-shadow: 0 0 1px red; margin-right: 20px;" />
+                            </a>
+                            <div>
+                                <h4 style="font-size:15px;">@Article.Title</h4>
+                                <div style="font-size:12px;" class="created">
                                         @Article.Created
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
                 }
-            </div>
         </div>
-
     </div>
+
+</div>
 
 </div>
 @Html.Partial("_FooterPanel")

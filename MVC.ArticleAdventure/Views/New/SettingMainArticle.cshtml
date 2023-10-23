@@ -62,23 +62,19 @@
                     </div>
                 </div>
             </div>
-            <div class="archicle_info_item">
-                <h3>Sup Articles</h3>
-                @if (Model.MainArticle.Articles.Count() != 0)
-                {
+            @if (Model.MainArticle.Articles.Count() != 0)
+            {
+                <div class="archicle_info_item">
+                    <h3>Sup Articles</h3>
                     <div class="sectionsCount">
                         <div>@Model.MainArticle.Articles.Count() sections</div>
                     </div>
-                }
-
-                <ul class="articles_list">
-                    @if (Model.MainArticle.Articles.Count() != 0)
-                    {
+                    <ul >
                         @foreach (var article in Model.MainArticle.Articles)
                         {
                             <input type="hidden" asp-for="@article.Body" />
                             <li>
-                                <div>
+                                <div class="li_width">
                                     <div class="t">
                                         @article.Title
                                     </div>
@@ -86,30 +82,32 @@
                                 </div>
                                 <div class="price_cell">
                                     $ @article.Price
-                                    <div>
-                                        <div>
-                                            <button value="Change" type="button" onclick="location.href='@Url.Action("ChangeLocalSupArticle",new {ChangeIdArticle =article.Id})'">Change</button>
-                                            <button value="Delete " type="button" onclick="location.href='@Url.Action("RemoveLocalSupArticle",new {RemoveIdArticle =article.Id})'">Delete</button>
-                                        </div>
+                                    <div class="price_cell_flex">
+                                        <button class="change_button left-button" value="Change" type="button" onclick="location.href='@Url.Action("ChangeLocalSupArticle",new {ChangeIdArticle =article.Id})'">Change</button>
+                                        <button class="delete_button right-button" value="Delete " type="button" onclick="location.href='@Url.Action("RemoveLocalSupArticle",new {RemoveIdArticle =article.Id})'">Delete</button>
                                     </div>
                                 </div>
                             </li>
                         }
-                    }
-                    else
-                    {
-                        <div class="sup_article">
-                            <div class="sup_article_box">
-                                <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="50" height="50"><path fill="#bba8bff5" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,2a9.949,9.949,0,0,1,6.324,2.262L4.262,18.324A9.992,9.992,0,0,1,12,2Zm0,20a9.949,9.949,0,0,1-6.324-2.262L19.738,5.676A9.992,9.992,0,0,1,12,22Z" /></svg>
-                                <div class="bask_text">You have not created an article yet</div>
-                                <button class="continueReading_btn left-button" type="button" onclick="location.href='@Url.Action("AddNewSupArticle","New")'">Add Sup Article</button>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <div class="sup_article_clear">
+                    <div class="sup_article">
+                        <div class="sup_article_box">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="150" height="150"><path fill="#bba8bff5" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,2a9.949,9.949,0,0,1,6.324,2.262L4.262,18.324A9.992,9.992,0,0,1,12,2Zm0,20a9.949,9.949,0,0,1-6.324-2.262L19.738,5.676A9.992,9.992,0,0,1,12,22Z" /></svg>
+                            <div class="bask_text">You have not created an article yet</div>
+                            <button class="continueReading_btn left-button" type="button" onclick="location.href='@Url.Action("AddNewSupArticle","New")'">Add Sup Article</button>
 
-                            </div>
                         </div>
-                    }
-                </ul>
+                    </div>
+                </div>
+            }
+           
 
-            </div>
+          
             <div class="add_sup_article_button">
                 <button class="continueReading_btn left-button" type="button" onclick="location.href='@Url.Action("AddNewSupArticle","New")'">Add Sup Article</button>
                 <button class="continueReading_btn right-button" formaction="SettingMainArticle" formmethod="post" type="submit" value="Save">Create</button>
