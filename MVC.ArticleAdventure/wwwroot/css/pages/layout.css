@@ -218,7 +218,7 @@ header .user_menu_wrapper:hover .user_menu_container {
 }
 .body_container .container_content {
   /*width: 960px;*/
-  width: 82%;
+  width: 86%;
   margin: 0 auto;
   min-height: calc(100vh - 60px);
 }

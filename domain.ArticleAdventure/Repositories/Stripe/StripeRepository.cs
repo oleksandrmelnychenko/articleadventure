@@ -18,6 +18,13 @@ namespace domain.ArticleAdventure.Repositories.Stripe
         {
             _connection = connection;
         }
+         public long AddCustomer(StripeCustomer stripeCustomer) => 
+            _connection.Query<long>("INSERT INTO [stripeCustomers] " +
+           "([Name], [Email], [UserId], [Updated] ) " +
+           "VALUES " +
+           "(@Name, @Email, @UserId, GETUTCDATE());" +
+           "SELECT SCOPE_IDENTITY()", stripeCustomer
+           ).Single();
         public long AddPayment(StripePayment payment)
            => _connection.Query<long>("INSERT INTO [stripePayments] " +
            "([MainArticleId], [SupArticleId], [UserId], [ReceiptEmail] ,[Description] ,[Currency] ,[PaymentStatus] ,[Amount] ,[Updated] ) " +
@@ -209,6 +216,25 @@ namespace domain.ArticleAdventure.Repositories.Stripe
                     PaymentStatus = "paid"
                 });
 
+       
 
+        public StripeCustomer GetCustomer(long userId) => 
+            _connection.Query<StripeCustomer>("SELECT * FROM [stripeCustomers] AS Payment " +
+                "WHERE Payment.UserId = @UserId" ,
+                new
+                {
+                    UserId = userId,
+                }
+           ).SingleOrDefault();
+
+        public List<StripeCustomer> GetallCustomer() =>
+            _connection.Query<StripeCustomer>("SELECT * FROM [stripeCustomers] AS Payment " +
+                "WHERE Payment.Deleted = 0 "
+           ).ToList();
+
+        public List<StripePayment> GetAllPayment() =>
+            _connection.Query<StripePayment>("SELECT * FROM [stripePayments] AS Payment " +
+                 "WHERE Payment.Deleted = 0 "
+           ).ToList();
     }
 }

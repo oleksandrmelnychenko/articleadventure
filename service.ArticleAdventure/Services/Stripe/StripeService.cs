@@ -3,6 +3,7 @@ using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using domain.ArticleAdventure.Repositories.Identity.Contracts;
+using domain.ArticleAdventure.Repositories.Stripe;
 using domain.ArticleAdventure.Repositories.Stripe.Contracts;
 using service.ArticleAdventure.Services.Stripe.Contracts;
 using Stripe;
@@ -80,12 +81,7 @@ namespace service.ArticleAdventure.Services.Stripe
                     }
 
                 }
-                StripeCustomer stripeCustomer = new StripeCustomer
-                {
-                    UserId = userProfile.Id,
-                    Name = userProfile.UserName + userProfile?.SurName,
-                    Email = userProfile.Email,
-                };
+
 
                 var metaData = new Dictionary<string, string>()
                 {
@@ -93,8 +89,6 @@ namespace service.ArticleAdventure.Services.Stripe
                    { "IDMainArticle", mainArticle.Id.ToString() },
                    { "NetUidUser", userProfile.NetUid.ToString() }
                 };
-
-
 
                 for (int i = 0; i < mainArticle.Articles.Count; i++)
                 {
@@ -149,7 +143,7 @@ namespace service.ArticleAdventure.Services.Stripe
                 CustomerEmail = userEmail,
                 SuccessUrl = $"{ArticleAdventureFolderManager.GetClientPath()}/Stripe/{UrlSuccess}/sup?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
                 CancelUrl = $"{ArticleAdventureFolderManager.GetServerUrl()}/api/v1/stripe/checkout/failed",  // Checkout cancelled.
-                PaymentMethodTypes = new List<string> 
+                PaymentMethodTypes = new List<string>
                 {
                     "card"
                 },
@@ -167,13 +161,11 @@ namespace service.ArticleAdventure.Services.Stripe
                             Name = title,
                             Description = description
                         },
-
-
                     },
                     Quantity = 1,
                 },
             },
-                Mode = "payment" 
+                Mode = "payment"
             };
             return options;
         }
@@ -202,6 +194,7 @@ namespace service.ArticleAdventure.Services.Stripe
                 var stripeRepositoryFactory = _stripeRepositoryFactory.New(connection);
 
                 UserProfile userProfile = userProfileRepository.Get(Guid.Parse(NetUidUser));
+                await AddStripeCustomer(stripeRepositoryFactory, userProfile);
 
                 foreach (var idSupArticle in metaData.Values.ToList())
                 {
@@ -225,7 +218,6 @@ namespace service.ArticleAdventure.Services.Stripe
                 List<StripePayment> stripePayments = new List<StripePayment>();
                 List<MainArticle> mainArticles = new List<MainArticle>();
 
-
                 var sessionService = new SessionService();
                 Session session = sessionService.Get(sessionId);
                 var amountTotal = session.AmountTotal.Value;
@@ -248,6 +240,7 @@ namespace service.ArticleAdventure.Services.Stripe
                 var stripeRepositoryFactory = _stripeRepositoryFactory.New(connection);
 
                 UserProfile userProfile = userProfileRepository.Get(Guid.Parse(NetUidUser));
+                await AddStripeCustomer(stripeRepositoryFactory, userProfile);
 
                 foreach (var mainArticle in mainArticles)
                 {
@@ -308,15 +301,8 @@ namespace service.ArticleAdventure.Services.Stripe
                         Quantity = 1,
                     };
                     listSession.Add(sessionLineItemOptions);
-
-
                 }
-                StripeCustomer stripeCustomer = new StripeCustomer
-                {
-                    UserId = userProfile.Id,
-                    Name = userProfile.UserName + userProfile?.SurName,
-                    Email = userProfile.Email,
-                };
+
 
                 var metaData = new Dictionary<string, string>()
                 {
@@ -418,12 +404,6 @@ namespace service.ArticleAdventure.Services.Stripe
 
                 var payment = stripeRepository.GetPayment(supArticle.MainArticleId, supArticle.Id, userProfile.Id);
 
-                StripeCustomer stripeCustomer = new StripeCustomer
-                {
-                    UserId = userProfile.Id,
-                    Name = userProfile.UserName + userProfile?.SurName,
-                    Email = userProfile.Email,
-                };
 
                 var metaData = new Dictionary<string, string>()
                 {
@@ -432,8 +412,6 @@ namespace service.ArticleAdventure.Services.Stripe
                    { "IDMainArticle", supArticle.MainArticleId.ToString() },
                    { "NetUidUser", userProfile.NetUid.ToString() }
                 };
-
-
 
                 SessionCreateOptions options = SessionCreate(supArticle.Price, supArticle.Title, supArticle.Description, userEmail, metaData, "SuccessBuySup");
 
@@ -481,7 +459,6 @@ namespace service.ArticleAdventure.Services.Stripe
                 var sessionService = new SessionService();
                 Session session = sessionService.Get(sessionId);
 
-
                 var amountTotal = session.AmountTotal.Value;
                 var name = session.CustomerDetails.Name;
                 var customerEmail = session.CustomerDetails.Email;
@@ -497,15 +474,61 @@ namespace service.ArticleAdventure.Services.Stripe
                 var stripeRepositoryFactory = _stripeRepositoryFactory.New(connection);
 
                 UserProfile userProfile = userProfileRepository.Get(Guid.Parse(netUidUser));
-
+                await AddStripeCustomer(stripeRepositoryFactory, userProfile);
 
                 StripePayment stripePayment = stripeRepositoryFactory.GetPayment(long.Parse(mainArticleId), long.Parse(supArticleId), userProfile.Id);
 
                 stripeRepositoryFactory.SetStatusPayment(stripePayment.NetUid);
-
             }
         }
+        private async Task AddStripeCustomer(IStripeRepository stripeRepository, UserProfile userProfile)
+        {
+            var getCustomer = stripeRepository.GetCustomer(userProfile.Id);
+            if (getCustomer?.NetUid == null)
+            {
+                StripeCustomer stripeCustomer = new StripeCustomer
+                {
+                    UserId = userProfile.Id,
+                    Name = userProfile.UserName,
+                    Email = userProfile.Email,
+                };
 
+                var customerId = stripeRepository.AddCustomer(stripeCustomer);
 
+                CustomerCreateOptions customerCreateOptions = new CustomerCreateOptions
+                {
+                    Name = userProfile.UserName,
+                    Email = userProfile.Email,
+                };
+                CustomerService service = new CustomerService();
+                service.Create(customerCreateOptions);
+            }
+
+        }
+        public async Task<List<StripePayment>> GetAllPayment()
+        {
+            using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+            {
+                IUserProfileRepository userProfileRepository =
+                          _identityRepositoriesFactory.NewUserProfileRepository(connection);
+                var stripeRepository = _stripeRepositoryFactory.New(connection);
+                var payments = stripeRepository.GetAllPayment();
+                return payments;
+            }
+
+        }
+
+        public async Task<List<StripeCustomer>> GetAllCustomer()
+        {
+            using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+            {
+                IUserProfileRepository userProfileRepository =
+                          _identityRepositoriesFactory.NewUserProfileRepository(connection);
+                var stripeRepository = _stripeRepositoryFactory.New(connection);
+
+                List<StripeCustomer> customers = stripeRepository.GetallCustomer();
+                return customers;
+            }
+        }
     }
 }

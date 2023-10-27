@@ -35,6 +35,7 @@ namespace MVC.ArticleAdventure.Services
         public async Task<ExecutionResult<CheckoutOrderResponse>> BuyStripeSupArticle(AuthorArticle mainArticle, string Email, string tokenUser)
         {
             var result = new ExecutionResult<CheckoutOrderResponse>();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenUser);
 
             var response = await _httpClient.PostAsJsonAsync($"{PathStripe.BUY_NOW_STRIPE_SUP_ARTICLE}?emailUser={Email}", mainArticle);
             try
@@ -129,6 +130,65 @@ namespace MVC.ArticleAdventure.Services
         {
             var response = await _httpClient.GetAsync($"{PathStripe.CHECK_SUCCESS_CART}?sessionId={sessionId}");
         }
+
+        public async Task<ExecutionResult<List<StripePayment>>> GetStripePayments(string tokenUser)
+        {
+            var result = new ExecutionResult<List<StripePayment>>();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenUser);
+            var response = await _httpClient.GetAsync($"{PathStripe.GET_ALL_STRIPE_PAYMENTS}");
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<StripePayment>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
+        }
+       
+
+        public async Task<ExecutionResult<List<StripeCustomer>>> GetStripeCustomers(string tokenUser)
+        {
+            var result = new ExecutionResult<List<StripeCustomer>>();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenUser);
+            var response = await _httpClient.GetAsync($"{PathStripe.GET_ALL_STRIPE_CUSTOMERS}");
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<StripeCustomer>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
+        }
+
+       
     }
 }
  

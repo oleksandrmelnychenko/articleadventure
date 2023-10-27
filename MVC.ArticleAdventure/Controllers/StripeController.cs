@@ -1,4 +1,5 @@
-﻿using domain.ArticleAdventure.Entities;
+﻿using common.ArticleAdventure.ResponceBuilder;
+using domain.ArticleAdventure.Entities;
 using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Mvc;
 using MVC.ArticleAdventure.Helpers;
 using MVC.ArticleAdventure.Services.Contract;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace MVC.ArticleAdventure.Controllers
@@ -40,6 +42,19 @@ namespace MVC.ArticleAdventure.Controllers
             return View(basketModel);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> StripeStatistics()
+        {
+            var token = Request.Cookies[CookiesPath.ACCESS_TOKEN];
+
+            ExecutionResult<List<StripePayment>> payments = await _stripeService.GetStripePayments(token);
+            ExecutionResult<List<StripeCustomer>> customers = await _stripeService.GetStripeCustomers(token);
+            StripeStatistics stripeStatistics = new StripeStatistics { stripePayments = payments.Data, stripeCustomer = customers.Data };
+            return View(stripeStatistics);
+        }
+
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Basket(BasketModel basketModel)
@@ -55,7 +70,6 @@ namespace MVC.ArticleAdventure.Controllers
 
         [HttpGet]
         [Authorize]
-
         public async Task<IActionResult> RemoveFavoriteArticle(Guid netUidArticle)
         {
             var listAuthorArticle = SessionExtensionsMVC.Get<List<MainArticle>>(HttpContext.Session, SessionStoragePath.CART_ARTICLE);
@@ -122,13 +136,13 @@ namespace MVC.ArticleAdventure.Controllers
 
             var orderInfo = await _stripeService.BuyStripeSupArticle(article.Data, email, token);
             BuyNowModel buyNowModel = new BuyNowModel { orderResponse = orderInfo.Data };
-            return View("BuyNow",buyNowModel);
+            return View("BuyNow", buyNowModel);
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> SuccessBuy(string sessionId)
         {
-             await _stripeService.CheckoutSuccess(sessionId);
+            await _stripeService.CheckoutSuccess(sessionId);
             HttpContext.Session.Remove(SessionStoragePath.CART_ARTICLE);
 
             return View();

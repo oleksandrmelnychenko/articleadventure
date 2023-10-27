@@ -17,6 +17,8 @@ namespace common.ArticleAdventure.WebApi.RoutingConfiguration.Maps
         public const string CHECKOUT_SUCCESS_CART_ARTICLE = "checkout/success/cart";
 
         public const string CHECKOUT_FAILED = "checkout/failed";
+        public const string GET_ALL_STRIPE_PAYMENTS = "get/all/payments";
+        public const string GET_ALL_STRIPE_CUSTOMERS = "get/all/customers";
 
         public const string CHECK_PAYMENTS_HAVE_USER = "check/payments/user";
 

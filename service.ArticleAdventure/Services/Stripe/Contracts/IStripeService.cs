@@ -11,6 +11,8 @@ namespace service.ArticleAdventure.Services.Stripe.Contracts
     {
 
         Task<List<StripePayment>> CheckPaymentsHaveUser(string userMail);
+        Task<List<StripePayment>> GetAllPayment();
+        Task<List<StripeCustomer>> GetAllCustomer();
         Task<CheckoutOrderResponse> CheckOutBuyNowMainArticle(MainArticle mainArticle,string userEmail);
         Task<CheckoutOrderResponse> CheckOutBuyCartMainArticle(List<MainArticle> mainArticle,string userEmail);
         Task<CheckoutOrderResponse> CheckOutBuyNowSupArticle(AuthorArticle mainArticle,string userEmail);

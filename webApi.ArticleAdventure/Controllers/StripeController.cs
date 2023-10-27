@@ -8,6 +8,7 @@ using System.Net;
 using domain.ArticleAdventure.Helpers;
 using common.ArticleAdventure.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using common.ArticleAdventure.IdentityConfiguration;
 
 namespace webApi.ArticleAdventure.Controllers
 {
@@ -139,6 +140,40 @@ namespace webApi.ArticleAdventure.Controllers
             try
             {
                 var payments = await _stripeService.CheckPaymentsHaveUser(userMail);
+                return Ok(SuccessResponseBody(payments, ControllerMessageConstants.StripeMessage.CheckPaymentsHaveUser));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = IdentityRoles.Administrator)]
+        [AssignActionRoute(StripeSegments.GET_ALL_STRIPE_PAYMENTS)]
+        public async Task<IActionResult> GetAllPayments()
+        {
+            try
+            {
+                var payments = await _stripeService.GetAllPayment();
+                return Ok(SuccessResponseBody(payments, ControllerMessageConstants.StripeMessage.CheckPaymentsHaveUser));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = IdentityRoles.Administrator)]
+        [AssignActionRoute(StripeSegments.GET_ALL_STRIPE_CUSTOMERS)]
+        public async Task<IActionResult> GetAllCustomers()
+        {
+            try
+            {
+                var payments = await _stripeService.GetAllCustomer();
                 return Ok(SuccessResponseBody(payments, ControllerMessageConstants.StripeMessage.CheckPaymentsHaveUser));
             }
             catch (Exception exc)
