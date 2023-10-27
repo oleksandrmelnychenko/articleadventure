@@ -25,6 +25,7 @@
 
 .article_item,
 .archicle_info_item,
+.archicle_info_items,
 .tag_group_item,
 .basket_page,
 .success_buy_page,
@@ -577,7 +578,149 @@
         }
     }
 }
+.archicle_info_items {
+    // display: flex;
+    ul.articles_list {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
 
+        li {
+            padding: 10px 220px 10px 20px;
+            //box-shadow: 0 0 1px red;
+            position: relative;
+
+            .t {
+                color: #222;
+                font-weight: 600;
+            }
+
+            .d {
+                //
+            }
+
+            &:before {
+                content: '';
+                @include position_absolute(18px,auto,auto,0);
+                width: 6px;
+                height: 6px;
+                background-color: var(--epcl-titles-color);
+                border-radius: 50%;
+            }
+
+            .price_cell {
+                @include position_absolute(0,0,auto,auto);
+                width: 200px;
+                padding-left: 20px;
+                font-size: 16px;
+                text-align: right;
+                font-weight: 600;
+
+                button {
+                    display: inline;
+                    margin: 6px 0 0;
+                    padding: 0;
+                    background-color: transparent;
+                    box-shadow: none;
+                    border: 1px solid var(--epcl-black-color);
+                    //text-decoration: underline;
+                    color: var(--epcl-black-color);
+                    //
+                    font-weight: 600;
+                    font-size: 14px;
+                    padding: 0 10px;
+                    height: 29px;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: var(--epcl-black-color);
+                        color: #fff;
+                    }
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+
+                .t {
+                    //text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    &.sticky {
+        position: sticky;
+        top: 80px;
+    }
+
+    &.price_item_container {
+        .img {
+            height: 160px;
+            box-shadow: 0 0 1px red;
+            @include position_absolute(0,0,auto,0);
+            overflow: hidden;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .like_box {
+            width: 44px;
+            height: 44px;
+            background-color: transparent;
+            float: left;
+            transition: all .3s ease;
+            border: 1px solid var(--epcl-black-color);
+
+            svg {
+                fill: var( --epcl-secondary-color);
+                fill: var(--epcl-black-color);
+                width: 32px;
+                transition: all 234ms linear;
+            }
+
+
+            &.isActive,
+            &:hover {
+                cursor: pointer;
+
+                svg {
+                    fill: var( --epcl-black-color);
+                }
+            }
+        }
+
+        .price {
+            font-size: 38px;
+            line-height: 1.2;
+            margin-bottom: 17.6px;
+            font-weight: 700;
+            font-family: "Josefin Sans", sans-serif;
+            color: var(--epcl-titles-color);
+            margin-top: 150px;
+        }
+
+        .controls {
+            .archicle_btn {
+                margin-bottom: 10px;
+
+                &.withLike {
+                    width: calc(100% - 50px);
+                    float: left;
+                    margin-right: 6px;
+                }
+            }
+        }
+    }
+
+    .sectionsCount {
+        color: var(--epcl-text-color);
+        letter-spacing: 0.5px;
+        font-size: 16px;
+    }
+}
 .archicle_info_item {
     text-align-last: center;
     list-style-type: none;
