@@ -50,7 +50,8 @@ namespace MVC.ArticleAdventure.Controllers
 
             ExecutionResult<List<StripePayment>> payments = await _stripeService.GetStripePayments(token);
             ExecutionResult<List<StripeCustomer>> customers = await _stripeService.GetStripeCustomers(token);
-            StripeStatistics stripeStatistics = new StripeStatistics { stripePayments = payments.Data, stripeCustomer = customers.Data };
+            var stats = await _stripeService.GetStripeStatistics(30,token);
+            StripeStatisticsModel stripeStatistics = new StripeStatisticsModel { StripeStatistics = stats.Data};
             return View(stripeStatistics);
         }
 

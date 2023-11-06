@@ -5,6 +5,7 @@ using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using domain.ArticleAdventure.Repositories.Identity.Contracts;
 using domain.ArticleAdventure.Repositories.Stripe;
 using domain.ArticleAdventure.Repositories.Stripe.Contracts;
+using Microsoft.VisualBasic;
 using service.ArticleAdventure.Services.Stripe.Contracts;
 using Stripe;
 using Stripe.Checkout;
@@ -529,6 +530,61 @@ namespace service.ArticleAdventure.Services.Stripe
                 List<StripeCustomer> customers = stripeRepository.GetallCustomer();
                 return customers;
             }
+        }
+
+        public async Task<PaymentStatistics> GetStatisticsDays(int days)
+        {
+            using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+            {
+                IUserProfileRepository userProfileRepository =
+                          _identityRepositoriesFactory.NewUserProfileRepository(connection);
+                var stripeRepository = _stripeRepositoryFactory.New(connection);
+                PaymentStatistics paymentStatistics = new PaymentStatistics();
+
+
+
+
+                List<StripeCustomer> customers = stripeRepository.GetDaysCustomer(days);
+                List<StripePayment> payment = stripeRepository.GetDaysPayment(days);
+
+                paymentStatistics = DaysStats(days, paymentStatistics, customers, payment);
+
+                paymentStatistics.AllAmount = payment.Sum(x => x.Amount);
+                paymentStatistics.AllCustomers = customers.Count();
+                paymentStatistics.AllProducts = payment.Count();
+                return paymentStatistics;
+            }
+        }
+
+        private PaymentStatistics DaysStats(int days, PaymentStatistics paymentStatistics, List<StripeCustomer> customers, List<StripePayment> payment)
+        {
+            List<string> dayskeyses = new List<string>();
+            for (int i = 0; i < days; i++)
+            {
+                dayskeyses.Add(DateTime.Now.AddDays(-i).ToString("MM/dd"));
+                paymentStatistics.Products.Add(DateTime.Now.AddDays(-i).ToString("MM/dd"), 0);
+                paymentStatistics.Customers.Add(DateTime.Now.AddDays(-i).ToString("MM/dd"), 0);
+                paymentStatistics.Amount.Add(DateTime.Now.AddDays(-i).ToString("MM/dd"), 0);
+            }
+            foreach (var day in dayskeyses)
+            {
+                if (payment.Any(x => x.Updated.ToString("MM/dd") == day))
+                {
+                    var count = payment.Where(x => x.Updated.ToString("MM/dd") == day).Count();
+                    paymentStatistics.Amount[day] = payment.Where(x => x.Updated.ToString("MM/dd") == day).Sum(x => x.Amount);
+                    paymentStatistics.Products[day] = count;
+
+                }
+                if (customers.Any(x => x.Created.ToString("MM/dd") == day))
+                {
+                    var count = customers.Where(x => x.Created.ToString("MM/dd") == day).Count();
+                    paymentStatistics.Customers[day] = count;
+
+                }
+            }
+            paymentStatistics.MaxCustomers = paymentStatistics.Customers.Max(x => x.Value);
+            paymentStatistics.MaxProducts = paymentStatistics.Products.Max(x => x.Value);
+            return paymentStatistics;
         }
     }
 }

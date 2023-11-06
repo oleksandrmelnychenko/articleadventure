@@ -1510,6 +1510,9 @@ body {
   margin: 1.5rem 0;
   border-radius: 8px;
 }
+.admin_panel .main_article_change .buttons_tags .charts_small_panel {
+  width: 33%;
+}
 .admin_panel .main_article_change .buttons_tags .item_tags {
   /*background-color: #f9f9fe;*/
   font-size: 13px;
@@ -2208,7 +2211,7 @@ body {
   background: #f2edf3;
 }
 .user_manager_page .table_user_manager {
-  width: 80%;
+  width: 82%;
   margin: 40px auto;
   padding: 40px;
 }

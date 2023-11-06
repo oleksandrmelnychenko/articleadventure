@@ -1,4 +1,5 @@
 ﻿using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.EntityHelpers.Filter;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace service.ArticleAdventure.Services.Blog.Contracts
     {
         Task<long> AddArticle(MainArticle blog,IFormFile PhotoMainArticle);
         Task<List<MainArticle>> GetAllArticles(int page = 1, int count = 25);
+        Task<List<MainArticle>> GetAll(MainArticleFilter filter,int page = 1, int count = 25);
         Task<List<MainArticle>> GetAllFilterDateTimeArticles();
         Task<List<MainArticle>> GetAllArticlesFilterSupTags(List<MainArticleTags> mainTags, int page = 1, int count = 25);
         Task<long> Update(MainArticle blogs, IFormFile filePhotoMainArticle);

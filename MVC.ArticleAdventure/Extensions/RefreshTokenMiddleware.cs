@@ -7,6 +7,9 @@ using MVC.ArticleAdventure.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MVC.ArticleAdventure.Services.Contract;
+using Azure;
+using domain.ArticleAdventure.IdentityEntities;
+using domain.ArticleAdventure.Entities;
 
 namespace MVC.ArticleAdventure.Extensions
 {
@@ -23,6 +26,8 @@ namespace MVC.ArticleAdventure.Extensions
 
         public async Task InvokeAsync(HttpContext context)
         {
+            var refreshToke2n = context.Request.Cookies[CookiesPath.REFRESH_TOKEN];
+
             // Проверьте срок действия токена здесь
             if (TokenIsExpired(context))
             {
@@ -34,9 +39,9 @@ namespace MVC.ArticleAdventure.Extensions
                     ExecutionResult<CompleteAccessToken> response = await _authenticationService.RefreshToken(refreshToken);
                     if (response.IsSuccess)
                     {
-                        var user = await _authenticationService.GetProfile(response.Data.UserNetUid);
+                        ExecutionResult<UserProfile> user = await _authenticationService.GetProfile(response.Data.UserNetUid);
 
-                        await SignIn(response.Data,context);
+                        await SignIn(response.Data,context,user.Data);
                     }
                 }
                
@@ -45,11 +50,15 @@ namespace MVC.ArticleAdventure.Extensions
             // Продолжайте обработку запроса в следующем middleware
             await _next(context);
         }
-        async Task SignIn(CompleteAccessToken response,HttpContext context)
+        async Task SignIn(CompleteAccessToken response,HttpContext context , UserProfile userProfile)
         {
 
             var token = new JwtSecurityTokenHandler().ReadToken(response.AccessToken) as JwtSecurityToken;
-
+            context.Response.Cookies.Append(CookiesPath.ACCESS_TOKEN, response.AccessToken);
+            context.Response.Cookies.Append(CookiesPath.REFRESH_TOKEN, response.RefreshToken);
+            context.Response.Cookies.Append(CookiesPath.USER_NAME, userProfile.UserName);
+            context.Response.Cookies.Append(CookiesPath.USER_ID, userProfile.Id.ToString());
+            context.Response.Cookies.Append(CookiesPath.EMAIL, userProfile.Email);
             var claims = new List<Claim>();
             claims.Add(new Claim("JWT", response.AccessToken));
             claims.Add(new Claim("Guid", response.UserNetUid.ToString()));
@@ -73,15 +82,16 @@ namespace MVC.ArticleAdventure.Extensions
         }
         private bool TokenIsExpired(HttpContext context)
         {
-            var token = context.User.FindFirst("AccessToken");// Получите токен из запроса или контекста
-             var handler = new JwtSecurityTokenHandler();
+            
+            var token = context.Request.Cookies[CookiesPath.ACCESS_TOKEN];// Получите токен из запроса или контекста
+            var handler = new JwtSecurityTokenHandler();
 
             try
             {
                 if (token!= null)
                 {
 
-                var jsonToken = handler.ReadToken(token.Value) as JwtSecurityToken;
+                var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
 
                 if (jsonToken != null)
                 {

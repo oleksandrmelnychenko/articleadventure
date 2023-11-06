@@ -11,6 +11,7 @@ namespace MVC.ArticleAdventure.Services.Contract
         Task<ExecutionResult<CheckoutOrderResponse>> BuyStripeCartArticle(List<MainArticle> mainArticle, string Email, string tokenUser);
         Task<ExecutionResult<List<StripePayment>>> CheckPaymentsHaveUser(string userEmail);
         Task<ExecutionResult<List<StripePayment>>> GetStripePayments(string tokenUser);
+        Task<ExecutionResult<PaymentStatistics>> GetStripeStatistics(int days,string tokenAdmin);
         Task CheckoutSuccess(string sessionId);
         Task CheckoutSuccessSup(string sessionId);
         Task CheckoutSuccessCart(string sessionId);

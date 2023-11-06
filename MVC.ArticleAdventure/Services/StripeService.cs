@@ -131,10 +131,38 @@ namespace MVC.ArticleAdventure.Services
             var response = await _httpClient.GetAsync($"{PathStripe.CHECK_SUCCESS_CART}?sessionId={sessionId}");
         }
 
-        public async Task<ExecutionResult<List<StripePayment>>> GetStripePayments(string tokenUser)
+        public async Task<ExecutionResult<PaymentStatistics>> GetStripeStatistics(int days,string tokenAdmin)
+        {
+            var result = new ExecutionResult<PaymentStatistics>();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
+            var response = await _httpClient.GetAsync($"{PathStripe.GET_ALL_STRIPE_STATISTICS}?days={days}");
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<PaymentStatistics>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+
+                result.Error.Message = e.Message;
+            }
+            return result;
+        }
+
+        public async Task<ExecutionResult<List<StripePayment>>> GetStripePayments(string tokenAdmin)
         {
             var result = new ExecutionResult<List<StripePayment>>();
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenUser);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenAdmin);
             var response = await _httpClient.GetAsync($"{PathStripe.GET_ALL_STRIPE_PAYMENTS}");
             try
             {

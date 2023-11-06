@@ -4,6 +4,7 @@ using common.ArticleAdventure.ResponceBuilder.Contracts;
 using common.ArticleAdventure.WebApi;
 using common.ArticleAdventure.WebApi.RoutingConfiguration.Maps;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.EntityHelpers.Filter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -22,13 +23,13 @@ namespace webApi.ArticleAdventure.Controllers
             _mainArticleService = mainArticleService;
         }
         [HttpPost]
-        [Authorize(Roles =IdentityRoles.Administrator)]
+        [Authorize(Roles = IdentityRoles.Administrator)]
         [AssignActionRoute(ArticleSegments.UPDATE)]
         public async Task<IActionResult> Update([FromForm] string article, [FromForm] IFormFile filePhotoMainArticle)
         {
             try
             {
-                  MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
+                MainArticle? articleDeserialize = JsonConvert.DeserializeObject<MainArticle>(article);
                 return Ok(SuccessResponseBody(await _mainArticleService.Update(articleDeserialize, filePhotoMainArticle), ControllerMessageConstants.ArticlesMessage.UpdateArticle));
             }
             catch (Exception exc)
@@ -78,7 +79,22 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _mainArticleService.GetAllArticles(page,count), ControllerMessageConstants.ArticlesMessage.GetAllArticle));
+                return Ok(SuccessResponseBody(await _mainArticleService.GetAllArticles(page, count), ControllerMessageConstants.ArticlesMessage.GetAllArticle));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
+
+        [HttpPost]
+        [AssignActionRoute(ArticleSegments.GET_ALL_ARTICLE)]
+        public async Task<IActionResult> GetAll([FromBody] MainArticleFilter filter, int page = 1, int count = 25)
+        {
+            try
+            {
+                return Ok(SuccessResponseBody(await _mainArticleService.GetAll(filter, page, count), ControllerMessageConstants.ArticlesMessage.GetAllArticle));
             }
             catch (Exception exc)
             {
@@ -93,7 +109,7 @@ namespace webApi.ArticleAdventure.Controllers
         {
             try
             {
-                return Ok(SuccessResponseBody(await _mainArticleService.GetAllArticlesFilterSupTags(mainArticleTags,page,count), ControllerMessageConstants.ArticlesMessage.AllArticleFilterSupTags));
+                return Ok(SuccessResponseBody(await _mainArticleService.GetAllArticlesFilterSupTags(mainArticleTags, page, count), ControllerMessageConstants.ArticlesMessage.AllArticleFilterSupTags));
             }
             catch (Exception exc)
             {

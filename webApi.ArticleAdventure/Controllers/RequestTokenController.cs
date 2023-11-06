@@ -55,7 +55,7 @@ namespace webApi.ArticleAdventure.Controllers
             {
                 Logger.Log(NLog.LogLevel.Error, exc.Message);
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
-            }
+            } 
         }
 
         [HttpGet]

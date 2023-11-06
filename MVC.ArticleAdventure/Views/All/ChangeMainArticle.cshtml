@@ -1,101 +1,118 @@
 ﻿@model domain.ArticleAdventure.Models.ChangeMainArticleModel
 
+<div class="admin_panel">
+    @Html.Partial("_SideBarAdminPanel")
 
-<div class="main_article_change">
-    <div class="buttons_tags">
-        <div class="item_tags">
-            <ol>
-                @foreach (var mainTag in Model.MainTags)
-                {
-                    @foreach (var tag in mainTag.SubTags)
+    <div class="main_article_change">
+        <div class="buttons_tags">
+            <h3>Tags</h3>
+            <div class="item_tags">
+                <ol>
+                    @foreach (var mainTag in Model.MainTags)
                     {
-                        @if (tag.IsSelected)
+                        @foreach (var tag in mainTag.SubTags)
                         {
-                            <li class="liCansel" onclick="location.href='@Url.Action("CancelChangeLocalSupTag", "All",new {RemoveSupTagsNetUid = tag.NetUid})'">
-                                <span>#</span>
-                                <span>@tag.Name</span>
-                            </li>
-                        }
-                        else
-                        {
-                            <li onclick="location.href='@Url.Action("IsSelectChangeLocalSupTag", "All",new {IsSelectSupTagsNetUid = tag.NetUid})'">
-                                <span style="color:@tag.Color;">#</span>
-                                <span>@tag.Name</span>
-                            </li>
+                            @if (tag.IsSelected)
+                            {
+                                <li class="liCansel" onclick="location.href='@Url.Action("CancelChangeLocalSupTag", "All",new {RemoveSupTagsNetUid = tag.NetUid})'">
+                                    <span>#</span>
+                                    <span>@tag.Name</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li onclick="location.href='@Url.Action("IsSelectChangeLocalSupTag", "All",new {IsSelectSupTagsNetUid = tag.NetUid})'">
+                                    <span style="color:@tag.Color;">#</span>
+                                    <span>@tag.Name</span>
+                                </li>
+                            }
                         }
                     }
-                }
-            </ol>
-        </div>
-    </div>
-    <form asp-controller="New" enctype="multipart/form-data" class="main_panel">
-        <div class="meta_row">
-            <div class="inputs">
-                <div class="input">
-                    <input type="text" placeholder="Title" asp-for="MainArticle.Title" />
-                    <span asp-validation-for="@Model.MainArticle.Title" class="text-danger"></span>
-                </div>
+                </ol>
             </div>
         </div>
-        <div class="meta_row">
-            <div class="inputs">
-                <div class="input">
-                    <input type="text" placeholder="Description" asp-for="MainArticle.Description" />
+        <form asp-controller="New" enctype="multipart/form-data" class="main_panel">
+            <div class="articles_panel">
+                <h3>Information Article</h3>
+
+                <div class="meta_row">
+                    <div class="inputs">
+                        <input type="text" placeholder="Title" asp-for="MainArticle.Title" />
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="articles_panel">
-            <div class="archicle_info_item">
-                <div class="sectionsCount">
-                    <div>@Model.MainArticle.Articles.Count() sections</div>
+                <div class="meta_row">
+                    <div class="inputs">
+                        <input type="text" placeholder="Description" asp-for="MainArticle.Description" />
+                    </div>
                 </div>
-                <ul class="articles_list">
-                    @foreach (var article in Model.MainArticle.Articles)
-                    {
-                        <input type="hidden" asp-for="@article.Body" />
-                        <li>
-                            <div>
-                                <div class="t">
-                                    @article.Title
-                                </div>
-                                <div class="d">@article.Description</div>
-                            </div>
-                            <div class="price_cell">
-                                $  @article.Price
-                                <div>
-                                    <div>
-                                        <button value="Change" type="button" onclick="location.href='@Url.Action("ChangeSupArticle",new {ChangeNetUidArticle =article.NetUid})'">Change</button>
-                                        <button value="Delete " type="button" onclick="location.href='@Url.Action("RemoveSupArticle", "All",new {RemoveNetUidArticle =article.NetUid})'">Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </div>
-            <div>
-                <button class="continueReading_btn" type="button" onclick="location.href='@Url.Action("AddSupArticle","New",new {netUidMainArticle = Model.MainArticle.NetUid})'">Add Sup Article</button>
-            </div>
-            <div class="custom-file-upload">
-                <label for="file-upload" class="custom-file-label">Choose File</label>
-                <input type="file" id="file-upload" class="input-file" asp-for="@Model.PhotoMainArticle" enctype="multipart/form-data" multiple accept=".jpg,.jpeg,.png" />
-            </div>
-            <div class="meta_row">
-                <div class="inputs">
-                    <div class="input">
+
+                <div class="custom-file-upload">
+                    <label for="file-upload" class="custom-file-label">Choose File</label>
+                    <input type="file" id="file-upload" class="input-file" asp-for="@Model.PhotoMainArticle" enctype="multipart/form-data" multiple accept=".jpg,.jpeg,.png" />
+                </div>
+                <div class="meta_row">
+                    <div class="inputs">
                         <input type="text" placeholder="Infromation Article" asp-for="MainArticle.InfromationArticle" />
                     </div>
                 </div>
-            </div>
-            <div class="meta_row">
-                <div class="inputs">
-                    <div class="input">
-                        <input type="text" placeholder="$ Price " asp-for="MainArticle.Price" />
+                <div class="meta_row">
+                    <div class="inputs">
+                        <input type="text" placeholder="$ Price" asp-for="MainArticle.Price" />
                     </div>
                 </div>
             </div>
-            <button asp-controller="All" asp-action="ChangeMainArticle" class="continueReading_btn" formmethod="post" type="submit" value="Save">Save Changes</button>
+            @if (Model.MainArticle.Articles.Count() != 0)
+            {
+                <div class="archicle_info_item">
+                    <h3>Sup Articles</h3>
+                    <div class="sectionsCount">
+                        <div>@Model.MainArticle.Articles.Count() sections</div>
+                    </div>
+                    <ul >
+                        @foreach (var article in Model.MainArticle.Articles)
+                        {
+                            <input type="hidden" asp-for="@article.Body" />
+                            <li>
+                                <div class="li_width">
+                                    <div class="t">
+                                        @article.Title
+                                    </div>
+                                    <div class="d">@article.Description</div>
+                                </div>
+                                <div class="price_cell">
+                                    $ @article.Price
+                                    <div class="price_cell_flex">
+                                        <button class="change_button left-button" value="Change" type="button" onclick="location.href='@Url.Action("ChangeSupArticle",new {ChangeNetUidArticle =article.NetUid})'">Change</button>
+                                        <button class="delete_button right-button" value="Delete " type="button" onclick="location.href='@Url.Action("RemoveSupArticle", "All",new {RemoveNetUidArticle =article.NetUid})'">Delete</button>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <div class="sup_article_clear">
+                    <div class="sup_article">
+                        <div class="sup_article_box">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="150" height="150"><path fill="#bba8bff5" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,2a9.949,9.949,0,0,1,6.324,2.262L4.262,18.324A9.992,9.992,0,0,1,12,2Zm0,20a9.949,9.949,0,0,1-6.324-2.262L19.738,5.676A9.992,9.992,0,0,1,12,22Z" /></svg>
+                            <div class="bask_text">You have not created an article yet</div>
+                            <button class="continueReading_btn left-button" type="button" onclick="location.href='@Url.Action("AddSupArticle","New",new {netUidMainArticle = Model.MainArticle.NetUid})'">Add Sup Article</button>
 
-    </form>
+                        </div>
+                    </div>
+                </div>
+            }
+
+          
+            <div class="add_sup_article_button">
+                <button class="continueReading_btn left-button" type="button" onclick="location.href='@Url.Action("AddSupArticle","New",new {netUidMainArticle = Model.MainArticle.NetUid})'">Add Sup Article</button>
+                <button class="continueReading_btn right-button" formaction="SettingMainArticle" formmethod="post" type="submit" value="Save">Create</button>
+            </div>
+
+        </form>
+    </div>
 </div>
+
 

@@ -1,5 +1,6 @@
 ﻿using common.ArticleAdventure.ResponceBuilder;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.EntityHelpers.Filter;
 
 namespace MVC.ArticleAdventure.Services.Contract
 {
@@ -15,6 +16,7 @@ namespace MVC.ArticleAdventure.Services.Contract
         public Task<MainArticle> GetArticle(Guid netUidArticle);
         public Task<MainArticle> GetArticle(long id);
         public Task<List<MainArticle>> GetAllArticles();
+        public Task<ExecutionResult<List<MainArticle>>> GetAll(MainArticleFilter filter = null,int page = 1,int count = 25);
         public Task<ExecutionResult<List<MainArticle>>> GetAllFilterDateTimeArticles();
         public Task<ExecutionResult<List<MainArticle>>> GetAllArticlesFilterSupTags(List<MainArticleTags> mainArticleTags);
        

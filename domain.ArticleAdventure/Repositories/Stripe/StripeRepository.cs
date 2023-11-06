@@ -18,13 +18,13 @@ namespace domain.ArticleAdventure.Repositories.Stripe
         {
             _connection = connection;
         }
-         public long AddCustomer(StripeCustomer stripeCustomer) => 
-            _connection.Query<long>("INSERT INTO [stripeCustomers] " +
-           "([Name], [Email], [UserId], [Updated] ) " +
-           "VALUES " +
-           "(@Name, @Email, @UserId, GETUTCDATE());" +
-           "SELECT SCOPE_IDENTITY()", stripeCustomer
-           ).Single();
+        public long AddCustomer(StripeCustomer stripeCustomer) =>
+           _connection.Query<long>("INSERT INTO [stripeCustomers] " +
+          "([Name], [Email], [UserId], [Updated] ) " +
+          "VALUES " +
+          "(@Name, @Email, @UserId, GETUTCDATE());" +
+          "SELECT SCOPE_IDENTITY()", stripeCustomer
+          ).Single();
         public long AddPayment(StripePayment payment)
            => _connection.Query<long>("INSERT INTO [stripePayments] " +
            "([MainArticleId], [SupArticleId], [UserId], [ReceiptEmail] ,[Description] ,[Currency] ,[PaymentStatus] ,[Amount] ,[Updated] ) " +
@@ -51,7 +51,7 @@ namespace domain.ArticleAdventure.Repositories.Stripe
             "AND stripePayments.UserId = @UserId",
                 (stripePayment, mainArticle, supArticle) =>
                 {
-                    if (stripePayments.Any(c => c.Id.Equals(stripePayment.Id)) )
+                    if (stripePayments.Any(c => c.Id.Equals(stripePayment.Id)))
                     {
                         stripePayment = stripePayments.First(x => x.Id.Equals(stripePayment.Id));
                     }
@@ -128,7 +128,7 @@ namespace domain.ArticleAdventure.Repositories.Stripe
 
             return stripePayments;
         }
-        public List<StripePayment> GetPaymentMainArticle(long userId,long mainArticleId)
+        public List<StripePayment> GetPaymentMainArticle(long userId, long mainArticleId)
         {
             List<StripePayment> stripePayments = new List<StripePayment>();
             _connection.Query<StripePayment, MainArticle, AuthorArticle, StripePayment>("SELECT stripePayments.*, " +
@@ -172,8 +172,10 @@ namespace domain.ArticleAdventure.Repositories.Stripe
                         stripePayments.Where(x => x.SupArticleId == supArticle.Id).ToList().ForEach(x => x.SupArticle = supArticle);
                     }
                     return stripePayment;
-                }, new { UserId = userId ,
-                    MainArticleId = mainArticleId ,
+                }, new
+                {
+                    UserId = userId,
+                    MainArticleId = mainArticleId,
                 }).ToList();
 
             return stripePayments;
@@ -216,11 +218,11 @@ namespace domain.ArticleAdventure.Repositories.Stripe
                     PaymentStatus = "paid"
                 });
 
-       
 
-        public StripeCustomer GetCustomer(long userId) => 
+
+        public StripeCustomer GetCustomer(long userId) =>
             _connection.Query<StripeCustomer>("SELECT * FROM [stripeCustomers] AS Payment " +
-                "WHERE Payment.UserId = @UserId" ,
+                "WHERE Payment.UserId = @UserId",
                 new
                 {
                     UserId = userId,
@@ -228,13 +230,34 @@ namespace domain.ArticleAdventure.Repositories.Stripe
            ).SingleOrDefault();
 
         public List<StripeCustomer> GetallCustomer() =>
-            _connection.Query<StripeCustomer>("SELECT * FROM [stripeCustomers] AS Payment " +
-                "WHERE Payment.Deleted = 0 "
+            _connection.Query<StripeCustomer>("SELECT * FROM [stripeCustomers] AS Customer " +
+                "WHERE Customer.Deleted = 0 " +
+                "AND Customer.PaymentStatus = 'paid' "
            ).ToList();
 
         public List<StripePayment> GetAllPayment() =>
             _connection.Query<StripePayment>("SELECT * FROM [stripePayments] AS Payment " +
-                 "WHERE Payment.Deleted = 0 "
+                 "WHERE Payment.Deleted = 0 " +
+                 "AND Payment.PaymentStatus = 'paid' "
+           ).ToList();
+        public List<StripePayment> GetDaysPayment(int days) =>
+            _connection.Query<StripePayment>("SELECT * FROM [stripePayments] AS Payment " +
+            "WHERE Payment.Deleted = 0 " +
+            "AND Payment.PaymentStatus = 'paid' " +
+            "AND Payment.Updated >= DATEADD(day,@Days, GETDATE()) ",
+                new
+                {
+                    Days = -days
+                }
+           ).ToList();
+        public List<StripeCustomer> GetDaysCustomer(int days) =>
+            _connection.Query<StripeCustomer>("SELECT * FROM [stripeCustomers] AS Customer " +
+            "WHERE Customer.Deleted = 0 " +
+            "AND Customer.Updated >= DATEADD(day,@Days, GETDATE()) ",
+                new
+                {
+                    Days = -days
+                }
            ).ToList();
     }
 }

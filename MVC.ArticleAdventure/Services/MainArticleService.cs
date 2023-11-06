@@ -1,5 +1,6 @@
 ﻿using common.ArticleAdventure.ResponceBuilder;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.EntityHelpers.Filter;
 using domain.ArticleAdventure.IdentityEntities;
 using Microsoft.Extensions.Options;
 using MVC.ArticleAdventure.Extensions;
@@ -12,6 +13,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Web;
 
@@ -315,6 +317,35 @@ namespace MVC.ArticleAdventure.Services
             return result;
         }
 
+        public async Task<ExecutionResult<List<MainArticle>>> GetAll(MainArticleFilter filter, int page = 1, int count = 25)
+        {
+            var result = new ExecutionResult<List<MainArticle>>();
+
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync($@"{PathMainArticle.GET_ALL_MAIN_ARTICLE}?page={page}&count={count}",filter);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var successResponse = await response.Content.ReadFromJsonAsync<SuccessResponse>();
+                    result.Data = JsonConvert.DeserializeObject<List<MainArticle>>(successResponse.Body.ToString());
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    result.Error = new ErrorMVC();
+                    result.Error.StatusCode = errorResponse.StatusCode;
+                    result.Error.Message = errorResponse.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                result.Error.Message = e.Message;
+            }
+
+            return result;
+        }
+
         public async Task<List<MainArticle>> GetAllArticles()
         {
             HttpResponseMessage response = await _httpClient.GetAsync(PathMainArticle.GET_ALL_ARTICLE);
@@ -359,9 +390,5 @@ namespace MVC.ArticleAdventure.Services
         }
 
        
-
-       
-
-        
     }
 }

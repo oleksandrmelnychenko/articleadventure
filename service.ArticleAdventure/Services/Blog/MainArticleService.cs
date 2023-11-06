@@ -1,5 +1,6 @@
 ﻿using domain.ArticleAdventure.DbConnectionFactory.Contracts;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.EntityHelpers.Filter;
 using domain.ArticleAdventure.Helpers;
 using domain.ArticleAdventure.Repositories.Blog;
 using domain.ArticleAdventure.Repositories.Blog.Contracts;
@@ -122,7 +123,41 @@ namespace service.ArticleAdventure.Services.Blog
                 return _mainRepositoryFactory.New(connection).GetAllArticles();
             }
         });
+        public Task<List<MainArticle>> GetAll(MainArticleFilter filter, int page = 1, int count = 25) =>
+            Task.Run(() =>
+            {
+                using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+                {
+                    List<MainArticle> mainArticlesFilter = new List<MainArticle>();
+                    if (filter.SupTagsId != null)
+                    {
+                        var mainArticleTags = _mainRepositoryFactory.New(connection).GetArticleTags(filter);
+                        filter.MainArticleId = mainArticleTags.Select(x => x.MainArticleId).ToList();
+                    }
 
+                    var mainArticles = _mainRepositoryFactory.New(connection).GetAll(filter, page, count);
+                    //if (filter.SupTagsId != null && filter.SupTagsId?.Count() > 1)
+                    //{
+                    //    return mainArticlesFilter;
+
+                    //}
+                    //else if (filter.SupTagsId != null && filter.SupTagsId.Count() != 0)
+                    //{
+                    //    foreach (var mainArticle in mainArticles)
+                    //    {
+                    //        if (mainArticle.ArticleTags.Any(x => filter.SupTagsId.Any(y => x.SupTag.Id == y)))
+                    //        {
+                    //            mainArticlesFilter.Add(mainArticle);
+                    //        }
+                    //    }
+                    //    return mainArticlesFilter;
+                    //}
+                    //else
+                    //{
+                    return mainArticles;
+                    //}
+                }
+            });
         public Task Remove(Guid netUid) =>
             Task.Run(() =>
         {
@@ -230,7 +265,7 @@ namespace service.ArticleAdventure.Services.Blog
                 }
             });
 
-        public Task<MainArticle> GetArticleUser(Guid netUidArticle,long idUser) =>
+        public Task<MainArticle> GetArticleUser(Guid netUidArticle, long idUser) =>
             Task.Run(async () =>
             {
                 using (IDbConnection connection = _connectionFactory.NewSqlConnection())
@@ -240,7 +275,7 @@ namespace service.ArticleAdventure.Services.Blog
                     List<AuthorArticle> filterAticle = new List<AuthorArticle>();
                     var stripeRepository = _stripeRepositoryFactory.New(connection);
                     var mainArticle = _mainRepositoryFactory.New(connection).GetArticle(netUidArticle);
-                    var stripePayments = stripeRepository.GetPaymentMainArticle(idUser,mainArticle.Id);
+                    var stripePayments = stripeRepository.GetPaymentMainArticle(idUser, mainArticle.Id);
                     foreach (var stripePayment in stripePayments)
                     {
                         if (mainArticles.Id.Equals(stripePayment.MainArticleId))
@@ -258,6 +293,6 @@ namespace service.ArticleAdventure.Services.Blog
                 }
             });
 
-        
+
     }
-} 
+}

@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.EntityHelpers.Filter;
+using domain.ArticleAdventure.FilterBuilders;
 using domain.ArticleAdventure.Repositories.Blog.Contracts;
 using System;
 using System.Collections.Generic;
@@ -100,6 +102,95 @@ namespace domain.ArticleAdventure.Repositories.Blog
             return mainArticles;
         }
 
+        public List<MainArticleTags> GetArticleTags(MainArticleFilter filter)
+        {
+            FilterBuilderFactory filterBuilderFactory = new FilterBuilderFactory();
+
+            string sql = "SELECT * FROM [ArticleAdventure].[dbo].[ArticleTags] " +
+                                    filterBuilderFactory.NewMainArticleFilterBuilder().Build(filter);
+            return _connection.Query<MainArticleTags>(sql,
+               (Func<MainArticleTags, MainArticleTags>)
+               ((mainArticleTags) =>
+               {
+
+
+                   return mainArticleTags;
+               })).ToList();
+        }
+
+        public List<MainArticle> GetAll(MainArticleFilter filter, int page, int count)
+        {
+            FilterBuilderFactory filterBuilderFactory = new FilterBuilderFactory();
+
+            List<MainArticle> mainArticles = new List<MainArticle>();
+
+            string sql = "SELECT mainArticle.*, " +
+                        "authorArticle.*, " +
+                        "articleTags.*, " +
+                        "supTags.*," +
+                        "userProfile.* " +
+                        "FROM [ArticleAdventure].[dbo].[MainArticle] AS mainArticle " +
+                        "LEFT JOIN [ArticleAdventure].[dbo].[AuthorArticle] AS authorArticle " +
+                        "ON mainArticle.ID = authorArticle.MainArticleId " +
+                        "LEFT JOIN [ArticleAdventure].[dbo].[ArticleTags] AS articleTags " +
+                        "ON mainArticle.ID = articleTags.MainArticleId " +
+                        "LEFT JOIN [ArticleAdventure].[dbo].[SubTags] AS supTags " +
+                        "ON supTags.ID = articleTags.SupTagId " +
+                        "LEFT JOIN [ArticleAdventure].[dbo].[UserProfile] as userProfile " +
+                        "ON userProfile.ID = mainArticle.UserId " +
+                        "WHERE mainArticle.Deleted = 0 " +
+                        "AND authorArticle.Deleted = 0 " +
+                        "AND articleTags.Deleted = 0 " +
+                        "AND supTags.Deleted = 0 " +
+                        filterBuilderFactory.NewMainArticleFilterBuilder().Build(filter);
+            _connection.Query(sql,
+                (Func<MainArticle, AuthorArticle, MainArticleTags, SupTag, UserProfile, MainArticle>)((mainArticle, article, articleMainTag, supTag, userProfile) =>
+                {
+                    if (mainArticles.Any(c => c.Id.Equals(mainArticle.Id)))
+                    {
+                        mainArticle = mainArticles.First(c => c.Id.Equals(mainArticle.Id));
+                    }
+                    else
+                    {
+                        mainArticle.UserProfile = userProfile;
+                        mainArticles.Add(mainArticle);
+                    }
+
+                    if (mainArticles.Any(x => x.Articles.Any(x => x.Id.Equals(article.Id))))
+                    {
+                        article = mainArticles.SelectMany(artics => artics.Articles)
+                        .First(c => c.Id.Equals(article.Id));
+                    }
+                    else
+                    {
+
+                        mainArticles.Where(art => article.MainArticleId == art.Id)
+                        .ToList()
+                        .ForEach(art => art.Articles.Add(article));
+                    }
+
+                    if (mainArticles.Any(x => x.ArticleTags.Any(x => x.Id.Equals(articleMainTag.Id))))
+                    {
+                        articleMainTag = mainArticles.SelectMany(x => x.ArticleTags)
+                        .First(c => c.Id.Equals(articleMainTag.Id));
+                    }
+                    else
+                    {
+                        mainArticles.Where(a => articleMainTag.MainArticleId == a.Id)
+                        .ToList()
+                        .ForEach(x => x.ArticleTags.Add(articleMainTag));
+
+                        foreach (var art in mainArticles)
+                        {
+                            art.ArticleTags.Where(item => item.SupTagId == supTag.Id)
+                                          .ToList()
+                                          .ForEach(item => item.SupTag = supTag);
+                        }
+                    }
+                    return mainArticle;
+                })).ToList();
+            return mainArticles;
+        }
 
         public List<MainArticle> GetAllArticles()
         {
@@ -241,7 +332,7 @@ namespace domain.ArticleAdventure.Repositories.Blog
         {
             MainArticle articleMain = new MainArticle();
 
-            _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag,UserProfile, MainArticle>("SELECT mainArticle.*, " +
+            _connection.Query<MainArticle, AuthorArticle, MainArticleTags, SupTag, UserProfile, MainArticle>("SELECT mainArticle.*, " +
            "authorArticle.*, " +
            "articleTags.*, " +
            "supTags.*, " +

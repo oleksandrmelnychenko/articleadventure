@@ -1,4 +1,5 @@
 ﻿using domain.ArticleAdventure.Entities;
+using domain.ArticleAdventure.EntityHelpers.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace domain.ArticleAdventure.Repositories.Blog.Contracts
         long AddMainArticle(MainArticle blog);
 
         List<MainArticle> GetAllArticles();
+        List<MainArticle> GetAll(MainArticleFilter filter , int page,int count);
+        List<MainArticleTags> GetArticleTags(MainArticleFilter filter );
         List<MainArticle> GetAllArticlesFilterSupTag(List<MainArticleTags> supTags);
 
         void RemoveMainArticle(Guid netUid);

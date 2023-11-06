@@ -182,5 +182,21 @@ namespace webApi.ArticleAdventure.Controllers
                 return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
             }
         }
+        [HttpGet]
+        [Authorize(Roles = IdentityRoles.Administrator)]
+        [AssignActionRoute(StripeSegments.GET_ALL_STRIPE_STATISTICS)]
+        public async Task<IActionResult> GetAllStatistics(int days)
+        {
+            try
+            {
+                var payments = await _stripeService.GetStatisticsDays(days);
+                return Ok(SuccessResponseBody(payments, ControllerMessageConstants.StripeMessage.CheckPaymentsHaveUser));
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(NLog.LogLevel.Error, exc.Message);
+                return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+            }
+        }
     }
 }
